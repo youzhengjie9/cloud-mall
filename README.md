@@ -1,7 +1,7 @@
 # cloud-mall
 
 #### 介绍
-first mall project by 2021/11/5
+cloud-mall是一个基于分布式、微服务架构开发的商城系统,将由本人持续维护！
 
 #### 软件架构
 软件架构说明

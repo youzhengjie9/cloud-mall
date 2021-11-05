@@ -1,0 +1,16 @@
+<div ng-mouseenter="showContent()" ng-mouseleave="closeContent()">
+    <a class="wai_a" href="#">{{parentItem.text}}</a>
+
+    <div ng-if="childrenContent.length" class="{{childrenDivClass}}" ng-show="flag">
+        <ul class="children_list clearfix">
+            <!-- <li ng-repeat="childrenItem in childrenItems |filt| myFilter:parentItem.idr: {fl_id: item.id}">-->
+            <li ng-class="{'first':$first}" ng-repeat="childrenItem in childrenContent | myFilter:parentItem.id">
+                <a ui-sref="home.products({productId:childrenItem.id})" ng-click="closeContent()">
+                    <img ng-src="/static/resource/img/nav/{{childrenItem.img}}.jpg" alt="" />
+                    <p>{{childrenItem.name}}</p>
+                    <p ng-if="childrenDivClass=='children_horizontal'" class="price">{{childrenItem.price}}元起</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

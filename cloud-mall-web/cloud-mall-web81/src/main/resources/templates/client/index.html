@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html ng-app="xmStoreApp" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1226">
+    <title>小米商城-小米官方网站，小米手机</title>
+    <meta name="description" content="小米商城-直营小米公司旗下所有产品，囊括小米手机、红米手机、小米电视、小米笔记本、智能硬件、配件及小米生活周边，同时提供小米客户服务及售后支持。">
+    <meta name="keywords" content="小米,小米官网,小米手机,小米官网首页,小米商城">
+    <!--bootstrap-->
+    <link rel="stylesheet" th:href="@{/static/resource/css/lib/bootstrap.min.css}"/>
+    <!--css-->
+    <link rel="stylesheet" th:href="@{/static/resource/css/reset.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/cart.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/home.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/home.search.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/buyNow.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/order.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/common/common.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/search.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/focusImg.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/focusImgMult.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/ulBox2.css}"/>
+</head>
+<body>
+
+<div ui-view></div>
+
+</body>
+<!-- jquery.js angular.js-->
+<script th:src="@{/static/resource/lib/jquery.min.js}"></script>
+<script th:src="@{/static/resource/lib/angular.js}"></script>
+<!-- ui-router local-storage -->
+<script th:src="@{/static/resource/lib/angular-ui-router.min.js}"></script>
+<script th:src="@{/static/resource/lib/swx-local-storage.js}"></script>
+<!-- app.js -->
+<script th:src="@{/static/js/app.js}"></script>
+<script th:src="@{/static/js/module/home.js}"></script>
+<script th:src="@{/static/js/module/login.js}"></script>
+<script th:src="@{/static/js/module/register.js}"></script>
+<script th:src="@{/static/js/module/cart.js}"></script>
+<script th:src="@{/static/js/module/buyNow.js}"></script>
+<script th:src="@{/static/js/module/order.js}"></script>
+<script th:src="@{/static/js/directives/searchDic.js}"></script>
+<script th:src="@{/static/js/directives/focusImgDic.js}"></script>
+<script th:src="@{/static/js/directives/ulBoxDic.js}"></script>
+<script th:src="@{/static/js/directives/goodsFilterDic.js}"></script>
+<script th:src="@{/static/js/directives/checkboxDic.js}"></script>
+<script th:src="@{/static/js/directives/breadcrumbsDic.js}"></script>
+<script th:src="@{/static/js/service/httpService.js}"></script>
+<script th:src="@{/static/js/service/util.service.js}"></script>
+<script th:src="@{/static/js/service/loginService.js}"></script>
+<script th:src="@{/static/js/service/cartService.js}"></script>
+<script th:src="@{/static/js/filters/myFilter.js}"></script>
+<script th:src="@{/static/js/common/plugin/xmInclude.js}"></script>
+</html>

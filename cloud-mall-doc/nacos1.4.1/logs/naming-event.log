@@ -1,0 +1,4 @@
+2021-08-21 16:18:12,445 INFO SEATA_GROUP@@seata-server {SYNC} {IP-NEW} cluster: default, new ips size: 1, content: [192.168.184.1:8091:unknown:default_1.0_true_false_default]
+
+2021-08-21 16:18:12,447 INFO [IP-UPDATED] namespace: public, service: SEATA_GROUP@@seata-server, ips: 192.168.184.1:8091_true,
+

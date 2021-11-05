@@ -1,0 +1,42 @@
+<breadcrumbs class="breadcrumbs"></breadcrumbs>
+<div class="container">
+    <div class="filter_box">
+        <div class="filter_list_wrap clearfix">
+            <goods-filter filter-types="filterTypes" filter-contents="filterContents"></goods-filter>
+        </div>
+    </div>
+</div>
+<div class="search_content">
+    <div class="container">
+        <div class="search_title clearfix">
+            <ul class="search_title_left fl">
+                <li><a href="">推荐</a></li>
+                <li><a href="">新品</a></li>
+                <li><a href="">价格</a></li>
+                <li><a href="">评论最多</a></li>
+            </ul>
+            <ul class="search_title_right fr">
+                <li><a href="">查看评价</a></li>
+                <li><a href="">仅显示特惠商品</a></li>
+                <li><a href="">仅显示有货商品</a></li>
+            </ul>
+        </div>
+        <div class="search_goods_list">
+            <div class="search_goods_item" ng-repeat="product in searchResultList">
+                <div class="actions clearfix">
+                    <a class="btn_like icon"><span>喜欢</span></a>
+                    <a class="btn_buy btn-buy-detail icon" ui-sref="buyNow({productId:product.productId})"><span>立即购买</span></a>
+                </div>
+                <img ng-src="/static/resource/img/nav/{{product.img}}.jpg" alt="">
+                <a ui-sref="#">{{product.name}}</a>
+                <p class="price">{{product.price}}</p>
+                <div class="small_img">
+                    <img ng-src="/static/resource/img/nav/{{product.img}}.jpg" alt="">
+                    <img ng-src="/static/resource/img/nav/{{product.img}}.jpg" alt="">
+                    <img ng-src="/static/resource/img/nav/{{product.img}}.jpg" alt="">
+                    <img ng-src="/static/resource/img/nav/{{product.img}}.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

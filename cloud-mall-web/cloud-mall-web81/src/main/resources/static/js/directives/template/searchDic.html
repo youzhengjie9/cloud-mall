@@ -1,0 +1,18 @@
+<div class="search">
+    <input type="text" ng-model="userSearch"
+           ng-blur="closeContent()" ng-keydown="changeSearchVal()"
+           placeholder="小米手机5"/>
+    <input type="submit" ng-mousedown="goSearchState(userSearch)" />
+
+    <div ng-show="searchResultList.length" class="search_list">
+        <ul>
+            <li ng-repeat="item in searchResultList">
+                <a ng-mousedown="goSearchState(item.name)">
+                    {{item.name}}
+                    <span>约有{{item.number}}件</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+

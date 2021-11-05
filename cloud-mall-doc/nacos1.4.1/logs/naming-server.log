@@ -1,0 +1,16 @@
+2021-08-21 16:17:54,089 INFO GlobalConfig{taskDispatchPeriod=2000, batchSyncKeyCount=1000, syncRetryDelay=5000, dataWarmup=false, expireInstance=true, loadDataRetryDelayMillis=30000}
+
+2021-08-21 16:17:54,991 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2021-08-21 16:17:54,992 INFO listen for service meta change
+
+2021-08-21 16:17:59,064 INFO [NACOS-DISTRO] healthy server list changed, old: [192.168.3.16:8848], new: [192.168.3.16:8848]
+
+2021-08-21 16:18:12,216 INFO creating empty service public:SEATA_GROUP@@seata-server
+
+2021-08-21 16:18:12,415 INFO [NEW-SERVICE] {"name":"SEATA_GROUP@@seata-server","protectThreshold":0.0,"groupName":"SEATA_GROUP","metadata":{},"finalizeCount":0,"owners":[],"resetWeight":false,"enabled":true,"selector":{"type":"none"},"namespaceId":"public","ipDeleteTimeout":30000,"lastModifiedMillis":1629533892219,"checksum":"c33abebc97da4425d7c26d63213dedcd","clusterMap":{},"empty":true}
+
+2021-08-21 16:18:12,420 WARN cluster: default not found, ip: {"instanceId":"192.168.184.1#8091#default#SEATA_GROUP@@seata-server","ip":"192.168.184.1","port":8091,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"default","serviceName":"SEATA_GROUP@@seata-server","metadata":{},"lastBeat":1629533892213,"marked":false,"app":"unknown","instanceIdGenerator":"simple","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}, will create new cluster with default configuration.
+
+2021-08-21 16:18:12,443 INFO [NACOS-RAFT] datum is changed, key: com.alibaba.nacos.naming.iplist.ephemeral.public##SEATA_GROUP@@seata-server, value: {"instanceList":[{"instanceId":"192.168.184.1#8091#default#SEATA_GROUP@@seata-server","ip":"192.168.184.1","port":8091,"weight":1.0,"healthy":true,"enabled":true,"ephemeral":true,"clusterName":"default","serviceName":"SEATA_GROUP@@seata-server","metadata":{},"lastBeat":1629533892213,"marked":false,"app":"unknown","instanceIdGenerator":"simple","instanceHeartBeatTimeOut":15000,"ipDeleteTimeout":30000,"instanceHeartBeatInterval":5000}]}
+
