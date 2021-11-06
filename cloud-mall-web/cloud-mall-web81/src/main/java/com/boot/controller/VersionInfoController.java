@@ -1,7 +1,7 @@
 package com.boot.controller;
 
+import com.boot.feign.product.fallback.VersionInfoFallbackFeign;
 import com.boot.pojo.VersionInfo;
-import com.boot.service.VersionInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,19 +12,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/feign/versioninfo")
+@RequestMapping(path = "/versionInfo")
 public class VersionInfoController {
 
     @Autowired
-    private VersionInfoService versionInfoService;
-
+    private VersionInfoFallbackFeign versionInfoFallbackFeign;
 
     @ResponseBody
     @GetMapping(path = "/selectVersionInfoByPid/{pid}")
     public List<VersionInfo> selectVersionInfoByPid(@PathVariable("pid") long pid)
     {
-        return versionInfoService.selectVersionInfoByPid(pid);
+        return versionInfoFallbackFeign.selectVersionInfoByPid(pid);
     }
-
 
 }

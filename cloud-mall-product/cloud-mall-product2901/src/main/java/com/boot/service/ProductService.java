@@ -13,6 +13,8 @@ public interface ProductService {
     //查询所有商品
     List<Product> selectAllProduct();
 
+    List<Product> selectmxdp();
 
+    List<Product> selectwntj();
 
 }

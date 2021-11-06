@@ -54,11 +54,11 @@
 }
 .next_prev .next {
     left: 0;
-    background: url("../../../resource/img/icon/icon-slides.png") 0px -7px no-repeat;
+    background: url("/static/img/icon/icon-slides.png") 0px -7px no-repeat;
 }
 .next_prev  .prev{
     right: 0;
-    background: url("../../../resource/img/icon/icon-slides.png") -45px -5px no-repeat;
+    background: url("/static/img/icon/icon-slides.png") -45px -5px no-repeat;
 }
 .banner:hover .next_prev span {
     opacity: 0.7;

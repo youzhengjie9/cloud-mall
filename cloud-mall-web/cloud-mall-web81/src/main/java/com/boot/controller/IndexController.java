@@ -31,6 +31,12 @@ public class IndexController {
         return "client/view/home";
     }
 
+    @RequestMapping(path = "/cart")
+    public String cart()
+    {
+        return "client/view/cart";
+    }
+
     @RequestMapping(path = "/view/log")
     public String log()
     {

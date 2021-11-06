@@ -26,4 +26,14 @@ public class ProductServiceImpl implements ProductService {
         return productsMapper.selectAllProduct();
     }
 
+    @Override
+    public List<Product> selectmxdp() {
+        return productsMapper.selectmxdp();
+    }
+
+    @Override
+    public List<Product> selectwntj() {
+        return productsMapper.selectwntj();
+    }
+
 }

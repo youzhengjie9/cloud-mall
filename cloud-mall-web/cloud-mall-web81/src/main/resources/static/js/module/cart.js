@@ -8,7 +8,7 @@ angular.module('cart', ['ui.router','cartMd'])
             $stateProvider
                 .state("cart", {
                     url: '/cart',
-                    templateUrl: 'view/cart.html',
+                    templateUrl: '/web/cart',
                     controller:function($scope,cartService,$rootScope){
                         //调用服务获取我的购物车对象
                         if($rootScope.user!=null){

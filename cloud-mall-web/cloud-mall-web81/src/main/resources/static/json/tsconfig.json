@@ -1,10 +1,10 @@
 {
   "focusImg": [
-    {"src": "/static/resource/img/1.jpg", "productId": 12},
-    {"src": "/static/resource/img/2.jpg", "productId": 1},
-    {"src": "/static/resource/img/3.jpg", "productId": 5},
-    {"src": "/static/resource/img/4.jpg", "productId": 2},
-    {"src": "/static/resource/img/5.jpg", "productId": 10}
+    {"src": "/static/img/1.jpg", "productId": 12},
+    {"src": "/static/img/2.jpg", "productId": 1},
+    {"src": "/static/img/3.jpg", "productId": 5},
+    {"src": "/static/img/4.jpg", "productId": 2},
+    {"src": "/static/img/5.jpg", "productId": 10}
   ],
   "mxdp": [
     {"imgName": 1, "productId": 1},

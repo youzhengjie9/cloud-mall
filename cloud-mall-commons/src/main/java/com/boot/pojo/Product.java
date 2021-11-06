@@ -17,17 +17,21 @@ public class Product implements Serializable {
     private String productImg; //商品图片
     private int productNumber; //商品还剩的数量
     private long classifyId; //商品所属分类id
+    private int mxdp; //是否是明星单品
+    private int wntj; //是否推荐
 
     public Product() {
     }
 
-    public Product(long productId, String productName, double productPrice, String productImg, int productNumber, long classifyId) {
+    public Product(long productId, String productName, double productPrice, String productImg, int productNumber, long classifyId, int mxdp, int wntj) {
         this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productImg = productImg;
         this.productNumber = productNumber;
         this.classifyId = classifyId;
+        this.mxdp = mxdp;
+        this.wntj = wntj;
     }
 
     public long getProductId() {
@@ -78,6 +82,22 @@ public class Product implements Serializable {
         this.classifyId = classifyId;
     }
 
+    public int getMxdp() {
+        return mxdp;
+    }
+
+    public void setMxdp(int mxdp) {
+        this.mxdp = mxdp;
+    }
+
+    public int getWntj() {
+        return wntj;
+    }
+
+    public void setWntj(int wntj) {
+        this.wntj = wntj;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -87,6 +107,8 @@ public class Product implements Serializable {
                 ", productImg='" + productImg + '\'' +
                 ", productNumber=" + productNumber +
                 ", classifyId=" + classifyId +
+                ", mxdp=" + mxdp +
+                ", wntj=" + wntj +
                 '}';
     }
 }

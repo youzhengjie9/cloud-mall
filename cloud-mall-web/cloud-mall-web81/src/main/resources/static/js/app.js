@@ -45,17 +45,21 @@ xmStoreApp
         httpService.get('/static/json/tsconfig.json').then(function (data) {
             $rootScope.imgItems = data.focusImg;
         });
+
         //调用服务获取分类表的数据
-        httpService.get('/static/json/fenlei.json').then(function (data) {
-            $rootScope.ulItems = data.fenlei;
+        httpService.get('/Classify/selectAllClassify').then(function (data) {
+            $rootScope.ulItems = data.classify;
         });
         //调用服务获取产品表的数据
-        httpService.get('/static/json/products.json').then(function (data) {
+        httpService.get('/product/selectAllProduct').then(function (data) {
             $rootScope.ulItemsContent = data.products;
         });
-        //调用服务获取主页明星单品,为您推荐需要的数据
-        httpService.get('/static/json/tsconfig.json').then(function (data) {
+        //调用服务获取主页明星单品
+        httpService.get('/product/selectmxdp').then(function (data) {
             $rootScope.mxdp = data.mxdp;
+        });
+        //为你推荐
+        httpService.get('/product/selectwntj').then(function (data) {
             $rootScope.wntj = data.wntj;
         });
         //调用服务获取搜索页面过滤选择项

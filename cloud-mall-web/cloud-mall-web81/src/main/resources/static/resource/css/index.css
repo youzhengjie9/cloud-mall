@@ -24,7 +24,8 @@
 .error-404{
     width: 100%;
     min-height: 650px;
-    background: url("../../resource/img/404.jpg") 85% 0 no-repeat;
+    /*background: url("../../resource/img/404.jpg") 85% 0 no-repeat;*/
+    background: url("/static/img/404.jpg") 85% 0 no-repeat;
     position: relative;
 }
 .error-content{
