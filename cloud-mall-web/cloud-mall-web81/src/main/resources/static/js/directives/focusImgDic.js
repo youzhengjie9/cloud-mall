@@ -12,9 +12,9 @@ angular.module("focusImgMd", [])
              },*/
             templateUrl: function (element, attrs) {
                 if (attrs.template == "multiple") {
-                    return '/static/js/directives/template/focusImgMultTpl.html'
+                    return '/web/view/direct/focusImgMultTpl'
                 } else {
-                    return '/static/js/directives/template/focusImgTpl.html'
+                    return '/web/view/direct/focusImgTpl'
                 }
             },
             scope: {imgItems: '=', title: "@?"},

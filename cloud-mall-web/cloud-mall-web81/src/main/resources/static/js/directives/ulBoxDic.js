@@ -6,7 +6,7 @@ angular.module("ulBoxMd", ["filterMd"])
         var directiveDefinitionObject = {
             restrict:"AE",
             replace:true,
-            templateUrl:"js/directives/template/ulBoxTpl.html",
+            templateUrl:"/web/view/direct/ulBoxTpl",
             scope:{
                 ulItems:'=',
                 childrenContent:'=',
@@ -27,7 +27,7 @@ angular.module("ulBoxMd", ["filterMd"])
         var directiveDefinitionObject = {
             restrict:"AE",
             replace:true,
-            templateUrl:"js/directives/template/ulBoxContentTplMult.html",
+            templateUrl:"/web/view/direct/ulBoxContentTplMult",
             require: '^?',
             scope:{
                 parentItem:'=',

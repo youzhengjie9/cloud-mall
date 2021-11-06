@@ -31,7 +31,16 @@ public class IndexController {
         return "client/view/home";
     }
 
-
+    @RequestMapping(path = "/view/log")
+    public String log()
+    {
+        return "client/view/common/log";
+    }
+    @RequestMapping(path = "/view/footer")
+    public String footer()
+    {
+        return "client/view/common/footer";
+    }
     @RequestMapping(path = "/view/homeMain")
     public String homeMain()
     {
@@ -64,6 +73,41 @@ public class IndexController {
     {
         return "client/view/buyNow";
     }
+
+    @RequestMapping(path = "/view/direct/focusImgMultTpl")
+    public String focusImgMultTpl()
+    {
+        return "directives/template/focusImgMultTpl";
+    }
+    @RequestMapping(path = "/view/direct/focusImgTpl")
+    public String focusImgTpl()
+    {
+        return "directives/template/focusImgTpl";
+    }
+
+    @RequestMapping(path = "/view/direct/ulBoxContentTpl")
+    public String ulBoxContentTpl()
+    {
+        return "directives/template/ulBoxContentTpl";
+    }
+    @RequestMapping(path = "/view/direct/ulBoxContentTplMult")
+    public String ulBoxContentTplMult()
+    {
+        return "directives/template/ulBoxContentTplMult";
+    }
+    @RequestMapping(path = "/view/direct/ulBoxTpl")
+    public String ulBoxTpl()
+    {
+        return "directives/template/ulBoxTpl";
+    }
+    @RequestMapping(path = "/view/direct/searchDic")
+    public String searchDic()
+    {
+        return "directives/template/searchDic";
+    }
+
+
+
 
 
 }

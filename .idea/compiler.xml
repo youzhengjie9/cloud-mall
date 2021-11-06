@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="cloud-mall-web81" />
+        <module name="cloud-mall-product2901" />
         <module name="cloud-mall-commons" />
         <module name="cloud-mall-doc" />
       </profile>

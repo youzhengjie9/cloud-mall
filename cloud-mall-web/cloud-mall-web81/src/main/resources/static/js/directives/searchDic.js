@@ -6,7 +6,7 @@ angular.module("search", ['httpMd'])
         var directiveDefinitionObject = {
             restrict: 'AE',
             replace:true,
-            templateUrl:"js/directives/template/searchDic.html",
+            templateUrl:"/web/view/direct/searchDic",
             scope:{},
             priority: 0,
             compile: function compile(tElement, tAttrs, transclude) {

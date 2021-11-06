@@ -11,6 +11,7 @@
         <module>cloud-mall-doc</module>
         <module>cloud-mall-web</module>
         <module>cloud-mall-commons</module>
+        <module>cloud-mall-product</module>
     </modules>
     <!--    打包方式为pom-->
     <packaging>pom</packaging>
