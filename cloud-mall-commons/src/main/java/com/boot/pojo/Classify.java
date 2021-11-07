@@ -11,25 +11,19 @@ import java.io.Serializable;
 @ApiModel("分类实体类")
 public class Classify implements Serializable {
 
-    private long classifyId;
+    private long id;
     private String text;
     private int isNav;
 
     public Classify() {
     }
 
-    public Classify(long classifyId, String text, int isNav) {
-        this.classifyId = classifyId;
-        this.text = text;
-        this.isNav = isNav;
+    public long getId() {
+        return id;
     }
 
-    public long getClassifyId() {
-        return classifyId;
-    }
-
-    public void setClassifyId(long classifyId) {
-        this.classifyId = classifyId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getText() {
@@ -51,7 +45,7 @@ public class Classify implements Serializable {
     @Override
     public String toString() {
         return "Classify{" +
-                "classifyId=" + classifyId +
+                "id=" + id +
                 ", text='" + text + '\'' +
                 ", isNav=" + isNav +
                 '}';

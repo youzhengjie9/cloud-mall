@@ -24,18 +24,4 @@ public class ProductController {
         return productService.selectAllProduct();
     }
 
-    @ResponseBody
-    @GetMapping(path = "/selectmxdp")
-    public List<Product> selectmxdp()
-    {
-        return productService.selectmxdp();
-    }
-
-    @ResponseBody
-    @GetMapping(path = "/selectwntj")
-    public List<Product> selectwntj()
-    {
-        return productService.selectwntj();
-    }
-
 }

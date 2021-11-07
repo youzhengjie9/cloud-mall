@@ -30,7 +30,7 @@
     {"typeId": 3, "name": "品牌"}
   ],
   "filterContents": [
-    {"Id": 1, "text": "线材", "typeId": 1},
+    {"Id": 1, "text": "小米手机", "typeId": 1},
     {"Id": 2, "text": "保护套", "typeId": 1},
     {"Id": 3, "text": "贴膜", "typeId": 1},
     {"Id": 4, "text": "小米手机5", "typeId": 2},

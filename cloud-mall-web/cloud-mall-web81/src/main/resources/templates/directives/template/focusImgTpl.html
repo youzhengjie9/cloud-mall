@@ -2,6 +2,7 @@
     <ul class="banner_imgs" id="focusImg">
         <li ng-repeat="item in imgItems" id="focusLi">
             <a ui-sref="home.products.detail({productId:item.productId})"><img ng-src="{{item.src}}" alt=""></a>
+<!--            <a target="_blank" ui-sref="buyNow({productId:item.productId})"><img ng-src="{{item.src}}" alt=""></a>-->
         </li>
     </ul>
     <div class="banner_number">

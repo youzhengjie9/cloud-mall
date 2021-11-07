@@ -21,12 +21,6 @@ public interface ProductFallbackFeign {
     @GetMapping(path = "/feign/product/selectAllProduct")
     public List<Product> selectAllProduct();
 
-    @ResponseBody
-    @GetMapping(path = "/feign/product/selectmxdp")
-    public List<Product> selectmxdp();
 
-    @ResponseBody
-    @GetMapping(path = "/feign/product/selectwntj")
-    public List<Product> selectwntj();
 
 }

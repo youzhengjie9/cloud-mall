@@ -5,7 +5,8 @@
         <ul class="children_list clearfix">
             <!-- <li ng-repeat="childrenItem in childrenItems |filt| myFilter:parentItem.idr: {fl_id: item.id}">-->
             <li ng-class="{'first':$first}" ng-repeat="childrenItem in childrenContent | myFilter:parentItem.id">
-                <a ui-sref="home.products({productId:childrenItem.id})" ng-click="closeContent()">
+<!--                <a ui-sref="home.products({productId:childrenItem.id})" ng-click="closeContent()">-->
+                <a target="_blank" ui-sref="home.products({productId:childrenItem.id})" ng-click="closeContent()">
                     <img ng-src="/static/img/nav/{{childrenItem.img}}.jpg" alt="" />
                     <p>{{childrenItem.name}}</p>
                     <p ng-if="childrenDivClass=='children_horizontal'" class="price">{{childrenItem.price}}元起</p>

@@ -11,11 +11,11 @@
     </select>
 
     <select id="selectmxdp" resultType="com.boot.pojo.Product">
-        select productId,productImg from product where mxdp=1
+        select productId,img from product where mxdp=1
     </select>
 
     <select id="selectwntj" resultType="com.boot.pojo.Product">
-        select productId,productImg from product where wntj=1
+        select productId,img from product where wntj=1
     </select>
 
 </mapper>

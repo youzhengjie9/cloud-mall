@@ -29,23 +29,4 @@ public class ProductController {
     }
 
 
-    @ResponseBody
-    @GetMapping(path = "/selectmxdp",produces = "application/json; charset=utf-8")
-    public String selectmxdp()
-    {
-        List<Product> selectmxdp = productFallbackFeign.selectmxdp();
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("mxdp",selectmxdp);
-        return jsonObject.toJSONString();
-    }
-
-    @ResponseBody
-    @GetMapping(path = "/selectwntj",produces = "application/json; charset=utf-8")
-    public String selectwntj(){
-        List<Product> selectwntj = productFallbackFeign.selectwntj();
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("wntj",selectwntj);
-        return jsonObject.toJSONString();
-    }
-
 }

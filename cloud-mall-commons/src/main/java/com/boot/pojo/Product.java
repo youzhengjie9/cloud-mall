@@ -12,26 +12,13 @@ import java.io.Serializable;
 public class Product implements Serializable {
 
     private long productId; //商品id
-    private String productName; //商品名称
-    private double productPrice; //商品价格
-    private String productImg; //商品图片
-    private int productNumber; //商品还剩的数量
-    private long classifyId; //商品所属分类id
-    private int mxdp; //是否是明星单品
-    private int wntj; //是否推荐
+    private String name; //商品名称
+    private double price; //商品价格
+    private String img; //商品图片
+    private int number; //商品还剩的数量
+    private long fl_id; //商品所属分类id=classifyid
 
     public Product() {
-    }
-
-    public Product(long productId, String productName, double productPrice, String productImg, int productNumber, long classifyId, int mxdp, int wntj) {
-        this.productId = productId;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productImg = productImg;
-        this.productNumber = productNumber;
-        this.classifyId = classifyId;
-        this.mxdp = mxdp;
-        this.wntj = wntj;
     }
 
     public long getProductId() {
@@ -42,73 +29,55 @@ public class Product implements Serializable {
         this.productId = productId;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public double getProductPrice() {
-        return productPrice;
+    public double getPrice() {
+        return price;
     }
 
-    public void setProductPrice(double productPrice) {
-        this.productPrice = productPrice;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public String getProductImg() {
-        return productImg;
+    public String getImg() {
+        return img;
     }
 
-    public void setProductImg(String productImg) {
-        this.productImg = productImg;
+    public void setImg(String img) {
+        this.img = img;
     }
 
-    public int getProductNumber() {
-        return productNumber;
+    public int getNumber() {
+        return number;
     }
 
-    public void setProductNumber(int productNumber) {
-        this.productNumber = productNumber;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
-    public long getClassifyId() {
-        return classifyId;
+    public long getFl_id() {
+        return fl_id;
     }
 
-    public void setClassifyId(long classifyId) {
-        this.classifyId = classifyId;
-    }
-
-    public int getMxdp() {
-        return mxdp;
-    }
-
-    public void setMxdp(int mxdp) {
-        this.mxdp = mxdp;
-    }
-
-    public int getWntj() {
-        return wntj;
-    }
-
-    public void setWntj(int wntj) {
-        this.wntj = wntj;
+    public void setFl_id(long fl_id) {
+        this.fl_id = fl_id;
     }
 
     @Override
     public String toString() {
         return "Product{" +
                 "productId=" + productId +
-                ", productName='" + productName + '\'' +
-                ", productPrice=" + productPrice +
-                ", productImg='" + productImg + '\'' +
-                ", productNumber=" + productNumber +
-                ", classifyId=" + classifyId +
-                ", mxdp=" + mxdp +
-                ", wntj=" + wntj +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", img='" + img + '\'' +
+                ", number=" + number +
+                ", fl_id=" + fl_id +
                 '}';
     }
 }

@@ -57,7 +57,11 @@ public class IndexController {
     {
         return "client/view/page/home.userLogin";
     }
-
+    @RequestMapping(path = "/view/homeProduct")
+    public String homeProduct()
+    {
+        return "client/view/page/home.product";
+    }
     @RequestMapping(path = "/view/homeProductDetail")
     public String homeProductDetail()
     {

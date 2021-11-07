@@ -12,6 +12,7 @@
         <module>cloud-mall-web</module>
         <module>cloud-mall-commons</module>
         <module>cloud-mall-product</module>
+        <module>cloud-mall-system</module>
     </modules>
     <!--    打包方式为pom-->
     <packaging>pom</packaging>

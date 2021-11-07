@@ -21,15 +21,4 @@ public class ProductFallbackFeignImpl implements ProductFallbackFeign {
         return null;
     }
 
-    @Override
-    public List<Product> selectmxdp() {
-        log.error("查询明星单品失败");
-        return null;
-    }
-
-    @Override
-    public List<Product> selectwntj() {
-        log.error("查询为你推荐失败");
-        return null;
-    }
 }
