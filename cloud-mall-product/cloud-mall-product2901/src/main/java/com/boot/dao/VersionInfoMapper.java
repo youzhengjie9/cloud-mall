@@ -14,6 +14,8 @@ public interface VersionInfoMapper {
     //根据商品id查询对应的版本信息
     List<VersionInfo> selectVersionInfoByPid(@Param("pid")long pid);
 
+    //查询所有版本信息
+    List<VersionInfo> selectAllVersionInfo();
 
 
 

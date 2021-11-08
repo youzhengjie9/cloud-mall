@@ -20,4 +20,9 @@ public class VersionInfoServiceImpl implements VersionInfoService {
     public List<VersionInfo> selectVersionInfoByPid(long pid) {
         return versionInfoMapper.selectVersionInfoByPid(pid);
     }
+
+    @Override
+    public List<VersionInfo> selectAllVersionInfo() {
+        return versionInfoMapper.selectAllVersionInfo();
+    }
 }

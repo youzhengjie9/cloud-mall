@@ -17,4 +17,10 @@ public class VersionInfoFallbackFeignImpl implements VersionInfoFallbackFeign {
         log.error("查询商品编号为:"+pid+"的版本信息失败");
         return null;
     }
+
+    @Override
+    public List<VersionInfo> selectAllVersionInfo() {
+        log.error("selectAllVersionInfo error");
+        return null;
+    }
 }

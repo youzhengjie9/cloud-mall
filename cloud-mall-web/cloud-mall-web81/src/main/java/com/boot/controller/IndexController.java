@@ -1,11 +1,17 @@
 package com.boot.controller;
 
+import com.boot.feign.product.fallback.ProductFallbackFeign;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  * @author 游政杰
@@ -18,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping(path = "/web")
 public class IndexController {
 
+    @Autowired
+    private ProductFallbackFeign productFallbackFeign;
 
     @RequestMapping(path = "/")
     public String index()
@@ -63,8 +71,24 @@ public class IndexController {
         return "client/view/page/home.product";
     }
     @RequestMapping(path = "/view/homeProductDetail")
-    public String homeProductDetail()
+    public String homeProductDetail(Model model, HttpServletRequest request)
     {
+        try{
+            Cookie[] cookies = request.getCookies();
+            // 找到cookie名为cur_introduce_pid
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals("cur_introduce_pid"))
+                {
+                    //这里可能会报错,怕用户修改此cookie导致Long.valueof报错
+                    Long v = Long.valueOf(cookie.getValue());
+                    String[] strings = productFallbackFeign.selectIntroduceByPid(v);
+                    System.out.println(Arrays.toString(strings));
+                    model.addAttribute("imgs",strings);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         return "client/view/page/home.product.detail";
     }
     @RequestMapping(path = "/view/homeSearch")
@@ -117,6 +141,20 @@ public class IndexController {
     }
 
 
+    @GetMapping(path = "/view/sendCookie")
+    @ResponseBody
+    public String sendCookie(@RequestParam(value = "pid",required = false) long pid
+                            ,HttpServletResponse response)
+    {
+        //发送cookie
+        try{
+            Cookie cookie = new Cookie("cur_introduce_pid",pid+"");
+            response.addCookie(cookie);
+            return "send success";
+        }catch (Exception e){
+            return "send fail";
+        }
+    }
 
 
 

@@ -2,10 +2,14 @@ package com.boot.dao;
 
 import com.boot.pojo.Product;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author 游政杰
+ */
 @Mapper
 @Repository
 public interface ProductMapper {
@@ -17,6 +21,8 @@ public interface ProductMapper {
 
     List<Product> selectwntj();
 
+    //查询指定商品的介绍图片
+    String selectIntroduceByPid(@Param("productId")long productId);
 
 
 

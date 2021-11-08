@@ -12,20 +12,12 @@ import java.io.Serializable;
 public class VersionInfo implements Serializable {
 
     private long versionId;
-    private String versionName;
-    private long productId;
-    private double versionPrice;
-    private String versionDesc;
+    private String name;
+    private long p_id;
+    private double price;
+    private String description;
 
     public VersionInfo() {
-    }
-
-    public VersionInfo(long versionId, String versionName, long productId, double versionPrice, String versionDesc) {
-        this.versionId = versionId;
-        this.versionName = versionName;
-        this.productId = productId;
-        this.versionPrice = versionPrice;
-        this.versionDesc = versionDesc;
     }
 
     public long getVersionId() {
@@ -36,46 +28,46 @@ public class VersionInfo implements Serializable {
         this.versionId = versionId;
     }
 
-    public String getVersionName() {
-        return versionName;
+    public String getName() {
+        return name;
     }
 
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public long getProductId() {
-        return productId;
+    public long getP_id() {
+        return p_id;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
+    public void setP_id(long p_id) {
+        this.p_id = p_id;
     }
 
-    public double getVersionPrice() {
-        return versionPrice;
+    public double getPrice() {
+        return price;
     }
 
-    public void setVersionPrice(double versionPrice) {
-        this.versionPrice = versionPrice;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public String getVersionDesc() {
-        return versionDesc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setVersionDesc(String versionDesc) {
-        this.versionDesc = versionDesc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
         return "VersionInfo{" +
                 "versionId=" + versionId +
-                ", versionName='" + versionName + '\'' +
-                ", productId=" + productId +
-                ", versionPrice=" + versionPrice +
-                ", versionDesc='" + versionDesc + '\'' +
+                ", name='" + name + '\'' +
+                ", p_id=" + p_id +
+                ", price=" + price +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

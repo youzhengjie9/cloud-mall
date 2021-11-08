@@ -26,5 +26,12 @@ public class VersionInfoController {
         return versionInfoService.selectVersionInfoByPid(pid);
     }
 
+    @ResponseBody
+    @GetMapping(path = "/selectAllVersionInfo")
+    public List<VersionInfo> selectAllVersionInfo()
+    {
+        return versionInfoService.selectAllVersionInfo();
+    }
+
 
 }

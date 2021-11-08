@@ -18,7 +18,7 @@ angular.module("search", ['httpMd'])
                     scope.changeSearchVal=function(){
                         $timeout(function(){
                             httpService.get('/product/selectAllProduct').then(function (data) {
-                                scope.searchResultList = data.product;
+                                scope.searchResultList = data.products;
                             });
                         },300);
                     };

@@ -10,7 +10,9 @@
         select * from versioninfo where productId=#{pid}
     </select>
 
-
+    <select id="selectAllVersionInfo" resultType="com.boot.pojo.VersionInfo">
+        select * from versioninfo
+    </select>
 
 
 </mapper>

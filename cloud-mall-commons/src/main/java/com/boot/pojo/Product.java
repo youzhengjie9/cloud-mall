@@ -17,6 +17,7 @@ public class Product implements Serializable {
     private String img; //商品图片
     private int number; //商品还剩的数量
     private long fl_id; //商品所属分类id=classifyid
+    private String introduce_img;//商品介绍图片地址用逗号分隔
 
     public Product() {
     }
@@ -69,6 +70,14 @@ public class Product implements Serializable {
         this.fl_id = fl_id;
     }
 
+    public String getIntroduce_img() {
+        return introduce_img;
+    }
+
+    public void setIntroduce_img(String introduce_img) {
+        this.introduce_img = introduce_img;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -78,6 +87,7 @@ public class Product implements Serializable {
                 ", img='" + img + '\'' +
                 ", number=" + number +
                 ", fl_id=" + fl_id +
+                ", introduce_img='" + introduce_img + '\'' +
                 '}';
     }
 }

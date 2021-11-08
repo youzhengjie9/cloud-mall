@@ -14,7 +14,7 @@ angular.module('buyNow', ['ui.router','cartMd'])
                     //},
                     resolve: {
                         productsResolve: function (httpService) {
-                            return httpService.get('/static/json/products.json');
+                            return httpService.get('/product/selectAllProduct');
                         }
                     },
                     views: {

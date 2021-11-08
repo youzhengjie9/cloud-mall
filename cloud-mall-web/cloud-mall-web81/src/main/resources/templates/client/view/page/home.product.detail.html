@@ -1,6 +1,24 @@
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div ng-if="product.name!='小米手机5'">
-    <div  ng-include="'view/404.html'"></div>
+    <div ng-include="'view/404.html'"></div>
+
+
+    <div align="center" th:each="img:${imgs}">
+
+        <img th:src="${img}"/>
+
+    </div>
+
+
+
+<!--    <div align="center">-->
+<!--        <img src="/static/img/introduce/2c934a1d8fc57091.jpg">-->
+<!--    </div>-->
+<!--    <br/>-->
+<!--    <div align="center">-->
+<!--    <img src="/static/img/introduce/04e6887165a1d0b7.jpg">-->
+<!--    </div>-->
+
 </div>
 
 <div ng-if="product.name=='小米手机5'" class="product_bd" ng-switch="product.detail.name">
@@ -72,3 +90,6 @@
     </div>
 
 </div>
+
+
+</html>

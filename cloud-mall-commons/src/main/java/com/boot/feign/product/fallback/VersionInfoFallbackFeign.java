@@ -21,4 +21,7 @@ public interface VersionInfoFallbackFeign {
     @GetMapping(path = "/feign/versioninfo/selectVersionInfoByPid/{pid}")
     public List<VersionInfo> selectVersionInfoByPid(@PathVariable("pid") long pid);
 
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectAllVersionInfo")
+    public List<VersionInfo> selectAllVersionInfo();
 }

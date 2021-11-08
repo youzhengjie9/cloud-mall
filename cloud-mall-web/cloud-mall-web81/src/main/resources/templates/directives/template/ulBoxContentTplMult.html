@@ -3,6 +3,8 @@
 
     <div  ng-if="ContentArray.length" ng-switch="childrenDivClass==='children_horizontal'"
          class="{{childrenDivClass}}" ng-class="setClass()" ng-show="flag">
+
+<!--        左侧伸缩的导航栏 ，原理是通过product表的fl_id去分类的-->
         <ul ng-switch-when="false" ng-repeat="pageN in pageList"  class="children_list clearfix">
             <!-- <li ng-repeat="childrenItem in childrenItems |filt| myFilter:parentItem.idr: {fl_id: item.id}">-->
             <li  ng-repeat="childrenItem in ContentArray | myFilter2:pageN">
@@ -13,7 +15,8 @@
                 </a>
             </li>
         </ul>
-        
+
+<!--        上方伸缩的导航栏-->
         <ul ng-switch-when="true" class="children_list clearfix">
             <!-- <li ng-repeat="childrenItem in childrenItems |filt| myFilter:parentItem.idr: {fl_id: item.id}">-->
             <li ng-class="{'first':$first}" ng-repeat="childrenItem in childrenContent | myFilter:parentItem.id | limitTo:6">

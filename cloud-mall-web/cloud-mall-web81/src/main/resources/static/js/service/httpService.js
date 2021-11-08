@@ -17,12 +17,13 @@ angular.module("httpMd",[])
                 return defer.promise; //返回承诺，返回获取数据的API
             }
         }
-        var urlPath = "/static/json/products.json"
+        var urlPath = "/product/selectAllProduct"
         var factory = {
             data:$http(	{
                 method:'get',
-                url:urlPath,
-                headers:{ 'Content-Type': 'application/x-www-form-urlencoded; charset=gbk'}}
+                url:urlPath
+                // headers:{ 'Content-Type': 'application/x-www-form-urlencoded; charset=gbk'}
+            }
             ).success(function(data,state,config,headers){
                 return data;
             })

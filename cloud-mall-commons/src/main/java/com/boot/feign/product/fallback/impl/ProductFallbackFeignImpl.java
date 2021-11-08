@@ -21,4 +21,10 @@ public class ProductFallbackFeignImpl implements ProductFallbackFeign {
         return null;
     }
 
+    @Override
+    public String[] selectIntroduceByPid(long pid) {
+        log.error("selectIntroduceByPid error");
+        return null;
+    }
+
 }

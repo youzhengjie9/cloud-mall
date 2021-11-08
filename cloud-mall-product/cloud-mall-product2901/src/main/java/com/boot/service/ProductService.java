@@ -17,4 +17,6 @@ public interface ProductService {
 
     List<Product> selectwntj();
 
+    //查询指定商品的介绍图片
+    String selectIntroduceByPid(long productId);
 }

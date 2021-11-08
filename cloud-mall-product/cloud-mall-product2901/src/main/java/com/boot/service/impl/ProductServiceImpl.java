@@ -36,4 +36,9 @@ public class ProductServiceImpl implements ProductService {
         return productsMapper.selectwntj();
     }
 
+    @Override
+    public String selectIntroduceByPid(long productId) {
+        return productsMapper.selectIntroduceByPid(productId);
+    }
+
 }

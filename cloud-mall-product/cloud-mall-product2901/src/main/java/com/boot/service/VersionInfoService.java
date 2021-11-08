@@ -10,5 +10,7 @@ public interface VersionInfoService {
     //根据商品id查询对应的版本信息
     List<VersionInfo> selectVersionInfoByPid(long pid);
 
+    //查询所有版本信息
+    List<VersionInfo> selectAllVersionInfo();
 
 }

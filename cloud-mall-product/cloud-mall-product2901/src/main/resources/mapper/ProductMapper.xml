@@ -18,4 +18,9 @@
         select productId,img from product where wntj=1
     </select>
 
+    <select id="selectIntroduceByPid" resultType="java.lang.String">
+        select introduce_img from product where productId=#{productId}
+    </select>
+
+
 </mapper>

@@ -46,14 +46,19 @@ xmStoreApp
             $rootScope.imgItems = data.focusImg;
         });
 
-        //调用服务获取分类表的数据
+        //调用服务获取分类表的数据 =====这里会报错？？暂时没发现原因
+        // httpService.get('/Classify/selectAllClassify').then(function (data) {
+        //     $rootScope.ulItems = data.fenlei;
+        // });
         httpService.get('/static/json/fenlei.json').then(function (data) {
             $rootScope.ulItems = data.fenlei;
         });
+
         //调用服务获取产品表的数据
-        httpService.get('/static/json/products.json').then(function (data) {
+        httpService.get('/product/selectAllProduct').then(function (data) {
             $rootScope.ulItemsContent = data.products;
         });
+
         //调用服务获取主页明星单品
         // httpService.get('/static/json/tsconfig.json').then(function (data) {
         //     $rootScope.mxdp = data.mxdp;
@@ -65,7 +70,6 @@ xmStoreApp
             $rootScope.wntj = data.wntj;
         });
 
-
         //调用服务获取搜索页面过滤选择项
         httpService.get('/static/json/tsconfig.json').then(function (data) {
             $rootScope.filterTypes = data.filterTypes;
@@ -73,7 +77,7 @@ xmStoreApp
         });
 
         //根据分类表的数据构造一个合设的分类数组
-        httpService.get('/static/json/fenlei.json').then(function (data) {
+        httpService.get('/Classify/selectAllClassify').then(function (data) {
             var arr = [];
             var arr2 = [];
             for (var i = 0; i < data.fenleiheshe.length; i++) {
@@ -102,20 +106,8 @@ xmStoreApp
 
         //判定状态改变事件
         $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-            // if (toState.name=='cart'&& !toState.data.loginCheck) {
-            //    event.preventDefault();//如果去掉此行则不会跳转到login页面 :最佳解决方案,使用event.preventDefault()可以阻止状态发生改变.
-            //    $rootScope.$state.go("login");
-            //}
         });
         $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
-            /*  angular.forEach($state.get(),function(state){
-             console.log(state.name);
-             })*/
-            /*if (toState.name=='cart'&& !toState.data.loginCheck) {
-             console.error('not login!');
-             //可以跳转到login页面，到点击浏览器返回时又回到了cart状态，然后又进入login页面(导致无法返回)
-             $rootScope.$state.go("login");
-             }*/
             $rootScope.previousState_name = fromState.name;
             $rootScope.previousState_params = fromParams;
         });

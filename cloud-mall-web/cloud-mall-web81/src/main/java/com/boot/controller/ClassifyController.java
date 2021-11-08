@@ -3,7 +3,9 @@ package com.boot.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.boot.feign.product.fallback.ClassifyFallbackFeign;
+import com.boot.feign.system.fallback.ClassifyBarFallbackFeign;
 import com.boot.pojo.Classify;
+import com.boot.pojo.ClassifyBar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ public class ClassifyController {
     @Autowired
     private ClassifyFallbackFeign classifyFallbackFeign;
 
+    @Autowired
+    private ClassifyBarFallbackFeign classifyBarFallbackFeign;
 
     //produces = "application/json; charset=utf-8"，解决返回JSON乱码
     @ResponseBody
@@ -29,7 +33,10 @@ public class ClassifyController {
     {
         List<Classify> classifies = classifyFallbackFeign.selectAllClassify();
         JSONObject jsonObject=new JSONObject();
-        jsonObject.put("classify",classifies);
+        jsonObject.put("fenlei",classifies);
+        List<ClassifyBar> classifyBars = classifyBarFallbackFeign.selectAllClassifyBar();
+        jsonObject.put("fenleiheshe",classifyBars);
+
         return jsonObject.toJSONString();
     }
 

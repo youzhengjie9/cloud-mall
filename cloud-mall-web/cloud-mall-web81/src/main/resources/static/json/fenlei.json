@@ -1,19 +1,19 @@
 {
    "fenlei":
    [
-      {"id":"1","text":"小米手机","isNav":1},
+      {"id":"1","text":"手机","isNav":1},
       {"id":"2","text":"红米","isNav":1},
       {"id":"3","text":"平板","isNav":1},
       {"id":"4","text":"电视","isNav":1},
-      {"id":"5","text":"盒子","isNav":1},
-      {"id":"6","text":"路由器","isNav":1},
-      {"id":"7","text":"智能硬件","isNav":1},
+      {"id":"5","text":"盒子","isNav":0},
+      {"id":"6","text":"路由器","isNav":0},
+      {"id":"7","text":"智能硬件","isNav":0},
       {"id":"8","text":"电话卡","isNav":0},
       {"id":"9","text":"移动电源","isNav":0},
       {"id":"10","text":"插线板","isNav":0},
-      {"id":"11","text":"耳机","isNav":0},
+      {"id":"11","text":"耳机","isNav":1},
       {"id":"12","text":"音箱","isNav":0},
-      {"id":"13","text":"电池","isNav":0},
+      {"id":"13","text":"电池","isNav":1},
       {"id":"14","text":"存储卡","isNav":0},
       {"id":"15","text":"保护套","isNav":0},
       {"id":"16","text":"后盖","isNav":0},
@@ -26,7 +26,7 @@
    ],
    "fenleiheshe":
    [
-      {"text":"小米手机 平板 电话卡"},
+      {"text":"手机 平板 电话卡"},
       {"text":"电视 盒子"},
       {"text":"路由器 智能硬件"},
       {"text":"移动电源 插线板"},
