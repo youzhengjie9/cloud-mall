@@ -2,6 +2,7 @@ package com.boot.controller;
 
 import com.boot.pojo.Brand;
 import com.boot.service.BrandService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(path = "/feign/brand")
+@Api("品牌服务api")
 public class BrandController {
 
     @Autowired

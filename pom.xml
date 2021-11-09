@@ -13,6 +13,9 @@
         <module>cloud-mall-commons</module>
         <module>cloud-mall-product</module>
         <module>cloud-mall-system</module>
+        <module>cloud-mall-search</module>
+        <module>cloud-mall-gateway</module>
+        <module>cloud-mall-monitor</module>
     </modules>
     <!--    打包方式为pom-->
     <packaging>pom</packaging>

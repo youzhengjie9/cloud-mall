@@ -4,7 +4,7 @@ angular.module('breadcrumbsMd', ["ui.router"])
         return {
             restrict: 'AE',
             replace: true,
-            template: '<ol class="breadcrumb">' +
+            template: '<ol class="breadcrumb" style="padding-left:9%">' +
             '<li ng-repeat="step in steps" ng-class="{active:$last}" ng-switch="$last">' +
             '<a ng-switch-when="false" ui-sref="{{step.link}}">{{step.label}}</a>' +
             '<span ng-switch-when="true">{{step.label}}</span>' +

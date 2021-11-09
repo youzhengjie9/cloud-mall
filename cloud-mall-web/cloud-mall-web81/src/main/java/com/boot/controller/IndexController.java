@@ -82,7 +82,6 @@ public class IndexController {
                     //这里可能会报错,怕用户修改此cookie导致Long.valueof报错
                     Long v = Long.valueOf(cookie.getValue());
                     String[] strings = productFallbackFeign.selectIntroduceByPid(v);
-                    System.out.println(Arrays.toString(strings));
                     model.addAttribute("imgs",strings);
                 }
             }

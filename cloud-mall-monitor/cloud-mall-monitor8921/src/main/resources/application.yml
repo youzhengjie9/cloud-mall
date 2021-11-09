@@ -1,0 +1,10 @@
+server:
+  port: 8921
+spring:
+  application:
+    name: cloud-mall-monitor
+  #为SpringBoot admin设置帐号密码
+  security:
+    user:
+      name: root
+      password: 18420163207

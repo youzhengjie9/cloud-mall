@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ElasticSearchConfig {
 
-
     @Bean
     public RestHighLevelClient restHighLevelClient() {
         HttpHost httpHost = new HttpHost("127.0.0.1", 9200, "http");

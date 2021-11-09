@@ -14,7 +14,7 @@ spring:
   boot:
     admin:
       client:
-        url:  http://localhost:8901   #这里配置admin server 的地址
+        url:  http://localhost:8921   #这里配置admin server 的地址
         username: root
         password: 18420163207
   redis:
