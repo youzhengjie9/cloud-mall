@@ -6,6 +6,7 @@ import com.boot.feign.product.fallback.ClassifyFallbackFeign;
 import com.boot.feign.system.fallback.ClassifyBarFallbackFeign;
 import com.boot.pojo.Classify;
 import com.boot.pojo.ClassifyBar;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(path = "/Classify")
+@Api("分类服务 web api")
 public class ClassifyController {
 
     @Autowired

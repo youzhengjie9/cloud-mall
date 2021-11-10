@@ -109,9 +109,18 @@ angular.module('home', ['ui.router'])
                     url:'/search/:searchKey',
                     templateUrl: '/web/view/homeSearch',
                     controller:function($scope,$stateParams,productsResolve,util){
-                        //TODO:搜索功能没有实现，暂时返回所有的产品
-                        //$scope.searchResultList=util.queryArrByField(productsResolve.products,$stateParams.searchKey,"name");
-                        $scope.searchResultList = productsResolve.products;
+                        // $scope.searchResultList=util.queryArrByField(productsResolve.products,$stateParams.searchKey,"name");
+                        $.ajax({
+                            url: "/search/SearchData",
+                            data: {
+                                "text": $stateParams.searchKey //$stateParams.searchKey是搜索关键字
+                            },
+                            type: "GET",
+                            success: function (data) {
+                                $scope.searchResultList=data.products; //获取搜索来的数据
+                            }
+                        });
+                        // $scope.searchResultList = productsResolve.products;
                     },
                     ncyBreadcrumb:{
                         label:"全部结果",

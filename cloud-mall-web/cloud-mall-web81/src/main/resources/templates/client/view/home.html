@@ -1,3 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 引入图标库-->
+<link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    #container {
+        width: 300px;
+        height: 42px;
+        margin: 0 auto;
+    }
+    div.search {padding: 30px 0;}
+
+    form {
+        position: relative;
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    input, button {
+        border: none;
+        outline: none;
+    }
+
+    input {
+        width: 100%;
+        height: 42px;
+        padding-left: 13px;
+    }
+
+    button {
+        height: 42px;
+        width: 42px;
+        cursor: pointer;
+        position: absolute;
+    }
+
+
+    /*搜索框6*/
+    .bar6 input {
+        border: 2px solid #c5464a;
+        border-radius: 5px;
+        background: transparent;
+        top: 0;
+        right: 0;
+    }
+    .bar6 button {
+        background: #c5464a;
+        border-radius: 0 5px 5px 0;
+        width: 60px;
+        top: 0;
+        right: 0;
+    }
+    .bar6 button:before {
+        content: "\f002";
+        font-family: FontAwesome;
+        font-size: 13px;
+        color: #F9F0DA;
+    }
+    .search input{
+        height: 42px;
+    }
+
+</style>
+
+
+
 <!--头部工具栏-->
 <div class="topbar">
     <div class="container">
@@ -27,7 +96,20 @@
             <ul-box ul-items="ulItems" ul-type="nav" children-content="ulItemsContent" children-div-class="children_horizontal"></ul-box>
         </div>
         <div class="site_head_search fr margin_25">
-            <xm-search></xm-search>
+
+
+<!--            搜索框-->
+            <div id="container">
+                <div class="search bar6">
+                    <form method="post" th:action="@{/search/toSearchPage}">
+                        <input type="text" placeholder="请输入您要搜索的内容..." name="text">
+                        <button type="submit"></button>
+                    </form>
+                </div>
+            </div>
+
+<!--            <xm-search></xm-search>-->
+
         </div>
     </div>
 </div>
@@ -37,3 +119,5 @@
 
 <!--footer-->
 <div ng-include="'/web/view/footer'"></div>
+
+</html>

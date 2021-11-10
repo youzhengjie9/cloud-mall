@@ -74,7 +74,7 @@ public class SearchController {
         }
     }
 
-    //根绝name进行查询
+    //根据name进行查询
     @ResponseBody
     @GetMapping(path = "/searchProductByName/{text}")
     public List<Product> searchProductByName(@PathVariable("text") String text) throws IOException {

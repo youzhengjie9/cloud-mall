@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1226">
+    <title>云商城</title>
+    <meta name="description" content="小米商城-直营小米公司旗下所有产品，囊括小米手机、红米手机、小米电视、小米笔记本、智能硬件、配件及小米生活周边，同时提供小米客户服务及售后支持。">
+    <meta name="keywords" content="小米,小米官网,小米手机,小米官网首页,小米商城">
+    <!-- 引入图标库-->
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--bootstrap-->
+    <link rel="stylesheet" th:href="@{/static/resource/css/lib/bootstrap.min.css}"/>
+    <!--css-->
+    <link rel="stylesheet" th:href="@{/static/resource/css/reset.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/cart.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/home.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/order.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/common/common.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/search.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/focusImg.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/focusImgMult.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/ulBox2.css}"/>
+</head>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+    #container {
+        width: 300px;
+        height: 42px;
+        margin: 0 auto;
+    }
+    div.search {padding: 30px 0;}
+
+    form {
+        position: relative;
+        width: 300px;
+        margin: 0 auto;
+    }
+
+    input, button {
+        border: none;
+        outline: none;
+    }
+
+    input {
+        width: 100%;
+        height: 42px;
+        padding-left: 13px;
+    }
+
+    button {
+        height: 42px;
+        width: 42px;
+        cursor: pointer;
+        position: absolute;
+    }
+    /*搜索框6*/
+    .bar6 input {
+        border: 2px solid #c5464a;
+        border-radius: 5px;
+        background: transparent;
+        top: 0;
+        right: 0;
+    }
+    .bar6 button {
+        background: #c5464a;
+        border-radius: 0 5px 5px 0;
+        width: 60px;
+        top: 0;
+        right: 0;
+    }
+    .bar6 button:before {
+        content: "\f002";
+        font-family: FontAwesome;
+        font-size: 13px;
+        color: #F9F0DA;
+    }
+    .search input{
+        height: 42px;
+    }
+
+    /*商品css3样式*/
+
+    #productsBox{
+
+        width: 100%;
+        height: 1226px;
+
+    }
+
+    #products{
+
+        width: 1000px;
+        height: 1200px;
+        margin: 0 auto;
+
+    }
+
+
+    ul, ol {
+        list-style: none;
+    }
+
+    input, button {
+        outline: none;
+        border: none;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .clearfix::before,
+    .clearfix::after {
+        content: "";
+        height: 0;
+        line-height: 0;
+        display: block;
+        visibility: hidden;
+    }
+
+    .clearfix::after {
+        clear: both;
+    }
+
+    .product li {
+        float: left;
+        width: 234px;
+        height: 246px;
+        padding: 34px 0 20px;
+        z-index: 1;
+        margin-left: 14px;
+        margin-bottom: 14px;
+        background: #fff;
+        -webkit-transition: all .2s linear;
+        transition: all .2s linear;
+        position: relative;
+    }
+
+    .pro-img {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 18px;
+    }
+
+    .pro-img a {
+        width: 100%;
+        height: 100%;
+    }
+
+    .pro-img img {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .product li h3 {
+        margin: 0 10px;
+        font-size: 14px;
+        font-weight: 400;
+        text-align: center;
+    }
+
+    .product li h3 a {
+        color: #333;
+    }
+
+    .desc {
+        margin: 0 10px 10px;
+        height: 18px;
+        font-size: 12px;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        color: #b0b0b0;
+    }
+
+    .price {
+        font-size: 14px;
+        margin: 0 10px 10px;
+        text-align: center;
+        color: #ff6700;
+    }
+
+    .price del {
+        color: #b0b0b0;
+    }
+
+    .review {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        z-index: 3;
+        width: 234px;
+        height: 0;
+        overflow: hidden;
+        font-size: 12px;
+        background: #ff6700;
+        opacity: 0;
+        -webkit-transition: all .2s linear;
+        transition: all .2s linear;
+    }
+
+    .review a {
+        color: #757575;
+        display: block;
+        padding: 8px 30px;
+        outline: 0;
+    }
+
+    .review a span {
+        display: block;
+        margin-bottom: 5px;
+        color: #fff;
+    }
+
+    .product li:hover {
+        -webkit-box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        -webkit-transform: translate3d(0, -2px, 0);
+        transform: translate3d(0, -2px, 0);
+    }
+
+    .product li:hover .review {
+        opacity: 1;
+        height: 76px;
+    }
+
+
+
+    #searchBox{
+
+        width: 100%;
+        height: 100px;
+
+
+    }
+
+    #searchDiv{
+
+        width: 1226px;
+        height: 80px;
+        margin: 0 auto;
+
+    }
+
+
+
+</style>
+
+<body>
+<!-- jquery.js angular.js-->
+<script th:src="@{/static/resource/lib/jquery.min.js}"></script>
+<script th:src="@{/static/resource/lib/angular.js}"></script>
+
+<!--头部工具栏-->
+<div class="topbar">
+    <div class="container">
+        <div class="topbar_nav fl">
+            <ul>
+                <li><a href="https://www.jd.com/">京东商城</a></li>
+                <li><a href="https://www.taobao.com/">淘宝商城</a></li>
+                <li><a href="https://www.mi.com">小米商城</a></li>
+                <li><a href="https://gitee.com/youzhengjie/cloud-mall">项目链接</a></li>
+            </ul>
+        </div>
+        <div class="topbar_cart fr">
+            <a ui-sref="cart">购物车</a>
+        </div>
+        <div class="topbar_info fr">
+            <div ui-view="loginUser"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<div id="searchBox">
+
+    <div id="searchDiv">
+
+        <!--            搜索框-->
+        <div id="container">
+            <div class="search bar6">
+                <form method="post" th:action="@{/search/toSearchPage}">
+                    <input type="text" placeholder="请输入您要搜索的内容..." name="text">
+                    <button type="submit"></button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<div id="productsBox">
+
+
+
+    <div id="products">
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="product">
+            <ul>
+                <li>
+                    <div class="pro-img">
+                        <a href="#">
+                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
+                        </a>
+                    </div>
+                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
+                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="price">
+                        <span>1499</span>元
+                        <del>1699</del>
+                    </p>
+                    <div class="review">
+                        <a href="#">
+                            <span class="msg">一如既往的好，小米情怀</span>
+                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+<!--footer-->
+<footer class="footer">
+    <div class="container">
+        <div class="footer_service">
+            <ul class="clearfix">
+                <li><a href="">1小时快修服务</a></li>
+                <li><a href="">7天无理由退货</a></li>
+                <li><a href="">30天免费换货</a></li>
+                <li><a href="">满200元包邮</a></li>
+                <li><a href="">520余家售后网点</a></li>
+            </ul>
+        </div>
+
+        <div class="footer_link clearfix">
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+
+            <div class="footer_contact">
+                <p class="phone">18420163207</p>
+
+                <p><span style="">周一至周日 8:00-18:00</span>
+                    <span style="display:none;">2月7日至13日服务时间 7:00-18:00</span><br>（仅收市话费）</p>
+                <a rel="nofollow" class="btn btn-primary btn-small" href="#">24小时在线客服</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer_site">
+        <div class="container">
+            <div class="cart_log">
+                <a href="" title="云商城"></a>
+            </div>
+            <div>
+                <p>云商城项目由本人自己完成,如有不足,请指正！</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+</body>
+
+
+
+
+
+<script>
+    /*单击出现爱心特效*/
+    (function (window, document, undefined) {
+        var hearts = [];
+        window.requestAnimationFrame = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback) {
+                    setTimeout(callback, 1000 / 60);
+                }
+        })();
+        init();
+
+        function init() {
+            css(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+            attachEvent();
+            gameloop();
+        }
+
+        function gameloop() {
+            for (var i = 0; i < hearts.length; i++) {
+                if (hearts[i].alpha <= 0) {
+                    document.body.removeChild(hearts[i].el);
+                    hearts.splice(i, 1);
+                    continue;
+                }
+                hearts[i].y--;
+                hearts[i].scale += 0.004;
+                hearts[i].alpha -= 0.013;
+                hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+            }
+            requestAnimationFrame(gameloop);
+        }
+
+        function attachEvent() {
+            var old = typeof window.onclick === "function" && window.onclick;
+            window.onclick = function (event) {
+                old && old();
+                createHeart(event);
+            }
+        }
+
+        function createHeart(event) {
+            var d = document.createElement("div");
+            d.className = "heart";
+            hearts.push({
+                el: d,
+                x: event.clientX - 5,
+                y: event.clientY - 5,
+                scale: 1,
+                alpha: 1,
+                color: randomColor()
+            });
+            document.body.appendChild(d);
+        }
+
+        function css(css) {
+            var style = document.createElement("style");
+            style.type = "text/css";
+            try {
+                style.appendChild(document.createTextNode(css));
+            } catch (ex) {
+                style.styleSheet.cssText = css;
+            }
+            document.getElementsByTagName('head')[0].appendChild(style);
+        }
+
+        function randomColor() {
+            return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+        }
+    })(window, document);
+</script>
+
+
+</html>
