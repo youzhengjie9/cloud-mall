@@ -87,13 +87,13 @@
     #productsBox{
 
         width: 100%;
-        height: 1226px;
+        height: 826px;
 
     }
 
     #products{
 
-        width: 1000px;
+        width: 1250px;
         height: 1200px;
         margin: 0 auto;
 
@@ -133,7 +133,7 @@
         padding: 34px 0 20px;
         z-index: 1;
         margin-left: 14px;
-        margin-bottom: 14px;
+        margin-bottom: 35px;
         background: #fff;
         -webkit-transition: all .2s linear;
         transition: all .2s linear;
@@ -282,12 +282,11 @@
 <div id="searchBox">
 
     <div id="searchDiv">
-
         <!--            搜索框-->
         <div id="container">
             <div class="search bar6">
-                <form method="post" th:action="@{/search/toSearchPage}">
-                    <input type="text" placeholder="请输入您要搜索的内容..." name="text">
+                <form method="GET" th:action="@{/search/toSearchPage}" autocomplete="off">
+                    <input type="text" placeholder="请输入您要搜索的内容..." name="text" >
                     <button type="submit"></button>
                 </form>
             </div>
@@ -298,80 +297,64 @@
 </div>
 
 
+<!--分类-->
+
+<div class="container">
+    <div class="filter_box">
+        <div class="filter_list_wrap clearfix">
+            <!--            <goods-filter filter-types="filterTypes" filter-contents="filterContents"></goods-filter>-->
+            <div>
+
+                <div>
+                    <dt style="color: #b0b0b0;width: 60px;height: 30px;float: left;text-align: center">品牌:</dt>
+                    <a href="#" style="width: 60px;height: 30px;float: left;color: orange;text-align: center">全部</a>
+                    <a th:each="brand:${brandList}" th:text="${brand.getBrandName()}" href="#" style="width: 60px;height: 30px;float: left;text-align: center"></a>
+                </div>
+
+                <br/>
+                <br/>
+                <div>
+                    <dt style="color: #b0b0b0;width: 60px;height: 30px;float: left;text-align: center">分类:</dt>
+                    <a href="#" style="width: 60px;height: 30px;float: left;color: orange;text-align: center">全部</a>
+                    <a th:each="classify:${classifyList}" th:text="${classify.getText()}" href="#" style="width: 60px;height: 30px;float: left;text-align: center">手机</a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 <div id="productsBox">
 
 
 
+<!--    所有商品div-->
     <div id="products">
 
-        <div class="product">
+<!--        单个商品div-->
+        <div class="product" th:each="product:${products}">
             <ul>
                 <li>
                     <div class="pro-img">
                         <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+                            <img th:src="@{'/static/img/nav/'+${product.img}+'.jpg'}" alt="product">
 
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
                         </a>
                     </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+                    <h3><a href="#" th:text="${product.getName()}"></a></h3>
+<!--                    <p class="desc">全高清屏 / 人工智能语音</p>-->
 
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
+                    <p class="desc" th:text="${product.getName()}"></p>
                     <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
+                        <span th:text="${product.getPrice()}"></span>元
+                        <del>19999</del>
                     </p>
                     <div class="review">
                         <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
+                            <span class="msg">请您放心购买商品</span>
+                            <span class="auther">商品假一赔十</span>
                         </a>
                     </div>
                 </li>
@@ -379,223 +362,8 @@
         </div>
 
 
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
 
 
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <div class="product">
-            <ul>
-                <li>
-                    <div class="pro-img">
-                        <a href="#">
-                            <img src="/static/img/icon/cloud-mall-logo.png" alt="">
-                        </a>
-                    </div>
-                    <h3><a href="#">小米电视4A 43英寸青春版</a></h3>
-                    <p class="desc">全高清屏 / 人工智能语音</p>
-                    <p class="price">
-                        <span>1499</span>元
-                        <del>1699</del>
-                    </p>
-                    <div class="review">
-                        <a href="#">
-                            <span class="msg">一如既往的好，小米情怀</span>
-                            <span class="auther"> 来自于 惊喜 的评价 </span>
-                        </a>
-                    </div>
-                </li>
-            </ul>
-        </div>
 
     </div>
 

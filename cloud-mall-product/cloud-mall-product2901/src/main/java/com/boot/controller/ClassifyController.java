@@ -5,10 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.boot.pojo.Classify;
 import com.boot.service.ClassifyService;
 import io.swagger.annotations.Api;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -34,7 +36,14 @@ public class ClassifyController {
         return classifies;
     }
 
+    @ResponseBody
+    @GetMapping(path = "/selectClassifyByPid/{id}")
+    public Classify selectClassifyByid(@PathVariable("id") long id){
 
+        Classify classify = classifyService.selectClassifyByid(id);
+
+        return classify;
+    }
 
 
 }

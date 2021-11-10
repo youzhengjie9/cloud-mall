@@ -10,4 +10,8 @@
         select * from classify
     </select>
 
+    <select id="selectClassifyByid" resultType="com.boot.pojo.Classify">
+        select * from classify where id=#{id}
+    </select>
+
 </mapper>

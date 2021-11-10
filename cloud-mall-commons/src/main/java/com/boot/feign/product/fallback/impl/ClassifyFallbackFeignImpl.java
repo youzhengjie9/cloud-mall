@@ -18,4 +18,11 @@ public class ClassifyFallbackFeignImpl implements ClassifyFallbackFeign {
         return null;
     }
 
+    @Override
+    public Classify selectClassifyByid(long id) {
+        log.error("selectClassifyByid error");
+        return null;
+    }
+
+
 }

@@ -101,7 +101,7 @@
 <!--            搜索框-->
             <div id="container">
                 <div class="search bar6">
-                    <form method="post" th:action="@{/search/toSearchPage}">
+                    <form method="GET" th:action="@{/search/toSearchPage}">
                         <input type="text" placeholder="请输入您要搜索的内容..." name="text">
                         <button type="submit"></button>
                     </form>

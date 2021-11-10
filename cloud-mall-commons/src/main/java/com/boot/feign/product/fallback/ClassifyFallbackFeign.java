@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -19,5 +20,8 @@ public interface ClassifyFallbackFeign {
     public List<Classify> selectAllClassify();
 
 
+    @ResponseBody
+    @GetMapping(path = "/feign/Classify/selectClassifyByPid/{id}")
+    public Classify selectClassifyByid(@PathVariable("id") long id);
 
 }
