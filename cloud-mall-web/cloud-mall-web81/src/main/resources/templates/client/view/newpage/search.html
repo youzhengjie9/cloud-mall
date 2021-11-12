@@ -10,6 +10,22 @@
     <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!--bootstrap-->
     <link rel="stylesheet" th:href="@{/static/resource/css/lib/bootstrap.min.css}"/>
+
+    <!--    不能使用bootstrap3，不然可能会导致页面效果不好，因为这个页面是通过bootstrap4来写的-->
+<!--    <link th:href="@{/assets/index2/css/bootstrap.min.css}" rel="stylesheet">-->
+    <link th:href="@{/assets/index2/css/cl-css.css}" rel="stylesheet">
+    <link th:href="@{/assets/index2/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/assets/index2/highlight/styles/railscasts.css}">
+
+    <script th:src="@{/assets/index2/jquery/jquery.min.js}"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script th:src="@{/assets/index2/js/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/index2/highlight/highlight.pack.js}"></script>
+
+    <!--    引入alibaba iconfont-->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_v7p87hrx9q.css">
+
+
     <!--css-->
     <link rel="stylesheet" th:href="@{/static/resource/css/reset.css}"/>
     <link rel="stylesheet" th:href="@{/static/resource/css/index.css}"/>
@@ -95,7 +111,7 @@
     #productsBox {
 
         width: 100%;
-        height: 826px;
+        height: 726px;
 
     }
 
@@ -375,11 +391,28 @@
                 </li>
             </ul>
         </div>
+</div>
+</div>
 
+
+
+
+<!--            分页-->
+
+<div style="width: 100%;height: 45px;">
+
+    <div style="margin:0 auto;width: 277px;height: 33.6px">
+        <ul class="pagination">
+            <li><a href="#">&laquo;</a></li>
+            <li class="active"><a href="#">1</a></li>
+            <li class="disabled"><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
 
     </div>
-
-
 </div>
 
 

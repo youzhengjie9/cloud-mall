@@ -161,9 +161,24 @@ public class SearchServiceImpl implements SearchService {
         searchSourceBuilder.from((from<0)?0:from);
         searchSourceBuilder.size((size<0)?15:size);
 
+        //*****解决：防止当搜索的文本text查不到数据而导致切换品牌和分类出现错误
+        SearchRequest searchRequest1 = new SearchRequest(INDEX_NAME);
+        SearchSourceBuilder searchSourceBuilder1 = new SearchSourceBuilder();
+        searchSourceBuilder1.query(QueryBuilders.matchQuery("name",text)); //搜索name
+        //这里就搜索一个数据来判断是否有数据
+        searchSourceBuilder1.from(0);
+        searchSourceBuilder1.size(1);
+        searchRequest1.source(searchSourceBuilder1);
+        SearchResponse response = restHighLevelClient.search(searchRequest1, RequestOptions.DEFAULT);
+
         //构造布尔查询，进行多条件筛选
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
-                .must(QueryBuilders.matchQuery("name",text));
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                if(response.getHits().getHits().length<=0) //如果不存在,说明输入的text搜索不到数据
+                {
+                    boolQueryBuilder.must(QueryBuilders.matchAllQuery()); //此时返回全部给前端
+                }else{
+                    boolQueryBuilder.must(QueryBuilders.matchQuery("name",text));
+                }
 
         if(brandid!=0){
             boolQueryBuilder.must(QueryBuilders.termQuery("b_id",String.valueOf(brandid)));
@@ -172,7 +187,6 @@ public class SearchServiceImpl implements SearchService {
         {
             boolQueryBuilder.must(QueryBuilders.termQuery("fl_id",String.valueOf(classifyid)));
         }
-
 
 
         searchSourceBuilder.query(boolQueryBuilder);
@@ -198,7 +212,6 @@ public class SearchServiceImpl implements SearchService {
             products.add(product);
         }
 
-    System.out.println(products);
 
         return products;
     }
