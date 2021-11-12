@@ -19,4 +19,6 @@ public interface ProductService {
 
     //查询指定商品的介绍图片
     String selectIntroduceByPid(long productId);
+
+    void insertProduct(Product product);
 }

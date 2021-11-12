@@ -77,9 +77,10 @@ public class SearchController {
     @GetMapping(path = "/searchProductByName/{text}")
     public List<Product> searchProductByName(@PathVariable("text") String text) throws IOException {
 
+
         SearchHit[] searchHits = searchService.searchProductHitByName(text);
 
-        List<Product> products = searchService.searchProductByHit(searchHits);
+        List<Product> products = searchService.searchProductByHit(text,searchHits);
 
         return products;
     }
@@ -89,6 +90,7 @@ public class SearchController {
     @GetMapping(path = "/searchAllProductByLimit/{from}/{size}")
     public List<Product> searchAllProductByLimit(@PathVariable("from") int from,
                                                  @PathVariable("size") int size) throws IOException {
+
 
         List<Product> products = searchService.searchAllProductByLimit(from, size);
 

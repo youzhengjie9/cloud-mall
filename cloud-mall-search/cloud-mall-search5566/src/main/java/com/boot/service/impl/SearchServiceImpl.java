@@ -15,6 +15,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -32,10 +33,15 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SearchServiceImpl implements SearchService {
 
     private final String INDEX_NAME="cloud-mall"; //索引名
+
+    private final String PAGE_PRODUCT_COUNT="pageProductCount"; //分页之前查询的总数
     @Autowired
     private RestHighLevelClient restHighLevelClient;
     @Autowired
     private ProductFallbackFeign productFallbackFeign;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     private static final Object lock=new Object(); //lock1
 
@@ -77,6 +83,9 @@ public class SearchServiceImpl implements SearchService {
 
         SearchSourceBuilder builder=new SearchSourceBuilder();
 
+        builder.from(0);
+        builder.size(15);
+
         BoolQueryBuilder queryBuilder =
                 QueryBuilders.boolQuery().must(QueryBuilders.matchQuery("name", text));
         builder.query(queryBuilder);
@@ -89,25 +98,90 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<Product> searchProductByHit(SearchHit[] searchHits) {
+    public List<Product> searchProductByHit(String text,SearchHit[] searchHits) throws IOException {
 
         List<Product> products = new CopyOnWriteArrayList<>(); //存储搜索来的products
-        for (SearchHit searchHit : searchHits) {
-            Product product = new Product();
-            Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
+        if(searchHits!=null&&searchHits.length>0&&!text.equals("^"))
+        {
 
-            product.setProductId(Long.valueOf(searchHit.getId()));
-            product.setName((String) sourceAsMap.get("name"));
-            product.setPrice((Double) sourceAsMap.get("price"));
-            product.setImg((String) sourceAsMap.get("img"));
-            product.setNumber((Integer) sourceAsMap.get("number"));
-            product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
-            product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
-            product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
+            for (SearchHit searchHit : searchHits) {
+                Product product = new Product();
+                Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
 
-            products.add(product);
+                product.setProductId(Long.valueOf(searchHit.getId()));
+                product.setName((String) sourceAsMap.get("name"));
+                product.setPrice((Double) sourceAsMap.get("price"));
+                product.setImg((String) sourceAsMap.get("img"));
+                product.setNumber((Integer) sourceAsMap.get("number"));
+                product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
+                product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
+                product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
+
+                products.add(product);
+
+            }
+
+            //获取分页前查询的总数
+            BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
+            boolQueryBuilder1.must(QueryBuilders.matchQuery("name",text));
+
+            SearchRequest searchRequest2 = new SearchRequest(INDEX_NAME);
+            SearchSourceBuilder searchSourceBuilder2 = new SearchSourceBuilder();
+            searchSourceBuilder2.query(boolQueryBuilder1);
+            searchRequest2.source(searchSourceBuilder2);
+            SearchResponse searchRespond2 = restHighLevelClient.search(searchRequest2, RequestOptions.DEFAULT);
+
+            redisTemplate.opsForValue().set(PAGE_PRODUCT_COUNT,searchRespond2.getHits().getTotalHits().value);
+
+
+        }else { //默认搜索全部数据并分页
+
+            //获取分页前查询的总数
+            BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
+            boolQueryBuilder1.must(QueryBuilders.matchAllQuery());
+            SearchRequest searchRequest2 = new SearchRequest(INDEX_NAME);
+            SearchSourceBuilder searchSourceBuilder2 = new SearchSourceBuilder();
+
+            searchSourceBuilder2.from(0);
+            searchSourceBuilder2.size(15);
+            searchSourceBuilder2.query(boolQueryBuilder1);
+            searchRequest2.source(searchSourceBuilder2);
+            SearchResponse searchRespond2 = restHighLevelClient.search(searchRequest2, RequestOptions.DEFAULT);
+
+            SearchHit[] hits = searchRespond2.getHits().getHits();
+
+            for (SearchHit searchHit : hits) {
+                Product product = new Product();
+                Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
+
+                product.setProductId(Long.valueOf(searchHit.getId()));
+                product.setName((String) sourceAsMap.get("name"));
+                product.setPrice((Double) sourceAsMap.get("price"));
+                product.setImg((String) sourceAsMap.get("img"));
+                product.setNumber((Integer) sourceAsMap.get("number"));
+                product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
+                product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
+                product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
+
+                products.add(product);
+
+            }
+
+            //获取分页前查询的总数
+            BoolQueryBuilder boolQueryBuilder2 = QueryBuilders.boolQuery();
+            boolQueryBuilder2.must(QueryBuilders.matchAllQuery());
+
+            SearchRequest searchRequest3 = new SearchRequest(INDEX_NAME);
+            SearchSourceBuilder searchSourceBuilder3 = new SearchSourceBuilder();
+            searchSourceBuilder3.query(boolQueryBuilder2);
+            searchRequest3.source(searchSourceBuilder3);
+            SearchResponse searchRespond3 = restHighLevelClient.search(searchRequest3, RequestOptions.DEFAULT);
+
+            redisTemplate.opsForValue().set(PAGE_PRODUCT_COUNT,searchRespond3.getHits().getTotalHits().value);
+
 
         }
+
 
         return products;
     }
@@ -212,6 +286,31 @@ public class SearchServiceImpl implements SearchService {
             products.add(product);
         }
 
+
+        //获取分页前查询的总数
+        BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
+        if(response.getHits().getHits().length<=0) //如果不存在,说明输入的text搜索不到数据
+        {
+            boolQueryBuilder.must(QueryBuilders.matchAllQuery()); //此时返回全部给前端
+        }else{
+            boolQueryBuilder.must(QueryBuilders.matchQuery("name",text));
+        }
+
+        if(brandid!=0){
+            boolQueryBuilder.must(QueryBuilders.termQuery("b_id",String.valueOf(brandid)));
+        }
+        if(classifyid!=0)
+        {
+            boolQueryBuilder.must(QueryBuilders.termQuery("fl_id",String.valueOf(classifyid)));
+        }
+
+        SearchRequest searchRequest2 = new SearchRequest(INDEX_NAME);
+        SearchSourceBuilder searchSourceBuilder2 = new SearchSourceBuilder();
+        searchSourceBuilder2.query(boolQueryBuilder1);
+        searchRequest2.source(searchSourceBuilder2);
+        SearchResponse searchRespond2 = restHighLevelClient.search(searchRequest2, RequestOptions.DEFAULT);
+
+        redisTemplate.opsForValue().set(PAGE_PRODUCT_COUNT,searchRespond2.getHits().getTotalHits().value);
 
         return products;
     }

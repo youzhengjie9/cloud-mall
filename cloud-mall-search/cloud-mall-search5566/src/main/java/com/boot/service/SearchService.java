@@ -17,7 +17,7 @@ public interface SearchService {
     SearchHit[] searchProductHitByName(String text) throws IOException;
 
 
-    List<Product> searchProductByHit(SearchHit[] searchHits);
+    List<Product> searchProductByHit(String text,SearchHit[] searchHits) throws IOException;
 
 
     //查询所有数据并分页
@@ -25,6 +25,7 @@ public interface SearchService {
 
     //from size 为分页
     List<Product> searchProductsByCondition(String text,long brandid,long classifyid,int from,int size) throws IOException;
+
 
 
 

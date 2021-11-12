@@ -24,6 +24,7 @@ public interface ProductMapper {
     //查询指定商品的介绍图片
     String selectIntroduceByPid(@Param("productId")long productId);
 
+    void insertProduct(Product product);
 
 
 }

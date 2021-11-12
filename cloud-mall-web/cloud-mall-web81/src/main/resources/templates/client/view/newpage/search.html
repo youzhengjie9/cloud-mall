@@ -397,24 +397,40 @@
 
 
 
-<!--            分页-->
+<!--            搜索分页-->
 
 <div style="width: 100%;height: 45px;">
 
     <div style="margin:0 auto;width: 277px;height: 33.6px">
         <ul class="pagination">
-            <li><a href="#">&laquo;</a></li>
-            <li class="active"><a href="#">1</a></li>
-            <li class="disabled"><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&raquo;</a></li>
+            <li class="disabled">
+                <a href="#">&laquo;</a>
+            </li>
+
+<!--            <li class="active">-->
+<!--                <a href="#">1</a>-->
+<!--            </li>-->
+
+            <li th:each="index:${#numbers.sequence(1, 5)}" th:if="${pagecount>=5}">
+                <a th:if="${index==1}" class="active" href="#" th:text="${index}"></a>
+                <a th:if="${index!=1}" href="#" th:text="${index}"></a>
+            </li>
+
+            <li th:each="index:${#numbers.sequence(1, pagecount)}" th:if="${pagecount<5}">
+                <a th:if="${index==1}" class="active" href="#" th:text="${index}"></a>
+                <a th:if="${index!=1}" href="#" th:text="${index}"></a>
+            </li>
+
+            <li>
+                <a href="#">&raquo;</a>
+            </li>
+
         </ul>
 
     </div>
 </div>
 
+<!--        -->
 
 <!--footer-->
 <footer class="footer">
@@ -495,6 +511,25 @@
 
 
 <script th:inline="javascript">
+
+
+
+    //分页选项change
+    function pagechange() {
+
+
+
+
+
+    }
+
+
+
+
+
+
+
+
 
 
     //品牌选项改变

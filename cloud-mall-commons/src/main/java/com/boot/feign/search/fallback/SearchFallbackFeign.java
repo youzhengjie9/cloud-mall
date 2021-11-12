@@ -25,10 +25,12 @@ public interface SearchFallbackFeign {
     public String initSearch() throws IOException;
 
 
+
     //根据name进行查询
     @ResponseBody
     @GetMapping(path = "/feign/search/searchProductByName/{text}")
     public List<Product> searchProductByName(@PathVariable("text") String text) throws IOException;
+
 
     //查询所有数据并分页
     @ResponseBody

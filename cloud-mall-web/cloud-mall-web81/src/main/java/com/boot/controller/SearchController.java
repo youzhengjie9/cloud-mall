@@ -34,6 +34,11 @@ public class SearchController {
     private final String SEARCH_TEXT_KEY="searchText"; //搜索文本key
     private final String SEARCH_BRAND_KEY="searchBrand";//搜索品牌key
     private final String SEARCH_CLASSIFY_KEY="searchClassify"; //搜索分类key
+    private final String PAGE_PRODUCT_COUNT="pageProductCount"; //分页之前查询的总数
+    private final int from=0; //分页头
+
+    private final int size=15;//分页尾
+
 
     @Autowired
     private SearchFallbackFeign searchFallbackFeign;
@@ -78,6 +83,10 @@ public class SearchController {
     @GetMapping(path = "/toSearchPage")
     public String toSearchPage(String text, Model model) throws IOException {
 
+        if(text==null||text=="")
+        {
+            text="^";
+        }
         List<String> brandNames=new LinkedList<>(); //品牌去重
         List<String> classifyName=new LinkedList<>(); //分类去重
 
@@ -109,37 +118,19 @@ public class SearchController {
                 }
                 model.addAttribute("brandList",brandList);
                 model.addAttribute("classifyList",classifyList);
-            }else{
-
-                //如果为空则查询指定分页数据重新赋值products
-                products = searchFallbackFeign.searchAllProductByLimit(0, 15);
-                model.addAttribute("products",products);
-
-                for (Product product : products) {
-
-                    Brand brand = brandFallbackFeign.selectBrandByid(product.getB_id());
-                    Classify classify = classifyFallbackFeign.selectClassifyByid(product.getFl_id());
-
-                    if (!brandNames.contains(brand.getBrandName())) //利用集合来去重
-                    {
-                        brandList.add(brand);
-                        brandNames.add(brand.getBrandName());
-                    }
-                    if(!classifyName.contains(classify.getText()))
-                    {
-                        classifyList.add(classify);
-                        classifyName.add(classify.getText());
-                    }
-                }
-                model.addAttribute("brandList",brandList);
-                model.addAttribute("classifyList",classifyList);
-
             }
             //把搜索内容放入redis
 
             redisTemplate.opsForValue().set(SEARCH_TEXT_KEY,text);
             redisTemplate.opsForValue().set(SEARCH_BRAND_KEY,0+"");
             redisTemplate.opsForValue().set(SEARCH_CLASSIFY_KEY,0+"");
+
+        int pageProductCount = (int) redisTemplate.opsForValue().get(PAGE_PRODUCT_COUNT);//获取分页前查询的总数
+
+        int x=size-from; //计算出每一页数量的Max
+        int pagecount=(pageProductCount%x==0)?pageProductCount/x:(pageProductCount/x)+1; //页的总数
+
+        model.addAttribute("pagecount",pagecount);
 
         return "client/view/newpage/search";
     }
@@ -154,6 +145,7 @@ public class SearchController {
                                                    @RequestParam(value = "from",defaultValue = "0") int from,
                                                    @RequestParam(value = "size",defaultValue = "15") int size)
                                                     throws IOException{
+
 
         JSONObject jsonObject = new JSONObject();
         if(brandid==-10) //如果是默认，代表点击的不是品牌
@@ -233,6 +225,17 @@ public class SearchController {
 
         jsonObject.put("curbrandid",brandid);
         jsonObject.put("curclassifyid",classifyid);
+
+
+        int pageProductCount = (int) redisTemplate.opsForValue().get(PAGE_PRODUCT_COUNT);//获取分页前查询的总数
+//        jsonObject.put("pageCount",pageProductCount);
+
+        int x=size-from; //计算出每一页数量的Max
+        int pagecount=(pageProductCount%x==0)?pageProductCount/x:(pageProductCount/x)+1; //页的总数
+
+        jsonObject.put("pagecount",pagecount);
+
+
 
         return JSON.toJSONString(jsonObject);
     }

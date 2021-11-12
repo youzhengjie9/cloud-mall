@@ -39,4 +39,5 @@ public class ProductController {
         String[] imgarr = imgs.split(",");
         return imgarr;
     }
+
 }
