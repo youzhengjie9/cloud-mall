@@ -27,12 +27,16 @@
     * {
         box-sizing: border-box;
     }
+
     #container {
         width: 300px;
         height: 42px;
         margin: 0 auto;
     }
-    div.search {padding: 30px 0;}
+
+    div.search {
+        padding: 30px 0;
+    }
 
     form {
         position: relative;
@@ -57,6 +61,7 @@
         cursor: pointer;
         position: absolute;
     }
+
     /*搜索框6*/
     .bar6 input {
         border: 2px solid #c5464a;
@@ -65,6 +70,7 @@
         top: 0;
         right: 0;
     }
+
     .bar6 button {
         background: #c5464a;
         border-radius: 0 5px 5px 0;
@@ -72,26 +78,28 @@
         top: 0;
         right: 0;
     }
+
     .bar6 button:before {
         content: "\f002";
         font-family: FontAwesome;
         font-size: 13px;
         color: #F9F0DA;
     }
-    .search input{
+
+    .search input {
         height: 42px;
     }
 
     /*商品css3样式*/
 
-    #productsBox{
+    #productsBox {
 
         width: 100%;
         height: 826px;
 
     }
 
-    #products{
+    #products {
 
         width: 1250px;
         height: 1200px;
@@ -219,8 +227,8 @@
     }
 
     .product li:hover {
-        -webkit-box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         -webkit-transform: translate3d(0, -2px, 0);
         transform: translate3d(0, -2px, 0);
     }
@@ -231,8 +239,7 @@
     }
 
 
-
-    #searchBox{
+    #searchBox {
 
         width: 100%;
         height: 100px;
@@ -240,7 +247,7 @@
 
     }
 
-    #searchDiv{
+    #searchDiv {
 
         width: 1226px;
         height: 80px;
@@ -248,7 +255,11 @@
 
     }
 
-
+    /* 控制品牌和分类点击超链接状态改变属性，以便于js选择器进行选择*/
+    .disable {
+        pointer-events: none;
+        background-color: orange;
+    }
 
 </style>
 
@@ -286,7 +297,7 @@
         <div id="container">
             <div class="search bar6">
                 <form method="GET" th:action="@{/search/toSearchPage}" autocomplete="off">
-                    <input type="text" placeholder="请输入您要搜索的内容..." name="text" >
+                    <input type="text" placeholder="请输入您要搜索的内容..." name="text">
                     <button type="submit"></button>
                 </form>
             </div>
@@ -303,20 +314,25 @@
     <div class="filter_box">
         <div class="filter_list_wrap clearfix">
             <!--            <goods-filter filter-types="filterTypes" filter-contents="filterContents"></goods-filter>-->
-            <div>
-
-                <div>
+            <div id="brandClassifyDiv">
+                <div id="brands">
                     <dt style="color: #b0b0b0;width: 60px;height: 30px;float: left;text-align: center">品牌:</dt>
-                    <a href="#" style="width: 60px;height: 30px;float: left;color: orange;text-align: center">全部</a>
-                    <a th:each="brand:${brandList}" th:text="${brand.getBrandName()}" href="#" style="width: 60px;height: 30px;float: left;text-align: center"></a>
+                    <a class="disable" onclick="changeBrand(this,0)" id="allbrand" href="#"
+                       style="margin-right: 35px;float: left;text-align: center">全部</a>
+                    <a th:each="brand:${brandList}" th:onclick="changeBrand(this,[[${brand.id}]])"
+                       th:text="${brand.getBrandName()}" href="#"
+                       style="margin-right: 35px;float: left;text-align: center"></a>
                 </div>
 
                 <br/>
                 <br/>
-                <div>
+                <div id="classifies">
                     <dt style="color: #b0b0b0;width: 60px;height: 30px;float: left;text-align: center">分类:</dt>
-                    <a href="#" style="width: 60px;height: 30px;float: left;color: orange;text-align: center">全部</a>
-                    <a th:each="classify:${classifyList}" th:text="${classify.getText()}" href="#" style="width: 60px;height: 30px;float: left;text-align: center">手机</a>
+                    <a class="disable" onclick="changeClassify(this,0)" id="allclassify" href="#"
+                       style="margin-right: 35px;float: left;text-align: center">全部</a>
+                    <a th:each="classify:${classifyList}" th:onclick="changeClassify(this,[[${classify.id}]])"
+                       th:text="${classify.getText()}" href="#"
+                       style="margin-right: 35px;float: left;text-align: center">手机</a>
                 </div>
 
             </div>
@@ -329,11 +345,10 @@
 <div id="productsBox">
 
 
-
-<!--    所有商品div-->
+    <!--    所有商品div-->
     <div id="products">
 
-<!--        单个商品div-->
+        <!--        单个商品div-->
         <div class="product" th:each="product:${products}">
             <ul>
                 <li>
@@ -344,7 +359,7 @@
                         </a>
                     </div>
                     <h3><a href="#" th:text="${product.getName()}"></a></h3>
-<!--                    <p class="desc">全高清屏 / 人工智能语音</p>-->
+                    <!--                    <p class="desc">全高清屏 / 人工智能语音</p>-->
 
                     <p class="desc" th:text="${product.getName()}"></p>
                     <p class="price">
@@ -362,18 +377,10 @@
         </div>
 
 
-
-
-
     </div>
 
 
-
-
 </div>
-
-
-
 
 
 <!--footer-->
@@ -451,15 +458,314 @@
 </footer>
 
 
-
-
 </body>
 
 
+<script th:inline="javascript">
+
+
+    //品牌选项改变
+    function changeBrand(newelem, brandid) {
+
+        //实现逻辑
+        //当点击其他品牌时选js选择class=disable属性
+
+        // var old = document.querySelectorAll('#brands > a.disable')[0];
+        // old.classList.remove('disable');
+        // newelem.classList.add('disable')
+
+        $.ajax({
+            url: "/search/searchProductsByCondition",
+            data: {
+                "brandid": brandid
+            },
+            type: "GET",
+            success: function (json) {
+                document.getElementById('products').innerHTML = ""; //清空所有商品展示
+                var html = ''; //拼接商品展示html
+                for (var i = 0; i < json.products.length; i++) {
+                    // console.log(products[i].name);
+
+                    html += '<div class="product">'
+                    html += '<ul><li>';
+                    html += '<div class="pro-img">'
+                    html += '<a href="#">'
+                    html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
+                    html += '</a></div>'
+                    html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
+                    html += '<p class="desc">' + json.products[i].name + '</p>';
+                    html += '<p class="price">'
+
+                    html += '<span>' + json.products[i].price + '元</span>';
+                    html += '<del>' + 19999 + '</del>'
+                    html + '</p>';
+
+
+                    html += '<div class="review"><a href="#"><span class="msg">请您放心购买商品</span>';
+
+                    html += ' <span class="auther">商品假一赔十</span></a></div>';
+
+
+                    html += '</div>';
+
+                }
+
+                $('#products').append(html);
+
+
+                //拼接分类
+                var classifyList = json.classifyList;
+
+                //新增
+                document.getElementById('classifies').innerHTML='';
+                var classifyHtml='';
+
+
+                classifyHtml+='<div id="classifies">'
+                classifyHtml+=' <dt style="color: #b0b0b0;width: 60px;height: 30px;float: left;text-align: center">分类:</dt>';
+
+                var curclassifyid=json.curclassifyid;
+                if(curclassifyid==0)
+                {
+                    classifyHtml+='<a class="disable" onclick="changeClassify(this,0)" id="allclassify" href="#"  style="margin-right: 35px;float: left;text-align: center">全部</a>'
+                }else {
+                    classifyHtml+='<a onclick="changeClassify(this,0)" id="allclassify" href="#"  style="margin-right: 35px;float: left;text-align: center">全部</a>'
+                }
+
+                for(var i=0;i<json.classifyList.length;i++)
+                {
+                    let classifyDiv='';
+
+                    if(json.classifyList[i].id==curclassifyid)
+                    {
+                        classifyDiv+='<a class="disable" onclick=\"'+'changeClassify(this,'+json.classifyList[i].id+')'+'\" style="margin-right: 35px;float: left;text-align: center" href="#">';
+                    }else {
+                        classifyDiv+='<a onclick=\"'+'changeClassify(this,'+json.classifyList[i].id+')'+'\" style="margin-right: 35px;float: left;text-align: center" href="#">';
+                    }
+
+                    classifyDiv+=json.classifyList[i].text
+                    classifyDiv+='</a>';
+
+                    classifyHtml+=classifyDiv;
+                }
+
+
+                classifyHtml+='</div>'
+
+                classifyHtml+='</div>'
+
+
+                $('#classifies').append(classifyHtml);
 
 
 
-<script>
+
+
+
+
+
+
+                //拼接品牌
+
+                document.getElementById('brands').innerHTML = ''; //清空品牌
+                var brandList = json.brandList;
+                var brandHtml = '';
+
+
+                brandHtml+='<div id="brands">';
+                brandHtml+='<dt style="color: #b0b0b0;width: 60px;height: 30px;float: left;text-align: center">品牌:</dt>';
+
+                var curbrandid=json.curbrandid;
+                if(curbrandid==0){ //说明品牌选择的是全部
+                    brandHtml+='<a class="disable" onclick="changeBrand(this,0)" id="allbrand" href="#" style="margin-right: 35px;float: left;text-align: center">全部</a>'
+                }else{
+                    brandHtml+='<a onclick="changeBrand(this,0)" id="allbrand" href="#" style="margin-right: 35px;float: left;text-align: center">全部</a>'
+                }
+
+
+                for (var i=0;i<brandList.length;i++)
+                {
+                    let brandDiv='';
+                    if(brandList[i].id==curbrandid)
+                    {
+                        brandDiv+='<a class="disable" onclick=\"'+'changeBrand(this,'+brandList[i].id+')'+'\" style="margin-right: 35px;float: left;text-align: center" href="#">';
+                    }else {
+                        brandDiv+='<a onclick=\"'+'changeBrand(this,'+brandList[i].id+')'+'\" style="margin-right: 35px;float: left;text-align: center" href="#">';
+                    }
+                    brandDiv+=brandList[i].brandName
+                    brandDiv+='</a>';
+
+                    brandHtml+=brandDiv;
+                }
+
+
+                brandHtml+='</div>'
+
+                brandHtml+='</div>'
+
+
+                $('#brands').append(brandHtml);
+
+
+
+
+
+
+
+
+            }
+
+        });
+
+
+    }
+
+    //分类选项改变
+    function changeClassify(newelem, classifyid) {
+
+        // var old = document.querySelectorAll('#classifies > a.disable')[0];
+        // old.classList.remove('disable');
+        // newelem.classList.add('disable')
+
+        $.ajax({
+            url: "/search/searchProductsByCondition",
+            data: {
+                "classifyid": classifyid
+            },
+            type: "GET",
+            success: function (json) {
+
+                document.getElementById('products').innerHTML = ""; //清空所有商品展示
+                var html = ''; //拼接商品展示html
+                for (var i = 0; i < json.products.length; i++) {
+                    html += '<div class="product">'
+                    html += '<ul><li>';
+                    html += '<div class="pro-img">'
+                    html += '<a href="#">'
+                    html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
+                    html += '</a></div>'
+                    html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
+                    html += '<p class="desc">' + json.products[i].name + '</p>';
+                    html += '<p class="price">'
+
+                    html += '<span>' + json.products[i].price + '元</span>';
+                    html += '<del>' + 19999 + '</del>'
+                    html + '</p>';
+
+
+                    html += '<div class="review"><a href="#"><span class="msg">请您放心购买商品</span>';
+
+                    html += ' <span class="auther">商品假一赔十</span></a></div>';
+
+
+                    html += '</div>';
+
+                }
+
+                $('#products').append(html);
+
+
+                //拼接品牌
+
+                document.getElementById('brands').innerHTML = ''; //清空品牌
+                var brandList = json.brandList;
+                var brandHtml = '';
+
+
+                brandHtml+='<div id="brands">';
+                brandHtml+='<dt style="color: #b0b0b0;width: 60px;height: 30px;float: left;text-align: center">品牌:</dt>';
+
+                var curbrandid=json.curbrandid;
+                if(curbrandid==0){ //说明品牌选择的是全部
+                    brandHtml+='<a class="disable" onclick="changeBrand(this,0)" id="allbrand" href="#" style="margin-right: 35px;float: left;text-align: center">全部</a>'
+                }else{
+                    brandHtml+='<a onclick="changeBrand(this,0)" id="allbrand" href="#" style="margin-right: 35px;float: left;text-align: center">全部</a>'
+                }
+
+
+                for (var i=0;i<brandList.length;i++)
+                {
+                    let brandDiv='';
+                    if(brandList[i].id==curbrandid)
+                    {
+                        brandDiv+='<a class="disable" onclick=\"'+'changeBrand(this,'+brandList[i].id+')'+'\" style="margin-right: 35px;float: left;text-align: center" href="#">';
+                    }else {
+                        brandDiv+='<a onclick=\"'+'changeBrand(this,'+brandList[i].id+')'+'\" style="margin-right: 35px;float: left;text-align: center" href="#">';
+                    }
+                    brandDiv+=brandList[i].brandName
+                    brandDiv+='</a>';
+
+                    brandHtml+=brandDiv;
+                }
+
+
+                brandHtml+='</div>'
+
+                brandHtml+='</div>'
+
+
+                $('#brands').append(brandHtml);
+
+
+
+
+
+
+                //拼接分类
+                var classifyList = json.classifyList;
+
+                //新增
+                document.getElementById('classifies').innerHTML='';
+                var classifyHtml='';
+
+
+                classifyHtml+='<div id="classifies">'
+                classifyHtml+=' <dt style="color: #b0b0b0;width: 60px;height: 30px;float: left;text-align: center">分类:</dt>';
+
+                var curclassifyid=json.curclassifyid;
+                if(curclassifyid==0)
+                {
+                    classifyHtml+='<a class="disable" onclick="changeClassify(this,0)" id="allclassify" href="#"  style="margin-right: 35px;float: left;text-align: center">全部</a>'
+                }else {
+                    classifyHtml+='<a onclick="changeClassify(this,0)" id="allclassify" href="#"  style="margin-right: 35px;float: left;text-align: center">全部</a>'
+                }
+
+                for(var i=0;i<json.classifyList.length;i++)
+                {
+                    let classifyDiv='';
+
+                    if(json.classifyList[i].id==curclassifyid)
+                    {
+                        classifyDiv+='<a class="disable" onclick=\"'+'changeClassify(this,'+json.classifyList[i].id+')'+'\" style="margin-right: 35px;float: left;text-align: center" href="#">';
+                    }else {
+                        classifyDiv+='<a onclick=\"'+'changeClassify(this,'+json.classifyList[i].id+')'+'\" style="margin-right: 35px;float: left;text-align: center" href="#">';
+                    }
+
+                    classifyDiv+=json.classifyList[i].text
+                    classifyDiv+='</a>';
+
+                    classifyHtml+=classifyDiv;
+                }
+
+
+                classifyHtml+='</div>'
+
+                classifyHtml+='</div>'
+
+
+                $('#classifies').append(classifyHtml);
+
+
+
+
+            }
+
+        });
+
+
+    }
+
+
     /*单击出现爱心特效*/
     (function (window, document, undefined) {
         var hearts = [];

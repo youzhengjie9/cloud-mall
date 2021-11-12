@@ -111,4 +111,95 @@ public class SearchServiceImpl implements SearchService {
 
         return products;
     }
+
+    @Override
+    public List<Product> searchAllProductByLimit(int from, int size) throws IOException {
+
+        SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        searchSourceBuilder.query();
+        //设置分页
+        searchSourceBuilder.from(from);
+        searchSourceBuilder.size(size);
+
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+
+        SearchHit[] hits = search.getHits().getHits();
+
+        List<Product> products = new CopyOnWriteArrayList<>();
+        for (SearchHit searchHit : hits) {
+            Product product = new Product();
+            Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
+            product.setProductId(Long.valueOf(searchHit.getId()));
+            product.setName((String) sourceAsMap.get("name"));
+            product.setPrice((Double) sourceAsMap.get("price"));
+            product.setImg((String) sourceAsMap.get("img"));
+            product.setNumber((Integer) sourceAsMap.get("number"));
+            product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
+            product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
+            product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
+
+            products.add(product);
+        }
+        return products;
+    }
+
+    @Override
+    public List<Product> searchProductsByCondition(String text, long brandid,
+                                                   long classifyid,int from,int size) throws IOException {
+
+
+        SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+//        //分页
+        searchSourceBuilder.from((from<0)?0:from);
+        searchSourceBuilder.size((size<0)?15:size);
+
+        //构造布尔查询，进行多条件筛选
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery()
+                .must(QueryBuilders.matchQuery("name",text));
+
+        if(brandid!=0){
+            boolQueryBuilder.must(QueryBuilders.termQuery("b_id",String.valueOf(brandid)));
+        }
+        if(classifyid!=0)
+        {
+            boolQueryBuilder.must(QueryBuilders.termQuery("fl_id",String.valueOf(classifyid)));
+        }
+
+
+
+        searchSourceBuilder.query(boolQueryBuilder);
+
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+
+        SearchHit[] hits = searchResponse.getHits().getHits();
+
+        List<Product> products = new CopyOnWriteArrayList<>();
+        for (SearchHit searchHit : hits) {
+            Product product = new Product();
+            Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
+            product.setProductId(Long.valueOf(searchHit.getId()));
+            product.setName((String) sourceAsMap.get("name"));
+            product.setPrice((Double) sourceAsMap.get("price"));
+            product.setImg((String) sourceAsMap.get("img"));
+            product.setNumber((Integer) sourceAsMap.get("number"));
+            product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
+            product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
+            product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
+            products.add(product);
+        }
+
+    System.out.println(products);
+
+        return products;
+    }
 }

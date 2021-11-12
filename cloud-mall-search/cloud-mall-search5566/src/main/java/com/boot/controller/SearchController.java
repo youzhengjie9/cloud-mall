@@ -6,10 +6,8 @@ import io.swagger.annotations.Api;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -82,6 +80,31 @@ public class SearchController {
         SearchHit[] searchHits = searchService.searchProductHitByName(text);
 
         List<Product> products = searchService.searchProductByHit(searchHits);
+
+        return products;
+    }
+
+    //查询所有数据并分页
+    @ResponseBody
+    @GetMapping(path = "/searchAllProductByLimit/{from}/{size}")
+    public List<Product> searchAllProductByLimit(@PathVariable("from") int from,
+                                                 @PathVariable("size") int size) throws IOException {
+
+        List<Product> products = searchService.searchAllProductByLimit(from, size);
+
+        return products;
+    }
+
+    //from size 为分页
+    @ResponseBody
+    @GetMapping(path = "/searchProductsByCondition")
+    public List<Product> searchProductsByCondition(@RequestParam("text") String text,
+                                                   @RequestParam("brandid") long brandid,
+                                                   @RequestParam("classifyid")long classifyid,
+                                                   @RequestParam("from")int from,
+                                                   @RequestParam("size")int size) throws IOException{
+
+        List<Product> products = searchService.searchProductsByCondition(text, brandid, classifyid, from, size);
 
         return products;
     }

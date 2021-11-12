@@ -23,7 +23,7 @@ spring:
     port: 6379
     password:
     host: localhost
-    database: 12
+    database: 10
   datasource:
     url: jdbc:mysql://localhost:3306/cloud_mall_user?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
     username: root

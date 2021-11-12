@@ -23,4 +23,16 @@ public class SearchFallbackFeignImpl implements SearchFallbackFeign {
         log.error("searchProductByName error");
         return null;
     }
+
+    @Override
+    public List<Product> searchAllProductByLimit(int from, int size) throws IOException {
+        log.error("searchAllProductByLimit error");
+        return null;
+    }
+
+    @Override
+    public List<Product> searchProductsByCondition(String text, long brandid, long classifyid, int from, int size) throws IOException {
+        log.error("searchProductsByCondition error");
+        return null;
+    }
 }

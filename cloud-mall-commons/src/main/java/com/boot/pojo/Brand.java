@@ -7,14 +7,14 @@ import java.io.Serializable;
 @ApiModel("品牌实体类")
 public class Brand implements Serializable {
 
-    private int id;
+    private long id;
     private String brandName; //品牌名
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
