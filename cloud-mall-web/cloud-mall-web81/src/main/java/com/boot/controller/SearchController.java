@@ -35,9 +35,9 @@ public class SearchController {
     private final String SEARCH_BRAND_KEY="searchBrand";//搜索品牌key
     private final String SEARCH_CLASSIFY_KEY="searchClassify"; //搜索分类key
     private final String PAGE_PRODUCT_COUNT="pageProductCount"; //分页之前查询的总数
-    private final int from=0; //分页头
+    private final int from=0; //分页起始，从id=from+1 开始
 
-    private final int size=15;//分页尾
+    private final int size=15;//分页大小
 
 
     @Autowired
@@ -132,6 +132,8 @@ public class SearchController {
 
         model.addAttribute("pagecount",pagecount);
 
+        model.addAttribute("curPage",1); //默认第一页
+
         return "client/view/newpage/search";
     }
 
@@ -146,6 +148,11 @@ public class SearchController {
                                                    @RequestParam(value = "size",defaultValue = "15") int size)
                                                     throws IOException{
 
+
+        if(from!=0) //说明前端有from传过来
+        {
+            from=size*(from-1);
+        }
 
         JSONObject jsonObject = new JSONObject();
         if(brandid==-10) //如果是默认，代表点击的不是品牌
@@ -166,7 +173,9 @@ public class SearchController {
         //获取搜索文本
         text = (String) redisTemplate.opsForValue().get(SEARCH_TEXT_KEY);
 
+
         List<Product> products = searchFallbackFeign.searchProductsByCondition(text, brandid, classifyid, from, size);
+
 
         jsonObject.put("products",products);
 
@@ -177,7 +186,6 @@ public class SearchController {
 
         List<Brand> brandList=new LinkedList<>(); //品牌集合
         List<Classify> classifyList=new LinkedList<>(); //分类集合
-
 
         if(products!=null&&products.size()>0)
         {
@@ -228,12 +236,12 @@ public class SearchController {
 
 
         int pageProductCount = (int) redisTemplate.opsForValue().get(PAGE_PRODUCT_COUNT);//获取分页前查询的总数
-//        jsonObject.put("pageCount",pageProductCount);
 
-        int x=size-from; //计算出每一页数量的Max
+        int x=size; //计算出每一页数量的Max
         int pagecount=(pageProductCount%x==0)?pageProductCount/x:(pageProductCount/x)+1; //页的总数
 
         jsonObject.put("pagecount",pagecount);
+
 
 
 

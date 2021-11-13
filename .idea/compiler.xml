@@ -9,10 +9,10 @@
         <module name="cloud-mall-search5566" />
         <module name="cloud-mall-monitor8921" />
         <module name="cloud-mall-web81" />
+        <module name="cloud-mall-commons" />
         <module name="cloud-mall-product2901" />
         <module name="cloud-mall-gateway3201" />
         <module name="cloud-mall-doc" />
-        <module name="cloud-mall-commons" />
         <module name="cloud-mall-system3301" />
       </profile>
     </annotationProcessing>
