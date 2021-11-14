@@ -70,8 +70,21 @@ public class IndexController {
     {
         return "client/view/page/home.product";
     }
+
+
+    @RequestMapping(path = "/view/homeProductDetail/{pid}")
+    public String homeProductDetail1(@PathVariable("pid") long pid,Model model, HttpServletRequest request)
+    {
+
+        String[] strings = productFallbackFeign.selectIntroduceByPid(pid);
+        model.addAttribute("imgs",strings);
+
+
+        return "client/view/newpage/introduce";
+    }
+
     @RequestMapping(path = "/view/homeProductDetail")
-    public String homeProductDetail(Model model, HttpServletRequest request)
+    public String homeProductDetail2(Model model, HttpServletRequest request)
     {
         try{
             Cookie[] cookies = request.getCookies();

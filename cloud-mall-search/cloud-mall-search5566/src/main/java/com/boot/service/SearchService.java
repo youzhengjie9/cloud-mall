@@ -26,9 +26,4 @@ public interface SearchService {
     //from size 为分页
     List<Product> searchProductsByCondition(String text,long brandid,long classifyid,int from,int size) throws IOException;
 
-
-
-
-
-
 }

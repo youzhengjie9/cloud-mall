@@ -40,6 +40,9 @@ public class SearchServiceImpl implements SearchService {
 
   @Autowired private RedisTemplate redisTemplate;
 
+  @Autowired
+  private SearchService searchService;
+
   private static final Object lock = new Object(); // lock1
 
   @Override
@@ -224,7 +227,7 @@ public class SearchServiceImpl implements SearchService {
 
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
-    //        //分页
+    //分页
     searchSourceBuilder.from(from);
     searchSourceBuilder.size(15);
 
@@ -279,32 +282,40 @@ public class SearchServiceImpl implements SearchService {
     }
 
     // 获取分页前查询的总数
+
     BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
     if (response.getHits().getHits().length <= 0) // 如果不存在,说明输入的text搜索不到数据
     {
-      boolQueryBuilder.must(QueryBuilders.matchAllQuery()); // 此时返回全部给前端
+      boolQueryBuilder1.must(QueryBuilders.matchAllQuery()); // 此时返回全部给前端
     } else {
-      boolQueryBuilder.must(QueryBuilders.matchQuery("name", text));
+      boolQueryBuilder1.must(QueryBuilders.matchQuery("name", text));
     }
 
     if (brandid != 0) {
-      boolQueryBuilder.must(QueryBuilders.termQuery("b_id", String.valueOf(brandid)));
+      boolQueryBuilder1.must(QueryBuilders.termQuery("b_id", String.valueOf(brandid)));
     }
     if (classifyid != 0) {
-      boolQueryBuilder.must(QueryBuilders.termQuery("fl_id", String.valueOf(classifyid)));
+      boolQueryBuilder1.must(QueryBuilders.termQuery("fl_id", String.valueOf(classifyid)));
     }
 
     SearchRequest searchRequest2 = new SearchRequest(INDEX_NAME);
     SearchSourceBuilder searchSourceBuilder2 = new SearchSourceBuilder();
+    //因为es默认的size为10所以当我们分页搜索全部时需要调大一点size值
+    searchSourceBuilder2.from(0);
+    searchSourceBuilder2.size(10000);
+
     searchSourceBuilder2.query(boolQueryBuilder1);
     searchRequest2.source(searchSourceBuilder2);
     SearchResponse searchRespond2 =
-        restHighLevelClient.search(searchRequest2, RequestOptions.DEFAULT);
+            restHighLevelClient.search(searchRequest2, RequestOptions.DEFAULT);
 
     redisTemplate
-        .opsForValue()
-        .set(PAGE_PRODUCT_COUNT, searchRespond2.getHits().getTotalHits().value);
+            .opsForValue()
+            .set(PAGE_PRODUCT_COUNT, searchRespond2.getHits().getTotalHits().value);
+
 
     return products;
   }
+
+
 }

@@ -144,17 +144,19 @@ public class SearchController {
     @GetMapping(path = "/searchProductsByCondition",produces = "application/json; charset=utf-8")
     public String searchProductsByCondition(@RequestParam(value = "brandid",defaultValue = "-10") long brandid,
                                                    @RequestParam(value = "classifyid",defaultValue = "-10") long classifyid,
-                                                   @RequestParam(value = "from",defaultValue = "0") int from,
+                                                   @RequestParam(value = "from",defaultValue = "1") int from,
                                                    @RequestParam(value = "size",defaultValue = "15") int size)
                                                     throws IOException{
 
+        int curPage=from;  //当前页
 
-        if(from!=0) //说明前端有from传过来
-        {
-            from=size*(from-1);
-        }
+        from=size*(from-1);
+
 
         JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("curPage",curPage);//传入当前页
+
         if(brandid==-10) //如果是默认，代表点击的不是品牌
        {
             brandid= Long.valueOf((String) redisTemplate.opsForValue().get(SEARCH_BRAND_KEY));
@@ -244,6 +246,16 @@ public class SearchController {
 
 
 
+        int curPageGroup=(curPage%5==0)?curPage/5:(curPage/5)+1; //当前页属于第几组
+        //1-5为第一组导航 ,6-10为第二组以此类推
+        int pageGroup=(pagecount%5==0)?pagecount/5:(pagecount/5)+1; //能够分多少组导航
+
+        jsonObject.put("curPageGroup",curPageGroup);
+        jsonObject.put("pageGroup",pageGroup);
+
+        //比如总共15页,5个一组，15%5=0;此时租后一组就为5个
+        int odd=(pagecount%5==0)?5:pagecount%5; //求最后一组有多少页
+        jsonObject.put("odd",odd);
 
         return JSON.toJSONString(jsonObject);
     }

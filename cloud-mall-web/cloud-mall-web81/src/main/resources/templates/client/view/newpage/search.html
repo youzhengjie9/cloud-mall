@@ -3,28 +3,13 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1226">
-    <title>云商城</title>
-    <meta name="description" content="小米商城-直营小米公司旗下所有产品，囊括小米手机、红米手机、小米电视、小米笔记本、智能硬件、配件及小米生活周边，同时提供小米客户服务及售后支持。">
-    <meta name="keywords" content="小米,小米官网,小米手机,小米官网首页,小米商城">
+    <title>云商城-商品搜索</title>
     <!-- 引入图标库-->
     <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!--bootstrap-->
     <link rel="stylesheet" th:href="@{/static/resource/css/lib/bootstrap.min.css}"/>
-
-    <!--    不能使用bootstrap3，不然可能会导致页面效果不好，因为这个页面是通过bootstrap4来写的-->
-<!--    <link th:href="@{/assets/index2/css/bootstrap.min.css}" rel="stylesheet">-->
-    <link th:href="@{/assets/index2/css/cl-css.css}" rel="stylesheet">
-    <link th:href="@{/assets/index2/font-awesome/css/font-awesome.min.css}" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/assets/index2/highlight/styles/railscasts.css}">
-
-    <script th:src="@{/assets/index2/jquery/jquery.min.js}"></script>
-    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script th:src="@{/assets/index2/js/bootstrap.min.js}"></script>
-    <script th:src="@{/assets/index2/highlight/highlight.pack.js}"></script>
-
     <!--    引入alibaba iconfont-->
     <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_v7p87hrx9q.css">
-
 
     <!--css-->
     <link rel="stylesheet" th:href="@{/static/resource/css/reset.css}"/>
@@ -369,7 +354,7 @@
             <ul>
                 <li>
                     <div class="pro-img">
-                        <a href="#">
+                        <a target="_blank" th:href="@{'/web/view/homeProductDetail/'+${product.getProductId()}}">
                             <img th:src="@{'/static/img/nav/'+${product.img}+'.jpg'}" alt="product">
 
                         </a>
@@ -409,7 +394,7 @@
             </li>
 
             <li th:if="${curPage>1}">
-                <a onclick="prePage()">&laquo;</a>
+                <a th:onclick="prePage([[${curPage}]])">&laquo;</a>
             </li>
 
             <li th:id="p1" class="active">
@@ -432,9 +417,8 @@
                 <a>&raquo;</a>
             </li>
             <li th:if="${pagecount>1}">
-                <a onclick="nextPage()">&raquo;</a>
+                <a th:onclick="nextPage([[${curPage}]])">&raquo;</a>
             </li>
-
 
         </ul>
 
@@ -527,13 +511,317 @@
 
 
     //上一页
-    function prePage() {
+    function prePage(pgnum) {
+
+
+        $.ajax({
+            url: "/search/searchProductsByCondition",
+            data: {
+                "from": pgnum-1
+            },
+            type: "GET",
+            success: function (json) {
+                document.getElementById('products').innerHTML = ""; //清空所有商品展示
+                var html = ''; //拼接商品展示html
+                for (var i = 0; i < json.products.length; i++) {
+
+                    html += '<div class="product">'
+                    html += '<ul><li>';
+                    html += '<div class="pro-img">'
+                    html+='<a target="_blank" href=\"'+'/web/view/homeProductDetail/'+json.products[i].productId+'\">'
+                    html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
+                    html += '</a></div>'
+                    html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
+                    html += '<p class="desc">' + json.products[i].name + '</p>';
+                    html += '<p class="price">'
+
+                    html += '<span>' + json.products[i].price + '元</span>';
+                    html += '<del>' + 19999 + '</del>'
+                    html + '</p>';
+
+
+                    html += '<div class="review"><a href="#"><span class="msg">请您放心购买商品</span>';
+
+                    html += ' <span class="auther">商品假一赔十</span></a></div>';
+
+
+                    html += '</div>';
+
+                }
+
+                $('#products').append(html);
+
+                //修改分页bar
+
+                document.getElementById('searchPage').innerHTML=''; //搜索页div清空
+
+                var pageBarHtml='';
+
+                pageBarHtml+='<ul class="pagination">';
+
+                var curPage=json.curPage;
+                var pagecount=json.pagecount;
+
+
+                var curPageGroup=json.curPageGroup;
+                var pageGroup=json.pageGroup;
+
+                if(curPage>1)
+                {
+                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                }else {
+                    pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
+                }
+
+                if(pagecount<=5)
+                {
+                    var phtml1='';
+                    for (var i=0;i<pagecount;i++)
+                    {
+                        if((i+1)==curPage)
+                        {
+                            phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                        }else {
+                            phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                        }
+                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                        phtml1+='</li>'
+
+                    }
+                    pageBarHtml+=phtml1;
+
+                }else {
+                    var size=5;
+                    var start=size*(curPageGroup-1)     //从哪里开始遍历
+
+                    // console.log("start="+start);
+
+                    //分两种情况，如果不是最后一组导航
+                    //为了防止最后一组不足5页的情况，我们需要获取最后一组有多少页
+                    if(curPageGroup<pageGroup)
+                    {
+                        var phtml1='';
+                        //因为curPageGroup<pageGroup，所以每一组必定有5页
+                        //此时end=start+5
+                        var end=start+5;
+                        // console.log("end="+end)
+
+                        for (var i=start;i<end;i++)
+                        {
+                            if((i+1)==curPage)
+                            {
+                                phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                            }else {
+                                phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                            }
+                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                            phtml1+='</li>'
+                        }
+                        pageBarHtml+=phtml1;
+
+                    }else{//此时curPage为最后一组导航
+                        var phtml1='';
+                        var odd=json.odd;
+
+                        var end=start+odd; //start+odd就ok了
+
+                        for (var i=start;i<end;i++)
+                        {
+                            if((i+1)==curPage)
+                            {
+                                phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                            }else {
+                                phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                            }
+                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                            phtml1+='</li>'
+                        }
+                        pageBarHtml+=phtml1;
+
+                    }
+
+                }
+
+
+
+                if(curPage==pagecount)
+                {
+                    pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
+                }else {
+                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                }
+
+                pageBarHtml+='</ul>';
+
+                $('#searchPage').append(pageBarHtml);
+
+
+
+            }
+
+        });
 
 
     }
 
     //下一页
-    function nextPage() {
+    function nextPage(pgnum) {
+
+        $.ajax({
+            url: "/search/searchProductsByCondition",
+            data: {
+                "from": pgnum+1
+            },
+            type: "GET",
+            success: function (json) {
+                document.getElementById('products').innerHTML = ""; //清空所有商品展示
+                var html = ''; //拼接商品展示html
+                for (var i = 0; i < json.products.length; i++) {
+
+                    html += '<div class="product">'
+                    html += '<ul><li>';
+                    html += '<div class="pro-img">'
+                    html+='<a target="_blank" href=\"'+'/web/view/homeProductDetail/'+json.products[i].productId+'\">'
+                    html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
+                    html += '</a></div>'
+                    html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
+                    html += '<p class="desc">' + json.products[i].name + '</p>';
+                    html += '<p class="price">'
+
+                    html += '<span>' + json.products[i].price + '元</span>';
+                    html += '<del>' + 19999 + '</del>'
+                    html + '</p>';
+
+
+                    html += '<div class="review"><a href="#"><span class="msg">请您放心购买商品</span>';
+
+                    html += ' <span class="auther">商品假一赔十</span></a></div>';
+
+
+                    html += '</div>';
+
+                }
+
+                $('#products').append(html);
+
+                //修改分页bar
+
+                document.getElementById('searchPage').innerHTML=''; //搜索页div清空
+
+                var pageBarHtml='';
+
+                pageBarHtml+='<ul class="pagination">';
+
+                var curPage=json.curPage;
+                var pagecount=json.pagecount;
+
+
+                var curPageGroup=json.curPageGroup;
+                var pageGroup=json.pageGroup;
+
+                if(curPage>1)
+                {
+                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                }else {
+                    pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
+                }
+
+
+                if(pagecount<=5)
+                {
+                    var phtml1='';
+                    for (var i=0;i<pagecount;i++)
+                    {
+                        if((i+1)==curPage)
+                        {
+                            phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                        }else {
+                            phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                        }
+                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                        phtml1+='</li>'
+
+                    }
+                    pageBarHtml+=phtml1;
+
+                }else {
+                    var size=5;
+                    var start=size*(curPageGroup-1)     //从哪里开始遍历
+
+                    // console.log("start="+start);
+
+                    //分两种情况，如果不是最后一组导航
+                    //为了防止最后一组不足5页的情况，我们需要获取最后一组有多少页
+                    if(curPageGroup<pageGroup)
+                    {
+                        var phtml1='';
+                        //因为curPageGroup<pageGroup，所以每一组必定有5页
+                        //此时end=start+5
+                        var end=start+5;
+                        // console.log("end="+end)
+
+                        for (var i=start;i<end;i++)
+                        {
+                            if((i+1)==curPage)
+                            {
+                                phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                            }else {
+                                phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                            }
+                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                            phtml1+='</li>'
+                        }
+                        pageBarHtml+=phtml1;
+
+                    }else{//此时curPage为最后一组导航
+                        var phtml1='';
+                        var odd=json.odd;
+
+                        var end=start+odd; //start+odd就ok了
+
+                        for (var i=start;i<end;i++)
+                        {
+                            if((i+1)==curPage)
+                            {
+                                phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                            }else {
+                                phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                            }
+                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                            phtml1+='</li>'
+                        }
+                        pageBarHtml+=phtml1;
+
+                    }
+
+                }
+
+
+
+                if(curPage==pagecount)
+                {
+                    pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
+                }else {
+                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                }
+
+                pageBarHtml+='</ul>';
+
+
+
+                $('#searchPage').append(pageBarHtml);
+
+
+
+            }
+
+        });
 
 
     }
@@ -549,8 +837,7 @@
         newelem.classList.add('active')
 
 
-        // var searchPageDiv = document.getElementById('searchPageDiv'); //搜索分页总的div
-        //
+
         // var searchPage=document.getElementById('searchPage'); //搜索页div
 
 
@@ -571,7 +858,7 @@
                     html += '<div class="product">'
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
-                    html += '<a href="#">'
+                    html+='<a target="_blank" href=\"'+'/web/view/homeProductDetail/'+json.products[i].productId+'\">'
                     html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
                     html += '</a></div>'
                     html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
@@ -598,6 +885,110 @@
 
                 //刷新分页bar
 
+                document.getElementById('searchPage').innerHTML=''; //搜索页div清空
+
+                var pageBarHtml='';
+
+                pageBarHtml+='<ul class="pagination">';
+
+                var curPage=json.curPage;
+                var pagecount=json.pagecount;
+
+
+                var curPageGroup=json.curPageGroup;
+                var pageGroup=json.pageGroup;
+
+                if(curPage>1)
+                {
+                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                }else {
+                    pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
+                }
+
+                if(pagecount<=5)
+                {
+                    var phtml1='';
+                    for (var i=0;i<pagecount;i++)
+                    {
+                        if((i+1)==curPage)
+                        {
+                            phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                        }else {
+                            phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                        }
+                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                        phtml1+='</li>'
+
+                    }
+                    pageBarHtml+=phtml1;
+
+                }else {
+                    var size=5;
+                    var start=size*(curPageGroup-1)     //从哪里开始遍历
+
+                    // console.log("start="+start);
+
+                    //分两种情况，如果不是最后一组导航
+                    //为了防止最后一组不足5页的情况，我们需要获取最后一组有多少页
+                    if(curPageGroup<pageGroup)
+                    {
+                        var phtml1='';
+                        //因为curPageGroup<pageGroup，所以每一组必定有5页
+                        //此时end=start+5
+                        var end=start+5;
+                        // console.log("end="+end)
+
+                        for (var i=start;i<end;i++)
+                        {
+                            if((i+1)==curPage)
+                            {
+                                phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                            }else {
+                                phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                            }
+                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                            phtml1+='</li>'
+                        }
+                        pageBarHtml+=phtml1;
+
+                    }else{//此时curPage为最后一组导航
+                        var phtml1='';
+                        var odd=json.odd;
+
+                        var end=start+odd; //start+odd就ok了
+
+                        for (var i=start;i<end;i++)
+                        {
+                            if((i+1)==curPage)
+                            {
+                                phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                            }else {
+                                phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                            }
+                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                            phtml1+='</li>'
+                        }
+                        pageBarHtml+=phtml1;
+
+                    }
+
+                }
+
+
+
+                if(curPage==pagecount)
+                {
+                    pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
+                }else {
+                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                }
+
+                pageBarHtml+='</ul>';
+
+                $('#searchPage').append(pageBarHtml);
 
 
 
@@ -642,7 +1033,7 @@
                     html += '<div class="product">'
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
-                    html += '<a href="#">'
+                    html+='<a target="_blank" href=\"'+'/web/view/homeProductDetail/'+json.products[i].productId+'\">'
                     html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
                     html += '</a></div>'
                     html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
@@ -758,6 +1149,74 @@
 
 
                 $('#brands').append(brandHtml);
+
+
+
+                //修改分页bar
+
+                document.getElementById('searchPage').innerHTML=''; //搜索页div清空
+
+                var pageBarHtml='';
+
+                pageBarHtml+='<ul class="pagination">';
+
+                var curPage=json.curPage;
+                var pagecount=json.pagecount;
+
+                if(curPage>1)
+                {
+                    pageBarHtml+='<li><a onclick="prePage()">&laquo;</a> </li>';
+                }else {
+                    pageBarHtml+='<li class="disabled"><a onclick="prePage()">&laquo;</a> </li>';
+                }
+
+                if(pagecount<=5)
+                {
+                 var phtml1='';
+                    for (var i=0;i<pagecount;i++)
+                    {
+                        if((i+1)==curPage)
+                        {
+                            phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                        }else {
+                            phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                        }
+                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                        phtml1+='</li>'
+
+                    }
+                    pageBarHtml+=phtml1;
+
+                }else {
+                    var phtml1='';
+                    for (var i=0;i<5;i++)
+                    {
+                        if((i+1)==curPage)
+                        {
+                            phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                        }else {
+                            phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                        }
+                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                        phtml1+='</li>'
+
+                    }
+                    pageBarHtml+=phtml1;
+
+                }
+
+                if(curPage==pagecount)
+                {
+                    pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
+                }else {
+                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                }
+
+                pageBarHtml+='</ul>';
+
+                $('#searchPage').append(pageBarHtml);
 
 
 
@@ -789,7 +1248,7 @@
                     html += '<div class="product">'
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
-                    html += '<a href="#">'
+                    html+='<a target="_blank" href=\"'+'/web/view/homeProductDetail/'+json.products[i].productId+'\">'
                     html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
                     html += '</a></div>'
                     html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
@@ -854,11 +1313,6 @@
 
                 $('#brands').append(brandHtml);
 
-
-
-
-
-
                 //拼接分类
                 var classifyList = json.classifyList;
 
@@ -902,6 +1356,74 @@
 
 
                 $('#classifies').append(classifyHtml);
+
+
+
+                //修改分页bar
+
+                document.getElementById('searchPage').innerHTML=''; //搜索页div清空
+
+                var pageBarHtml='';
+
+                pageBarHtml+='<ul class="pagination">';
+
+                var curPage=json.curPage;
+                var pagecount=json.pagecount;
+
+                if(curPage>1)
+                {
+                    pageBarHtml+='<li><a onclick="prePage()">&laquo;</a> </li>';
+                }else {
+                    pageBarHtml+='<li class="disabled"><a onclick="prePage()">&laquo;</a> </li>';
+                }
+
+                if(pagecount<=5)
+                {
+                    var phtml1='';
+                    for (var i=0;i<pagecount;i++)
+                    {
+                        if((i+1)==curPage)
+                        {
+                            phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                        }else {
+                            phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                        }
+                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                        phtml1+='</li>'
+
+                    }
+                    pageBarHtml+=phtml1;
+
+                }else {
+                    var phtml1='';
+                    for (var i=0;i<5;i++)
+                    {
+                        if((i+1)==curPage)
+                        {
+                            phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
+                        }else {
+                            phtml1+='<li id=\"'+'p'+(i+1)+'\">';
+                        }
+                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+
+                        phtml1+='</li>'
+
+                    }
+                    pageBarHtml+=phtml1;
+
+                }
+
+                if(curPage==pagecount)
+                {
+                    pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
+                }else {
+                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                }
+
+                pageBarHtml+='</ul>';
+
+                $('#searchPage').append(pageBarHtml);
 
 
 
