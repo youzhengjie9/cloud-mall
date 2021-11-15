@@ -1,6 +1,9 @@
 package com.boot.controller;
 
 import com.boot.feign.product.fallback.ProductFallbackFeign;
+import com.boot.feign.product.fallback.VersionInfoFallbackFeign;
+import com.boot.pojo.Product;
+import com.boot.pojo.VersionInfo;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author 游政杰
@@ -26,6 +30,9 @@ public class IndexController {
 
     @Autowired
     private ProductFallbackFeign productFallbackFeign;
+
+    @Autowired
+    private VersionInfoFallbackFeign versionInfoFallbackFeign;
 
     @RequestMapping(path = "/")
     public String index()
@@ -78,6 +85,9 @@ public class IndexController {
 
         String[] strings = productFallbackFeign.selectIntroduceByPid(pid);
         model.addAttribute("imgs",strings);
+
+        Product product = productFallbackFeign.selectProductByPid(pid);
+        model.addAttribute("product",product);
 
 
         return "client/view/newpage/introduce";
@@ -167,6 +177,25 @@ public class IndexController {
             return "send fail";
         }
     }
+
+
+    @GetMapping(path = "/buyNowPage/{productid}")
+    public String buyNowPage(@PathVariable("productid") long productid,Model model)
+    {
+
+        Product product = productFallbackFeign.selectProductByPid(productid);
+
+        List<VersionInfo> versionInfos = versionInfoFallbackFeign.selectVersionInfoByPid(productid);
+
+
+        model.addAttribute("product",product);
+        model.addAttribute("versionInfos",versionInfos);
+
+
+        return "client/view/newpage/buyNow";
+    }
+
+
 
 
 

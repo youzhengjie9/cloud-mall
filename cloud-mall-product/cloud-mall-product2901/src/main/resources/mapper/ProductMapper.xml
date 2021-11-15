@@ -26,4 +26,9 @@
         insert into product values(#{productId},#{name},#{price},#{img},#{number},#{fl_id},#{b_id},#{introduce_img})
     </insert>
 
+    <select id="selectProductByPid" resultType="com.boot.pojo.Product">
+        select * from product where productId=#{productId}
+    </select>
+
+
 </mapper>

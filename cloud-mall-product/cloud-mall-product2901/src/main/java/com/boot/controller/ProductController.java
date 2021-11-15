@@ -39,5 +39,13 @@ public class ProductController {
         String[] imgarr = imgs.split(",");
         return imgarr;
     }
+    @ResponseBody
+    @GetMapping(path = "/selectProductByPid/{productId}")
+    public Product selectProductByPid(@PathVariable("productId") long productId){
+
+        Product product = productService.selectProductByPid(productId);
+        return product;
+    }
+
 
 }

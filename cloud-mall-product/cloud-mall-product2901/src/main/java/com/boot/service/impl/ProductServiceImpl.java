@@ -46,4 +46,9 @@ public class ProductServiceImpl implements ProductService {
         productsMapper.insertProduct(product);
     }
 
+    @Override
+    public Product selectProductByPid(long productId) {
+        return productsMapper.selectProductByPid(productId);
+    }
+
 }

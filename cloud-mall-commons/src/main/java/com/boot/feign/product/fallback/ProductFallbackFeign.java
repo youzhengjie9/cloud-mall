@@ -26,4 +26,8 @@ public interface ProductFallbackFeign {
     @GetMapping(path = "/feign/product/selectIntroduceByPid/{pid}")
     public String[] selectIntroduceByPid(@PathVariable("pid") long pid);
 
+    @ResponseBody
+    @GetMapping(path = "/feign/product/selectProductByPid/{productId}")
+    public Product selectProductByPid(@PathVariable("productId") long productId);
+
 }

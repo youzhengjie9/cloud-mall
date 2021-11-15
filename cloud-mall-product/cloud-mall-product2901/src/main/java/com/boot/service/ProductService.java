@@ -1,6 +1,7 @@
 package com.boot.service;
 
 import com.boot.pojo.Product;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,4 +22,7 @@ public interface ProductService {
     String selectIntroduceByPid(long productId);
 
     void insertProduct(Product product);
+
+    //通过productId查询product对象
+    Product selectProductByPid(long productId);
 }

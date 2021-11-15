@@ -26,5 +26,8 @@ public interface ProductMapper {
 
     void insertProduct(Product product);
 
+    //通过productId查询product对象
+    Product selectProductByPid(@Param("productId")long productId);
+
 
 }

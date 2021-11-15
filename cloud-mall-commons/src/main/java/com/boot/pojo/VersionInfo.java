@@ -14,6 +14,7 @@ public class VersionInfo implements Serializable {
     private long versionId;
     private String name;
     private long p_id;
+    private int order;
     private double price;
     private String description;
 
@@ -44,6 +45,14 @@ public class VersionInfo implements Serializable {
         this.p_id = p_id;
     }
 
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
+    }
+
     public double getPrice() {
         return price;
     }
@@ -66,6 +75,7 @@ public class VersionInfo implements Serializable {
                 "versionId=" + versionId +
                 ", name='" + name + '\'' +
                 ", p_id=" + p_id +
+                ", order=" + order +
                 ", price=" + price +
                 ", description='" + description + '\'' +
                 '}';
