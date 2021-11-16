@@ -25,7 +25,7 @@ import java.util.List;
 @Api("客户端首页 web api")
 @Slf4j
 @CrossOrigin
-@RequestMapping(path = "/web")
+@RequestMapping(path = "/web/index")
 public class IndexController {
 
     @Autowired
@@ -124,11 +124,6 @@ public class IndexController {
         return "client/view/404";
     }
 
-    @RequestMapping(path = "/view/buyNow")
-    public String buyNow()
-    {
-        return "client/view/buyNow";
-    }
 
     @RequestMapping(path = "/view/direct/focusImgMultTpl")
     public String focusImgMultTpl()
@@ -155,11 +150,6 @@ public class IndexController {
     public String ulBoxTpl()
     {
         return "directives/template/ulBoxTpl";
-    }
-    @RequestMapping(path = "/view/direct/searchDic")
-    public String searchDic()
-    {
-        return "directives/template/searchDic";
     }
 
 

@@ -248,7 +248,7 @@
         <!--            搜索框-->
         <div id="container">
             <div class="search bar6">
-                <form method="GET" th:action="@{/search/toSearchPage}" autocomplete="off">
+                <form method="GET" th:action="@{/web/search/toSearchPage}" autocomplete="off">
                     <input type="text" placeholder="请输入您要搜索的内容..." name="text">
                     <button type="submit"></button>
                 </form>
@@ -267,7 +267,7 @@
             <h1 style="width: 1100px;text-align: center">[[${product.name}]]</h1>
         </div>
         <div class="product_buy fr">
-            <a th:href="'/web/buyNowPage/'+${product.productId}" class="btn btn-primary">立即购买</a>
+            <a th:href="'/web/index/buyNowPage/'+${product.productId}" class="btn btn-primary">立即购买</a>
         </div>
     </div>
 

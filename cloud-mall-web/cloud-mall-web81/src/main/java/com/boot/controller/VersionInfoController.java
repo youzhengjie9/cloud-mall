@@ -16,7 +16,7 @@ import java.util.List;
  * @author 游政杰
  */
 @Controller
-@RequestMapping(path = "/versionInfo")
+@RequestMapping(path = "/web/versionInfo")
 @Api("商品具体版本服务 web api")
 public class VersionInfoController {
 

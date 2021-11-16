@@ -297,7 +297,7 @@
         <!--            搜索框-->
         <div id="container">
             <div class="search bar6">
-                <form method="GET" th:action="@{/search/toSearchPage}" autocomplete="off">
+                <form method="GET" th:action="@{/web/search/toSearchPage}" autocomplete="off">
                     <input type="text" placeholder="请输入您要搜索的内容..." name="text">
                     <button type="submit"></button>
                 </form>
@@ -314,7 +314,6 @@
 <div class="container">
     <div class="filter_box">
         <div class="filter_list_wrap clearfix">
-            <!--            <goods-filter filter-types="filterTypes" filter-contents="filterContents"></goods-filter>-->
             <div id="brandClassifyDiv">
                 <div id="brands">
                     <dt style="color: #b0b0b0;width: 60px;height: 30px;float: left;text-align: center">品牌:</dt>
@@ -354,7 +353,7 @@
             <ul>
                 <li>
                     <div class="pro-img">
-                        <a target="_blank" th:href="@{'/web/view/homeProductDetail/'+${product.getProductId()}}">
+                        <a target="_blank" th:href="@{'/web/index/view/homeProductDetail/'+${product.getProductId()}}">
                             <img th:src="@{'/static/img/nav/'+${product.img}+'.jpg'}" alt="product">
 
                         </a>
@@ -515,7 +514,7 @@
 
 
         $.ajax({
-            url: "/search/searchProductsByCondition",
+            url: "/web/search/searchProductsByCondition",
             data: {
                 "from": pgnum-1
             },
@@ -671,7 +670,7 @@
     function nextPage(pgnum) {
 
         $.ajax({
-            url: "/search/searchProductsByCondition",
+            url: "/web/search/searchProductsByCondition",
             data: {
                 "from": pgnum+1
             },
@@ -842,7 +841,7 @@
 
 
         $.ajax({
-            url: "/search/searchProductsByCondition",
+            url: "/web/search/searchProductsByCondition",
             data: {
                 "from": pageNum
             },
@@ -1019,7 +1018,7 @@
         // newelem.classList.add('disable')
 
         $.ajax({
-            url: "/search/searchProductsByCondition",
+            url: "/web/search/searchProductsByCondition",
             data: {
                 "brandid": brandid
             },
@@ -1100,14 +1099,6 @@
 
 
                 $('#classifies').append(classifyHtml);
-
-
-
-
-
-
-
-
 
                 //拼接品牌
 
@@ -1235,7 +1226,7 @@
         // newelem.classList.add('disable')
 
         $.ajax({
-            url: "/search/searchProductsByCondition",
+            url: "/web/search/searchProductsByCondition",
             data: {
                 "classifyid": classifyid
             },

@@ -91,7 +91,7 @@
 <!--头部导航菜单-->
 <div class="site_head">
     <div class="container">
-        <div ng-include="'/web/view/log'" class="fl margin_25"></div>
+        <div ng-include="'/web/index/view/log'" class="fl margin_25"></div>
         <div class="site_head_nav fl">
             <ul-box ul-items="ulItems" ul-type="nav" children-content="ulItemsContent" children-div-class="children_horizontal"></ul-box>
         </div>
@@ -101,7 +101,7 @@
 <!--            搜索框-->
             <div id="container">
                 <div class="search bar6">
-                    <form method="GET" th:action="@{/search/toSearchPage}" autocomplete="off">
+                    <form method="GET" th:action="@{/web/search/toSearchPage}" autocomplete="off">
                         <input type="text" placeholder="请输入您要搜索的内容..." name="text">
                         <button type="submit"></button>
                     </form>
@@ -118,6 +118,6 @@
 <div ui-view></div>
 
 <!--footer-->
-<div ng-include="'/web/view/footer'"></div>
+<div ng-include="'/web/index/view/footer'"></div>
 
 </html>

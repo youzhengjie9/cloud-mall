@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/img")
+@RequestMapping(path = "/web/img")
 @Api("图片服务 web api")
 public class ImgController {
 

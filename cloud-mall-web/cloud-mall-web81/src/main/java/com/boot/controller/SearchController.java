@@ -28,7 +28,7 @@ import java.util.List;
  */
 @Controller
 @Api("搜索服务 web api")
-@RequestMapping(path = "/search")
+@RequestMapping(path = "/web/search")
 public class SearchController {
 
     private final String SEARCH_TEXT_KEY="searchText"; //搜索文本key

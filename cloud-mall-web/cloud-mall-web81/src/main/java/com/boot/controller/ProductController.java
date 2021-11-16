@@ -20,7 +20,7 @@ import java.util.List;
  * @author 游政杰
  */
 @Controller
-@RequestMapping(path = "/product")
+@RequestMapping(path = "/web/product")
 @Api("商品服务 web api")
 public class ProductController {
 

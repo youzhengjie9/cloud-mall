@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 @Api("购物车服务 web api")
 @Controller
-@RequestMapping(path = "/cart")
+@RequestMapping(path = "/web/cart")
 public class CartController {
 
   // 放入购物车

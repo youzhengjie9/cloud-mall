@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/Classify")
+@RequestMapping(path = "/web/Classify")
 @Api("分类服务 web api")
 public class ClassifyController {
 
