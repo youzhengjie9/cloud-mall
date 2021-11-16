@@ -187,7 +187,11 @@ public class IndexController {
 
         List<VersionInfo> versionInfos = versionInfoFallbackFeign.selectVersionInfoByPid(productid);
 
+        int count = versionInfoFallbackFeign.selectOrderCountBypid(productid);
 
+
+        model.addAttribute("versionInfoFallbackFeign",versionInfoFallbackFeign);
+        model.addAttribute("count",count);
         model.addAttribute("product",product);
         model.addAttribute("versionInfos",versionInfos);
 

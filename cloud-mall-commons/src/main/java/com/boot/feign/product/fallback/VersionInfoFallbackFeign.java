@@ -24,4 +24,25 @@ public interface VersionInfoFallbackFeign {
     @ResponseBody
     @GetMapping(path = "/feign/versioninfo/selectAllVersionInfo")
     public List<VersionInfo> selectAllVersionInfo();
+
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectOrderCountBypid/{pid}")
+    public int selectOrderCountBypid(@PathVariable("pid") long pid);
+
+
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectVersionInfoByPidAndOrder/{pid}/{order}")
+    public List<VersionInfo> selectVersionInfoByPidAndOrder(@PathVariable("pid") long pid,
+                                                            @PathVariable("order") long order);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectVersionInfoTitle/{pid}/{order}")
+    public String selectVersionInfoTitle(@PathVariable("pid") long pid,
+                                         @PathVariable("order") long order);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectVersionInfoDesc/{pid}/{order}")
+    public String selectVersionInfoDesc(@PathVariable("pid") long pid,
+                                        @PathVariable("order") long order);
+
 }

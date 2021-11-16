@@ -23,4 +23,28 @@ public class VersionInfoFallbackFeignImpl implements VersionInfoFallbackFeign {
         log.error("selectAllVersionInfo error");
         return null;
     }
+
+    @Override
+    public int selectOrderCountBypid(long pid) {
+        log.error("selectOrderCountBypid error");
+        return 0;
+    }
+
+    @Override
+    public List<VersionInfo> selectVersionInfoByPidAndOrder(long pid, long order) {
+        log.error("selectVersionInfoByPidAndOrder error");
+        return null;
+    }
+
+    @Override
+    public String selectVersionInfoTitle(long pid, long order) {
+        log.error("selectVersionInfoTitle error");
+        return null;
+    }
+
+    @Override
+    public String selectVersionInfoDesc(long pid, long order) {
+        log.error("selectVersionInfoDesc error");
+        return null;
+    }
 }

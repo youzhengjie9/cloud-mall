@@ -25,4 +25,24 @@ public class VersionInfoServiceImpl implements VersionInfoService {
     public List<VersionInfo> selectAllVersionInfo() {
         return versionInfoMapper.selectAllVersionInfo();
     }
+
+    @Override
+    public int selectOrderCountBypid(long pid) {
+        return versionInfoMapper.selectOrderCountBypid(pid);
+    }
+
+    @Override
+    public List<VersionInfo> selectVersionInfoByPidAndOrder(long pid, long order) {
+        return versionInfoMapper.selectVersionInfoByPidAndOrder(pid, order);
+    }
+
+    @Override
+    public String selectVersionInfoTitle(long pid, long order) {
+        return versionInfoMapper.selectVersionInfoTitle(pid, order);
+    }
+
+    @Override
+    public String selectVersionInfoDesc(long pid, long order) {
+        return versionInfoMapper.selectVersionInfoDesc(pid, order);
+    }
 }

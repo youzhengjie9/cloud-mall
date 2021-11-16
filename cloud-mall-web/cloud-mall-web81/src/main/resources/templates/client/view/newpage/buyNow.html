@@ -24,7 +24,7 @@
     <link rel="stylesheet" th:href="@{/static/js/directives/css/ulBox2.css}"/>
 
 
-<!--    layui-->
+    <!--    layui-->
     <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
 
 </head>
@@ -92,8 +92,6 @@
     }
 
 
-
-
     ul, ol {
         list-style: none;
     }
@@ -158,7 +156,6 @@
     }
 
 
-
     .price del {
         color: #b0b0b0;
     }
@@ -190,30 +187,33 @@
     }
 
 
-/*    */
-    #box{
+    /*    */
+    #box {
         width: 100%;
         height: 880px;
     }
-    #content{
+
+    #content {
         width: 1226px;
         height: 860px;
         margin: 0 auto;
     }
 
-    #left{
+    #left {
         margin-top: 3%;
         width: 500px;
         height: 410px;
         float: left;
     }
-    #top{
+
+    #top {
 
         width: 100%;
         height: 76.8px;
 
     }
-    #top ul li{
+
+    #top ul li {
 
         float: left;
         width: 160px;
@@ -223,23 +223,25 @@
         line-height: 80px;
     }
 
-    #top ul li a{
+    #top ul li a {
 
         text-decoration: none;
     }
-    #big{
+
+    #big {
         width: 500px;
         height: 350px;
         float: left;
     }
-    #small{
+
+    #small {
         width: 500px;
         height: 60px;
         float: left;
     }
 
 
-    #right{
+    #right {
         margin-top: 3%;
         width: 550px;
         height: 650px;
@@ -247,36 +249,39 @@
         margin-left: 10%;
     }
 
-    #title{
+    #title {
         width: 100%;
         height: 60px;
     }
 
-    #productname{
+    #productname {
 
         font-size: 20px;
         margin-top: 15px;
 
     }
-    #price
-    {
+
+    #price {
         margin-left: 16px;
         font-size: 20px;
         margin-top: 15px;
-        color:#ff6700;
+        color: #ff6700;
     }
 
-    #version{
+    #version {
 
         width: 100%;
         height: 520px;
     }
-    .versioninfo{
+
+    .versioninfo {
         width: 100%;
         height: 210px;
 
     }
-    .versioninfo ul li{
+
+    /* 默认未被选中样式*/
+    .notClicked {
 
         width: 47%;
         height: 50px;
@@ -289,7 +294,22 @@
         margin-bottom: 13px;
     }
 
-    #Finally{
+    /* 被选中样式*/
+    .clicked {
+
+        width: 47%;
+        height: 50px;
+        float: left;
+        list-style: none;
+        text-align: center;
+        border: 1px solid #FFA500;
+        line-height: 50px;
+        margin-right: 13px;
+        margin-bottom: 13px;
+    }
+
+
+    #Finally {
 
         width: 100%;
         height: 100px;
@@ -326,7 +346,6 @@
 </div>
 
 
-
 <!--  商品详情-->
 
 <div id="box">
@@ -353,10 +372,11 @@
 
             <div id="big">
 
-                <img src="/static/img/nav/1.jpg" style="width: 500px;height: 350px">
+                <img th:src="'/static/img/nav/'+${product.img}+'.jpg'" style="width: 500px;height: 350px">
 
             </div>
 
+<!--            缩略图待实现-->
             <div id="small">
 
 
@@ -370,9 +390,9 @@
             <div id="title">
 
                 <div id="productname">
-                    购买小米5手机
+                    购买[[${product.name}]]
                     <span id="price">
-  		 				1800元起
+  		 				[[${product.price}]]起
   		 			</span>
                 </div>
 
@@ -381,59 +401,35 @@
             <span style="color: red;">温馨提示：产品是否购买成功，以最终下单为准哦，请尽快结算!</span>
             <div id="version">
 
-                <div class="versioninfo">
-                    <span>1.选择版本</span>
-                    <span style="color: #b0b0b0;font-size: 14px;">高通骁龙820处理器 最高主频 1.8GHz，3GB内存，32GB容量，全网通3.0</span>
-                    <ul>
-                        <li>标准版</li>
-                        <li>高配版</li>
-                        <li>尊享版</li>
+                <div class="versioninfo" th:each="order:${#numbers.sequence(1,count)}">
+                    <span th:text="${order}"></span>
+                    <span th:text="${versionInfoFallbackFeign.selectVersionInfoTitle(product.productId,order)}"></span>
+                    <span style="color: #b0b0b0;font-size: 14px;"
+                          th:text="${versionInfoFallbackFeign.selectVersionInfoDesc(product.productId,order)}"></span>
+                    <ul th:id="'vul'+${order}">
+                        <li class="notClicked" th:id="'vli'+${versioninfo.versionId}" th:each="versioninfo:${versionInfoFallbackFeign.selectVersionInfoByPidAndOrder(product.productId,order)}"
+                            th:text="${versioninfo.getName()}" th:onclick="pushSku(this,[[${order}]],[[${versioninfo.versionId}]])">
+                        </li>
                     </ul>
                 </div>
-
-
-                <div class="versioninfo">
-                    <span>2.选择版本</span>
-                    <span style="color: #b0b0b0;font-size: 14px;">高通骁龙820处理器 最高主频 1.8GHz，3GB内存，32GB容量，全网通3.0</span>
-                    <ul>
-                        <li>标准版</li>
-                        <li>高配版</li>
-                        <li>尊享版</li>
-                    </ul>
-
-                </div>
-
 
             </div>
-
 
             <div id="Finally">
 
                 <p>您选择了以下产品</p>
                 <p style="color: cornflowerblue;">小米手机5</p>
-                <button class="btn btn-warning" style="color: black">放入购物车</button>
+                <button onclick="pushCart()" class="btn btn-warning" style="color: black">放入购物车</button>
             </div>
-
-
-
-
 
 
         </div>
 
-
-
-
     </div>
-
-
 
 </div>
 
-
-
 <!---->
-
 
 
 <!-- buy-choose-box END -->
@@ -527,14 +523,78 @@
 
 <script th:inline="javascript">
 
+    var size=[[${count}]];
+
+    var skuarr=new Array(size); //存放sku的id的数组
+
+    //例如order=1的存放在skuarr[0]中
 
 
+    function pushSku(elem,orderid,skuid) {
+        
+        //放入skuarr
+        skuarr[orderid-1]=skuid;
 
+        let clickElem = document.getElementById(elem.id);//获取被点击的对象
 
+        let parentNode = document.getElementById(elem.id).parentNode; //获取被点击对象的父节点
 
+        let oldClick=document.querySelectorAll('#'+parentNode.id+' > li.clicked')[0];
 
+        if(oldClick==null)
+        {
+            clickElem.classList.remove('notClicked');//移除未被点击样式
+            clickElem.classList.add('clicked'); //添加被点击样式
 
+        }else {
 
+            oldClick.classList.remove('clicked');//移除旧的被点击样式
+            oldClick.classList.add('notClicked');//添加旧的未被点击样式
+
+            clickElem.classList.remove('notClicked');//移除未被点击样式
+            clickElem.classList.add('clicked');
+        }
+
+    }
+    //放入购物车
+    function pushCart() {
+        //一次校验 是否可以放入购物车
+        var boolean=1; //默认为1就是能买，0不可以买
+        for (var i=0;i<skuarr.length;++i)
+        {
+            if(skuarr[i]==null)
+            {
+                boolean=0; //此时不能买，因为必选选项没有选完
+                break;
+            }
+        }
+        if(boolean==1) //可以放入购物车
+        {
+            var productid=[[${product.productId}]]; //当前商品id
+            $.ajax({
+                url: "/cart/pushCart",
+                data: {
+                    "skuarr": skuarr,
+                    "productid": productid
+                },
+                type: "POST",
+                dateType: 'json',
+                success: function (data) {
+                    if(data.code==200)
+                    {
+                        alert('商品放入购物车成功');
+                    }else if(data.code==404)
+                    {
+                        alert('商品放入购物车失败');
+                    }
+
+                }
+            })
+        }else {
+            alert('商品放入购物车失败')
+        }
+
+    }
 
 
     /*单击出现爱心特效*/

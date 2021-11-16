@@ -39,4 +39,35 @@ public class VersionInfoController {
     }
 
 
+    @ResponseBody
+    @GetMapping(path = "/selectOrderCountBypid/{pid}")
+    public int selectOrderCountBypid(@PathVariable("pid") long pid){
+
+    return versionInfoService.selectOrderCountBypid(pid);
+    }
+
+    //根据商品id和order查询对应的版本信息
+    @ResponseBody
+    @GetMapping(path = "/selectVersionInfoByPidAndOrder/{pid}/{order}")
+    public List<VersionInfo> selectVersionInfoByPidAndOrder(@PathVariable("pid") long pid,
+                                                            @PathVariable("order") long order){
+
+        return versionInfoService.selectVersionInfoByPidAndOrder(pid, order);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/selectVersionInfoTitle/{pid}/{order}")
+    public String selectVersionInfoTitle(@PathVariable("pid") long pid,
+                                         @PathVariable("order") long order){
+
+        return versionInfoService.selectVersionInfoTitle(pid, order);
+    }
+    @ResponseBody
+    @GetMapping(path = "/selectVersionInfoDesc/{pid}/{order}")
+    public String selectVersionInfoDesc(@PathVariable("pid") long pid,
+                                        @PathVariable("order") long order){
+
+        return versionInfoService.selectVersionInfoDesc(pid, order);
+    }
+
 }

@@ -7,12 +7,27 @@
 <mapper namespace="com.boot.dao.VersionInfoMapper">
 
     <select id="selectVersionInfoByPid" resultType="com.boot.pojo.VersionInfo">
-        select * from versioninfo where productId=#{pid}
+        select * from versioninfo where p_id=#{pid}
     </select>
 
     <select id="selectAllVersionInfo" resultType="com.boot.pojo.VersionInfo">
         select * from versioninfo
     </select>
 
+    <select id="selectOrderCountBypid" resultType="int">
+        SELECT COUNT(DISTINCT `order`) FROM versioninfo WHERE p_id=#{pid}
+    </select>
+
+    <select id="selectVersionInfoByPidAndOrder" resultType="com.boot.pojo.VersionInfo">
+        select versionId,name from versioninfo where p_id=#{pid} AND `order`=#{order}
+    </select>
+
+    <select id="selectVersionInfoTitle" resultType="java.lang.String">
+        select title from versioninfo where p_id=#{pid} AND `order`=#{order} liMit 1
+    </select>
+
+    <select id="selectVersionInfoDesc" resultType="java.lang.String">
+        select description from versioninfo where p_id=#{pid} AND `order`=#{order} liMit 1
+    </select>
 
 </mapper>
