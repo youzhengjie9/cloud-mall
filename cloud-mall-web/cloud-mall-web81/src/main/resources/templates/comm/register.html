@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>cloud-mall用户注册</title>
+    <!--    jquery-->
+    <script th:src="@{/static/assets/js/jquery.min.js}"></script>
+    <!-- 样 式 文 件 -->
+    <link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}"/>
+    <link rel="stylesheet" th:href="@{/static/pear-admin/css/other/login.css}"/>
+
+    <!--    邮件自动补全插件-->
+    <!--    GitHub地址：https://github.com/shuzheng/autoMail-->
+    <script type="text/javascript" th:src="@{/static/email/autoMail.1.0.min.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#email').autoMail({
+                emails:['qq.com','163.com','126.com','sina.com','sohu.com','yahoo.cn','gmail.com','hotmail.com','live.cn']
+                // emails:['qq.com']
+            });
+        });
+    </script>
+
+</head>
+<!-- 代 码 结 构 -->
+<body background="/static/pear-admin/images/background.svg" style="background-size: cover;">
+<form id="fm" class="layui-form" th:action="@{/web/register}" autocomplete="off" method="post">
+    <div class="layui-form-item">
+        <img class="logo" th:src="@{/static/pear-admin/images/logo2.png}"/>
+        <div class="title">Mall Register</div>
+    </div>
+    <div class="layui-form-item">
+        <input id="username" name="username" placeholder="帐号" lay-verify="required" hover class="layui-input"/>
+    </div>
+    <div class="layui-form-item">
+        <input id="password" name="password" placeholder="密码" type="password" lay-verify="required" hover class="layui-input"/>
+    </div>
+    <div class="layui-form-item">
+    <input id="email" name="email" placeholder="邮箱" type="email" lay-verify="required" hover class="layui-input"/>
+    </div>
+    <div class="layui-form-item">
+        <input id="code" name="code" placeholder="邮箱验证码" type="text" lay-verify="required" hover class="layui-input layui-input-inline"/>
+        <input type="button" style="height:32px;width:120px;" value="发送邮箱验证码" onclick="sendCode(this)" />
+    </div>
+
+    <div class="layui-form-item">
+        <button type="button" class="pear-btn pear-btn-success login" lay-submit lay-filter="register">
+            注 册
+        </button>
+    </div>
+
+</form>
+<!-- 资 源 引 入 -->
+<script th:src="@{/static/component/layui/layui.js}"></script>
+<script th:src="@{/static/component/pear/pear.js}"></script>
+<script th:inline="javascript">
+
+
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token}
+    layui.use(['form','jquery','layer','button','popup'], function() {
+        let form = layui.form;
+        let $ = layui.jquery;
+        let layer = layui.layer;
+        let button = layui.button;
+        let popup = layui.popup;
+
+
+        form.on('submit(register)', function (data) {
+            let loader = layer.load();
+            var formdata = new FormData($('#fm')[0]);
+            let btn = button.load({elem: '.login'});
+            $.ajax({
+                url: '/web/register',
+                data: formdata,
+                type: "post",
+                dataType: 'json',
+                headers:headers,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    layer.close(loader);
+                    btn.stop(function () {
+                        if (result.success) {
+                            popup.success(result.msg, function () {
+                                location.href = "/web/loginPage";
+                            })
+                        } else {
+                            popup.failure(result.msg, function () {
+
+                            });
+                        }
+                    })
+                }
+            });
+            return false;
+        });
+    })
+
+
+
+    //验证码按钮
+    var clock = '';
+    var nums=[[${expire}]]==-2?60:[[${expire}]];
+
+    var btn;
+    function sendCode(thisBtn)
+    {
+        let e = $('#email').val();
+        var mail_filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        var tmpresult = mail_filter.test(e);
+        if(tmpresult==false){
+            alert('邮箱格式不符合');
+
+        }else {
+            $.ajax({
+                url: '/web/sendCode',
+                data: {
+                    'email':$('#email').val()
+                },
+                type: "get",
+                dataType: 'json',
+                contentType: false,
+                success: function (result) {
+
+                }
+            });
+
+            btn = thisBtn;
+            btn.disabled = true; //将按钮置为不可点击
+            btn.value = nums+'秒后可重新获取';
+            clock = setInterval(doLoop, 1000); //一秒执行一次
+        }
+
+    }
+    function doLoop() {
+        nums--;
+        if (nums > 0) {
+            btn.value = nums + '秒后可重新获取';
+        } else {
+            clearInterval(clock); //清除js定时器
+            btn.disabled = false;
+            btn.value = '点击发送验证码';
+            nums = 60; //重置时间
+        }
+    }
+    //
+
+
+
+
+</script>
+</body>
+</html>
+

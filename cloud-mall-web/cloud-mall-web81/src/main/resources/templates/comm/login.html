@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>cloud-mall用户登录</title>
+<!--    jquery-->
+    <script th:src="@{/static/assets/js/jquery.min.js}"></script>
+    <!-- 样 式 文 件 -->
+    <link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}" />
+    <link rel="stylesheet" th:href="@{/static/pear-admin/css/other/login.css}" />
+
+</head>
+<!-- 代 码 结 构 -->
+<body background="/static/pear-admin/images/background.svg" style="background-size: cover;">
+<form id="fm" class="layui-form" th:action="@{/web/login/login}" autocomplete="off" method="post">
+    <div class="layui-form-item">
+        <img class="logo" th:src="@{/static/pear-admin/images/logo2.png}" />
+        <div class="title">cloud mall</div>
+    </div>
+    <div class="layui-form-item">
+        <input name="username" placeholder="帐号" lay-verify="required" hover class="layui-input"  />
+    </div>
+    <div class="layui-form-item">
+        <input name="password" placeholder="密码" type="password" lay-verify="required" hover class="layui-input"  />
+    </div>
+    <div class="layui-form-item">
+        <input name="captcha" placeholder="验证码"  hover  lay-verify="required" class="code layui-input layui-input-inline"  />
+        <img id="cap" onclick="refreshCaptcha()" th:src="@{/web/pear/captcha}" class="codeImage" />
+    </div>
+    <div class="layui-form-item">
+        <input type="checkbox" name="remember-me" title="记住密码" lay-skin="primary" checked>
+    </div>
+    <div class="layui-form-item">
+        <button type="submit" class="pear-btn pear-btn-success login">
+            登 录
+        </button>
+    </div>
+
+    <div class="layui-form-item" style="text-align:center;color: DarkGray;">
+        <span>其他方式登录</span>
+
+    </div>
+    <div class="layui-form-item" style="text-align:center;">
+        <a href="https://github.com/login/oauth/authorize?client_id=xxx&redirect_uri=http://localhost/github/callback&state=test&scope=user">
+            <img style="width: 23.7px;height: 23.7px;" th:src="@{/static/user/img/auth/github.png}">
+        </a> 
+        <a href="https://gitee.com/oauth/authorize?client_id=e3c40923721dcdcb71580dcc4f037cf7cc9d91dc4be91c6b10afb85b1f3bb755&redirect_uri=http://localhost/gitee/callback&response_type=code">
+            <img style="width: 23.7px;height: 23.7px;" th:src="@{/static/user/img/auth/gitee.png}">
+        </a> 
+    </div>
+</form>
+<!-- 资 源 引 入 -->
+<script th:src="@{/static/component/layui/layui.js}"></script>
+<script th:src="@{/static/component/pear/pear.js}"></script>
+<script>
+
+    //刷新验证码
+    function refreshCaptcha() {
+        document.getElementById('cap').src = '/web/pear/captcha?r=' + Math.random();
+    }
+
+
+</script>
+</body>
+</html>

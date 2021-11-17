@@ -17,6 +17,16 @@ import java.util.Arrays;
 @RequestMapping(path = "/web/cart")
 public class CartController {
 
+
+  //进入购物车
+  @RequestMapping(path = "/tocart")
+  public String tocart()
+  {
+
+    return "client/view/newpage/cart";
+  }
+
+
   // 放入购物车
   @ResponseBody
   @PostMapping(path = "/pushCart")

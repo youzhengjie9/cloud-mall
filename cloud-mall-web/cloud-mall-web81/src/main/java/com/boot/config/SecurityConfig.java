@@ -2,7 +2,9 @@ package com.boot.config;
 
 import com.alibaba.fastjson.JSON;
 import com.boot.data.RememberJson;
+import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.filter.VerifyCodeFilter;
+import com.boot.pojo.LoginLog;
 import com.boot.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   private final String GATEWAY_URL="http://localhost:80"; //gateway网关前缀url
 
+  @Autowired
+  private UserFallbackFeign userFallbackFeign;
+
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
@@ -76,9 +81,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.formLogin()
         .usernameParameter("username")
         .passwordParameter("password")
-        //                .loginPage("/login")
-        .loginPage("/web/loginPage") // 登录页接口
-        .loginProcessingUrl("/web/login") // 登录过程接口（也就是登录表单提交的接口）
+        .loginPage(GATEWAY_URL+"/web/login/toLoginPage") // 登录页接口
+        .loginProcessingUrl("/web/login/login") // 登录过程接口（也就是登录表单提交的接口）
         // 登录成功处理
         .successHandler(
             new AuthenticationSuccessHandler() {
@@ -89,8 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                   Authentication authentication)
                   throws IOException, ServletException {
                 String val = "";
-
-                String                                                                           ipAddr = IpUtils.getIpAddr(request);
+                String ipAddr = IpUtils.getIpAddr(request); //获取ip
                 log.info("登录成功：访问者ip地址：" + ipAddr);
 
                 // 登入成功之后要把登入验证码的缓存标记给删除掉
@@ -102,24 +105,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 String name = s.getName(); // 获取登录用户名
 
                 // 查询数据库密码
-//                String psd = userFallbackFeign.selectPasswordByuserName(name);
+                String psd = userFallbackFeign.selectPasswordByuserName(name);
+
 
                 log.debug("ip地址：" + ipAddr + "登录成功");
 
                 // 封装登录日志信息放到数据库
 
-//                LoginLog loginLog = new LoginLog();
-//                loginLog.setId(SnowId.nextId());
-//                loginLog.setIp(ipAddr);
-//                loginLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
-//                loginLog.setBrowser(BrowserOS.getBrowserName(request));
-//                loginLog.setOs(BrowserOS.getOsName(request));
-//                loginLog.setUsername(name);
-//                Date d = new Date();
-//                java.sql.Date date = new java.sql.Date(d.getTime());
-//                SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                String t = fm.format(date);
-//                loginLog.setTime(t);
+                LoginLog loginLog = new LoginLog();
+                loginLog.setId(SnowId.nextId());
+                loginLog.setIp(ipAddr);
+                loginLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
+                loginLog.setBrowser(BrowserOS.getBrowserName(request));
+                loginLog.setOs(BrowserOS.getOsName(request));
+                loginLog.setUsername(name);
+                Date d = new Date();
+                java.sql.Date date = new java.sql.Date(d.getTime());
+                SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String t = fm.format(date);
+                loginLog.setTime(t);
 //                loginLog.setType(LoginType.NORMAL_LOGIN); // 走SecurityConfig类的登录都是正常的登录
 //                loginLogFeign.insertLoginLog(loginLog);
 
@@ -128,7 +132,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 if (rememberme != null && rememberme.equals("on")) { // 此时激活记住我
 
                   try {
-//                      setRememberme(name, psd, request, httpServletResponse); // 记住我实现
+                      setRememberme(name, psd, request, httpServletResponse); // 记住我实现
                   } catch (Exception e) {
                     e.printStackTrace();
                   }
@@ -137,18 +141,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 这里不要用转发，不然会有一些bug
                 //
                 // request.getRequestDispatcher("/web/").forward(request,httpServletResponse);
-                httpServletResponse.sendRedirect(GATEWAY_URL+"/web/");
+                httpServletResponse.sendRedirect(GATEWAY_URL+"/web/index/");
               }
             })
-        .failureForwardUrl(GATEWAY_URL+"/web/LoginfailPage")
+        .failureForwardUrl("/web/login/LoginfailPage")
         .and()
         // 不写这段代码，druid监控sql将失效（原因未明）
         .csrf()
         .ignoringAntMatchers("/druid/**")
         .and()
         .logout()
-        .logoutUrl("/web/logout")
-        .logoutSuccessUrl(GATEWAY_URL+"/web/page/1")
+        .logoutUrl("/web/logout/logout")
+        .logoutSuccessUrl(GATEWAY_URL+"/web/index/")
         .logoutSuccessHandler(
             new LogoutSuccessHandler() {
               @Override
@@ -162,45 +166,49 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 退出从Redis删除记住我记录
                 redisTemplate.delete(REMEMBER_KEY + IpUtils.getIpAddr(httpServletRequest));
-                httpServletResponse.sendRedirect(GATEWAY_URL+"/web/page/1");
+                httpServletResponse.sendRedirect(GATEWAY_URL+"/web/index/");
               }
             })
         .and()
         .authorizeRequests()
-        .antMatchers("/web/page/**")
+        .antMatchers("/web/index/**")
         .permitAll()
         .antMatchers("/druid/**")
         .permitAll()
         // 这句代码一定要加，为了防止spring过滤静态资源
         .antMatchers(
-            "/user/**",
-            "/email/**",
-            "/plugins/**",
-            "/user_img/**",
-            "/article_img/**",
-            "/assets/**",
-            "/back/**",
-            "/user/**",
-            "/pear-admin/**",
-            "/component/**",
-            "/static/**",
-            "/pear/captcha",
-            "/config/**",
-            "/favicon.ico")
+            "/static/user/**",
+            "/static/email/**",
+            "/static/plugins/**",
+            "/static/user_img/**",
+            "/static/article_img/**",
+            "/static/assets/**",
+            "/static/back/**",
+            "/static/user/**",
+            "/static/pear-admin/**",
+            "/static/component/**",
+            "/static/static/**",
+            "/static/pear/captcha",
+            "/static/config/**",
+            "/static/favicon.ico")
         .permitAll()
-        .antMatchers(
-            "/monitor/**",
-            "/usermanager/**",
-            "/article/updateAllowComment",
-            "/link/**",
-            "/visitor/**",
-            "/chart/**",
-            "/black/**")
-        .hasRole("admin")
-        .antMatchers("/myuser/**", "/img/**", "/catchArticle/**", "/like/**", "/admin/")
+            //只有admin权限才能访问(后台管理)
+//        .antMatchers(
+//            "/monitor/**",
+//            "/usermanager/**",
+//            "/visitor/**",
+//            "/chart/**",
+//            "/black/**")
+//        .hasRole("admin")
+
+            //只有登录以后才能访问
+        .antMatchers("/myuser/**", "/img/**", "/admin/","/web/cart/**")
         .hasAnyRole("admin", "common")
+
         .antMatchers("/web/sliderCaptcha/**", "/web/logout")
         .permitAll()
+
+            //其他的任何请求登录不登录都可以访问
         .anyRequest()
         .permitAll()
         .and()

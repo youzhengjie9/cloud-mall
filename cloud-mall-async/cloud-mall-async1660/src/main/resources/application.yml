@@ -1,0 +1,64 @@
+server:
+  port: 1660
+spring:
+  application:
+    name: cloud-mall-async
+  #zipkin服务所在地址
+  zipkin:
+    base-url: http://localhost:9411/
+  #配置采样百分比,开发环境可以设置为1，表示全部，生产就用默认
+  sleuth:
+    sampler:
+      probability: 1
+  #配置springBoot admin
+  boot:
+    admin:
+      client:
+        url:  http://localhost:8921   #这里配置admin server 的地址
+        username: root
+        password: 18420163207
+  redis:
+    port: 6379
+    password:
+    host: localhost
+    database: 10     #使用db10
+  thymeleaf:
+    cache: false
+  #springcloud配置
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848    #单机部署
+    sentinel:
+      transport:
+        port: 8720
+        dashboard: localhost:8080
+    #配置seata
+    alibaba:
+      seata:
+        tx-service-group: my_test_tx_group
+  main:
+    allow-bean-definition-overriding: true    #不然多个feign接口连接相同的微服务则会报错
+
+  mail:
+    username: 1550324080@qq.com
+    host: smtp.qq.com
+    default-encoding: UTF-8
+    password: bvwujebcxibfheac
+  # rabbitmq
+  rabbitmq:
+      username: guest
+      virtual-host: /ems
+      password: guest
+      host: localhost
+
+#开启feign对sentinel的支持
+feign:
+  sentinel:
+    enabled: true
+
+#设置ribbon的超时时间
+ribbon:
+  ReadTimeout: 8000
+  ConnectTimeout: 8000
+

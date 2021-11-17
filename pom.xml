@@ -17,6 +17,7 @@
         <module>cloud-mall-gateway</module>
         <module>cloud-mall-monitor</module>
         <module>cloud-mall-user</module>
+        <module>cloud-mall-async</module>
     </modules>
     <!--    打包方式为pom-->
     <packaging>pom</packaging>

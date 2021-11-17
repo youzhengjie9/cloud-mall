@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1226">
@@ -232,11 +233,16 @@
             </ul>
         </div>
         <div class="topbar_cart fr">
-            <a ui-sref="cart">购物车</a>
+            <a href="/web/cart/tocart">购物车</a>
         </div>
         <div class="topbar_info fr">
-            <div ui-view="loginUser"></div>
-
+            <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
+            <a class="nav-link" th:href="@{/web/login/toregister}">注册</a>
+            <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
+            <a class="nav-link" sec:authorize="isAuthenticated()"
+               href="javascript:document.logoutform.submit();">
+                退出
+            </a>
         </div>
     </div>
 </div>
@@ -365,7 +371,10 @@
 
 
 <script th:inline="javascript">
-
+    //js提交表单
+    function submitData() {
+        document.getElementById("form").submit();
+    }
     /*单击出现爱心特效*/
     (function (window, document, undefined) {
         var hearts = [];

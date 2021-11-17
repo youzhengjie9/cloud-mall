@@ -1,0 +1,126 @@
+@charset "utf-8";
+.shopping-car-container {
+	padding: 50px 40px;
+}
+
+.shopping-car-container .car-headers-menu {
+	border-bottom: 1px solid #f5f5f5;
+	padding: 0 15px;
+}
+
+.shopping-car-container .panel-body {
+	padding: 15px 0;
+}
+
+#checkAll {
+	vertical-align: text-bottom;
+}
+
+.shopping-car-container .car-menu {
+	text-align: center;
+}
+/*
+ 商品区
+ * */
+
+
+.shopping-car-container .goods-content {
+	margin-top: 15px;
+}
+
+.shopping-car-container .goods-content .goods-item {
+	margin-top: 20px;
+}
+
+.shopping-car-container .goods-content .goods-item .car-goods-info {
+	height: 150px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.shopping-car-container .goods-content .goods-item .goods-image-column img,
+.shopping-car-container .goods-content .goods-item .goods-image-column span {
+	display: block;
+	float: left;
+}
+
+.shopping-car-container .goods-content .goods-item .goods-image-column span {
+	width: calc(100% - 100px);
+	box-sizing: border-box;
+	text-indent: 2rem;
+	line-height: 25px;
+	padding: 10px;
+}
+
+.goods-price {
+	color: red;
+	font-weight: bolder;
+}
+
+.form-control {
+	text-align: center;
+}
+
+.single-total {
+	color: red;
+	font-weight: bold;
+}
+
+.goods-params {
+	color: darkgray;
+}
+
+.bottom-menu {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.bottom-menu #checkAllBottom {
+	vertical-align: text-bottom;
+}
+
+#deleteMulty {
+	color: cornflowerblue;
+	cursor: pointer;
+	vertical-align: text-bottom;
+}
+
+.bottom-menu-include {
+	background: #e5e5e5;
+}
+
+#selectGoodsCount {
+	color: orangered;
+	font-size: 16px;
+	font-weight: bolder;
+}
+
+#selectGoodsMoney {
+	color: orangered;
+	font-size: 16px;
+	font-weight: bolder;
+}
+
+.panel-default .submitData {
+	background: orangered;
+	font-size: 16px;
+	color: white;
+	cursor: pointer;
+	font-weight: bolder;
+	height: 58px;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.panel-default .submitDis {
+	background: #B0B0B0;
+	cursor: no-drop;
+}
+
+.shopping-car-container .panel-default {
+	position: relative;
+}

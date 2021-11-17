@@ -1,5 +1,6 @@
 package com.boot.filter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.stereotype.Component;
@@ -16,17 +17,17 @@ import java.io.IOException;
  * @author 游政杰
  */
 @Component
+@Slf4j
 public class VerifyCodeFilter extends OncePerRequestFilter {
     /**
      * 验证码过滤器
      */
 
-    private String defaultFilterProcessUrl = "/login";
+    private String defaultFilterProcessUrl = "/web/login/login";
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
         if ("POST".equalsIgnoreCase(request.getMethod()) && defaultFilterProcessUrl.equals(request.getServletPath())) {
-
             // 登录请求校验验证码，非登录请求不用校验
             HttpSession session = request.getSession();
             String requestCaptcha = request.getParameter("captcha");

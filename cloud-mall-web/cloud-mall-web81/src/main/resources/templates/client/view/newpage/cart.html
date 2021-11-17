@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1226">
+    <title>云商城-购物车</title>
+    <!-- 引入图标库-->
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<!--    &lt;!&ndash;bootstrap&ndash;&gt;-->
+<!--    <link rel="stylesheet" th:href="@{/static/resource/css/lib/bootstrap.min.css}"/>-->
+
+    <!--bootstrap-->
+    <link rel="stylesheet" th:href="@{/static/pear-admin/bootstrap.css}"/>
+
+    <!--    引入alibaba iconfont-->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_v7p87hrx9q.css">
+
+<!--    引入购物车css-->
+    <link type="text/css" rel="stylesheet" th:href="@{/static/pear-admin/css/style.css}" />
+
+    <!--css-->
+    <link rel="stylesheet" th:href="@{/static/resource/css/reset.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/home.css}"/>
+    <!--    layui-->
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+
+
+    <style>
+        /***** head页面头部 start*/
+        .head {
+            font-size: 12px;
+            height: 102px;
+            border-bottom: 2px solid #ff6700;
+            background: #fff;
+            color: #b0b0b0;
+        }
+        .head_log{
+            margin-right: 55px;
+        }
+        .head_log img{
+            width: 48px;
+            height: 48px;
+        }
+        .head_title {
+            float: left;
+            margin: 26px 0 0 0;
+        }
+        .head_title h1{
+            color: #424242;
+            font-size: 28px;
+            height: 48px;
+            line-height: 48px;
+        }
+        .head_login{
+            float: right;
+            margin: 26px 0 0 0;
+            line-height: 48px;
+        }
+        .head_register{
+            display: inline-block;
+            margin-left: 15px;
+        }
+        /***** head页面头部 end*/
+
+        /***** footer 页面底部 start*/
+        /*footer  footer_service*/
+        .footer_service{
+            padding: 30px 0;
+            overflow: hidden;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .footer_service ul{
+            margin-right: -2px;
+        }
+        .footer_service ul li{
+            float: left;
+            width: 20%;
+            height: 25px;
+            font-size: 16px;
+            line-height: 25px;
+            border-right: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        /*footer  footer_link*/
+        .footer_link{
+            padding: 40px 0;
+        }
+        .footer_link dl{
+            float: left;
+            width: 160px;
+            height: 112px;
+            margin: 0;
+        }
+        .footer_link dt{
+            margin: -1px 0 26px;
+            font-size: 14px;
+            line-height: 1.25;
+            color: #424242;
+        }
+        .footer_link dd{
+            margin: 10px 0 0;
+            font-size: 12px;
+        }
+
+        .footer_contact{
+            float: right;
+            width: 245px;
+            height: 112px;
+            border-left: 1px solid #e0e0e0;
+            text-align: center;
+            color: #616161;
+        }
+        .footer_contact .phone{
+            font-size: 26px;
+            color: #ff6700;
+        }
+
+        .footer_site{
+            background: #f5f5f5;
+        }
+        .footer_site p{
+            margin: 32px 0;
+            text-align: center;
+        }
+        /***** footer 页面底部 end*/
+    </style>
+
+
+</head>
+
+
+<body>
+<!-- jquery.js angular.js-->
+<script th:src="@{/static/resource/lib/jquery.min.js}"></script>
+<script th:src="@{/static/resource/lib/angular.js}"></script>
+
+<!--头部工具栏-->
+<div class="topbar">
+    <div class="container">
+        <div class="topbar_nav fl">
+            <ul>
+                <li><a href="https://www.jd.com/">京东商城</a></li>
+                <li><a href="https://www.taobao.com/">淘宝商城</a></li>
+                <li><a href="https://www.mi.com">小米商城</a></li>
+                <li><a href="https://gitee.com/youzhengjie/cloud-mall">项目链接</a></li>
+            </ul>
+        </div>
+        <div class="topbar_cart fr">
+            <a href="/web/cart/tocart">购物车</a>
+        </div>
+        <div class="topbar_info fr">
+            <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
+            <a class="nav-link" th:href="@{/web/login/toregister}">注册</a>
+            <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
+            <a class="nav-link" sec:authorize="isAuthenticated()"
+               href="javascript:document.logoutform.submit();">
+                退出
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+<!--  购物车-->
+
+
+<div class="shopping-car-container">
+    <div class="car-headers-menu">
+        <div class="row">
+            <div class="col-md-1 car-menu">
+                <label><input type="checkbox" id="check-goods-all" /><span id="checkAll">全选</span></label>
+            </div>
+            <div class="col-md-3 car-menu">商品信息</div>
+            <div class="col-md-3 car-menu">商品参数</div>
+            <div class="col-md-1 car-menu">单价</div>
+            <div class="col-md-1 car-menu">数量</div>
+            <div class="col-md-1 car-menu">金额</div>
+            <div class="col-md-2 car-menu">操作</div>
+        </div>
+    </div>
+    <div class="goods-content">
+        <!--goods display-->
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body bottom-menu-include">
+            <div class="col-md-1 check-all-bottom bottom-menu">
+                <label>
+                    <input type="checkbox" id="checked-all-bottom" />
+                    <span id="checkAllBottom">全选</span>
+                </label>
+            </div>
+            <div class="col-md-1 bottom-menu">
+				<span id="deleteMulty">
+						删除
+				</span>
+            </div>
+            <div class="col-md-6 bottom-menu">
+
+            </div>
+            <div class="col-md-2 bottom-menu">
+                <span>已选商品 <span id="selectGoodsCount">0</span> 件</span>
+            </div>
+            <div class="col-md-1 bottom-menu">
+                <span>合计：<span id="selectGoodsMoney">0.00</span></span>
+            </div>
+            <div onclick="buy()" class="col-md-1 bottom-menu submitData submitDis">
+                结算
+            </div>
+        </div>
+    </div>
+    <!--删除确认弹框-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="deleteItemTip" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    确认删除此商品？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary deleteSure">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--是否勾选商品提示-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="selectItemTip" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    请选择要删除的商品！
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--批量删除商品-->
+    <div class="modal fade" tabindex="-1" role="dialog" id="deleteMultyTip" aria-labelledby="gridSystemModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="gridSystemModalLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    确认删除选择的商品！
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary deleteMultySure">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:src="@{/static/js/script.js}"></script>
+<div style="text-align:center;margin:-50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+</div>
+
+
+
+<!--      -->
+
+
+<!--footer-->
+<footer class="footer">
+    <div class="container">
+        <div class="footer_service">
+            <ul class="clearfix">
+                <li><a href="">1小时快修服务</a></li>
+                <li><a href="">7天无理由退货</a></li>
+                <li><a href="">30天免费换货</a></li>
+                <li><a href="">满200元包邮</a></li>
+                <li><a href="">520余家售后网点</a></li>
+            </ul>
+        </div>
+
+        <div class="footer_link clearfix">
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+
+            <div class="footer_contact">
+                <p class="phone">18420163207</p>
+
+                <p><span style="">周一至周日 8:00-18:00</span>
+                    <span style="display:none;">2月7日至13日服务时间 7:00-18:00</span><br>（仅收市话费）</p>
+                <a rel="nofollow" class="btn btn-primary btn-small" href="#">24小时在线客服</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer_site">
+        <div class="container">
+            <div class="cart_log">
+                <a href="" title="云商城"></a>
+            </div>
+            <div>
+                <p>云商城项目由本人自己完成,如有不足,请指正！</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+</body>
+
+
+<script th:inline="javascript">
+
+    //js提交表单
+    function submitData() {
+        document.getElementById("form").submit();
+    }
+
+    //Ajax异步结算
+
+    function buy() {
+
+        var obj = document.getElementsByName("buyGoods");
+        var check_val = [];
+        for (k in obj) {
+            if (obj[k].checked)
+                check_val.push(obj[k].value);
+        }
+        console.log(check_val)
+
+
+    }
+
+
+
+    /*单击出现爱心特效*/
+    (function (window, document, undefined) {
+        var hearts = [];
+        window.requestAnimationFrame = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback) {
+                    setTimeout(callback, 1000 / 60);
+                }
+        })();
+        init();
+
+        function init() {
+            css(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+            attachEvent();
+            gameloop();
+        }
+
+        function gameloop() {
+            for (var i = 0; i < hearts.length; i++) {
+                if (hearts[i].alpha <= 0) {
+                    document.body.removeChild(hearts[i].el);
+                    hearts.splice(i, 1);
+                    continue;
+                }
+                hearts[i].y--;
+                hearts[i].scale += 0.004;
+                hearts[i].alpha -= 0.013;
+                hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+            }
+            requestAnimationFrame(gameloop);
+        }
+
+        function attachEvent() {
+            var old = typeof window.onclick === "function" && window.onclick;
+            window.onclick = function (event) {
+                old && old();
+                createHeart(event);
+            }
+        }
+
+        function createHeart(event) {
+            var d = document.createElement("div");
+            d.className = "heart";
+            hearts.push({
+                el: d,
+                x: event.clientX - 5,
+                y: event.clientY - 5,
+                scale: 1,
+                alpha: 1,
+                color: randomColor()
+            });
+            document.body.appendChild(d);
+        }
+
+        function css(css) {
+            var style = document.createElement("style");
+            style.type = "text/css";
+            try {
+                style.appendChild(document.createTextNode(css));
+            } catch (ex) {
+                style.styleSheet.cssText = css;
+            }
+            document.getElementsByTagName('head')[0].appendChild(style);
+        }
+
+        function randomColor() {
+            return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+        }
+    })(window, document);
+</script>
+
+
+</html>

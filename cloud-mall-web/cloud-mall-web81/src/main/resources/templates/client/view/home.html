@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <!-- 引入图标库-->
 <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
@@ -79,12 +80,21 @@
             </ul>
         </div>
         <div class="topbar_cart fr">
-            <a ui-sref="cart">购物车</a>
+            <a href="/web/cart/tocart">购物车</a>
         </div>
-        <div class="topbar_info fr">
-            <div ui-view="loginUser"></div>
 
+
+        <div class="topbar_info fr">
+            <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
+                <a class="nav-link" th:href="@{/web/login/toregister}">注册</a>
+                <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
+                <a class="nav-link" sec:authorize="isAuthenticated()"
+                href="javascript:document.logoutform.submit();">
+                退出
+                </a>
         </div>
+
+
     </div>
 </div>
 
@@ -119,5 +129,15 @@
 
 <!--footer-->
 <div ng-include="'/web/index/view/footer'"></div>
+
+
+
+
+<script>
+    //js提交表单
+    function submitData() {
+        document.getElementById("form").submit();
+    }
+</script>
 
 </html>
