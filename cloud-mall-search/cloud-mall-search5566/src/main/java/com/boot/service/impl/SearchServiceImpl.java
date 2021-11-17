@@ -19,6 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -104,9 +105,10 @@ public class SearchServiceImpl implements SearchService {
         Product product = new Product();
         Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
 
+        BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
         product.setProductId(Long.valueOf(searchHit.getId()));
         product.setName((String) sourceAsMap.get("name"));
-        product.setPrice((Double) sourceAsMap.get("price"));
+        product.setPrice(price);
         product.setImg((String) sourceAsMap.get("img"));
         product.setNumber((Integer) sourceAsMap.get("number"));
         product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
@@ -151,10 +153,10 @@ public class SearchServiceImpl implements SearchService {
       for (SearchHit searchHit : hits) {
         Product product = new Product();
         Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
-
+        BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
         product.setProductId(Long.valueOf(searchHit.getId()));
         product.setName((String) sourceAsMap.get("name"));
-        product.setPrice((Double) sourceAsMap.get("price"));
+        product.setPrice(price);
         product.setImg((String) sourceAsMap.get("img"));
         product.setNumber((Integer) sourceAsMap.get("number"));
         product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
@@ -205,9 +207,10 @@ public class SearchServiceImpl implements SearchService {
     for (SearchHit searchHit : hits) {
       Product product = new Product();
       Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
+      BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
       product.setProductId(Long.valueOf(searchHit.getId()));
       product.setName((String) sourceAsMap.get("name"));
-      product.setPrice((Double) sourceAsMap.get("price"));
+      product.setPrice(price);
       product.setImg((String) sourceAsMap.get("img"));
       product.setNumber((Integer) sourceAsMap.get("number"));
       product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
@@ -270,9 +273,10 @@ public class SearchServiceImpl implements SearchService {
     for (SearchHit searchHit : hits) {
       Product product = new Product();
       Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
+      BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
       product.setProductId(Long.valueOf(searchHit.getId()));
       product.setName((String) sourceAsMap.get("name"));
-      product.setPrice((Double) sourceAsMap.get("price"));
+      product.setPrice(price);
       product.setImg((String) sourceAsMap.get("img"));
       product.setNumber((Integer) sourceAsMap.get("number"));
       product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));

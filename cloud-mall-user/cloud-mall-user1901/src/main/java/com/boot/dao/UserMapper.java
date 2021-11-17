@@ -12,6 +12,8 @@ public interface UserMapper {
     //通过用户名查询密码
     String selectPasswordByuserName(@Param("username")String username);
 
+    long selectUserIdByName(@Param("username")String username);
+
 
 
 

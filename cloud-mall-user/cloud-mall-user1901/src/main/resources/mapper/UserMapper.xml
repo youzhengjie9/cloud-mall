@@ -10,5 +10,8 @@
         select password from t_user where username=#{username}
     </select>
 
+    <select id="selectUserIdByName" resultType="long">
+        select id from t_user where username=#{username}
+    </select>
 
 </mapper>

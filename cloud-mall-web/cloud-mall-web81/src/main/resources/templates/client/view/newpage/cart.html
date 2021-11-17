@@ -366,12 +366,32 @@
     function buy() {
 
         var obj = document.getElementsByName("buyGoods");
-        var check_val = [];
+        var check_val = []; //所有被选中的商品id
         for (k in obj) {
             if (obj[k].checked)
                 check_val.push(obj[k].value);
         }
-        console.log(check_val)
+
+        for (var i=0;i<check_val.length;i++) //遍历即将被购买的商品列表
+        {
+            console.log('----------------')
+            let goodsItem = document.getElementById('goodsList'+check_val[i]); //被选中的商品的div
+            console.log(check_val[i]); //购物车记录id
+            let img =goodsItem.getElementsByClassName('goods-image')[0];
+            console.log(img.src);
+            let info =goodsItem.getElementsByClassName('goods-info')[0];
+            console.log(info.innerText);
+            let params =goodsItem.getElementsByClassName('goods-params')[0];
+            console.log(params.innerText);
+            let count =goodsItem.getElementsByClassName('goods-count')[0];
+            console.log(count.value);
+            let total =goodsItem.getElementsByClassName('single-total')[0];
+            console.log(total.innerText);
+            console.log('-------------------')
+        }
+
+
+
 
 
     }

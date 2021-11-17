@@ -11,7 +11,7 @@ public interface UserService {
     //通过用户名查询密码
     String selectPasswordByuserName(String username);
 
-
+    long selectUserIdByName(String username);
 
 
 }

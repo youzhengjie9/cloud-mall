@@ -21,6 +21,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectPasswordByuserName(username);
     }
 
+    @Override
+    public long selectUserIdByName(String username) {
+        return userMapper.selectUserIdByName(username);
+    }
 
 
 }

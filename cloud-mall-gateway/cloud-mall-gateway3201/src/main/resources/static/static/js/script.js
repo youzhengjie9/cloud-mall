@@ -1,45 +1,38 @@
-var goodsList = [{
-		id: 1234564876,
-		imgUrl: '/static/pear-admin/img/1.png',
-		goodsInfo: '号地块健身房回复的科技示范户快速坚实的看了看大家发快递了很费劲的开始放假',
-		goodsParams: '四季度后付款的酸辣粉',
-		price: 199,
-		goodsCount: 1,
-		singleGoodsMoney: 199
-	},
-	{
-		id: 1234564876,
-		imgUrl: '/static/pear-admin/img/2.png',
-		goodsInfo: '号地块健身房回复的科技示范户快速坚实的看了看大家发快递了很费劲的开始放假',
-		goodsParams: '四季度后付款的酸辣粉',
-		price: 299,
-		goodsCount: 2,
-		singleGoodsMoney: 598
-	},
-	{
-		id: 1234564876,
-		imgUrl: '/static/pear-admin/img/3.png',
-		goodsInfo: '号地块健身房回复的科技示范户快速坚实的看了看大家发快递了很费劲的开始放假',
-		goodsParams: '四季度后付款的酸辣粉',
-		price: 399,
-		goodsCount: 1,
-		singleGoodsMoney: 399
-	}
-]
+var goodsList=new Array();
 var deleteGoods = null
 loadGoods()
 
 function loadGoods() {
+	$.ajax({
+		url: "/web/cart/selectCartByUserId",
+		type: "GET",
+		async:false, //这里必须得同步操作,默认是异步的，速度会很快，导致后面的数据无法渲染
+		success: function (data) {
+			goodsList=data.carts;
+		}
+	})
+
+	if(goodsList.length==0){
+
+		var goodsHtml = '<div class="goods-item">';
+
+		goodsHtml+='购物车没有任何东西,请去挑选心仪的商品放入购物车'
+
+		goodsHtml+='<div>'
+		$('.goods-content').append(goodsHtml)
+	}
+
+
 	$.each(goodsList, function(i, item) {
-		var goodsHtml = '<div class="goods-item">' +
+		var goodsHtml = '<div class="goods-item" id="goodsList' + item.id + '">' +
 			'<div class="panel panel-default">' +
 			'<div class="panel-body">' +
 			'<div class="col-md-1 car-goods-info">' +
-			'<label><input type="checkbox" name="buyGoods" class="goods-list-item"/></label>' +
+			'<label><input type="checkbox" name="buyGoods" value="' + item.id + '" class="goods-list-item"/></label>' +
 			'</div>' +
 			'<div class="col-md-3 car-goods-info goods-image-column">' +
 			'<img class="goods-image" src="' + item.imgUrl + '" style="width: 100px; height: 100px;" />' +
-			'<span id="goods-info">' +
+			'<span id="goods-info" class="goods-info">' +
 			item.goodsInfo +
 			'</span>' +
 			'</div>' +

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigDecimal;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ProductApplication2901.class)
 public class ProductTest {
@@ -25,12 +27,12 @@ public class ProductTest {
         for (int i = 1; i <= 80; i++) {
             long productid = SnowId.nextId(); //生成id
             String name="测试产品"+i;
-            double price=16.3*i;
+            BigDecimal bigDecimal = new BigDecimal(Double.toString(16.3*i)); //要把数值转换成String
             int num=2*i;
             Product product = new Product();
             product.setProductId(productid);
             product.setName(name);
-            product.setPrice(price);
+            product.setPrice(bigDecimal);
             product.setImg("mipad2-64");
             product.setNumber(num);
             product.setFl_id(2);

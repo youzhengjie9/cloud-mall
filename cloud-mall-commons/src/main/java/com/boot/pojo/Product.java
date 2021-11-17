@@ -3,6 +3,7 @@ package com.boot.pojo;
 import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author 游政杰
@@ -13,7 +14,7 @@ public class Product implements Serializable {
 
     private long productId; //商品id
     private String name; //商品名称
-    private double price; //商品价格
+    private BigDecimal price; //商品价格
     private String img; //商品图片
     private int number; //商品还剩的数量
     private long fl_id; //商品所属分类id=classifyid
@@ -39,11 +40,11 @@ public class Product implements Serializable {
         this.name = name;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

@@ -13,4 +13,10 @@ public class UserFallbackFeignImpl implements UserFallbackFeign {
         log.error("selectPasswordByuserName error");
         return null;
     }
+
+    @Override
+    public long selectUserIdByName(String username) {
+        log.error("selectUserIdByName error");
+        return 0;
+    }
 }
