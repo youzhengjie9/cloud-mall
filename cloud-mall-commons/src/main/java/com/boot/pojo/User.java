@@ -3,6 +3,7 @@ package com.boot.pojo;
 import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -14,6 +15,7 @@ public class User implements Serializable {
     private long id;
     private String username; //用户名
     private String password; //密码
+    private BigDecimal money; //用户余额
     private String email; //邮箱
     private Date date; //创建日期
     private int valid;  //是否有效
@@ -75,12 +77,21 @@ public class User implements Serializable {
         UserAuthority = userAuthority;
     }
 
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    public void setMoney(BigDecimal money) {
+        this.money = money;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", money=" + money +
                 ", email='" + email + '\'' +
                 ", date=" + date +
                 ", valid=" + valid +

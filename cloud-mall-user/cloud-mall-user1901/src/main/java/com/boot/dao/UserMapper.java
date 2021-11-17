@@ -1,8 +1,11 @@
 package com.boot.dao;
 
+import com.boot.pojo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.math.BigDecimal;
 
 @Mapper
 @Repository
@@ -14,7 +17,8 @@ public interface UserMapper {
 
     long selectUserIdByName(@Param("username")String username);
 
-
+    //根据用户id查询余额
+    BigDecimal selectUserMoneyByUserId(@Param("userid") long userid);
 
 
 }
