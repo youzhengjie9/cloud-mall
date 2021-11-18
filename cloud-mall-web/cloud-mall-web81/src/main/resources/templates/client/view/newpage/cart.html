@@ -208,7 +208,7 @@
                 <span>合计：<span id="selectGoodsMoney">0.00</span></span>
             </div>
             <div onclick="buy()" class="col-md-1 bottom-menu submitData submitDis">
-                结算
+                确认订单
             </div>
         </div>
     </div>
@@ -361,7 +361,7 @@
         document.getElementById("form").submit();
     }
 
-    //Ajax异步结算
+    //Ajax异步确认订单
 
     function buy() {
 
@@ -372,23 +372,48 @@
                 check_val.push(obj[k].value);
         }
 
-        for (var i=0;i<check_val.length;i++) //遍历即将被购买的商品列表
-        {
-            let goodsItem = document.getElementById('goodsList'+check_val[i]); //被选中的商品的div
-            console.log(check_val[i]); //购物车记录id
-            let img =goodsItem.getElementsByClassName('goods-image')[0];
-            console.log(img.src);
-            let info =goodsItem.getElementsByClassName('goods-info')[0];
-            console.log(info.innerText);
-            let params =goodsItem.getElementsByClassName('goods-params')[0];
-            console.log(params.innerText);
-            let count =goodsItem.getElementsByClassName('goods-count')[0];
-            console.log(count.value);
-            let total =goodsItem.getElementsByClassName('single-total')[0];
-            console.log(total.innerText);
+        var array = [];
 
+        for (var i = 0; i < check_val.length; i++) //遍历即将被购买的商品列表
+        {
+            let goodsItem = document.getElementById('goodsList' + check_val[i]); //被选中的商品的div
+            let img = goodsItem.getElementsByClassName('goods-image')[0];
+            let info = goodsItem.getElementsByClassName('goods-info')[0];
+            let params = goodsItem.getElementsByClassName('goods-params')[0];
+            let count = goodsItem.getElementsByClassName('goods-count')[0];
+            let total = goodsItem.getElementsByClassName('single-total')[0];
+
+
+            var obj = {}; //封装对象
+
+            obj['id'] = check_val[i];
+            obj['imgUrl'] = img.src;
+            obj['goodsInfo'] = info.innerText;
+            obj['goodsParams'] = params.innerText;
+            obj['goodsCount'] = count.value;
+            obj['singleGoodsMoney'] = total.innerText
+
+            array.push(obj);
 
         }
+
+        $.ajax({
+            url: "/web/order/getCheckOrderInfo",
+            data: {
+                js: JSON.stringify(array)
+            },
+            type: "GET",
+            success: function (json) {
+
+                window.location.href='/web/order/toCheckOrder'
+
+            }
+
+        })
+
+
+
+
 
     }
 

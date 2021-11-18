@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1226">
+    <title>云商城-订单结算页</title>
+    <!-- 引入图标库-->
+    <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--bootstrap-->
+    <link rel="stylesheet" th:href="@{/static/pear-admin/bootstrap.css}"/>
+
+    <!--    引入alibaba iconfont-->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_v7p87hrx9q.css">
+
+    <!--    引入购物车css-->
+    <link type="text/css" rel="stylesheet" th:href="@{/static/pear-admin/css/style.css}" />
+
+    <!--css-->
+    <link rel="stylesheet" th:href="@{/static/resource/css/reset.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/home.css}"/>
+    <!--    layui-->
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+
+
+
+
+<style>
+
+    #box{
+
+        width: 100%;
+        height: 700px;
+        border: 1px solid;
+
+    }
+    #childbox{
+
+        width: 80%;
+        height: 700px;
+        border: 1px solid;
+        margin: 0 auto;
+        margin-top: 50px;
+    }
+    /* 默认未被选中样式*/
+    .notClicked {
+
+        width: 15%;
+        height: 50px;
+        float: left;
+        list-style: none;
+        text-align: center;
+        border: 1px solid #e3e3e3;
+        line-height: 50px;
+        margin-right: 13px;
+        margin-bottom: 13px;
+        margin-left: 10px;
+        margin-top: 5px;
+    }
+
+    /* 被选中样式*/
+    .clicked {
+
+        width: 15%;
+        height: 50px;
+        float: left;
+        list-style: none;
+        text-align: center;
+        border: 1px solid #FFA500;
+        line-height: 50px;
+        margin-right: 13px;
+        margin-bottom: 13px;
+        margin-left: 10px;
+        margin-top: 5px;
+    }
+    .info{
+
+        width: 95%;
+        min-height: 85px;
+        max-height: 270px;
+
+        margin-left: 30px;
+        margin-top: 20px;
+
+    }
+
+    #orderbox{
+
+        width: 100%;
+        min-height: 85px;
+        max-height: 575px;
+        float: left;
+        border: 1px solid;
+
+    }
+
+
+</style>
+
+<body>
+<!-- jquery.js angular.js-->
+<script th:src="@{/static/resource/lib/jquery.min.js}"></script>
+<script th:src="@{/static/resource/lib/angular.js}"></script>
+
+<!--头部工具栏-->
+<div class="topbar">
+    <div class="container">
+        <div class="topbar_nav fl">
+            <ul>
+                <li><a href="https://www.jd.com/">京东商城</a></li>
+                <li><a href="https://www.taobao.com/">淘宝商城</a></li>
+                <li><a href="https://www.mi.com">小米商城</a></li>
+                <li><a href="https://gitee.com/youzhengjie/cloud-mall">项目链接</a></li>
+            </ul>
+        </div>
+        <div class="topbar_cart fr">
+            <a href="/web/cart/tocart">购物车</a>
+        </div>
+        <div class="topbar_info fr">
+            <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
+            <a class="nav-link" th:href="@{/web/login/toregister}">注册</a>
+            <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
+            <a class="nav-link" sec:authorize="isAuthenticated()"
+               href="javascript:document.logoutform.submit();">
+                退出
+            </a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!--  box-->
+
+
+
+<div id="box">
+
+
+
+    <div id="childbox">
+
+        <span>收货人信息</span>
+
+        <div class="info">
+
+            <a href="#" style="float: right;">新增收货地址</a>
+            <br />
+
+            <div class="infodiv" style="float: left;width: 100%;height: 85px;">
+
+						<span id="1001" class="notClicked" onclick="selectAddressInfo(this)">
+						张三xxxxxxxxxxx
+						</span>
+                <br />
+                <span>广东 河源市 紫金县 临江镇</span>
+
+
+            </div>
+
+
+            <div class="infodiv" style="float: left;width: 100%;height: 85px;">
+
+						<span id="1002" class="notClicked" onclick="selectAddressInfo(this)">
+						张三xxxxxxxxxxx
+						</span>
+                <br />
+
+                <span>广东 河源市 紫金县 临江镇</span>
+
+
+            </div>
+
+
+            <div class="infodiv" style="float: left;width: 100%;height: 85px;">
+
+						<span id="1003" class="notClicked" onclick="selectAddressInfo(this)">
+						张三xxxxxxxxxxx
+						</span>
+                <br />
+
+                <span>广东 河源市 紫金县 临江镇</span>
+
+
+            </div>
+
+
+
+        </div>
+
+        <span style="float: left;">确认订单信息</span>
+        <div id="orderbox">
+
+
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>城市</th>
+                    <th>邮编</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Tanmay</td>
+                    <td>Bangalore</td>
+                    <td>560001</td>
+                </tr>
+                <tr>
+                    <td>Sachin</td>
+                    <td>Mumbai</td>
+                    <td>400003</td>
+                </tr>
+                <tr>
+                    <td>Uma</td>
+                    <td>Pune</td>
+                    <td>411027</td>
+                </tr>
+                </tbody>
+            </table>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+<!--     -->
+
+
+
+<!--footer-->
+<footer class="footer">
+    <div class="container">
+        <div class="footer_service">
+            <ul class="clearfix">
+                <li><a href="">1小时快修服务</a></li>
+                <li><a href="">7天无理由退货</a></li>
+                <li><a href="">30天免费换货</a></li>
+                <li><a href="">满200元包邮</a></li>
+                <li><a href="">520余家售后网点</a></li>
+            </ul>
+        </div>
+
+        <div class="footer_link clearfix">
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+            <dl>
+                <dt>帮助中心</dt>
+                <dd>购物指南</dd>
+                <dd>支付方式</dd>
+                <dd>配送方式</dd>
+            </dl>
+
+            <div class="footer_contact">
+                <p class="phone">18420163207</p>
+
+                <p><span style="">周一至周日 8:00-18:00</span>
+                    <span style="display:none;">2月7日至13日服务时间 7:00-18:00</span><br>（仅收市话费）</p>
+                <a rel="nofollow" class="btn btn-primary btn-small" href="#">24小时在线客服</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="footer_site">
+        <div class="container">
+            <div class="cart_log">
+                <a href="" title="云商城"></a>
+            </div>
+            <div>
+                <p>云商城项目由本人自己完成,如有不足,请指正！</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+
+    function selectAddressInfo(elem)
+    {
+
+        let clickElem = document.getElementById(elem.id);//获取被点击的对象
+
+        let parentNode = document.getElementById(elem.id).parentNode; //获取被点击对象的父节点
+
+        let p1 = document.getElementById(elem.id).parentNode; //获取被点击对象的父节点
+
+        let c=p1.parentNode.parentNode;
+        let oldClick=c.getElementsByClassName('clicked')[0];
+
+        if(oldClick==null)
+        {
+            clickElem.classList.remove('notClicked');//移除未被点击样式
+            clickElem.classList.add('clicked'); //添加被点击样式
+
+        }else {
+
+            oldClick.classList.remove('clicked');//移除旧的被点击样式
+            oldClick.classList.add('notClicked');//添加旧的未被点击样式
+
+            clickElem.classList.remove('notClicked');//移除未被点击样式
+            clickElem.classList.add('clicked');
+        }
+
+    }
+
+
+    /*单击出现爱心特效*/
+    (function (window, document, undefined) {
+        var hearts = [];
+        window.requestAnimationFrame = (function () {
+            return window.requestAnimationFrame ||
+                window.webkitRequestAnimationFrame ||
+                window.mozRequestAnimationFrame ||
+                window.oRequestAnimationFrame ||
+                window.msRequestAnimationFrame ||
+                function (callback) {
+                    setTimeout(callback, 1000 / 60);
+                }
+        })();
+        init();
+
+        function init() {
+            css(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
+            attachEvent();
+            gameloop();
+        }
+
+        function gameloop() {
+            for (var i = 0; i < hearts.length; i++) {
+                if (hearts[i].alpha <= 0) {
+                    document.body.removeChild(hearts[i].el);
+                    hearts.splice(i, 1);
+                    continue;
+                }
+                hearts[i].y--;
+                hearts[i].scale += 0.004;
+                hearts[i].alpha -= 0.013;
+                hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
+            }
+            requestAnimationFrame(gameloop);
+        }
+
+        function attachEvent() {
+            var old = typeof window.onclick === "function" && window.onclick;
+            window.onclick = function (event) {
+                old && old();
+                createHeart(event);
+            }
+        }
+
+        function createHeart(event) {
+            var d = document.createElement("div");
+            d.className = "heart";
+            hearts.push({
+                el: d,
+                x: event.clientX - 5,
+                y: event.clientY - 5,
+                scale: 1,
+                alpha: 1,
+                color: randomColor()
+            });
+            document.body.appendChild(d);
+        }
+
+        function css(css) {
+            var style = document.createElement("style");
+            style.type = "text/css";
+            try {
+                style.appendChild(document.createTextNode(css));
+            } catch (ex) {
+                style.styleSheet.cssText = css;
+            }
+            document.getElementsByTagName('head')[0].appendChild(style);
+        }
+
+        function randomColor() {
+            return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
+        }
+    })(window, document);
+
+</script>
+
+
+</body>
+</html>

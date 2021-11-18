@@ -11,15 +11,16 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Import;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @Import({SwaggerConfig.class}) //导入swaggerConfig的配置类
 @EnableSwagger2  //开启Swagger2
 @EnableConfigurationProperties(ScanClassProperties.class)
 @EnableFeignClients
 @EnableDiscoveryClient
-public class OrderApplication3361 {
+public class OrderApplication3362 {
 
   public static void main(String[] args) {
-      SpringApplication.run(OrderApplication3361.class,args);
+      SpringApplication.run(OrderApplication3362.class,args);
   }
 }

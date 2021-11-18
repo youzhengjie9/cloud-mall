@@ -12,7 +12,7 @@
     <artifactId>cloud-mall-order</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>cloud-mall-order3361</module>
+        <module>cloud-mall-order3362</module>
     </modules>
 
 
@@ -120,5 +120,6 @@
         </dependency>
 
     </dependencies>
+
 
 </project>

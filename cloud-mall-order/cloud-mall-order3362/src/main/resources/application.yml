@@ -1,5 +1,5 @@
 server:
-  port: 3361
+  port: 3362
 spring:
   application:
     name: cloud-mall-order
@@ -23,7 +23,7 @@ spring:
     host: localhost
     database: 10     #使用db10
   datasource:
-    url: jdbc:mysql://localhost:3306/cloud_mall_product?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/cloud_mall_order?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=UTF-8
     username: root
     password: 18420163207
     driver-class-name: com.mysql.jdbc.Driver
