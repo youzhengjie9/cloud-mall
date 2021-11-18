@@ -12,5 +12,8 @@
         SELECT * FROM address WHERE userid=#{userid}
     </select>
 
+    <select id="selectAddressByid" resultType="com.boot.pojo.Address">
+        SELECT * FROM address WHERE id=#{id}
+    </select>
 
 </mapper>

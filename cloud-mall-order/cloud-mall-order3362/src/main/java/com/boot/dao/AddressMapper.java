@@ -15,5 +15,9 @@ public interface AddressMapper {
     List<Address> selectAddressByUserId(@Param("userid") long userid);
 
 
+    //根据addressid查询Address
+    Address selectAddressByid(@Param("id") long id);
+
+
 
 }

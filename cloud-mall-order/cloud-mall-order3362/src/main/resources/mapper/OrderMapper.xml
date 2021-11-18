@@ -5,5 +5,15 @@
 <mapper namespace="com.boot.dao.OrderMapper">
 
 
+    <insert id="insertOrder" parameterType="com.boot.pojo.Order">
+        insert into `order` values(
+        #{id},#{imgUrl},#{goodsInfo},
+        <if test="goodsParams!=null and goodsParams!=''">
+            #{goodsParams},
+        </if>
+        #{goodsCount},#{singleGoodsMoney}
+        ,#{realname},#{phone},#{address},#{userid},#{productid})
+    </insert>
+
 
 </mapper>

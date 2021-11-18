@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_v7p87hrx9q.css">
 
     <!--    引入购物车css-->
-    <link type="text/css" rel="stylesheet" th:href="@{/static/pear-admin/css/style.css}" />
+    <link type="text/css" rel="stylesheet" th:href="@{/static/pear-admin/css/style.css}"/>
 
     <!--css-->
     <link rel="stylesheet" th:href="@{/static/resource/css/reset.css}"/>
@@ -24,79 +24,136 @@
     <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
 
 
+    <style>
 
+        #box {
+            width: 100%;
+            height: 700px;
+        }
 
-<style>
+        #childbox {
 
-    #box{
+            width: 80%;
+            height: 700px;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
 
-        width: 100%;
-        height: 700px;
-        border: 1px solid;
+        /* 默认未被选中样式*/
+        .notClicked {
 
-    }
-    #childbox{
+            width: 15%;
+            height: 50px;
+            float: left;
+            list-style: none;
+            text-align: center;
+            border: 1px solid #e3e3e3;
+            line-height: 50px;
+            margin-right: 13px;
+            margin-bottom: 13px;
+            margin-left: 10px;
+            margin-top: 5px;
+        }
 
-        width: 80%;
-        height: 700px;
-        border: 1px solid;
-        margin: 0 auto;
-        margin-top: 50px;
-    }
-    /* 默认未被选中样式*/
-    .notClicked {
+        /* 被选中样式*/
+        .clicked {
 
-        width: 15%;
-        height: 50px;
-        float: left;
-        list-style: none;
-        text-align: center;
-        border: 1px solid #e3e3e3;
-        line-height: 50px;
-        margin-right: 13px;
-        margin-bottom: 13px;
-        margin-left: 10px;
-        margin-top: 5px;
-    }
+            width: 15%;
+            height: 50px;
+            float: left;
+            list-style: none;
+            text-align: center;
+            border: 1px solid #FFA500;
+            line-height: 50px;
+            margin-right: 13px;
+            margin-bottom: 13px;
+            margin-left: 10px;
+            margin-top: 5px;
+        }
 
-    /* 被选中样式*/
-    .clicked {
+        .info {
 
-        width: 15%;
-        height: 50px;
-        float: left;
-        list-style: none;
-        text-align: center;
-        border: 1px solid #FFA500;
-        line-height: 50px;
-        margin-right: 13px;
-        margin-bottom: 13px;
-        margin-left: 10px;
-        margin-top: 5px;
-    }
-    .info{
+            width: 95%;
+            min-height: 85px;
+            max-height: 270px;
 
-        width: 95%;
-        min-height: 85px;
-        max-height: 270px;
+            margin-left: 30px;
+            margin-top: 20px;
 
-        margin-left: 30px;
-        margin-top: 20px;
+        }
 
-    }
+        #orderbox {
 
-    #orderbox{
+            width: 100%;
+            min-height: 85px;
+            max-height: 575px;
+            float: left;
 
-        width: 100%;
-        min-height: 85px;
-        max-height: 575px;
-        float: left;
-        border: 1px solid;
+        }
 
-    }
+        /***** footer 页面底部 start*/
+        /*footer  footer_service*/
+        .footer_service{
+            padding: 30px 0;
+            overflow: hidden;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .footer_service ul{
+            margin-right: -2px;
+        }
+        .footer_service ul li{
+            float: left;
+            width: 20%;
+            height: 25px;
+            font-size: 16px;
+            line-height: 25px;
+            border-right: 1px solid #e0e0e0;
+            text-align: center;
+        }
 
+        /*footer  footer_link*/
+        .footer_link{
+            padding: 40px 0;
+        }
+        .footer_link dl{
+            float: left;
+            width: 160px;
+            height: 112px;
+            margin: 0;
+        }
+        .footer_link dt{
+            margin: -1px 0 26px;
+            font-size: 14px;
+            line-height: 1.25;
+            color: #424242;
+        }
+        .footer_link dd{
+            margin: 10px 0 0;
+            font-size: 12px;
+        }
 
-</style>
+        .footer_contact{
+            float: right;
+            width: 245px;
+            height: 112px;
+            border-left: 1px solid #e0e0e0;
+            text-align: center;
+            color: #616161;
+        }
+        .footer_contact .phone{
+            font-size: 26px;
+            color: #ff6700;
+        }
+
+        .footer_site{
+            background: #f5f5f5;
+        }
+        .footer_site p{
+            margin: 32px 0;
+            text-align: center;
+        }
+        /***** footer 页面底部 end*/
+    </style>
 
 <body>
 <!-- jquery.js angular.js-->
@@ -130,16 +187,10 @@
 </div>
 
 
-
-
-
-
 <!--  box-->
 
 
-
 <div id="box">
-
 
 
     <div id="childbox">
@@ -149,45 +200,29 @@
         <div class="info">
 
             <a href="#" style="float: right;">新增收货地址</a>
-            <br />
+            <br/>
 
-            <div class="infodiv" style="float: left;width: 100%;height: 85px;">
+            <div class="infodiv" style="float: left;width: 100%;height: 85px;"
+                 th:each="address:${addresses}">
 
-						<span id="1001" class="notClicked" onclick="selectAddressInfo(this)">
-						张三xxxxxxxxxxx
-						</span>
-                <br />
-                <span>广东 河源市 紫金县 临江镇</span>
-
-
-            </div>
-
-
-            <div class="infodiv" style="float: left;width: 100%;height: 85px;">
-
-						<span id="1002" class="notClicked" onclick="selectAddressInfo(this)">
-						张三xxxxxxxxxxx
-						</span>
-                <br />
-
-                <span>广东 河源市 紫金县 临江镇</span>
-
+				<span th:id="${address.getId()}" class="notClicked" onclick="selectAddressInfo(this)">
+				[[${address.getRealname()}]]
+                </span>
+                <br/>
+                <span>
+                    [[${address.getProvince()}]]
+                </span>
+                <span>
+                    [[${address.getCity()}]]
+                </span>
+                <span>
+                    [[${address.getArea()}]]
+                </span>
+                <span>
+                    [[${address.getAddress()}]]
+                </span>
 
             </div>
-
-
-            <div class="infodiv" style="float: left;width: 100%;height: 85px;">
-
-						<span id="1003" class="notClicked" onclick="selectAddressInfo(this)">
-						张三xxxxxxxxxxx
-						</span>
-                <br />
-
-                <span>广东 河源市 紫金县 临江镇</span>
-
-
-            </div>
-
 
 
         </div>
@@ -196,56 +231,49 @@
         <div id="orderbox">
 
 
-
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>名称</th>
-                    <th>城市</th>
-                    <th>邮编</th>
+                    <th>图片</th>
+                    <th>商品信息</th>
+                    <th>参数</th>
+                    <th>数量</th>
+                    <th>合计</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>Tanmay</td>
-                    <td>Bangalore</td>
-                    <td>560001</td>
-                </tr>
-                <tr>
-                    <td>Sachin</td>
-                    <td>Mumbai</td>
-                    <td>400003</td>
-                </tr>
-                <tr>
-                    <td>Uma</td>
-                    <td>Pune</td>
-                    <td>411027</td>
+                <tr th:each="cart:${carts}">
+                    <td>
+                        <img th:src="${cart.getImgUrl()}">
+                    </td>
+                    <td th:text="${cart.getGoodsInfo()}">
+                    </td>
+                    <td th:text="${cart.getGoodsParams()}">
+                    </td>
+                    <td th:text="${cart.getGoodsCount()}">
+                    </td>
+                    <td th:text="${cart.getSingleGoodsMoney()}">
+                    </td>
                 </tr>
                 </tbody>
             </table>
-
-
+            <input onclick="orderBegin()" type="button" class="btn btn-warning btn-lg" value="确认下单" style="float: right;margin-right: 8%;"/>
+            <div style="float: right;margin-right: 5%;">
+                合计<b style="color: orangered;" th:text="${totalmoney}"></b>元
+            </div>
+            <div style="float: right;margin-right: 35px;">
+                已选商品<b style="color: orangered;" th:text="${totalCount}"></b>件
+            </div>
 
         </div>
 
-
     </div>
-
-
-
-
-
-
-
 
 
 </div>
 
 
-
-
 <!--     -->
-
 
 
 <!--footer-->
@@ -324,8 +352,9 @@
 
 <script>
 
-    function selectAddressInfo(elem)
-    {
+    var addressArr=new Array();
+
+    function selectAddressInfo(elem) {
 
         let clickElem = document.getElementById(elem.id);//获取被点击的对象
 
@@ -333,15 +362,14 @@
 
         let p1 = document.getElementById(elem.id).parentNode; //获取被点击对象的父节点
 
-        let c=p1.parentNode.parentNode;
-        let oldClick=c.getElementsByClassName('clicked')[0];
+        let c = p1.parentNode.parentNode;
+        let oldClick = c.getElementsByClassName('clicked')[0];
 
-        if(oldClick==null)
-        {
+        if (oldClick == null) {
             clickElem.classList.remove('notClicked');//移除未被点击样式
             clickElem.classList.add('clicked'); //添加被点击样式
 
-        }else {
+        } else {
 
             oldClick.classList.remove('clicked');//移除旧的被点击样式
             oldClick.classList.add('notClicked');//添加旧的未被点击样式
@@ -349,8 +377,37 @@
             clickElem.classList.remove('notClicked');//移除未被点击样式
             clickElem.classList.add('clicked');
         }
-
+        addressArr[0]=elem.id; //放入数组
     }
+
+
+    function orderBegin() {
+
+        if (addressArr.length == 0) {
+            alert('请选择地址再下单...');
+        } else {
+            //因为我们要下单的数据已经放到了redis中，所以我们这里只需要获取发货地id即可
+
+            $.ajax({
+                url: "/web/order/orderbegin",
+                data: {
+                    "addressid": addressArr[0]
+                },
+                type: "GET",
+                success: function (data) {
+                    if(data.code==200){
+                        alert('下单成功');
+                    }else {
+                        alert('下单失败');
+                    }
+                }
+
+            })
+
+
+        }
+    }
+
 
 
     /*单击出现爱心特效*/

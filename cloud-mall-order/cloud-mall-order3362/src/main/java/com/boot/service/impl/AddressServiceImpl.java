@@ -20,4 +20,9 @@ public class AddressServiceImpl implements AddressService {
     public List<Address> selectAddressByUserId(long userid) {
         return addressMapper.selectAddressByUserId(userid);
     }
+
+    @Override
+    public Address selectAddressByid(long id) {
+        return addressMapper.selectAddressByid(id);
+    }
 }

@@ -28,7 +28,14 @@ public class AddressController {
         return addressService.selectAddressByUserId(userid);
     }
 
+    //根据addressid查询Address
+    @ResponseBody
+    @GetMapping(path = "/selectAddressByid/{id}")
+    public Address selectAddressByid(@PathVariable("id") long id){
 
+
+        return addressService.selectAddressByid(id);
+    }
 
 
 }

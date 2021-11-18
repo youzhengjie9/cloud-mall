@@ -10,7 +10,8 @@ public interface AddressService {
     //用户可能有多个地址，所以下面是一个集合
     List<Address> selectAddressByUserId(long userid);
 
-
+    //根据addressid查询Address
+    Address selectAddressByid(long id);
 
 
 }

@@ -21,5 +21,8 @@ public interface AddressFallbackFeign {
     @GetMapping(path = "/feign/address/selectAddressByUserId/{userid}")
     public List<Address> selectAddressByUserId(@PathVariable("userid") long userid);
 
-
+    //根据addressid查询Address
+    @ResponseBody
+    @GetMapping(path = "/feign/address/selectAddressByid/{id}")
+    public Address selectAddressByid(@PathVariable("id") long id);
 }

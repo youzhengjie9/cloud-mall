@@ -16,4 +16,10 @@ public class AddressFallbackFeignImpl implements AddressFallbackFeign {
         log.error("selectAddressByUserId error");
         return null;
     }
+
+    @Override
+    public Address selectAddressByid(long id) {
+        log.error("selectAddressByid error");
+        return null;
+    }
 }

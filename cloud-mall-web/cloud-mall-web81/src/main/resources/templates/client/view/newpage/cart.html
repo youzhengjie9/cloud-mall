@@ -397,14 +397,20 @@
 
         }
 
+        var totalMoney=document.getElementById('selectGoodsMoney').innerText;
+        var totalCount=document.getElementById('selectGoodsCount').innerText;
+
+
+        //把数据变成json传到后端
         $.ajax({
             url: "/web/order/getCheckOrderInfo",
             data: {
-                js: JSON.stringify(array)
+                js: JSON.stringify(array),
+                "totalMoney": totalMoney,
+                "totalCount": totalCount
             },
             type: "GET",
             success: function (json) {
-
                 window.location.href='/web/order/toCheckOrder'
 
             }
