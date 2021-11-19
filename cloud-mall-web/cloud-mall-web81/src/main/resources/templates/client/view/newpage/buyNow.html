@@ -4,6 +4,9 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1226">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>云商城-商品详情</title>
     <!-- 引入图标库-->
     <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -424,7 +427,7 @@
             <div id="Finally">
 
                 <p>您选择了以下产品</p>
-                <p style="color: cornflowerblue;">小米手机5</p>
+                <p id="productInfos" style="color: cornflowerblue;">[[${product.getName()}]]</p>
                 <button onclick="pushCart()" class="btn btn-warning" style="color: black">放入购物车</button>
             </div>
 
@@ -529,6 +532,11 @@
 
 <script th:inline="javascript">
 
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token}
+
     //js提交表单
     function submitData() {
         document.getElementById("form").submit();
@@ -566,6 +574,34 @@
             clickElem.classList.add('clicked');
         }
 
+        var productid=[[${product.productId}]]; //当前商品id
+        //每次切换属性都要刷新一下价格
+        $.ajax({
+            url: "/web/versionInfo/selectPriceByversionId",
+            data: {
+                "skuarr": skuarr,
+                "productid": productid
+            },
+            type: "GET",
+            success: function (data) {
+                document.getElementById('price').innerText=data+'元';
+            }
+        })
+
+        //每次切换属性都要刷新一下购买产品信息
+        $.ajax({
+            url: "/web/versionInfo/selectNameByversionId",
+            data: {
+                "skuarr": skuarr,
+                "productid": productid
+            },
+            type: "GET",
+            success: function (data) { //ajax不要直接返回字符串，可以用JSONobject封装，不然会乱码
+                document.getElementById('productInfos').innerText=data.name;
+            }
+        })
+
+
     }
     //放入购物车
     function pushCart() {
@@ -590,6 +626,7 @@
                 },
                 type: "POST",
                 dateType: 'json',
+                headers:headers,
                 success: function (data) {
                     if(data.code==200)
                     {

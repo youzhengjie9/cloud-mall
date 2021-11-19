@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -27,5 +28,10 @@ public interface VersionInfoMapper {
 
     String selectVersionInfoDesc(@Param("pid")long pid,@Param("order") long order);
 
+    //查价格
+    BigDecimal selectPriceByversionId(@Param("versionId") long versionId);
+
+
+    String selectNameByversionId(@Param("versionId") long versionId);
 
 }

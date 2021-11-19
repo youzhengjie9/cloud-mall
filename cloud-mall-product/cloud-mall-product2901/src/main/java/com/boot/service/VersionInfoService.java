@@ -3,8 +3,12 @@ package com.boot.service;
 import com.boot.pojo.VersionInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * @author 游政杰
+ */
 public interface VersionInfoService {
 
 
@@ -24,4 +28,9 @@ public interface VersionInfoService {
     String selectVersionInfoTitle(long pid,long order);
 
     String selectVersionInfoDesc(long pid,long order);
+
+    //查价格
+    BigDecimal selectPriceByversionId(long versionId);
+
+    String selectNameByversionId(long versionId);
 }

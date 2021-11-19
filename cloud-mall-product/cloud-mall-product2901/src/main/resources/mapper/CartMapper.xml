@@ -10,5 +10,20 @@
         SELECT * FROM cart WHERE userid=#{userid}
     </select>
 
+    <insert id="addProductToCart" parameterType="com.boot.pojo.Cart">
+        insert into cart values(#{id},#{imgUrl},#{goodsInfo},#{goodsParams},#{price},#{goodsCount}
+        ,#{singleGoodsMoney},#{userid},#{productid},#{skus})
+    </insert>
 
+
+    <select id="selectCartByCartId" resultType="com.boot.pojo.Cart">
+        select * from cart where id=#{cartid}
+    </select>
+
+
+    <update id="updateCountAndTotalPrice">
+        update cart set goodsCount = #{goodsCount} ,singleGoodsMoney=#{singleGoodsMoney}
+        where id=#{id}
+    </update>
+    
 </mapper>

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -44,5 +45,15 @@ public class VersionInfoServiceImpl implements VersionInfoService {
     @Override
     public String selectVersionInfoDesc(long pid, long order) {
         return versionInfoMapper.selectVersionInfoDesc(pid, order);
+    }
+
+    @Override
+    public BigDecimal selectPriceByversionId(long versionId) {
+        return versionInfoMapper.selectPriceByversionId(versionId);
+    }
+
+    @Override
+    public String selectNameByversionId(long versionId) {
+        return versionInfoMapper.selectNameByversionId(versionId);
     }
 }

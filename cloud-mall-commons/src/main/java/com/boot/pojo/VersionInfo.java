@@ -3,6 +3,7 @@ package com.boot.pojo;
 import io.swagger.annotations.ApiModel;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * @author 游政杰
@@ -15,7 +16,7 @@ public class VersionInfo implements Serializable {
     private String name;
     private long p_id;
     private int order;
-    private double price;
+    private BigDecimal price;
     private String description;
 
     public VersionInfo() {
@@ -53,20 +54,16 @@ public class VersionInfo implements Serializable {
         this.order = order;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     @Override

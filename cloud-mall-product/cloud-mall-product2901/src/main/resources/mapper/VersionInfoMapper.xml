@@ -30,4 +30,14 @@
         select description from versioninfo where p_id=#{pid} AND `order`=#{order} liMit 1
     </select>
 
+    <select id="selectPriceByversionId" resultType="java.math.BigDecimal">
+        select price from versioninfo where versionId=#{versionId}
+    </select>
+
+
+    <select id="selectNameByversionId" resultType="java.lang.String">
+        select `name` from versioninfo where versionId=#{versionId}
+    </select>
+
+
 </mapper>

@@ -12,7 +12,7 @@
             #{goodsParams},
         </if>
         #{goodsCount},#{singleGoodsMoney}
-        ,#{realname},#{phone},#{address},#{userid},#{productid})
+        ,#{realname},#{phone},#{address},#{userid},#{productid},#{statusid})
     </insert>
 
 

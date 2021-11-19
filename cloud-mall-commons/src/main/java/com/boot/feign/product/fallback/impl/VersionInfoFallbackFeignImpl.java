@@ -5,6 +5,7 @@ import com.boot.pojo.VersionInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -45,6 +46,18 @@ public class VersionInfoFallbackFeignImpl implements VersionInfoFallbackFeign {
     @Override
     public String selectVersionInfoDesc(long pid, long order) {
         log.error("selectVersionInfoDesc error");
+        return null;
+    }
+
+    @Override
+    public BigDecimal selectPriceByversionId(long versionId) {
+        log.error("selectPriceByversionId error");
+        return null;
+    }
+
+    @Override
+    public String selectNameByversionId(long versionId) {
+        log.error("selectNameByversionId error");
         return null;
     }
 }

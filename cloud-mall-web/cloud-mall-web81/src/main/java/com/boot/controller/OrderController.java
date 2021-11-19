@@ -171,10 +171,15 @@ public class OrderController {
       order.setAddress(ads);
       order.setUserid(id);
       order.setProductid(id1);
+      order.setStatusid(1);
       orderFallbackFeign.insertOrder(order);
 
       //分布式事务
       //当下单成功就要减库存，和减用户余额
+
+
+
+
     }
 
 

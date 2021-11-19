@@ -23,6 +23,7 @@ public class Order implements Serializable {
     private String address;
     private long userid;
     private long productid;
+    private long statusid; //订单状态
 
 
     public long getId() {
@@ -113,6 +114,14 @@ public class Order implements Serializable {
         this.productid = productid;
     }
 
+    public long getStatusid() {
+        return statusid;
+    }
+
+    public void setStatusid(long statusid) {
+        this.statusid = statusid;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -127,6 +136,7 @@ public class Order implements Serializable {
                 ", address='" + address + '\'' +
                 ", userid=" + userid +
                 ", productid=" + productid +
+                ", statusid=" + statusid +
                 '}';
     }
 }

@@ -19,6 +19,8 @@ public class Cart implements Serializable {
     private int goodsCount; //商品数量
     private BigDecimal singleGoodsMoney; //该商品的单价*数量的值
     private long userid; //所属用户id,因为用户id唯一，所以通过用户id可以查询一个集合就是购物车
+    private long productid; //商品id
+    private String skus; //所选sku，逗号分隔
 
 
     public long getId() {
@@ -85,6 +87,22 @@ public class Cart implements Serializable {
         this.userid = userid;
     }
 
+    public long getProductid() {
+        return productid;
+    }
+
+    public void setProductid(long productid) {
+        this.productid = productid;
+    }
+
+    public String getSkus() {
+        return skus;
+    }
+
+    public void setSkus(String skus) {
+        this.skus = skus;
+    }
+
     @Override
     public String toString() {
         return "Cart{" +
@@ -96,6 +114,8 @@ public class Cart implements Serializable {
                 ", goodsCount=" + goodsCount +
                 ", singleGoodsMoney=" + singleGoodsMoney +
                 ", userid=" + userid +
+                ", productid=" + productid +
+                ", skus='" + skus + '\'' +
                 '}';
     }
 }

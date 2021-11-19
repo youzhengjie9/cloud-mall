@@ -10,64 +10,74 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-/**
- * @author 游政杰
- */
+/** @author 游政杰 */
 @Controller
 @RequestMapping(path = "/feign/versioninfo")
 @Api("商品具体版本服务api")
 public class VersionInfoController {
 
-    @Autowired
-    private VersionInfoService versionInfoService;
+  @Autowired private VersionInfoService versionInfoService;
 
+  @ResponseBody
+  @GetMapping(path = "/selectVersionInfoByPid/{pid}")
+  public List<VersionInfo> selectVersionInfoByPid(@PathVariable("pid") long pid) {
+    return versionInfoService.selectVersionInfoByPid(pid);
+  }
 
-    @ResponseBody
-    @GetMapping(path = "/selectVersionInfoByPid/{pid}")
-    public List<VersionInfo> selectVersionInfoByPid(@PathVariable("pid") long pid)
-    {
-        return versionInfoService.selectVersionInfoByPid(pid);
-    }
+  @ResponseBody
+  @GetMapping(path = "/selectAllVersionInfo")
+  public List<VersionInfo> selectAllVersionInfo() {
+    return versionInfoService.selectAllVersionInfo();
+  }
 
-    @ResponseBody
-    @GetMapping(path = "/selectAllVersionInfo")
-    public List<VersionInfo> selectAllVersionInfo()
-    {
-        return versionInfoService.selectAllVersionInfo();
-    }
-
-
-    @ResponseBody
-    @GetMapping(path = "/selectOrderCountBypid/{pid}")
-    public int selectOrderCountBypid(@PathVariable("pid") long pid){
+  @ResponseBody
+  @GetMapping(path = "/selectOrderCountBypid/{pid}")
+  public int selectOrderCountBypid(@PathVariable("pid") long pid) {
 
     return versionInfoService.selectOrderCountBypid(pid);
-    }
+  }
 
-    //根据商品id和order查询对应的版本信息
-    @ResponseBody
-    @GetMapping(path = "/selectVersionInfoByPidAndOrder/{pid}/{order}")
-    public List<VersionInfo> selectVersionInfoByPidAndOrder(@PathVariable("pid") long pid,
-                                                            @PathVariable("order") long order){
+  // 根据商品id和order查询对应的版本信息
+  @ResponseBody
+  @GetMapping(path = "/selectVersionInfoByPidAndOrder/{pid}/{order}")
+  public List<VersionInfo> selectVersionInfoByPidAndOrder(
+      @PathVariable("pid") long pid, @PathVariable("order") long order) {
 
-        return versionInfoService.selectVersionInfoByPidAndOrder(pid, order);
-    }
+    return versionInfoService.selectVersionInfoByPidAndOrder(pid, order);
+  }
 
-    @ResponseBody
-    @GetMapping(path = "/selectVersionInfoTitle/{pid}/{order}")
-    public String selectVersionInfoTitle(@PathVariable("pid") long pid,
-                                         @PathVariable("order") long order){
+  @ResponseBody
+  @GetMapping(path = "/selectVersionInfoTitle/{pid}/{order}")
+  public String selectVersionInfoTitle(
+      @PathVariable("pid") long pid, @PathVariable("order") long order) {
 
-        return versionInfoService.selectVersionInfoTitle(pid, order);
-    }
-    @ResponseBody
-    @GetMapping(path = "/selectVersionInfoDesc/{pid}/{order}")
-    public String selectVersionInfoDesc(@PathVariable("pid") long pid,
-                                        @PathVariable("order") long order){
+    return versionInfoService.selectVersionInfoTitle(pid, order);
+  }
 
-        return versionInfoService.selectVersionInfoDesc(pid, order);
-    }
+  @ResponseBody
+  @GetMapping(path = "/selectVersionInfoDesc/{pid}/{order}")
+  public String selectVersionInfoDesc(
+      @PathVariable("pid") long pid, @PathVariable("order") long order) {
+
+    return versionInfoService.selectVersionInfoDesc(pid, order);
+  }
+
+  // 查价格
+  @ResponseBody
+  @GetMapping(path = "/selectPriceByversionId/{versionId}")
+  public BigDecimal selectPriceByversionId(@PathVariable("versionId") long versionId) {
+
+    return versionInfoService.selectPriceByversionId(versionId);
+  }
+  //查询版本名称
+  @ResponseBody
+  @GetMapping(path = "/selectNameByversionId/{versionId}")
+  public String selectNameByversionId(@PathVariable("versionId") long versionId){
+
+    return versionInfoService.selectNameByversionId(versionId);
+  }
 
 }

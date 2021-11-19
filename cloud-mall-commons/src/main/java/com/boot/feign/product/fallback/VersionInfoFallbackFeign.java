@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -45,4 +46,13 @@ public interface VersionInfoFallbackFeign {
     public String selectVersionInfoDesc(@PathVariable("pid") long pid,
                                         @PathVariable("order") long order);
 
+    // 查价格
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectPriceByversionId/{versionId}")
+    public BigDecimal selectPriceByversionId(@PathVariable("versionId") long versionId);
+
+    //查询版本名称
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectNameByversionId/{versionId}")
+    public String selectNameByversionId(@PathVariable("versionId") long versionId);
 }
