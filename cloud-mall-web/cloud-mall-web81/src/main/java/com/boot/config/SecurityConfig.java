@@ -202,7 +202,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        .hasRole("admin")
 
             //只有登录以后才能访问
-        .antMatchers("/myuser/**", "/img/**", "/admin/","/web/cart/**")
+        .antMatchers("/myuser/**", "/img/**", "/admin/","/web/cart/**",
+                "/web/order/**")
         .hasAnyRole("admin", "common")
 
         .antMatchers("/web/sliderCaptcha/**", "/web/logout")

@@ -30,5 +30,10 @@
         select * from product where productId=#{productId}
     </select>
 
+    <update id="decrNumberByPid">
+        update product set `number` =`number`-#{number} where productId=#{productId}
+    </update>
+
+
 
 </mapper>

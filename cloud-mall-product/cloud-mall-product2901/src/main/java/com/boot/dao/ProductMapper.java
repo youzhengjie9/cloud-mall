@@ -29,5 +29,7 @@ public interface ProductMapper {
     //通过productId查询product对象
     Product selectProductByPid(@Param("productId")long productId);
 
+    //减库存
+    void decrNumberByPid(@Param("productId")long productId,@Param("number") int number);
 
 }

@@ -19,4 +19,6 @@ public interface UserService {
     //根据用户id查询余额
     BigDecimal selectUserMoneyByUserId(long userid);
 
+    //减余额
+    void decrMoneyByUserId(long userid,BigDecimal money);
 }

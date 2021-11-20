@@ -20,5 +20,6 @@ public interface UserMapper {
     //根据用户id查询余额
     BigDecimal selectUserMoneyByUserId(@Param("userid") long userid);
 
-
+    //减余额
+    void decrMoneyByUserId(@Param("userid") long userid,@Param("money") BigDecimal money);
 }

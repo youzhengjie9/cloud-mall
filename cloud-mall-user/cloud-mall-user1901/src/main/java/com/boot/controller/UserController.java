@@ -1,14 +1,14 @@
 package com.boot.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.boot.constant.ResultCode;
+import com.boot.data.CommonResult;
 import com.boot.pojo.User;
 import com.boot.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -48,5 +48,23 @@ public class UserController {
         return bigDecimal;
     }
 
+    //减余额
+    @ResponseBody
+    @GetMapping(path = "/decrMoneyByUserId/{userid}/{money}")
+    public CommonResult<User> decrMoneyByUserId(@PathVariable("userid") long userid,
+                                                @PathVariable("money") String money){
+
+        CommonResult<User> commonResult = new CommonResult<>();
+        commonResult.setCode(ResultCode.FAILURE);
+
+//        Long userid = (Long) jsonObject.get("userid");
+        BigDecimal total= new BigDecimal(money);
+
+        userService.decrMoneyByUserId(userid,total);
+
+        commonResult.setCode(ResultCode.SUCCESS);
+
+        return commonResult;
+    }
 
 }

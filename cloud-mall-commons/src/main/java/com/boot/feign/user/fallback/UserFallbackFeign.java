@@ -1,6 +1,8 @@
 package com.boot.feign.user.fallback;
 
 
+import com.alibaba.fastjson.JSONObject;
+import com.boot.data.CommonResult;
 import com.boot.feign.system.fallback.impl.ImgFallbackFeignImpl;
 import com.boot.feign.user.fallback.impl.UserFallbackFeignImpl;
 import com.boot.pojo.User;
@@ -8,6 +10,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;

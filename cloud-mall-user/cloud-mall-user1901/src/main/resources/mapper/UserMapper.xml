@@ -18,5 +18,8 @@
         select money from t_user where id=#{userid}
     </select>
 
+    <update id="decrMoneyByUserId">
+        update t_user set money = money-#{money} where id=#{userid}
+    </update>
 
 </mapper>

@@ -13,14 +13,15 @@ import java.math.BigDecimal;
 public class Order implements Serializable {
 
     private long id;
-    private String imgUrl;
-    private String goodsInfo;
-    private String goodsParams;
-    private int goodsCount;
-    private BigDecimal singleGoodsMoney;
-    private String realname;
-    private String phone;
-    private String address;
+    private String imgUrl; //图片地址
+    private String goodsInfo; //商品名
+    private String goodsParams; //商品参数
+    private int goodsCount; //购买数量
+    private BigDecimal singleGoodsMoney; //总价
+    private String realname; //收货人
+    private String phone; //收货人电话
+    private String address; //收货地址
+    private String created; //创建订单时间
     private long userid;
     private long productid;
     private long statusid; //订单状态
@@ -122,6 +123,14 @@ public class Order implements Serializable {
         this.statusid = statusid;
     }
 
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
@@ -134,6 +143,7 @@ public class Order implements Serializable {
                 ", realname='" + realname + '\'' +
                 ", phone='" + phone + '\'' +
                 ", address='" + address + '\'' +
+                ", created='" + created + '\'' +
                 ", userid=" + userid +
                 ", productid=" + productid +
                 ", statusid=" + statusid +

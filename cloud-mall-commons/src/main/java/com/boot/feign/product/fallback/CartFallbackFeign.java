@@ -20,15 +20,7 @@ public interface CartFallbackFeign {
     public List<Cart> selectCartByUserId(@PathVariable("userid") long userid);
 
     @ResponseBody
-    @PostMapping(path = "/feign/cart/addProductToCart")
-    public CommonResult<Cart> addProductToCart(@RequestBody Cart cart);
-
-    @ResponseBody
     @GetMapping(path = "/feign/cart/selectCartByCartId/{cartid}")
     public CommonResult<Cart> selectCartByCartId(@PathVariable("cartid") long cartid);
 
-    // 修改指定购物车的购买数量和总价
-    @ResponseBody
-    @PostMapping(path = "/feign/cart/updateCountAndTotalPrice")
-    public CommonResult<String> updateCountAndTotalPrice(@RequestBody JSONObject jsonObject);
 }

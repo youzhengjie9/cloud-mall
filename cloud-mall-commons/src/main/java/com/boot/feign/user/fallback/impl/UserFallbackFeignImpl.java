@@ -1,5 +1,7 @@
 package com.boot.feign.user.fallback.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.boot.data.CommonResult;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.pojo.User;
 import lombok.extern.slf4j.Slf4j;
@@ -28,4 +30,5 @@ public class UserFallbackFeignImpl implements UserFallbackFeign {
         log.error("selectUserMoneyByUserId error");
         return null;
     }
+
 }

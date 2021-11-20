@@ -72,6 +72,7 @@ public class CartController {
     int count=(Integer) jsonObject.get("newCount");
     BigDecimal total= new BigDecimal(String.valueOf(jsonObject.get("newTotalPrice")));
 
+
     try {
       cartService.updateCountAndTotalPrice(cid,count,total);
       return commonResult;
@@ -81,4 +82,16 @@ public class CartController {
       return commonResult;
     }
   }
+
+  @ResponseBody
+  @GetMapping(path = "/deleteCartByCartId/{cartid}")
+  public String deleteCartByCartId(@PathVariable("cartid") long cartid){
+
+    cartService.deleteCartByCartId(cartid);
+
+    return "success";
+  }
+
+
+
 }

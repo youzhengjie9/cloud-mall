@@ -25,5 +25,10 @@
         update cart set goodsCount = #{goodsCount} ,singleGoodsMoney=#{singleGoodsMoney}
         where id=#{id}
     </update>
-    
+
+    <delete id="deleteCartByCartId">
+        delete from cart where id=#{cartid}
+    </delete>
+
+
 </mapper>

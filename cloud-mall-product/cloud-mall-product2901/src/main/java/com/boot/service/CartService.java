@@ -20,4 +20,11 @@ public interface CartService {
     void updateCountAndTotalPrice(long id,
                                   int goodsCount,
                                   BigDecimal singleGoodsMoney);
+
+
+    void deleteCartByCartId(long cartid);
+
+
+
+
 }

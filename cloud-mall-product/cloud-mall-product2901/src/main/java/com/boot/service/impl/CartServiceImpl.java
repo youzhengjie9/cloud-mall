@@ -36,4 +36,9 @@ public class CartServiceImpl implements CartService {
     public void updateCountAndTotalPrice(long id, int goodsCount, BigDecimal singleGoodsMoney) {
         cartMapper.updateCountAndTotalPrice(id, goodsCount, singleGoodsMoney);
     }
+
+    @Override
+    public void deleteCartByCartId(long cartid) {
+        cartMapper.deleteCartByCartId(cartid);
+    }
 }

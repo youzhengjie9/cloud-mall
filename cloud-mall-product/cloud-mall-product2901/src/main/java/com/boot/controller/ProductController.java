@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.boot.data.CommonResult;
 import com.boot.pojo.Product;
 import com.boot.service.ProductService;
 import io.swagger.annotations.Api;
@@ -46,6 +47,19 @@ public class ProductController {
         Product product = productService.selectProductByPid(productId);
         return product;
     }
+
+    //减库存
+    @ResponseBody
+    @GetMapping(path = "/decrNumberByPid/{productId}/{number}")
+    public CommonResult<Product> decrNumberByPid(@PathVariable("productId") long productId,
+                                                   @PathVariable("number") int number){
+
+        CommonResult<Product> commonResult = new CommonResult<>();
+        productService.decrNumberByPid(productId, number);
+
+        return commonResult;
+    }
+
 
 
 }

@@ -1,5 +1,6 @@
 package com.boot.feign.product.fallback.impl;
 
+import com.boot.data.CommonResult;
 import com.boot.feign.product.fallback.ProductFallbackFeign;
 import com.boot.pojo.Product;
 import lombok.extern.slf4j.Slf4j;
@@ -32,5 +33,6 @@ public class ProductFallbackFeignImpl implements ProductFallbackFeign {
         log.error("selectProductByPid error");
         return null;
     }
+
 
 }

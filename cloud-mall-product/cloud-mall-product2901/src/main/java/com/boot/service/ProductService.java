@@ -25,4 +25,7 @@ public interface ProductService {
 
     //通过productId查询product对象
     Product selectProductByPid(long productId);
+
+    //减库存
+    void decrNumberByPid(long productId,int number);
 }

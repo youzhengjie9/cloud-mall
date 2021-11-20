@@ -34,5 +34,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectUserMoneyByUserId(userid);
     }
 
+    @Override
+    public void decrMoneyByUserId(long userid, BigDecimal money) {
+        userMapper.decrMoneyByUserId(userid, money);
+    }
+
 
 }

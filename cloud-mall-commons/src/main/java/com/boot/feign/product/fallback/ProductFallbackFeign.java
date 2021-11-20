@@ -1,5 +1,6 @@
 package com.boot.feign.product.fallback;
 
+import com.boot.data.CommonResult;
 import com.boot.feign.product.fallback.impl.ProductFallbackFeignImpl;
 import com.boot.pojo.Product;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -29,5 +30,6 @@ public interface ProductFallbackFeign {
     @ResponseBody
     @GetMapping(path = "/feign/product/selectProductByPid/{productId}")
     public Product selectProductByPid(@PathVariable("productId") long productId);
+
 
 }

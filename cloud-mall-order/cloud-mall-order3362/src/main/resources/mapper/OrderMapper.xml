@@ -12,8 +12,20 @@
             #{goodsParams},
         </if>
         #{goodsCount},#{singleGoodsMoney}
-        ,#{realname},#{phone},#{address},#{userid},#{productid},#{statusid})
+        ,#{realname},#{phone},#{address},
+        <if test="created !=null and created !=''">
+            #{created},
+        </if>
+        #{userid},#{productid},#{statusid})
     </insert>
 
+
+    <select id="selectAllOrdersByUserId" resultType="com.boot.pojo.Order">
+        select * from `order` where userid=#{userid}
+    </select>
+
+    <select id="selectOrderStatusById" resultType="com.boot.pojo.OrderStatus">
+        select * from orderstatus where id=#{id}
+    </select>
 
 </mapper>

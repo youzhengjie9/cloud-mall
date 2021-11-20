@@ -20,20 +20,9 @@ public class CartFallbackFeignImpl implements CartFallbackFeign {
     }
 
     @Override
-    public CommonResult<Cart> addProductToCart(Cart cart) {
-        log.error("addProductToCart error");
-        return null;
-    }
-
-    @Override
     public CommonResult<Cart> selectCartByCartId(long cartid) {
         log.error("selectCartByCartId error");
         return null;
     }
 
-    @Override
-    public CommonResult<String> updateCountAndTotalPrice(JSONObject jsonObject) {
-        log.error("updateCountAndTotalPrice error");
-        return null;
-    }
 }

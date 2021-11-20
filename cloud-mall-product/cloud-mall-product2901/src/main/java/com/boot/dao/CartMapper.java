@@ -28,5 +28,6 @@ public interface CartMapper {
                                   @Param("singleGoodsMoney") BigDecimal singleGoodsMoney);
 
 
-
+    void deleteCartByCartId(@Param("cartid") long cartid);
+    
 }

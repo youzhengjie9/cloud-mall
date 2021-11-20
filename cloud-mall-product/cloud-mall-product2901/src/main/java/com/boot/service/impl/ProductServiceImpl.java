@@ -51,4 +51,10 @@ public class ProductServiceImpl implements ProductService {
         return productsMapper.selectProductByPid(productId);
     }
 
+    @Override
+    public void decrNumberByPid(long productId, int number) {
+        productsMapper.decrNumberByPid(productId, number);
+    }
+
+
 }
