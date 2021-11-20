@@ -51,7 +51,7 @@ function loadGoods() {
 			'</div>' +
 			'<div class="col-md-1 car-goods-info goods-money-count"><span>￥</span><span class="single-total">' + item.singleGoodsMoney + '</span></div>' +
 			'<div class="col-md-2 car-goods-info goods-operate">' +
-			'<button type="button" class="btn btn-danger item-delete">删除</button>' +
+			'<button onclick="delGoods(' + item.id + ')" type="button" class="btn btn-danger item-delete">删除</button>' +
 			'</div>' +
 			'</div>' +
 			'</div>' +
@@ -133,14 +133,14 @@ function ShoppingCarObserver(elInput, isAdd) {
 			$('#selectGoodsCount').empty().append(goodsTotalCount - itemCount)
 		}
 	}
-	this.deleteGoods = function() {
-		var isChecked = this.parents.find('.goods-list-item')[0].checked
-		if(isChecked) {
-			this.checkedChange(false)
-		}
-		this.parents.remove()
-		this.checkOptions()
-	}
+	// this.deleteGoods = function() {
+	// 	var isChecked = this.parents.find('.goods-list-item')[0].checked
+	// 	if(isChecked) {
+	// 		this.checkedChange(false)
+	// 	}
+	// 	this.parents.remove()
+	// 	this.checkOptions()
+	// }
 	this.checkOptions = function() {
 		if ($('#check-goods-all')[0].checked) {
 			if ($('.goods-list-item').length <= 0) {
@@ -209,30 +209,30 @@ $('.goods-content').on('click', '.car-add', function() {
 	addCount.showCount()
 	addCount.computeGoodsMoney()
 })
-$('.goods-content').on('click', '.item-delete', function() {
-	var goodsInput = $(this).parents('.goods-item').find('.goods-list-item')
-	deleteGoods = new ShoppingCarObserver(goodsInput, null)
-	$('#deleteItemTip').modal('show')
-})
-$('.deleteSure').on('click', function() {
-	if(deleteGoods !== null) {
-		deleteGoods.deleteGoods()
-	}
-	$('#deleteItemTip').modal('hide')
-})
-$('#deleteMulty').on('click', function() {
-	if($('.goods-list-item:checked').length <= 0) {
-		$('#selectItemTip').modal('show')
-	} else {
-		$('#deleteMultyTip').modal('show')
-	}
-})
-$('.deleteMultySure').on('click', function() {
-	for (var i = 0; i < $('.goods-list-item:checked').length; i++) {
-		var multyDelete = new ShoppingCarObserver($('.goods-list-item:checked').eq(i), null)
-		multyDelete.deleteGoods()
-		i--
-	}
-	multyDelete.checkOptions()
-	$('#deleteMultyTip').modal('hide')
-})
+// $('.goods-content').on('click', '.item-delete', function() {
+// 	var goodsInput = $(this).parents('.goods-item').find('.goods-list-item')
+// 	deleteGoods = new ShoppingCarObserver(goodsInput, null)
+// 	$('#deleteItemTip').modal('show')
+// })
+// $('.deleteSure').on('click', function() {
+// 	if(deleteGoods !== null) {
+// 		deleteGoods.deleteGoods()
+// 	}
+// 	$('#deleteItemTip').modal('hide')
+// })
+// $('#deleteMulty').on('click', function() {
+// 	if($('.goods-list-item:checked').length <= 0) {
+// 		$('#selectItemTip').modal('show')
+// 	} else {
+// 		$('#deleteMultyTip').modal('show')
+// 	}
+// })
+// $('.deleteMultySure').on('click', function() {
+// 	for (var i = 0; i < $('.goods-list-item:checked').length; i++) {
+// 		var multyDelete = new ShoppingCarObserver($('.goods-list-item:checked').eq(i), null)
+// 		multyDelete.deleteGoods()
+// 		i--
+// 	}
+// 	multyDelete.checkOptions()
+// 	$('#deleteMultyTip').modal('hide')
+// })

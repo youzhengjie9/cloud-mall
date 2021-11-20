@@ -364,6 +364,32 @@
         document.getElementById("form").submit();
     }
 
+    function delGoods(cartid) {
+
+        var flag = confirm('确定移除该商品吗?');
+        if(flag==true)
+        {
+            $.ajax({
+                url: "/web/cart/deleteCartBycartId",
+                data: {
+                    "cartid":cartid
+                },
+                type: "GET",
+                success: function (json) {
+                    if(json.code==200)
+                    {
+                        alert('移除成功');
+                        window.location.href='/web/cart/tocart'
+                    }else {
+                        alert('移除失败');
+                    }
+                }
+            })
+        }
+
+    }
+
+
     //Ajax异步确认订单
 
     function buy() {

@@ -6,6 +6,7 @@ import com.boot.data.CommonResult;
 import com.boot.feign.product.fallback.CartFallbackFeign;
 import com.boot.feign.product.fallback.ProductFallbackFeign;
 import com.boot.feign.product.fallback.VersionInfoFallbackFeign;
+import com.boot.feign.product.notFallback.CartFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.pojo.Cart;
 import com.boot.pojo.Product;
@@ -35,6 +36,8 @@ public class CartController {
   @Autowired
   private UserFallbackFeign userFallbackFeign;
 
+  @Autowired
+  private CartFeign cartFeign;
   @Autowired
   private CartFallbackFeign cartFallbackFeign;
 
@@ -139,7 +142,7 @@ public class CartController {
         jsonObject.put("newTotalPrice",newTotalPrice);
 
 
-        cartFallbackFeign.updateCountAndTotalPrice(jsonObject); //通过Json对象传到其他服务模块
+        cartFeign.updateCountAndTotalPrice(jsonObject); //通过Json对象传到其他服务模块
 
 
       }else if(!hasSame){ //没有相同就往购物车数据库插入数据
@@ -178,7 +181,7 @@ public class CartController {
 
         cart.setSkus(skus);
 
-        cartFallbackFeign.addProductToCart(cart);
+        cartFeign.addProductToCart(cart);
 
       }
 
@@ -211,7 +214,22 @@ public class CartController {
     return jsonObject;
   }
 
+  @ResponseBody
+  @GetMapping(path = "/deleteCartBycartId")
+  public CommonResult<Cart> deleteCartBycartId(@RequestParam(value = "cartid",required = true) long cartid)
+  {
+    CommonResult<Cart> commonResult = new CommonResult<>();
+    try {
+      cartFeign.deleteCartByCartId(cartid);
+      return commonResult;
+    } catch (Exception e) {
+      e.printStackTrace();
+      commonResult.setCode(ResultCode.FAILURE);
+      return commonResult;
+    }
 
+
+  }
 
 
 
