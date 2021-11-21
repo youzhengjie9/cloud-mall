@@ -7,7 +7,8 @@ angular.module('buyNow', ['ui.router','cartMd'])
         function ($stateProvider) {
             $stateProvider
                 .state('buyNow', {
-                    url: '/buyNow/:productId',
+                    // url: '/buyNow/:productId',
+                    url: '/buyNowPage/:productId',
                     //url: '/buyNow?productId',
                     //params: {
                     // productId: ""
@@ -19,7 +20,7 @@ angular.module('buyNow', ['ui.router','cartMd'])
                     },
                     views: {
                         "": {
-                            templateUrl: '/aaa',
+                            templateUrl: '/buyNowPage/:productId',
                             controller: function ($scope, $stateParams, productsResolve, util, $window,$location,$anchorScroll,cartService,$state,$rootScope) {
                                 $scope.userSelectArr = [];//存放用户选择的产品信息
                                 $scope.buyProduct = util.queryItemById(productsResolve.products, $stateParams.productId);//用户购买的产品对象

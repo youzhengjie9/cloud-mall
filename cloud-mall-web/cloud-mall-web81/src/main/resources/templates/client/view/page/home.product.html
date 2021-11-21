@@ -1,3 +1,4 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <div class="product_hd" ng-class="{'product_hd_fixed':isFlag}">
     <div class="container">
         <div class="product_title fl">
@@ -5,7 +6,8 @@
             <h1>{{product.name}}</h1>
         </div>
         <div class="product_buy fr">
-            <a ui-sref="buyNow({productId:product.productId})" class="btn btn-primary">立即购买</a>
+<!--            <a ui-sref="buyNow({productId:product.productId})" class="btn btn-primary">立即购买</a>-->
+            <a th:href="'/web/index/buyNowPage/'+${pid}" class="btn btn-primary">立即购买</a>
         </div>
 <!--        <div class="product_nav fr">-->
 <!--            <ul>-->
@@ -20,3 +22,6 @@
 
 <!-- product detail info-->
 <div ui-view></div>
+
+
+</html>

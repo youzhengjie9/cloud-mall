@@ -73,8 +73,23 @@ public class IndexController {
         return "client/view/page/home.userLogin";
     }
     @RequestMapping(path = "/view/homeProduct")
-    public String homeProduct()
+    public String homeProduct(HttpServletRequest request,Model model)
     {
+        try{
+            Cookie[] cookies = request.getCookies();
+            // 找到cookie名为cur_introduce_pid
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals("cur_introduce_pid"))
+                {
+                    //这里可能会报错,怕用户修改此cookie导致Long.valueof报错
+                    Long v = Long.valueOf(cookie.getValue());
+                    model.addAttribute("pid",v);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return "client/view/page/home.product";
     }
 
