@@ -22,4 +22,7 @@ public interface UserMapper {
 
     //减余额
     void decrMoneyByUserId(@Param("userid") long userid,@Param("money") BigDecimal money);
+
+    void insertUser(User user);
+
 }

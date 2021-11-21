@@ -12,7 +12,7 @@ public class Address implements Serializable {
 
     private long id;
     private String realname; //收货人真实姓名
-    private String phone;
+    private String phone;//收货人电话
     private String province; //目的地所在省
     private String city; //目的地所在城市
     private String area; //目的地所在区/县

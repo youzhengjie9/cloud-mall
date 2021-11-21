@@ -13,5 +13,7 @@ public interface AddressService {
     //根据addressid查询Address
     Address selectAddressByid(long id);
 
+    void addAddress(Address address);
 
+    void delAddressById(long id);
 }

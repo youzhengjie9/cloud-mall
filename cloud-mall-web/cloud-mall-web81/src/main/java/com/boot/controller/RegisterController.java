@@ -1,6 +1,8 @@
 package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.constant.ResultCode;
+import com.boot.data.CommonResult;
 import com.boot.data.layuiJSON;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.pojo.User;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Controller
 @Api("注册帐号控制器")
-@RequestMapping(path = "/web")
+@RequestMapping(path = "/web/register")
 public class RegisterController {
 
     @Autowired
@@ -50,45 +53,41 @@ public class RegisterController {
 
 
 
-//    @RequestMapping(path = "/register")
-//    @ResponseBody
-//    public String register(User user, String code, Model model) {
-//
-//
-//        layuiJSON json = new layuiJSON();
-//
-//        String redis_code = (String) redisTemplate.opsForValue().get("code_" + user.getEmail()); //从redis中获取验证码，然后和前端的比对
-//
-//        if (code.equals(redis_code)) {
-//            //可以注册,但是用户名相同会注册失败
-//            try {
-//                // 注册代码
-//                String register = userFallbackFeign.register(user.getUsername(), user.getPassword(), user.getEmail());
-//                if(register.equals("success")){
-//                    json.setMsg("注册成功");
-//                    json.setSuccess(true);
-//                    redisTemplate.delete("code_"+user.getEmail());
-//                    return JSON.toJSONString(json);
-//                }else {
-//                    json.setMsg("注册失败");
-//                    json.setSuccess(false);
-//                    return JSON.toJSONString(json);
-//                }
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                json.setMsg("注册失败");
-//                json.setSuccess(false);
-//                return JSON.toJSONString(json);
-//            }
-//
-//        } else {
-//            json.setMsg("验证码不一致,注册失败");
-//            json.setSuccess(false);
-//            return JSON.toJSONString(json);
-//        }
-//
-//    }
+    @PostMapping(path = "/register")
+    @ResponseBody
+    public String register(User user, String code, Model model) {
+
+        layuiJSON json = new layuiJSON();
+        String redis_code = (String) redisTemplate.opsForValue().get("code_" + user.getEmail()); //从redis中获取验证码，然后和前端的比对
+
+        if (code.equals(redis_code)) {
+            //可以注册,但是用户名相同会注册失败
+            try {
+                // 注册代码
+                CommonResult<User> commonResult = userFallbackFeign.registerUser(user);
+                if(commonResult.getCode()== ResultCode.SUCCESS){
+                    json.setMsg("注册成功");
+                    json.setSuccess(true);
+                    redisTemplate.delete("code_"+user.getEmail());
+                    return JSON.toJSONString(json);
+                }else {
+                    json.setMsg("注册失败");
+                    json.setSuccess(false);
+                    return JSON.toJSONString(json);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                json.setMsg("注册失败");
+                json.setSuccess(false);
+                return JSON.toJSONString(json);
+            }
+        } else {
+            json.setMsg("验证码不一致,注册失败");
+            json.setSuccess(false);
+            return JSON.toJSONString(json);
+        }
+
+    }
 
 
     //发送验证码接口

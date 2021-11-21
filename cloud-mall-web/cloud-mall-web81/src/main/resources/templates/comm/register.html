@@ -27,7 +27,7 @@
 </head>
 <!-- 代 码 结 构 -->
 <body background="/static/pear-admin/images/background.svg" style="background-size: cover;">
-<form id="fm" class="layui-form" th:action="@{/web/register}" autocomplete="off" method="post">
+<form id="fm" class="layui-form" th:action="@{/web/register/register}" autocomplete="off" method="post">
     <div class="layui-form-item">
         <img class="logo" th:src="@{/static/pear-admin/images/logo2.png}"/>
         <div class="title">Mall Register</div>
@@ -76,7 +76,7 @@
             var formdata = new FormData($('#fm')[0]);
             let btn = button.load({elem: '.login'});
             $.ajax({
-                url: '/web/register',
+                url: '/web/register/register',
                 data: formdata,
                 type: "post",
                 dataType: 'json',
@@ -88,7 +88,7 @@
                     btn.stop(function () {
                         if (result.success) {
                             popup.success(result.msg, function () {
-                                location.href = "/web/loginPage";
+                                location.href = "/web/login/toLoginPage";
                             })
                         } else {
                             popup.failure(result.msg, function () {
@@ -119,7 +119,7 @@
 
         }else {
             $.ajax({
-                url: '/web/sendCode',
+                url: '/web/register/sendCode',
                 data: {
                     'email':$('#email').val()
                 },

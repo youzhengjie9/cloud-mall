@@ -25,4 +25,14 @@ public class AddressServiceImpl implements AddressService {
     public Address selectAddressByid(long id) {
         return addressMapper.selectAddressByid(id);
     }
+
+    @Override
+    public void addAddress(Address address) {
+        addressMapper.addAddress(address);
+    }
+
+    @Override
+    public void delAddressById(long id) {
+        addressMapper.delAddressById(id);
+    }
 }

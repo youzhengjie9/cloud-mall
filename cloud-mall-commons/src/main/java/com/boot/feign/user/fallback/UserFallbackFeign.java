@@ -8,10 +8,7 @@ import com.boot.feign.user.fallback.impl.UserFallbackFeignImpl;
 import com.boot.pojo.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 
@@ -36,5 +33,9 @@ public interface UserFallbackFeign {
     @ResponseBody
     @GetMapping(path = "/feign/user/selectUserMoneyByUserId/{userid}")
     public BigDecimal selectUserMoneyByUserId(@PathVariable("userid") long userid);
+
+    @ResponseBody
+    @PostMapping(path = "/feign/user/register")
+    public CommonResult<User> registerUser(@RequestBody User user);
 
 }

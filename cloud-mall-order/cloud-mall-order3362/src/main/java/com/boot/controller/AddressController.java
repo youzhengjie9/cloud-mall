@@ -1,14 +1,13 @@
 package com.boot.controller;
 
+import com.boot.constant.ResultCode;
+import com.boot.data.CommonResult;
 import com.boot.pojo.Address;
 import com.boot.service.AddressService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,6 +34,35 @@ public class AddressController {
 
 
         return addressService.selectAddressByid(id);
+    }
+
+    @ResponseBody
+    @PostMapping(path = "/addAddress")
+    public CommonResult<Address> addAddress(@RequestBody Address address){
+
+        CommonResult<Address> commonResult = new CommonResult<>();
+        try {
+            addressService.addAddress(address);
+            return commonResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            commonResult.setCode(ResultCode.FAILURE);
+            return commonResult;
+        }
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/delAddressById/{id}")
+    public CommonResult<Address> delAddressById(@PathVariable("id") long id){
+        CommonResult<Address> commonResult = new CommonResult<>();
+        try {
+            addressService.delAddressById(id);
+            return commonResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            commonResult.setCode(ResultCode.FAILURE);
+            return commonResult;
+        }
     }
 
 

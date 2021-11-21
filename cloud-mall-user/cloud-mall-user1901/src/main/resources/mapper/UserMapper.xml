@@ -22,4 +22,10 @@
         update t_user set money = money-#{money} where id=#{userid}
     </update>
 
+
+    <insert id="insertUser" parameterType="com.boot.pojo.User">
+        insert into t_user values (#{id},#{username},#{password},#{money},#{email},#{date}
+        ,#{valid})
+    </insert>
+
 </mapper>

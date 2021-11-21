@@ -67,4 +67,18 @@ public class UserController {
         return commonResult;
     }
 
+
+    @ResponseBody
+    @PostMapping(path = "/register")
+    public CommonResult<User> registerUser(@RequestBody User user){
+        CommonResult<User> commonResult = new CommonResult<>();
+        try {
+            userService.register(user);
+            return commonResult;
+        } catch (Exception e) {
+            e.printStackTrace();
+            commonResult.setCode(ResultCode.FAILURE);
+            return commonResult;
+        }
+    }
 }

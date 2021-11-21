@@ -16,4 +16,13 @@
         SELECT * FROM address WHERE id=#{id}
     </select>
 
+    <insert id="addAddress" parameterType="com.boot.pojo.Address">
+        insert into address values (#{id},#{realname},#{phone},#{province},#{city},#{area}
+        ,#{address},#{userid});
+    </insert>
+
+    <delete id="delAddressById">
+        delete from address where id=#{id}
+    </delete>
+
 </mapper>

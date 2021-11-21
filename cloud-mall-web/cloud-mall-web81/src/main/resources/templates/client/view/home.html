@@ -92,7 +92,7 @@
 
         <div class="topbar_info fr">
             <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
-                <a class="nav-link" th:href="@{/web/login/toregister}">注册</a>
+            <a class="nav-link" th:href="@{/web/register/toregister}">注册</a>
                 <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
                 <a class="nav-link" sec:authorize="isAuthenticated()"
                 href="javascript:document.logoutform.submit();">

@@ -31,4 +31,10 @@ public class UserFallbackFeignImpl implements UserFallbackFeign {
         return null;
     }
 
+    @Override
+    public CommonResult<User> registerUser(User user) {
+        log.error("registerUser error");
+        return null;
+    }
+
 }

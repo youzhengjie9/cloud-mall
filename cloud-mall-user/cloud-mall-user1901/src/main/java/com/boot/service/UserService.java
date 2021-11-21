@@ -21,4 +21,7 @@ public interface UserService {
 
     //减余额
     void decrMoneyByUserId(long userid,BigDecimal money);
+
+    //注册帐号
+    void register(User user);
 }

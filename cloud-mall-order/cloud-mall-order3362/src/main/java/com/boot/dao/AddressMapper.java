@@ -18,6 +18,8 @@ public interface AddressMapper {
     //根据addressid查询Address
     Address selectAddressByid(@Param("id") long id);
 
+    void addAddress(Address address);
 
+    void delAddressById(@Param("id") long id);
 
 }

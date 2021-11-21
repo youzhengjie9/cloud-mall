@@ -4,6 +4,9 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1226">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>云商城-订单结算页</title>
     <!-- 引入图标库-->
     <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -194,7 +197,7 @@
         </div>
         <div class="topbar_info fr">
             <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
-            <a class="nav-link" th:href="@{/web/login/toregister}">注册</a>
+            <a class="nav-link" th:href="@{/web/register/toregister}">注册</a>
             <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
             <a class="nav-link" sec:authorize="isAuthenticated()"
                href="javascript:document.logoutform.submit();">
@@ -406,7 +409,10 @@
 </footer>
 
 <script>
-
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token}
     var addressArr=new Array();
 
     function selectAddressInfo(elem) {
@@ -467,10 +473,31 @@
     //删除地址
     function delAddress(addressid) {
 
-        console.log(addressid)
+        var flag = confirm('确定要删除该收货信息吗?');
+        if(flag==true)
+        {
+            $.ajax({
+
+                type:'GET',
+                url:'/web/address/delAddress',
+                data:{
+                    "addressid":addressid
+                },
+                success:function (data) {
+                    if(data.code==200){
+                        alert('删除收货信息成功');
+                        window.location.reload();
+                    }else {
+                        alert('删除收货信息失败');
+                    }
+                }
+            })
+        }
+
 
     }
 
+    //新增地址
     function addAddress() {
 
         let sname = document.getElementById('sname');
@@ -481,8 +508,28 @@
         let address = document.getElementById('saddress');
         console.log(sname.value)
 
-
-
+        $.ajax({
+            url: "/web/address/addAddress",
+            data: {
+                "realname":sname.value,
+                "phone": sphone.value,
+                "province":province.value,
+                "city":city.value,
+                "area": area.value,
+                "address":address.value
+            },
+            type: "post",
+            headers:headers,
+            success: function (data) {
+                $('#myModal').modal('hide');
+                if(data.code==200){
+                    alert('新增收货信息成功');
+                    window.location.reload();
+                }else {
+                    alert('新增收货信息失败');
+                }
+            }
+        })
 
 
     }

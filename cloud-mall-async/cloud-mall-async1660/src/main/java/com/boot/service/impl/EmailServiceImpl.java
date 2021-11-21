@@ -58,6 +58,7 @@ public class EmailServiceImpl implements EmailService {
 
         Context context = new Context();
         context.setVariable("code",code);
+
         String process = templateEngine.process("comm/emailTemplate", context);
 
         mimeMessageHelper.setFrom(fromEmail);
