@@ -1,4 +1,4 @@
-package com.boot.config;
+package com.boot.controller.config;
 
 import com.alibaba.fastjson.JSON;
 import com.boot.constant.LoginType;
@@ -146,7 +146,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 这里不要用转发，不然会有一些bug
                 //
                 // request.getRequestDispatcher("/web/").forward(request,httpServletResponse);
-                httpServletResponse.sendRedirect(GATEWAY_URL+"/web/index/");
+                httpServletResponse.sendRedirect(GATEWAY_URL+"/admin/");
               }
             })
         .failureForwardUrl("/web/login/LoginfailPage")
@@ -157,7 +157,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .logout()
         .logoutUrl("/web/logout/logout")
-        .logoutSuccessUrl(GATEWAY_URL+"/web/index/")
+        .logoutSuccessUrl(GATEWAY_URL+"/web/login/toLoginPage")
         .logoutSuccessHandler(
             new LogoutSuccessHandler() {
               @Override
@@ -171,7 +171,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 退出从Redis删除记住我记录
                 redisTemplate.delete(REMEMBER_KEY + IpUtils.getIpAddr(httpServletRequest));
-                httpServletResponse.sendRedirect(GATEWAY_URL+"/web/index/");
+                httpServletResponse.sendRedirect(GATEWAY_URL+"/web/login/toLoginPage");
               }
             })
         .and()

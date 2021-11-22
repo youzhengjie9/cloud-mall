@@ -88,8 +88,14 @@ spring:
             - Path=/web/**
 
 
-        #配置web模块路由3
+        #配置admin模块路由1
         - id: cloud-mall-admin
           uri: lb://cloud-mall-admin
           predicates:
             - Path=/admin/**
+
+        #配置admin模块路由2
+        - id: cloud-mall-admin
+          uri: lb://cloud-mall-admin
+          predicates:
+            - Path=/pear/**

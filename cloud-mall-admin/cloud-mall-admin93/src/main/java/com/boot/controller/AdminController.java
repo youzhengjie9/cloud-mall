@@ -18,39 +18,23 @@ import java.util.List;
 
 /**
  * @author 游政杰
- * 2021/8/16 1:01
  */
 @Controller
 @RequestMapping("/admin")
 @Api(value = "后台管理控制器")
-@Slf4j //slf4j日志
+@Slf4j
 public class AdminController {
 
     @Autowired
     private SpringSecurityUtil springSecurityUtil;
-
     @Autowired
     private RedisTemplate redisTemplate;
-
-    @Autowired
-    private ImgFallbackFeign imgFallbackFeign;
-
-    private static List<String> themes = new ArrayList<>();
-
-    private final String ECHARTS_DAYS = "echarts_days"; //redis存储日期的key
-
-    private final String ECHARTS_COUNTS = "echarts_counts";//redis存储对应的访问量的key
-
-    private final String PEAR_THEME="pear";
-
-    private final String curTheme="pear";
 
 
     @Visitor(desc = "进入后台界面")
     @GetMapping(path = "/")
     @ApiOperation(value = "去后台管理界面", notes = "以/作为路径进入")
     public String toAdmin() {
-
 
         return "back/index";
     }
