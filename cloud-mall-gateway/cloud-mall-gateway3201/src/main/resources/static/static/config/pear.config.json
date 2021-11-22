@@ -1,10 +1,10 @@
 {
 	"logo": {
 		"title": "yblog Admin",
-		"image": "/pear-admin/images/logo.png"
+		"image": "/static/pear-admin/images/logo.png"
 	},
 	"menu": {
-		"data": "/pear-admin/data/menu.json",
+		"data": "/static/pear-admin/data/menu.json",
 		"collaspe": true,
 		"accordion": true,
 		"method": "GET",
@@ -66,6 +66,6 @@
 		"autoHead": false
 	},
 	"header": {
-		"message": "/pear-admin/data/message.json"
+		"message": "/static/pear-admin/data/message.json"
 	}
 }

@@ -25,8 +25,8 @@ public class UserController {
 
     //通过用户名查询密码
     @ResponseBody
-    @GetMapping(path = "/selectPasswordByuserName")
-    public String selectPasswordByuserName(String username){
+    @GetMapping(path = "/selectPasswordByuserName/{username}")
+    public String selectPasswordByuserName(@PathVariable("username") String username){
 
         return userService.selectPasswordByuserName(username);
     }

@@ -36,7 +36,9 @@ public class SearchServiceImpl implements SearchService {
   private final String INDEX_NAME = "cloud-mall"; // 索引名
 
   private final String PAGE_PRODUCT_COUNT = "pageProductCount"; // 分页之前查询的总数
+
   @Autowired private RestHighLevelClient restHighLevelClient;
+
   @Autowired private ProductFallbackFeign productFallbackFeign;
 
   @Autowired private RedisTemplate redisTemplate;

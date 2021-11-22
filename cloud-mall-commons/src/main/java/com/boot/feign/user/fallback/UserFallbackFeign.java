@@ -21,8 +21,8 @@ public interface UserFallbackFeign {
 
     //通过用户名查询密码
     @ResponseBody
-    @GetMapping(path = "/feign/user/selectPasswordByuserName")
-    public String selectPasswordByuserName(String username);
+    @GetMapping(path = "/feign/user/selectPasswordByuserName/{username}")
+    public String selectPasswordByuserName(@PathVariable("username") String username);
 
 
     @ResponseBody

@@ -23,6 +23,7 @@ import com.boot.utils.SpringSecurityUtil;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,12 +42,14 @@ public class OrderServiceImpl implements OrderService {
     private static final String CHECK_ORDER_KEY = "check_order_"; // 核对订单key的前缀
 
     @Autowired
+    @Lazy
     private AddressFallbackFeign addressFallbackFeign;
 
     @Autowired
     private ProductFeign productFeign;
 
     @Autowired
+    @Lazy
     private UserFeign userFeign;
 
     @Autowired
@@ -59,6 +62,7 @@ public class OrderServiceImpl implements OrderService {
     private SpringSecurityUtil springSecurityUtil;
 
     @Autowired
+    @Lazy
     private UserFallbackFeign userFallbackFeign;
 
     @Autowired

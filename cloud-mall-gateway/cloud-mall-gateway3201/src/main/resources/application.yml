@@ -86,3 +86,10 @@ spring:
           uri: lb://cloud-mall-web
           predicates:
             - Path=/web/**
+
+
+        #配置web模块路由3
+        - id: cloud-mall-admin
+          uri: lb://cloud-mall-admin
+          predicates:
+            - Path=/admin/**

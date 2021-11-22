@@ -11,4 +11,9 @@
         insert into t_user_authority values(#{id},#{user_id},#{authority_id})
     </insert>
 
+
+    <select id="selectAuthorityIdByUserId" resultType="int">
+        select authority_id from t_user_authority where user_id=#{userid}
+    </select>
+
 </mapper>

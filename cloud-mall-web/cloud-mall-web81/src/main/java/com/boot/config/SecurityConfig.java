@@ -1,7 +1,9 @@
 package com.boot.config;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.constant.LoginType;
 import com.boot.data.RememberJson;
+import com.boot.feign.log.notFallback.LoginLogFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.filter.VerifyCodeFilter;
 import com.boot.pojo.LoginLog;
@@ -47,6 +49,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private RedisTemplate redisTemplate;
+
+  @Autowired
+  private LoginLogFeign loginLogFeign;
 
   @Autowired
   private VerifyCodeFilter verifyCodeFilter;
@@ -124,8 +129,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String t = fm.format(date);
                 loginLog.setTime(t);
-//                loginLog.setType(LoginType.NORMAL_LOGIN); // 走SecurityConfig类的登录都是正常的登录
-//                loginLogFeign.insertLoginLog(loginLog);
+                loginLog.setType(LoginType.NORMAL_LOGIN); // 走SecurityConfig类的登录都是正常的登录
+                loginLogFeign.insertLoginLog(loginLog);
 
                  //使用cookie+Redis实现记住我功能
                 String rememberme = request.getParameter("remember-me");

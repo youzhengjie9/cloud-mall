@@ -2,13 +2,13 @@
 ## 网站配置
 logo: 
   ## 网站名称
-  title: "yblog Admin"
+  title: "mall Admin"
   ## 网站图标
-  image: "/pear-admin/images/logo.png"
+  image: "/static/pear-admin/images/logo.png"
 ## 菜单配置
 menu: 
   ## 菜单数据来源
-  data: "/pear/menu/json"
+  data: "/static/pear/menu/json"
   ## 菜单接口的请求方式 GET / POST
   method: "GET" 
   ## 是否同时只打开一个菜单目录
@@ -74,4 +74,4 @@ other:
 ## 头部配置
 header:
   ## 站内消息，数据来源，通过 false 设置关闭
-  message: "/pear-admin/data/message.json"
+  message: "/static/pear-admin/data/message.json"
