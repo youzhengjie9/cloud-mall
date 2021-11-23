@@ -28,4 +28,10 @@ public interface ProductService {
 
     //减库存
     void decrNumberByPid(long productId,int number);
+
+
+    //查询所有商品数量
+    int selectProductCount();
+
+
 }

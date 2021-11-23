@@ -16,7 +16,7 @@
     <div class="layui-row layui-col-space10">
         <div class="layui-col-xs6 layui-col-md3">
             <div class="layui-card top-panel">
-                <div class="layui-card-header">发表文章</div>
+                <div class="layui-card-header">发布商品</div>
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number" style="color: #28333E;" id="value1">
@@ -57,7 +57,7 @@
         </div>
         <div class="layui-col-xs6 layui-col-md3">
             <div class="layui-card top-panel">
-                <div class="layui-card-header">推荐文章</div>
+                <div class="layui-card-header">订单总数</div>
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number" style="color: #28333E;" id="value2">
@@ -97,7 +97,7 @@
         </div>
         <div class="layui-col-xs6 layui-col-md3">
             <div class="layui-card top-panel">
-                <div class="layui-card-header">上传附件</div>
+                <div class="layui-card-header">今日交易额</div>
                 <div class="layui-card-body">
                     <div class="layui-row layui-col-space5">
                         <div class="layui-col-xs8 layui-col-md8 top-panel-number" style="color: #28333E;" id="value3">
@@ -176,21 +176,11 @@
             </div>
 
         </div>
-<!--        <div class="layui-col-md3">-->
-<!--            <div class="layui-card">-->
-<!--                <div class="layui-card-header">最新日志</div>-->
-<!--                <div class="layui-card-body">-->
-<!--                    <ul class="list">-->
-<!--                        <li class="list-item" th:each="operationLog:${operationLogs}">-->
-<!--                            <span class="title">[[${operationLog.username}]][[${operationLog.type}]]</span>-->
-<!--                            <span class="footer">[[${operationLog.time}]]</span>-->
-<!--                        </li>-->
-<!--&lt;!&ndash;                        <li class="list-item"><span class="title">优化代码格式</span><span&ndash;&gt;-->
-<!--&lt;!&ndash;                                class="footer">2020-06-04 11:28</span></li>&ndash;&gt;-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+
+<!--        最新日志-->
+
+<!--        -->
+
     </div>
 </div>
 <!--</div>-->
@@ -207,21 +197,21 @@
 
         count.up("value1", {
             time: 4000,
-            num: [[${articleCount}]],
+            num: [[${productCount}]],
             bit: 0,
             regulator: 50
         })
 
         count.up("value2", {
             time: 4000,
-            num: [[${recommendCount}]],
+            num: [[${ordercount}]],
             bit: 0,
             regulator: 50
         })
 
         count.up("value3", {
             time: 4000,
-            num: [[${imgcount}]],
+            num: [[${nowDealMoney}]],
             bit: 0,
             regulator: 50
         })
@@ -279,7 +269,7 @@
                 }
             }],
             series: [{
-                name: '访问量',
+                name: '交易额',
                 type: 'line',
                 data: [
                     [[${counts.get(0)}]], [[${counts.get(1)}]],

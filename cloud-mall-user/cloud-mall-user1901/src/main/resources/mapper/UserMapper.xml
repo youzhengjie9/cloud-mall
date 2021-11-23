@@ -28,4 +28,9 @@
         ,#{valid})
     </insert>
 
+    <select id="selectUserCount" resultType="int">
+        select count(*) from t_user
+    </select>
+
+
 </mapper>

@@ -78,6 +78,11 @@ public class UserServiceImpl implements UserService {
     }
   }
 
+  @Override
+  public int selectUserCount() {
+    return userMapper.selectUserCount();
+  }
+
 }
 
 

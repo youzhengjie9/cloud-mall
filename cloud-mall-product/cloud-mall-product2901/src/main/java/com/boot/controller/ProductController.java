@@ -61,5 +61,13 @@ public class ProductController {
     }
 
 
+    //查询所有商品数量
+    @ResponseBody
+    @GetMapping(path = "/selectProductCount")
+    public int selectProductCount(){
+
+        return productService.selectProductCount();
+    }
+
 
 }

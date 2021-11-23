@@ -160,4 +160,24 @@ public class OrderServiceImpl implements OrderService {
 
 
     }
+
+    @Override
+    public int selectOrderCount() {
+        return orderMapper.selectOrderCount();
+    }
+
+    @Override
+    public BigDecimal selectDealMoneyByCreated(String created) {
+        return orderMapper.selectDealMoneyByCreated(created);
+    }
+
+    @Override
+    public String selectNowDate() {
+        return orderMapper.selectNowDate();
+    }
+
+    @Override
+    public List<String> selectDateBysevenDay() {
+        return orderMapper.selectDateBysevenDay();
+    }
 }

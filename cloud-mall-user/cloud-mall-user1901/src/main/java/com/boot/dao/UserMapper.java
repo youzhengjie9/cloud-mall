@@ -25,4 +25,7 @@ public interface UserMapper {
 
     void insertUser(User user);
 
+    //查询用户数量
+    int selectUserCount();
+
 }

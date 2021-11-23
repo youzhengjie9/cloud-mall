@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -21,6 +22,17 @@ public interface OrderMapper {
     //查询订单状态
     OrderStatus selectOrderStatusById(@Param("id") long id);
 
+    //查询订单数
+    int selectOrderCount();
+
+    //查询某一天的交易额
+    BigDecimal selectDealMoneyByCreated(@Param("created") String created);
+
+    //查询今天的日期
+    String selectNowDate();
+
+    //查询近7天的日期
+    List<String> selectDateBysevenDay();
 
 
 }

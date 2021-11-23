@@ -34,6 +34,9 @@
         update product set `number` =`number`-#{number} where productId=#{productId}
     </update>
 
+    <select id="selectProductCount" resultType="int">
+        select count(*) from product
+    </select>
 
 
 </mapper>

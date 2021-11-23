@@ -8,8 +8,12 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * @author 游政杰
+ */
 @FeignClient(value = "cloud-mall-order",fallback = OrderFallbackFeignImpl.class)
 @Component
 public interface OrderFallbackFeign {
@@ -23,6 +27,26 @@ public interface OrderFallbackFeign {
     @ResponseBody
     @GetMapping(path = "/feign/order/selectOrderStatusById/{id}")
     public OrderStatus selectOrderStatusById(@PathVariable("id") long id);
+
+    //查询订单数
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectOrderCount")
+    public int selectOrderCount();
+
+    //查询某一天的交易额
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectDealMoneyByCreated/{created}")
+    public BigDecimal selectDealMoneyByCreated(@PathVariable("created") String created);
+
+    //查询今天的日期
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectNowDate")
+    public String selectNowDate();
+
+    //查询近7天的日期
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectDateBysevenDay")
+    public List<String> selectDateBysevenDay();
 
 
 }

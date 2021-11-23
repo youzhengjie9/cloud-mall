@@ -81,4 +81,15 @@ public class UserController {
             return commonResult;
         }
     }
+
+    //查询用户数量
+    @ResponseBody
+    @GetMapping(path = "/selectUserCount")
+    public int selectUserCount(){
+
+        int count = userService.selectUserCount();
+        return count;
+    }
+
+
 }

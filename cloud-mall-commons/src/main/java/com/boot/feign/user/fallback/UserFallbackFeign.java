@@ -38,4 +38,8 @@ public interface UserFallbackFeign {
     @PostMapping(path = "/feign/user/register")
     public CommonResult<User> registerUser(@RequestBody User user);
 
+    //查询用户数量
+    @ResponseBody
+    @GetMapping(path = "/feign/user/selectUserCount")
+    public int selectUserCount();
 }

@@ -34,5 +34,11 @@ public class ProductFallbackFeignImpl implements ProductFallbackFeign {
         return null;
     }
 
+    @Override
+    public int selectProductCount() {
+        log.error("selectProductCount error");
+        return 0;
+    }
+
 
 }

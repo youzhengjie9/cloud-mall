@@ -37,4 +37,10 @@ public class UserFallbackFeignImpl implements UserFallbackFeign {
         return null;
     }
 
+    @Override
+    public int selectUserCount() {
+        log.error("selectUserCount error");
+        return 0;
+    }
+
 }

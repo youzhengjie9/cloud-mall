@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -82,6 +83,38 @@ public class OrderController {
     return commonResult;
   }
 
+  //查询订单数
+  @ResponseBody
+  @GetMapping(path = "/selectOrderCount")
+  public int selectOrderCount(){
+
+    return orderService.selectOrderCount();
+  }
+
+  //查询某一天的交易额
+  @ResponseBody
+  @GetMapping(path = "/selectDealMoneyByCreated/{created}")
+  public BigDecimal selectDealMoneyByCreated(@PathVariable("created") String created){
+
+    return orderService.selectDealMoneyByCreated(created);
+  }
+
+  //查询今天的日期
+  @ResponseBody
+  @GetMapping(path = "/selectNowDate")
+  public String selectNowDate(){
+
+    return orderService.selectNowDate();
+  }
+
+  //查询近7天的日期
+  @ResponseBody
+  @GetMapping(path = "/selectDateBysevenDay")
+  public List<String> selectDateBysevenDay(){
+
+
+    return orderService.selectDateBysevenDay();
+  }
 
 
 }

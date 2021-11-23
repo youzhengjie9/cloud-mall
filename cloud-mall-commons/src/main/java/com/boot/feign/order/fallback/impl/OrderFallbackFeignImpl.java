@@ -7,6 +7,7 @@ import com.boot.pojo.OrderStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Component
@@ -22,6 +23,30 @@ public class OrderFallbackFeignImpl implements OrderFallbackFeign {
     @Override
     public OrderStatus selectOrderStatusById(long id) {
         log.error("selectOrderStatusById error");
+        return null;
+    }
+
+    @Override
+    public int selectOrderCount() {
+        log.error("selectOrderCount error");
+        return 0;
+    }
+
+    @Override
+    public BigDecimal selectDealMoneyByCreated(String created) {
+        log.error("selectDealMoneyByCreated error");
+        return null;
+    }
+
+    @Override
+    public String selectNowDate() {
+        log.error("selectNowDate error");
+        return null;
+    }
+
+    @Override
+    public List<String> selectDateBysevenDay() {
+        log.error("selectDateBysevenDay error");
         return null;
     }
 

@@ -31,5 +31,8 @@ public interface ProductFallbackFeign {
     @GetMapping(path = "/feign/product/selectProductByPid/{productId}")
     public Product selectProductByPid(@PathVariable("productId") long productId);
 
-
+    //查询所有商品数量
+    @ResponseBody
+    @GetMapping(path = "/feign/product/selectProductCount")
+    public int selectProductCount();
 }

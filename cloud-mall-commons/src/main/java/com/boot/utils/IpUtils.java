@@ -69,6 +69,11 @@ public class IpUtils {
             ip = ip.substring(0, ip.indexOf(IP_UTILS_FLAG));
         }
 
+        //0:0:0:0:0:0:0:1是ipv6，所以进行以下转换
+        if(ip.equals("0:0:0:0:0:0:0:1")){
+            ip="127.0.0.1";
+        }
+
         return ip;
     }
 }

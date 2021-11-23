@@ -28,4 +28,40 @@
         select * from orderstatus where id=#{id}
     </select>
 
+
+    <select id="selectOrderCount" resultType="int">
+        select count(*) from `order`
+    </select>
+
+    <select id="selectDealMoneyByCreated" resultType="java.math.BigDecimal">
+    SELECT
+	sum(singleGoodsMoney)
+        FROM
+	`order`
+        WHERE
+	(
+		datediff ( created,#{created} ) = 0
+	)
+    </select>
+
+    <select id="selectNowDate" resultType="java.lang.String">
+        select DATE_SUB(curdate(),INTERVAL 0 DAY) day7
+    </select>
+
+
+    <select id="selectDateBysevenDay" resultType="java.lang.String">
+        select DATE_SUB(curdate(),INTERVAL 6 DAY) day1 union
+        select DATE_SUB(curdate(),INTERVAL 5 DAY) day2 union
+        select DATE_SUB(curdate(),INTERVAL 4 DAY) day3 union
+        select DATE_SUB(curdate(),INTERVAL 3 DAY) day4 union
+        select DATE_SUB(curdate(),INTERVAL 2 DAY) day5 union
+        select DATE_SUB(curdate(),INTERVAL 1 DAY) day6 union
+        select DATE_SUB(curdate(),INTERVAL 0 DAY) day7;
+    </select>
+
+
+
+
+
+
 </mapper>

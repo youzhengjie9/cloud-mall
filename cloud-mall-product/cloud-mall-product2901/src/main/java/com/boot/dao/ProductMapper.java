@@ -32,4 +32,8 @@ public interface ProductMapper {
     //减库存
     void decrNumberByPid(@Param("productId")long productId,@Param("number") int number);
 
+    //查询所有商品数量
+    int selectProductCount();
+
+
 }

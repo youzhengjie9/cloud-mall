@@ -5,6 +5,7 @@ import com.boot.pojo.OrderStatus;
 import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface OrderService {
@@ -19,4 +20,15 @@ public interface OrderService {
 
     void orderBegin(String addressid, long id);
 
+    //查询订单数
+    int selectOrderCount();
+
+    //查询某一天的交易额
+    BigDecimal selectDealMoneyByCreated(String created);
+
+    //查询今天的日期
+    String selectNowDate();
+
+    //查询近7天的日期
+    List<String> selectDateBysevenDay();
 }

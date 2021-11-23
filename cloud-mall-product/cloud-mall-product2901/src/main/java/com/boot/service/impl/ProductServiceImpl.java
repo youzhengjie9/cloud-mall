@@ -56,5 +56,10 @@ public class ProductServiceImpl implements ProductService {
         productsMapper.decrNumberByPid(productId, number);
     }
 
+    @Override
+    public int selectProductCount() {
+        return productsMapper.selectProductCount();
+    }
+
 
 }
