@@ -35,7 +35,6 @@ public class OperationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         HttpSession session = request.getSession();
-        System.out.println(request);
         String requestURI = request.getRequestURI();
         HandlerMethod handlerMethod= (HandlerMethod)handler;
         String name = handlerMethod.getMethod().getName(); //获取方法名

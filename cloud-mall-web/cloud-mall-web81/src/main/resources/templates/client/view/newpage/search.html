@@ -363,7 +363,7 @@
                 <li>
                     <div class="pro-img">
                         <a target="_blank" th:href="@{'/web/index/view/homeProductDetail/'+${product.getProductId()}}">
-                            <img th:src="@{'/static/img/nav/'+${product.img}+'.jpg'}" alt="product">
+                            <img th:src="@{${product.img}}" alt="product">
 
                         </a>
                     </div>
@@ -540,7 +540,7 @@
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
                     html+='<a target="_blank" href=\"'+'/web/index/view/homeProductDetail/'+json.products[i].productId+'\">'
-                    html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
+                    html += '<img src=\"'+ json.products[i].img + '\" alt="product">';
                     html += '</a></div>'
                     html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
                     html += '<p class="desc">' + json.products[i].name + '</p>';
@@ -696,7 +696,7 @@
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
                     html+='<a target="_blank" href=\"'+'/web/index/view/homeProductDetail/'+json.products[i].productId+'\">'
-                    html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
+                    html += '<img src=\"' + json.products[i].img + '\" alt="product">';
                     html += '</a></div>'
                     html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
                     html += '<p class="desc">' + json.products[i].name + '</p>';
@@ -870,7 +870,7 @@
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
                     html+='<a target="_blank" href=\"'+'/web/index/view/homeProductDetail/'+json.products[i].productId+'\">'
-                    html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
+                    html += '<img src=\"' + json.products[i].img + '\" alt="product">';
                     html += '</a></div>'
                     html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
                     html += '<p class="desc">' + json.products[i].name + '</p>';
@@ -1045,7 +1045,7 @@
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
                     html+='<a target="_blank" href=\"'+'/web/index/view/homeProductDetail/'+json.products[i].productId+'\">'
-                    html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
+                    html += '<img src=\"' + json.products[i].img + '\" alt="product">';
                     html += '</a></div>'
                     html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
                     html += '<p class="desc">' + json.products[i].name + '</p>';
@@ -1252,7 +1252,7 @@
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
                     html+='<a target="_blank" href=\"'+'/web/index/view/homeProductDetail/'+json.products[i].productId+'\">'
-                    html += '<img src=\"' + '/static/img/nav/' + json.products[i].img + '.jpg' + '\" alt="product">';
+                    html += '<img src=\"' + json.products[i].img + '\" alt="product">';
                     html += '</a></div>'
                     html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
                     html += '<p class="desc">' + json.products[i].name + '</p>';

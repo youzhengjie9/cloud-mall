@@ -23,7 +23,7 @@
     </select>
 
     <insert id="insertProduct" parameterType="com.boot.pojo.Product">
-        insert into product values(#{productId},#{name},#{price},#{img},#{number},#{fl_id},#{b_id},#{introduce_img})
+        insert into product values(#{productId},#{name},#{price},#{img},#{number},#{fl_id},#{b_id},#{introduce_img},#{content},#{userid})
     </insert>
 
     <select id="selectProductByPid" resultType="com.boot.pojo.Product">

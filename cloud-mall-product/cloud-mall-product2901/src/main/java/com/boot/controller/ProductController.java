@@ -1,15 +1,13 @@
 package com.boot.controller;
 
+import com.boot.constant.ResultCode;
 import com.boot.data.CommonResult;
 import com.boot.pojo.Product;
 import com.boot.service.ProductService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -67,6 +65,18 @@ public class ProductController {
     public int selectProductCount(){
 
         return productService.selectProductCount();
+    }
+
+    //添加商品
+    @ResponseBody
+    @PostMapping(path = "/insertProduct")
+    public CommonResult<Product> insertProduct(@RequestBody Product product){
+        CommonResult<Product> commonResult = new CommonResult<>();
+
+        productService.insertProduct(product);
+
+        return commonResult;
+
     }
 
 

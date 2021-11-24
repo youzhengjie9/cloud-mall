@@ -12,7 +12,8 @@
     <div class="box-bd">
         <ul id="focusImg">
             <li ng-repeat="item in imgItems" id="focusLi">
-                <a target="_blank" ui-sref="home.products({productId:item.productId})"><img ng-src="/static/img/nav/{{item.imgName}}.jpg" alt=""></a>
+<!--                <a target="_blank" ui-sref="home.products({productId:item.productId})"><img ng-src="/static/img/nav/{{item.imgName}}.jpg" alt=""></a>-->
+                <a target="_blank" ui-sref="home.products({productId:item.productId})"><img ng-src="{{item.imgName}}" alt=""></a>
             </li>
         </ul>
     </div>

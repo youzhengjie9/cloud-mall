@@ -20,6 +20,8 @@ public class Product implements Serializable {
     private long fl_id; //商品所属分类id=classifyid
     private long b_id; //商品所属品牌id
     private String introduce_img;//商品介绍图片地址用逗号分隔
+    private String content; //商品内容介绍
+    private long userid; //商品是被谁发布出去的
 
     public Product() {
     }
@@ -88,6 +90,22 @@ public class Product implements Serializable {
         this.introduce_img = introduce_img;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public long getUserid() {
+        return userid;
+    }
+
+    public void setUserid(long userid) {
+        this.userid = userid;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -99,6 +117,8 @@ public class Product implements Serializable {
                 ", fl_id=" + fl_id +
                 ", b_id=" + b_id +
                 ", introduce_img='" + introduce_img + '\'' +
+                ", content='" + content + '\'' +
+                ", userid=" + userid +
                 '}';
     }
 }

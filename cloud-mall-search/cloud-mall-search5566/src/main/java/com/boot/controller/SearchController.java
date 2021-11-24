@@ -60,7 +60,7 @@ public class SearchController {
 
     //搜索服务初始化
     @ResponseBody
-    @GetMapping(path = "/initSearch")
+        @GetMapping(path = "/initSearch")
     public String initSearch() throws IOException {
 
         try {

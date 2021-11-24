@@ -38,6 +38,8 @@ public class ProductTest {
             product.setFl_id(2);
             product.setB_id(3);
             product.setIntroduce_img("/static/img/introduce/04e6887165a1d0b7.jpg,/static/img/introduce/05b406882a48787a.jpg,/static/img/introduce/528c61caf149031e.jpg,/static/img/introduce/62313e3bdbbeaf29.jpg");
+            product.setContent("<p>新产品</p> <p>非常不错</p>");
+            product.setUserid(1);
 
             productService.insertProduct(product);
             try {

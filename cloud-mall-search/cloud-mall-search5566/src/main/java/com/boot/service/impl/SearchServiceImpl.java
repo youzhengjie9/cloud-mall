@@ -69,6 +69,7 @@ public class SearchServiceImpl implements SearchService {
         sources.put("b_id", String.valueOf(product.getB_id()));
         sources.put("introduce_img", product.getIntroduce_img());
         indexRequest.source(sources);
+
         bulkRequest.add(indexRequest);
       }
 
