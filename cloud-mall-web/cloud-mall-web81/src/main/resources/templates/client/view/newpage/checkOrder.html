@@ -448,7 +448,6 @@
             alert('请选择地址再下单...');
         } else {
             //因为我们要下单的数据已经放到了redis中，所以我们这里只需要获取发货地id即可
-
             $.ajax({
                 url: "/web/order/orderbegin",
                 data: {

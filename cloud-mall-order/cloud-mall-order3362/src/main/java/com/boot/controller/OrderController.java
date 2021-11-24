@@ -8,6 +8,8 @@ import com.boot.pojo.Order;
 import com.boot.pojo.OrderStatus;
 import com.boot.service.OrderService;
 import io.swagger.annotations.Api;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,9 @@ import java.util.List;
 public class OrderController {
 
   @Autowired private OrderService orderService;
+
+  @Autowired
+  private RedissonClient redissonClient;
 
   @ResponseBody
   @PostMapping(path = "/insertOrder")
@@ -73,9 +78,17 @@ public class OrderController {
 
     CommonResult<Order> commonResult = new CommonResult<>();
     commonResult.setCode(ResultCode.FAILURE); //修改为默认为失败
+    String lockkey="lockproduct_1";
+    RLock lock = redissonClient.getLock(lockkey);
 
+    try{
 
-    orderService.orderBegin(addressid,id);
+      lock.lock();
+      orderService.orderBegin(addressid,id);
+    }finally{
+      lock.unlock();
+    }
+
 
 
     //最后在修改回来为成功

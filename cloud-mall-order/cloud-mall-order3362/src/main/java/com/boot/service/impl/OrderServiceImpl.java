@@ -13,10 +13,7 @@ import com.boot.feign.product.notFallback.CartFeign;
 import com.boot.feign.product.notFallback.ProductFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.feign.user.notFallback.UserFeign;
-import com.boot.pojo.Address;
-import com.boot.pojo.Cart;
-import com.boot.pojo.Order;
-import com.boot.pojo.OrderStatus;
+import com.boot.pojo.*;
 import com.boot.service.OrderService;
 import com.boot.utils.SnowId;
 import com.boot.utils.SpringSecurityUtil;
@@ -47,6 +44,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private ProductFeign productFeign;
+
+    @Autowired
+    private ProductFallbackFeign productFallbackFeign;
 
     @Autowired
     @Lazy
@@ -103,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
         for (int i = 0; i < size; i++) {
             String jsonString = JSON.toJSONString(jsonArray.get(i));
             JSONObject jsonObject = JSONObject.parseObject(jsonString);
-            long cartid = Long.valueOf((String) jsonObject.get("id")); //商品id
+            long cartid = Long.valueOf((String) jsonObject.get("id")); //
             CommonResult<Cart> cartCommonResult = cartFallbackFeign.selectCartByCartId(cartid);
             Cart cart1 = cartCommonResult.getObj();
             long id1 = cart1.getProductid(); //商品id
@@ -142,17 +142,19 @@ public class OrderServiceImpl implements OrderService {
             //当下单成功就要减库存，和减用户余额
 
             BigDecimal userMoney = userFallbackFeign.selectUserMoneyByUserId(id);
+            Product product = productFallbackFeign.selectProductByPid(id1);
+            int number = product.getNumber();
 
-            if (userMoney.compareTo(singleGoodsMoney)==-1) { //如果userMoney<singleGoodsMoney
+            if (userMoney.compareTo(singleGoodsMoney)==-1||number<goodsCount) { //如果userMoney<singleGoodsMoney
 
                 //此时购买不了，进行回滚
-                throw new RuntimeException("余额不足，购买失败");
+                throw new RuntimeException("购买失败");
             }else { //反之可以购买
 
                 //调用多个服务
                 productFeign.decrNumberByPid(id1,goodsCount); //减库存
                 userFeign.decrMoneyByUserId(id,singleGoodsMoney.toString()); //减余额
-                cartFeign.deleteCartByCartId(cartid); //移除购物车
+//                cartFeign.deleteCartByCartId(cartid); //移除购物车
 
             }
         }

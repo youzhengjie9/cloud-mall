@@ -17,7 +17,12 @@
 
 
     <dependencies>
-
+        <!-- redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.8.2</version>
+        </dependency>
         <!--        springBoot Admin client-->
         <dependency>
             <groupId>de.codecentric</groupId>

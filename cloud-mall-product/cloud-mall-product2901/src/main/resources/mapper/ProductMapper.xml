@@ -31,7 +31,7 @@
     </select>
 
     <update id="decrNumberByPid">
-        update product set `number` =`number`-#{number} where productId=#{productId}
+        update product set `number` =`number`-#{number} where productId=#{productId} and `number`>0
     </update>
 
     <select id="selectProductCount" resultType="int">

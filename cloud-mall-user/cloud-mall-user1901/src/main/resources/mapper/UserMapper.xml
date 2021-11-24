@@ -19,7 +19,7 @@
     </select>
 
     <update id="decrMoneyByUserId">
-        update t_user set money = money-#{money} where id=#{userid}
+        update t_user set money = money-#{money} where id=#{userid} and money>0
     </update>
 
 
