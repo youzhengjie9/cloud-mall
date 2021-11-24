@@ -39,7 +39,7 @@ import java.util.Date;
 @Slf4j
 @Component
 @Order(9)
-@WebFilter(urlPatterns = "/web/**",filterName = "rememberFilter")
+@WebFilter(urlPatterns = {"/web/**","/admin/**","/pear/**"},filterName = "rememberFilter")
 public class RememberFilter extends OncePerRequestFilter {
 
     @Autowired

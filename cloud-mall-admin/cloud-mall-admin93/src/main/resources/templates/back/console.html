@@ -178,7 +178,19 @@
         </div>
 
 <!--        最新日志-->
-
+        <div class="layui-col-md3">
+            <div class="layui-card">
+                <div class="layui-card-header">最新日志</div>
+                <div class="layui-card-body">
+                    <ul class="list">
+                        <li class="list-item" th:each="operationLog:${operationLogs}">
+                            <span class="title">[[${operationLog.username}]][[${operationLog.type}]]</span>
+                            <span class="footer">[[${operationLog.time}]]</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 <!--        -->
 
     </div>

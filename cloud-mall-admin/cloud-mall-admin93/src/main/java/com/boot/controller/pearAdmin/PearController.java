@@ -4,12 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.boot.annotation.Operation;
 import com.boot.annotation.Visitor;
 import com.boot.data.layuiJSON;
+import com.boot.feign.log.fallback.OperationLogFallbackFeign;
 import com.boot.feign.order.fallback.OrderFallbackFeign;
 import com.boot.feign.product.fallback.ProductFallbackFeign;
 import com.boot.feign.system.fallback.ImgFallbackFeign;
 import com.boot.feign.user.fallback.AuthorityFallbackFeign;
 import com.boot.feign.user.fallback.UserAuthorityFallbackFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
+import com.boot.pojo.OperationLog;
 import com.boot.pojo.User;
 import com.boot.utils.IpUtils;
 import com.boot.utils.SpringSecurityUtil;
@@ -50,6 +52,9 @@ public class PearController {
 
     @Autowired
     private SpringSecurityUtil springSecurityUtil;
+
+    @Autowired
+    private OperationLogFallbackFeign operationLogFallbackFeign;
 
     @Autowired
     private ProductFallbackFeign productFallbackFeign;
@@ -162,6 +167,9 @@ public class PearController {
         model.addAttribute("days",days);
 
         charts(model);
+
+        List<OperationLog> operationLogs = operationLogFallbackFeign.selectOperationLogByLimit(8);
+        model.addAttribute("operationLogs",operationLogs);
 
         String username = springSecurityUtil.currentUser(session);
 

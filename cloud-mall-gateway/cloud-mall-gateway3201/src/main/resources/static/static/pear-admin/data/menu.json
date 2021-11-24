@@ -23,6 +23,73 @@
 			}
 		]
 	},
+
+	{
+		"id": "component",
+		"title": "商品管理",
+		"icon": "layui-icon layui-icon-component",
+		"type": 0,
+		"href": "",
+		"children": [
+			{
+				"id": 203,
+				"title": "发布商品",
+				"icon": "layui-icon layui-icon-console",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "/pear/topublish"
+			}
+		,
+			{
+				"id": 205,
+				"title": "商品管理",
+				"icon": "layui-icon layui-icon-console",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "/pear/toArticleManager"
+			},
+			{
+				"id": 207,
+				"title": "品牌管理",
+				"icon": "layui-icon layui-icon-console",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "/pear/toCategory"
+			},
+			{
+				"id": 208,
+				"title": "分类管理",
+				"icon": "layui-icon layui-icon-console",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "/pear/toTag"
+			}
+		]
+	},
+	{
+		"id": "result",
+		"title": "订单管理",
+		"icon": "layui-icon layui-icon-auz",
+		"type": 0,
+		"href": "",
+		"children": [{
+			"id": "success",
+			"title": "订单管理",
+			"icon": "layui-icon layui-icon-face-smile",
+			"type": 1,
+			"openType": "_iframe",
+			"href": "/pear/toFileUpload"
+		},
+			{
+				"id": "failure",
+				"title": "退货管理",
+				"icon": "layui-icon layui-icon-face-cry",
+				"type": 1,
+				"openType": "_iframe",
+				"href": "/pear/toCatchData"
+			}
+		]
+	},
 	{
 		"id": "error",
 		"title": "用户管理",
