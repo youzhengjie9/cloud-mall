@@ -102,8 +102,8 @@ public class SearchController {
                 model.addAttribute("products",products);
                 for (Product product : products) {
 
-                    Brand brand = brandFallbackFeign.selectBrandByid(product.getB_id());
-                    Classify classify = classifyFallbackFeign.selectClassifyByid(product.getFl_id());
+                    Brand brand = brandFallbackFeign.selectBrandByid(product.getBrand().getId());
+                    Classify classify = classifyFallbackFeign.selectClassifyByid(product.getClassify().getId());
 
                     if (!brandNames.contains(brand.getBrandName())) //利用集合来去重
                     {
@@ -193,8 +193,8 @@ public class SearchController {
         {
             for (Product product : products) {
 
-                Brand brand = brandFallbackFeign.selectBrandByid(product.getB_id());
-                Classify classify = classifyFallbackFeign.selectClassifyByid(product.getFl_id());
+                Brand brand = brandFallbackFeign.selectBrandByid(product.getBrand().getId());
+                Classify classify = classifyFallbackFeign.selectClassifyByid(product.getClassify().getId());
 
                 if (!brandNames.contains(brand.getBrandName())) //利用集合来去重
                 {
@@ -214,8 +214,8 @@ public class SearchController {
 
             for (Product product : products) {
 
-                Brand brand = brandFallbackFeign.selectBrandByid(product.getB_id());
-                Classify classify = classifyFallbackFeign.selectClassifyByid(product.getFl_id());
+                Brand brand = brandFallbackFeign.selectBrandByid(product.getBrand().getId());
+                Classify classify = classifyFallbackFeign.selectClassifyByid(product.getClassify().getId());
 
                 if (!brandNames.contains(brand.getBrandName())) //利用集合来去重
                 {

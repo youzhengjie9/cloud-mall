@@ -46,7 +46,13 @@ public class SearchController {
 //            "fl_id":{
 //                "type":"keyword"
 //            },
+//            "fl_name":{
+//                "type":"keyword"
+//            },
 //            "b_id":{
+//                "type":"keyword"
+//            },
+//            "b_name":{
 //                "type":"keyword"
 //            },
 //            "introduce_img":{

@@ -4,10 +4,46 @@
 
 
 <mapper namespace="com.boot.dao.ProductMapper">
-    
-    
-    <select id="selectAllProduct" resultType="com.boot.pojo.Product">
-        select * from product
+
+    <resultMap id="res1" type="com.boot.pojo.Product">
+        <result column="productId" property="productId"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="img" property="img"/>
+        <result column="number" property="number"/>
+        <result column="introduce_img" property="introduce_img"/>
+        <result column="content" property="content"/>
+        <result column="userid" property="userid"/>
+        <association property="brand" javaType="com.boot.pojo.Brand">
+            <result column="id" property="id"/>
+            <result column="brandName" property="brandName"/>
+        </association>
+        <association property="classify" javaType="com.boot.pojo.Classify">
+            <result column="id" property="id"/>
+            <result column="text" property="text"/>
+            <result column="isNav" property="isNav"/>
+        </association>
+    </resultMap>
+
+
+    <select id="selectAllProduct" resultMap="res1">
+        select
+        product.productId,
+        product.name,
+        product.price,
+        product.img,
+        product.number,
+        brand.id,
+        brand.brandName,
+        classify.id,
+        classify.text,
+        classify.isNav,
+        product.introduce_img,
+        product.content,
+        product.userid
+        from product,brand,classify
+        WHERE product.b_id=brand.id
+        and product.fl_id=classify.id
     </select>
 
     <select id="selectmxdp" resultType="com.boot.pojo.Product">
@@ -23,11 +59,48 @@
     </select>
 
     <insert id="insertProduct" parameterType="com.boot.pojo.Product">
-        insert into product values(#{productId},#{name},#{price},#{img},#{number},#{fl_id},#{b_id},#{introduce_img},#{content},#{userid})
+        insert into product values(#{productId},#{name},#{price},#{img},#{number},#{classify.id},#{brand.id},#{introduce_img},#{content},#{userid})
     </insert>
 
-    <select id="selectProductByPid" resultType="com.boot.pojo.Product">
-        select * from product where productId=#{productId}
+    <resultMap id="res2" type="com.boot.pojo.Product">
+        <result column="productId" property="productId"/>
+        <result column="name" property="name"/>
+        <result column="price" property="price"/>
+        <result column="img" property="img"/>
+        <result column="number" property="number"/>
+        <result column="introduce_img" property="introduce_img"/>
+        <result column="content" property="content"/>
+        <result column="userid" property="userid"/>
+        <association property="brand" javaType="com.boot.pojo.Brand">
+            <result column="id" property="id"/>
+            <result column="brandName" property="brandName"/>
+        </association>
+        <association property="classify" javaType="com.boot.pojo.Classify">
+            <result column="id" property="id"/>
+            <result column="text" property="text"/>
+            <result column="isNav" property="isNav"/>
+        </association>
+    </resultMap>
+
+    <select id="selectProductByPid" resultMap="res2">
+        select
+        product.productId,
+        product.name,
+        product.price,
+        product.img,
+        product.number,
+        brand.id,
+        brand.brandName,
+        classify.id,
+        classify.text,
+        classify.isNav,
+        product.introduce_img,
+        product.content,
+        product.userid
+        from product,brand,classify
+        WHERE product.b_id=brand.id
+        and product.fl_id=classify.id
+        and productId=#{productId}
     </select>
 
     <update id="decrNumberByPid">

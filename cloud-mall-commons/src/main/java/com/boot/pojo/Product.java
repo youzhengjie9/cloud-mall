@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * @author 游政杰
  * 商品实体类
  */
-@ApiModel("商品实体类")
+@ApiModel(value = "商品实体类",description = "")
 public class Product implements Serializable {
 
     private long productId; //商品id
@@ -17,8 +17,8 @@ public class Product implements Serializable {
     private BigDecimal price; //商品价格
     private String img; //商品图片
     private int number; //商品还剩的数量
-    private long fl_id; //商品所属分类id=classifyid
-    private long b_id; //商品所属品牌id
+    private Brand brand; //品牌
+    private Classify classify; //分类
     private String introduce_img;//商品介绍图片地址用逗号分隔
     private String content; //商品内容介绍
     private long userid; //商品是被谁发布出去的
@@ -66,20 +66,20 @@ public class Product implements Serializable {
         this.number = number;
     }
 
-    public long getFl_id() {
-        return fl_id;
+    public Brand getBrand() {
+        return brand;
     }
 
-    public void setFl_id(long fl_id) {
-        this.fl_id = fl_id;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
-    public long getB_id() {
-        return b_id;
+    public Classify getClassify() {
+        return classify;
     }
 
-    public void setB_id(long b_id) {
-        this.b_id = b_id;
+    public void setClassify(Classify classify) {
+        this.classify = classify;
     }
 
     public String getIntroduce_img() {
@@ -114,8 +114,8 @@ public class Product implements Serializable {
                 ", price=" + price +
                 ", img='" + img + '\'' +
                 ", number=" + number +
-                ", fl_id=" + fl_id +
-                ", b_id=" + b_id +
+                ", brand=" + brand +
+                ", classify=" + classify +
                 ", introduce_img='" + introduce_img + '\'' +
                 ", content='" + content + '\'' +
                 ", userid=" + userid +

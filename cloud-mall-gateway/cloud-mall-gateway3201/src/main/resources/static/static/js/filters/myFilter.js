@@ -5,7 +5,7 @@ angular.module("filterMd", [])
         return function (input, itemId) {
             var array = [];
             angular.forEach(input, function (obj) {
-                if (itemId == obj.fl_id ||itemId.indexOf('$'+obj.fl_id+'$') != -1) {
+                if (itemId == obj.classify.id ||itemId.indexOf('$'+obj.classify.id+'$') != -1) {
                     array.push(obj)
                 }
             })

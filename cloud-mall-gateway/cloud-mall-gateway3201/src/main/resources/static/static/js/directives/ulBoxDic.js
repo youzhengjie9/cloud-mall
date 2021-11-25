@@ -40,7 +40,7 @@ angular.module("ulBoxMd", ["filterMd"])
                 scope.pageList = [];
                 var pageSize = 6;
                 angular.forEach(scope.childrenContent, function (ContentItem) {
-                    if (scope.parentItem.id == ContentItem.fl_id || scope.parentItem.id.indexOf('$'+ContentItem.fl_id+'$') != -1) {
+                    if (scope.parentItem.id == ContentItem.classify.id || scope.parentItem.id.indexOf('$'+ContentItem.classify.id+'$') != -1) {
                         scope.ContentArray.push(ContentItem)
                     }
                 })

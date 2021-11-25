@@ -1,6 +1,8 @@
 package com.boot.service.impl;
 
 import com.boot.feign.product.fallback.ProductFallbackFeign;
+import com.boot.pojo.Brand;
+import com.boot.pojo.Classify;
 import com.boot.pojo.Product;
 import com.boot.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
@@ -66,8 +68,10 @@ public class SearchServiceImpl implements SearchService {
         sources.put("price", product.getPrice());
         sources.put("img", product.getImg());
         sources.put("number", product.getNumber());
-        sources.put("fl_id", String.valueOf(product.getFl_id()));
-        sources.put("b_id", String.valueOf(product.getB_id()));
+        sources.put("fl_id", String.valueOf(product.getClassify().getId()));
+        sources.put("b_id", String.valueOf(product.getBrand().getId()));
+        sources.put("fl_name", String.valueOf(product.getClassify().getText()));
+        sources.put("b_name", String.valueOf(product.getBrand().getBrandName()));
         sources.put("introduce_img", product.getIntroduce_img());
         indexRequest.source(sources);
 
@@ -115,8 +119,14 @@ public class SearchServiceImpl implements SearchService {
         product.setPrice(price);
         product.setImg((String) sourceAsMap.get("img"));
         product.setNumber((Integer) sourceAsMap.get("number"));
-        product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
-        product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
+        Classify classify = new Classify();
+        classify.setId(Long.valueOf((String) sourceAsMap.get("fl_id")));
+        classify.setText((String)sourceAsMap.get("fl_name"));
+        product.setClassify(classify);
+        Brand brand = new Brand();
+        brand.setId(Long.valueOf((String) sourceAsMap.get("b_id")));
+        brand.setBrandName((String)sourceAsMap.get("b_name"));
+        product.setBrand(brand);
         product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
 
         products.add(product);
@@ -163,8 +173,14 @@ public class SearchServiceImpl implements SearchService {
         product.setPrice(price);
         product.setImg((String) sourceAsMap.get("img"));
         product.setNumber((Integer) sourceAsMap.get("number"));
-        product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
-        product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
+        Classify classify = new Classify();
+        classify.setId(Long.valueOf((String) sourceAsMap.get("fl_id")));
+        classify.setText((String)sourceAsMap.get("fl_name"));
+        product.setClassify(classify);
+        Brand brand = new Brand();
+        brand.setId(Long.valueOf((String) sourceAsMap.get("b_id")));
+        brand.setBrandName((String) sourceAsMap.get("b_name"));
+        product.setBrand(brand);
         product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
 
         products.add(product);
@@ -217,8 +233,14 @@ public class SearchServiceImpl implements SearchService {
       product.setPrice(price);
       product.setImg((String) sourceAsMap.get("img"));
       product.setNumber((Integer) sourceAsMap.get("number"));
-      product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
-      product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
+      Classify classify = new Classify();
+      classify.setId(Long.valueOf((String) sourceAsMap.get("fl_id")));
+      classify.setText((String)sourceAsMap.get("fl_name"));
+      product.setClassify(classify);
+      Brand brand = new Brand();
+      brand.setId(Long.valueOf((String) sourceAsMap.get("b_id")));
+      brand.setBrandName((String)sourceAsMap.get("b_name"));
+      product.setBrand(brand);
       product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
 
       products.add(product);
@@ -283,8 +305,14 @@ public class SearchServiceImpl implements SearchService {
       product.setPrice(price);
       product.setImg((String) sourceAsMap.get("img"));
       product.setNumber((Integer) sourceAsMap.get("number"));
-      product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
-      product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
+      Classify classify = new Classify();
+      classify.setId(Long.valueOf((String) sourceAsMap.get("fl_id")));
+      classify.setText((String)sourceAsMap.get("fl_name"));
+      product.setClassify(classify);
+      Brand brand = new Brand();
+      brand.setId(Long.valueOf((String) sourceAsMap.get("b_id")));
+      brand.setBrandName((String)sourceAsMap.get("b_name"));
+      product.setBrand(brand);
       product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
       products.add(product);
     }
@@ -368,8 +396,14 @@ public class SearchServiceImpl implements SearchService {
       product.setPrice(price);
       product.setImg((String) sourceAsMap.get("img"));
       product.setNumber((Integer) sourceAsMap.get("number"));
-      product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
-      product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
+      Classify classify = new Classify();
+      classify.setId(Long.valueOf((String) sourceAsMap.get("fl_id")));
+      classify.setText((String)sourceAsMap.get("fl_name"));
+      product.setClassify(classify);
+      Brand brand = new Brand();
+      brand.setId(Long.valueOf((String) sourceAsMap.get("b_id")));
+      brand.setBrandName((String)sourceAsMap.get("b_name"));
+      product.setBrand(brand);
       product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
 
       products.add(product);

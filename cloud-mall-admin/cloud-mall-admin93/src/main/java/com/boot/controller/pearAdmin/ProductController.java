@@ -121,8 +121,12 @@ public class ProductController {
       }
 
       product.setProductId(SnowId.nextId());
-      product.setFl_id(cid);
-      product.setB_id(bid);
+      Classify classify = new Classify();
+      classify.setId(cid);
+      product.setClassify(classify);
+      Brand brand = new Brand();
+      brand.setId(bid);
+      product.setBrand(brand);
       product.setContent(content);
       product.setIntroduce_img(
           "/static/img/introduce/04e6887165a1d0b7.jpg,/static/img/introduce/05b406882a48787a.jpg,/static/img/introduce/528c61caf149031e.jpg,/static/img/introduce/62313e3bdbbeaf29.jpg");
@@ -143,8 +147,8 @@ public class ProductController {
       sources.put("price", product.getPrice());
       sources.put("img", product.getImg());
       sources.put("number", product.getNumber());
-      sources.put("fl_id", String.valueOf(product.getFl_id()));
-      sources.put("b_id", String.valueOf(product.getB_id()));
+      sources.put("fl_id", String.valueOf(product.getClassify().getId()));
+      sources.put("b_id", String.valueOf(product.getBrand().getId()));
       sources.put("introduce_img", product.getIntroduce_img());
       indexRequest.source(sources);
 
@@ -185,7 +189,6 @@ public class ProductController {
     List<Product> products = searchFallbackFeign.searchAllProductByLimit(0, 6);
 
     model.addAttribute("products", products);
-
     return "back/product_list";
   }
 
