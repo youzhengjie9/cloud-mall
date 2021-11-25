@@ -26,4 +26,16 @@ public interface SearchService {
     //from size 为分页
     List<Product> searchProductsByCondition(String text,long brandid,long classifyid,int from,int size) throws IOException;
 
+
+    long searchAllProductsCount() throws IOException;
+
+    //根据商品名搜索商品集合并且分页
+    List<Product> searchProductsByNameAndLimit(int from , int size ,String text) throws IOException;
+
+    //根据商品名搜索商品的目标数
+    long searchProductCountByName(String text) throws IOException;
+
+
+
+
 }

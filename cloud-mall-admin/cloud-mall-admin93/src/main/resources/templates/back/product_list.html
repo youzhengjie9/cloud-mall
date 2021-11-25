@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>商品管理</title>
+	<link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}" />
+</head>
+<body class="pear-container">
+<div class="layui-card">
+	<div class="layui-card-body">
+		<form class="layui-form" action="" autocomplete="off">
+			<div class="layui-form-item">
+				<div class="layui-form-item layui-inline">
+					<label class="layui-form-label">商品名称</label>
+					<div class="layui-input-inline">
+						<input type="text" name="title" placeholder="" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item layui-inline">
+					<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
+						<i class="layui-icon layui-icon-search"></i>
+						查询
+					</button>
+					<button type="reset" class="pear-btn pear-btn-md">
+						<i class="layui-icon layui-icon-refresh"></i>
+						重置
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="layui-card">
+	<div class="layui-card-body">
+<!--		表格-->
+		<table id="user-table" lay-filter="user-table"></table>
+	</div>
+</div>
+
+<script type="text/html" id="user-toolbar">
+	<a th:href="@{/pear/topublish}" class="pear-btn pear-btn-primary pear-btn-md">
+		<i class="layui-icon layui-icon-add-1"></i>
+		发布
+	</a>
+	<button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+		<i class="layui-icon layui-icon-delete"></i>
+		删除
+	</button>
+</script>
+
+<script type="text/html" id="user-bar">
+	<a href="/pear/toChangeArticle?article_id={{d.id}}" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></a>
+	<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+</script>
+
+
+<script type="text/html" id="user-modifiedTime">
+	{{#  if(d.modified !=null){ }}
+	<div>{{layui.util.toDateString(d.modified, 'yyyy-MM-dd')}}</div>
+	{{#  } else {}}
+	<div>{{}}</div>
+	{{#  } }}
+</script>
+
+<script type="text/html" id="allow-enable">
+	{{#  if(d.allowComment == 0){ }}
+	<input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable"/>
+	{{#  } else { }}
+	<input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable" checked="checked"/>
+	{{#  } }}
+
+</script>
+
+
+<script type="text/html" id="recommend-enable">
+	{{#  if(d.recommend == 0){ }}
+	<input type="checkbox" name="recommend" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="recommend-enable">
+	{{#  } else { }}
+	<input type="checkbox" name="recommend" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="recommend-enable" checked = "checked">
+	{{#  } }}
+
+</script>
+
+<script th:src="@{/static/component/layui/layui.js}"></script>
+<script th:src="@{/static/component/pear/pear.js}"></script>
+<script>
+
+	layui.use(['table', 'form', 'jquery','common'], function() {
+		let table = layui.table;
+		let form = layui.form;
+		let $ = layui.jquery;
+		let common = layui.common;
+
+
+		let cols = [
+			[{
+				type: 'checkbox'
+			},
+				{
+					title: 'id',
+					field: 'productId',
+					align: 'center',
+					width: 100
+				},
+				{
+					title: '商品名称',
+					field: 'name',
+					align: 'center'
+				},
+				{
+					title: '价格',
+					field: 'price',
+					align: 'center'
+				},
+				{
+					title: '数量',
+					field: 'number',
+					align: 'center'
+				},
+				{
+					title: '品牌id',
+					field: 'b_id',
+					align: 'center'
+				},
+				{
+					title: '分类id',
+					field: 'fl_id',
+					align: 'center'
+				},
+				{
+					title: '操作',
+					toolbar: '#user-bar',
+					align: 'center',
+					width: 130
+				}
+			]
+		]
+
+		table.render({
+			elem: '#user-table',
+			url: '/pear/productdata',
+			page: true,
+			cols: cols,
+			skin: 'line',
+			toolbar: '#user-toolbar',
+			text: {none: '暂无商品信息'},
+			defaultToolbar: [{
+				title: '刷新',
+				layEvent: 'refresh',
+				icon: 'layui-icon-refresh',
+			}, 'filter', 'print', 'exports']
+		});
+
+
+		table.on('tool(user-table)', function(obj) {
+			if (obj.event === 'remove') {
+				window.remove(obj);
+			} else if (obj.event === 'edit') {
+				window.edit(obj);
+			}
+		});
+
+		table.on('toolbar(user-table)', function(obj) {
+			if (obj.event === 'add') {
+				window.add();
+			} else if (obj.event === 'refresh') {
+				window.refresh();
+			} else if (obj.event === 'batchRemove') {
+				window.batchRemove(obj);
+			}
+		});
+
+		form.on('submit(user-query)', function(data) {
+			table.reload('user-table', {
+				where: data.field
+			})
+			return false;
+		});
+
+		form.on('switch(allow-enable)', function (obj) {
+			let operate;
+			let v=obj.elem.value;
+			if (obj.elem.checked) {
+				operate = "enable";
+			} else {
+				operate = "disable";
+			}
+			let loading = layer.load();
+			$.ajax({
+				url: '/pear/'+operate+'Comment',
+				//data不能加[]，不然传值不了
+				data: {
+						"articleid": v
+				      }
+				,
+				dataType: 'json',
+				contentType: 'application/json',
+				type: 'get',
+				success: function (result) {
+					layer.close(loading);
+					if (result.success) {
+						popup.success(result.msg);
+					} else {
+						popup.failure(result.msg);
+					}
+				}
+			})
+		});
+
+		form.on('switch(recommend-enable)', function (obj) {
+			let operate;
+			if (obj.elem.checked) {
+				operate = "enable";
+			} else {
+				operate = "disable";
+			}
+			let loading = layer.load();
+			$.ajax({
+				url: '/pear/' + operate+'Recommend',
+				data:{
+					'articleid':obj.elem.value
+				},
+				dataType: 'json',
+				contentType: 'application/json',
+				type: 'get',
+				success: function (result) {
+					layer.close(loading);
+					if (result.success) {
+						popup.success(result.msg);
+					} else {
+						popup.failure(result.msg);
+					}
+				}
+			})
+		});
+
+
+		window.remove = function(obj) {
+			layer.confirm('确定要删除该文章', {
+				icon: 3,
+				title: '提示'
+			}, function(index) {
+				layer.close(index);
+				let loading = layer.load();
+				$.ajax({
+					url: "/pear/deleteArticle/"+obj.data['id'],
+					dataType: 'json',
+					type: 'GET',
+					success: function(result) {
+						layer.close(loading);
+						if (result.success) {
+							layer.msg(result.msg, {
+								icon: 1,
+								time: 1000
+							}, function() {
+								obj.del();
+							});
+						} else {
+							layer.msg(result.msg, {
+								icon: 2,
+								time: 1000
+							});
+						}
+					}
+				})
+			});
+		}
+
+		window.batchRemove = function(obj) {
+
+			var checkIds = common.checkField(obj,'id');
+
+			if (checkIds === "") {
+				layer.msg("未选中数据", {
+					icon: 3,
+					time: 1000
+				});
+				return false;
+			}
+
+			layer.confirm('确定要删除这些文章', {
+				icon: 3,
+				title: '提示'
+			}, function(index) {
+				layer.close(index);
+				let loading = layer.load();
+				$.ajax({
+					url: "/pear/batchRemove/"+checkIds,
+					dataType: 'json',
+					type: 'get',
+					success: function(result) {
+						layer.close(loading);
+						if (result.success) {
+							layer.msg(result.msg, {
+								icon: 1,
+								time: 1000
+							}, function() {
+								table.reload('user-table');
+							});
+						} else {
+							layer.msg(result.msg, {
+								icon: 2,
+								time: 1000
+							});
+						}
+					}
+				})
+			});
+		}
+
+		window.refresh = function(param) {
+			table.reload('user-table');
+		}
+	})
+</script>
+</body>
+</html>

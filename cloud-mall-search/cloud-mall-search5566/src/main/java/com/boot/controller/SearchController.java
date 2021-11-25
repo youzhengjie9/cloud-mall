@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.boot.data.CommonResult;
 import com.boot.pojo.Product;
 import com.boot.service.SearchService;
 import io.swagger.annotations.Api;
@@ -111,6 +112,45 @@ public class SearchController {
         return products;
     }
 
+    @ResponseBody
+    @GetMapping(path = "/searchAllProductsCount")
+    public CommonResult<Long> searchAllProductsCount() throws IOException {
 
+        CommonResult<Long> commonResult = new CommonResult<>();
+        long count = searchService.searchAllProductsCount();
+
+        commonResult.setObj(count);
+        return commonResult;
+    }
+
+    //根据商品名搜索商品集合并且分页
+    @ResponseBody
+    @GetMapping(path = "/searchProductsByNameAndLimit/{from}/{size}/{text}")
+    public CommonResult<List<Product>> searchProductsByNameAndLimit(@PathVariable("from") int from ,
+                                                      @PathVariable("size") int size ,
+                                                      @PathVariable("text") String text) throws IOException{
+
+        CommonResult<List<Product>> commonResult = new CommonResult<>();
+        List<Product> products = searchService.searchProductsByNameAndLimit(from, size, text);
+
+        commonResult.setObj(products);
+
+        return commonResult;
+    }
+
+
+    //根据商品名搜索商品的目标数
+    @ResponseBody
+    @GetMapping(path = "/searchProductCountByName/{text}")
+    public CommonResult<Long> searchProductCountByName(@PathVariable("text") String text) throws IOException{
+
+        CommonResult<Long> commonResult = new CommonResult<>();
+
+        long count = searchService.searchProductCountByName(text);
+
+        commonResult.setObj(count);
+
+        return commonResult;
+    }
 
 }

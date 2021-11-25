@@ -1,5 +1,6 @@
 package com.boot.feign.search.fallback;
 
+import com.boot.data.CommonResult;
 import com.boot.feign.search.fallback.impl.SearchFallbackFeignImpl;
 import com.boot.pojo.Product;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -47,4 +48,20 @@ public interface SearchFallbackFeign {
                                                    @RequestParam("from")int from,
                                                    @RequestParam("size")int size) throws IOException;
 
+    @ResponseBody
+    @GetMapping(path = "/feign/search/searchAllProductsCount")
+    public CommonResult<Long> searchAllProductsCount();
+
+
+    //根据商品名搜索商品集合并且分页
+    @ResponseBody
+    @GetMapping(path = "/feign/search/searchProductsByNameAndLimit/{from}/{size}/{text}")
+    public CommonResult<List<Product>> searchProductsByNameAndLimit(@PathVariable("from") int from ,
+                                                                    @PathVariable("size") int size ,
+                                                                    @PathVariable("text") String text) throws IOException;
+
+    //根据商品名搜索商品的目标数
+    @ResponseBody
+    @GetMapping(path = "/feign/search/searchProductCountByName/{text}")
+    public CommonResult<Long> searchProductCountByName(@PathVariable("text") String text) throws IOException;
 }

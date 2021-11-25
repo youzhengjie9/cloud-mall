@@ -4,6 +4,7 @@ import com.boot.feign.product.fallback.ProductFallbackFeign;
 import com.boot.pojo.Product;
 import com.boot.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
@@ -324,5 +325,75 @@ public class SearchServiceImpl implements SearchService {
     return products;
   }
 
+  @Override
+  public long searchAllProductsCount() throws IOException {
+
+    SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+    SearchSourceBuilder query = searchSourceBuilder.query(QueryBuilders.matchAllQuery());
+    searchRequest.source(query);
+    SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+    TotalHits totalHits = searchResponse.getHits().getTotalHits();
+
+    return totalHits.value;
+  }
+
+  @Override
+  public List<Product> searchProductsByNameAndLimit(int from, int size, String text) throws IOException {
+
+    SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
+
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+    searchSourceBuilder.from(from);
+    searchSourceBuilder.size(size);
+
+
+    searchSourceBuilder.query(QueryBuilders.matchQuery("name",text));
+    searchRequest.source(searchSourceBuilder);
+
+    SearchResponse response = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+
+    SearchHit[] hits = response.getHits().getHits();
+
+    CopyOnWriteArrayList<Product> products = new CopyOnWriteArrayList<>();
+
+    for (SearchHit searchHit : hits) {
+      Product product = new Product();
+      Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
+
+      BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
+      product.setProductId(Long.valueOf(searchHit.getId()));
+      product.setName((String) sourceAsMap.get("name"));
+      product.setPrice(price);
+      product.setImg((String) sourceAsMap.get("img"));
+      product.setNumber((Integer) sourceAsMap.get("number"));
+      product.setFl_id(Long.valueOf((String) sourceAsMap.get("fl_id")));
+      product.setB_id(Long.valueOf((String) sourceAsMap.get("b_id")));
+      product.setIntroduce_img((String) sourceAsMap.get("introduce_img"));
+
+      products.add(product);
+    }
+
+    return products;
+  }
+
+  @Override
+  public long searchProductCountByName(String text) throws IOException {
+
+    SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
+
+    SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+    searchSourceBuilder.query(QueryBuilders.matchQuery("name",text));
+
+    searchRequest.source(searchSourceBuilder);
+
+    SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+
+    TotalHits totalHits = searchResponse.getHits().getTotalHits();
+
+    return totalHits.value;
+  }
 
 }

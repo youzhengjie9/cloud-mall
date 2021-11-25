@@ -1,5 +1,7 @@
 package com.boot.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSONObject;
 import com.boot.constant.ResultCode;
 import com.boot.data.CommonResult;
@@ -72,29 +74,63 @@ public class OrderController {
     return orderStatus;
 
   }
+
+  /**
+   * sentinel文档
+   * https://github.com/alibaba/Sentinel/wiki/%E6%B3%A8%E8%A7%A3%E6%94%AF%E6%8C%81
+   */
+
   @ResponseBody
   @PostMapping(path = "/orderBegin/{addressid}/{id}")
+  @SentinelResource(value = "orderBegin",blockHandler = "orderBeginExceptionHandle")  //sentinel对流量进行控制，有效防止高并发产生的问题
   public CommonResult<Order> orderBegin(@PathVariable("addressid") String addressid,@PathVariable("id") long id){
 
     CommonResult<Order> commonResult = new CommonResult<>();
     commonResult.setCode(ResultCode.FAILURE); //修改为默认为失败
-    String lockkey="lockproduct_1";
+    String lockkey="lockorder_"+id; //锁订单，防止用户并发攻击提交订单，id为userid
+
     RLock lock = redissonClient.getLock(lockkey);
 
     try{
 
-      lock.lock();
-      orderService.orderBegin(addressid,id);
+      if(lock.isLocked()) //如果被锁，则说明已经有线程提交订单，所以直接返回即可
+      {
+        Order order = new Order();
+        order.setGoodsInfo("锁还没被释放,提交失败");
+        commonResult.setObj(order);
+        commonResult.setCode(ResultCode.FAILURE);
+        return commonResult;
+      }else {
+        //如果没有被锁，说明没有线程提交订单，此时我们在加锁即可
+        lock.lock(); //加锁
+        orderService.orderBegin(addressid,id);
+      }
+
     }finally{
-      lock.unlock();
+      if(lock.isHeldByCurrentThread()){ //如果当前线程持有锁则解锁
+        lock.unlock();
+      }
+
     }
-
-
 
     //最后在修改回来为成功
     commonResult.setCode(ResultCode.SUCCESS);
     return commonResult;
   }
+
+  //------------无效
+  public CommonResult<Order> orderBeginExceptionHandle(String addressid, long id, BlockException ex){
+
+    CommonResult<Order> commonResult = new CommonResult<>();
+    Order order = new Order();
+    order.setGoodsInfo("当前提交订单接口并发数过高,暂时限流中,请稍后再进行操作");
+    commonResult.setObj(order);
+    commonResult.setCode(ResultCode.FAILURE);
+    System.out.println("限流："+order);
+    return commonResult;
+  }
+
+
 
   //查询订单数
   @ResponseBody
