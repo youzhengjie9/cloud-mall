@@ -9,6 +9,7 @@ import com.boot.data.layuiData;
 import com.boot.data.layuiJSON;
 import com.boot.feign.product.fallback.BrandFallbackFeign;
 import com.boot.feign.product.fallback.ClassifyFallbackFeign;
+import com.boot.feign.product.fallback.ProductFallbackFeign;
 import com.boot.feign.product.notFallback.ProductFeign;
 import com.boot.feign.search.fallback.SearchFallbackFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
@@ -35,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -56,6 +58,9 @@ public class ProductController {
   @Autowired private SpringSecurityUtil springSecurityUtil;
 
   @Autowired private ProductFeign productFeign;
+
+  @Autowired
+  private ProductFallbackFeign productFallbackFeign;
 
   @Autowired private BrandFallbackFeign brandFallbackFeign;
 
@@ -233,4 +238,140 @@ public class ProductController {
       return JSON.toJSONString(layuiArticleData);
     }
   }
+
+
+  @Visitor(desc = "进入编辑商品页面")
+  @Operation("进入编辑商品页面")
+  @RequestMapping(path = "/toChangeProduct")
+  public String toChangeProduct(long productid, Model model, HttpSession session, HttpServletRequest request) {
+    String username = springSecurityUtil.currentUser(session);
+    java.util.Date date = new java.util.Date();
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String time = simpleDateFormat.format(date);
+    log.debug(time + "   用户名：" + username + "进入商品编辑页面");
+    Product product = productFallbackFeign.selectProductByPid(productid);
+    model.addAttribute("contents", product);
+    model.addAttribute("price",product.getPrice());
+    model.addAttribute("number",product.getNumber());
+    List<Brand> brandList = brandFallbackFeign.selectAllBrand(); // 查询所有品牌
+    List<Classify> classifyList = classifyFallbackFeign.selectAllClassify(); // 查询所有分类
+
+    //去重
+    for (int i = 0; i < brandList.size(); i++) {
+      if(brandList.get(i).getId()==product.getBrand().getId())
+      {
+        brandList.remove(i);
+      }
+    }
+    for (int i = 0; i < classifyList.size(); i++) {
+      if(classifyList.get(i).getId()==product.getClassify().getId())
+      {
+        classifyList.remove(i);
+      }
+    }
+
+    model.addAttribute("brandList", brandList);
+    model.addAttribute("classifyList", classifyList);
+
+
+
+
+    Brand curBrand = brandFallbackFeign.selectBrandByid(product.getBrand().getId());
+    Classify curClassify = classifyFallbackFeign.selectClassifyByid(product.getClassify().getId());
+
+    model.addAttribute("curBrand",curBrand);
+    model.addAttribute("curClassify",curClassify);
+
+    System.out.println(product.getClassify().getId());
+    System.out.println(curClassify);
+
+    model.addAttribute("ps", "修改商品");
+    model.addAttribute("url", "/modifyProduct");
+    return "back/product_edit";
+  }
+
+
+  @Operation("修改商品")
+  @PostMapping(path = "/modifyProduct")
+  @ResponseBody
+  @ApiOperation(value = "修改商品")
+  public String modify(String content,
+                       @RequestParam(value = "editProductid", defaultValue = "-99") String editProductid,
+                       Product product,
+                       String brandid,
+                       String classifyid,
+                       MultipartFile file,
+                       HttpSession session,
+                       HttpServletRequest request) {
+    layuiJSON json = new layuiJSON();
+    long epid = Long.parseLong(editProductid);
+    String newImg=""; //新图片
+    if (epid == -99) { //=-99说明不能修改
+      json.setSuccess(false);
+      json.setMsg("修改失败");
+      return JSON.toJSONString(json);
+    } else { //可修改
+      try {
+        Product oldProduct = productFallbackFeign.selectProductByPid(epid);
+        product.setProductId(epid);
+        if (!file.isEmpty()) {
+          //删除原来的图片
+          File file1 = new File(FileUtil.getStaticPathByRedis() + oldProduct.getImg());
+          if(file1.exists()&&file1.isFile()){
+            file1.delete();
+          }
+          //写图片
+          newImg=FileUtil.writeImage(file.getOriginalFilename(),file.getBytes());
+        }
+        if (StringUtils.isBlank(content)) {
+          throw new RuntimeException("商品简介内容为空");
+        }
+        long bid = Long.parseLong(brandid);
+        long cid = Long.parseLong(classifyid);
+        if (bid <= 0 || cid <= 0) {
+          throw new RuntimeException("请选择品牌分类");
+        }
+        // 修改商品sql
+        product.setBrand(new Brand(bid));
+        product.setClassify(new Classify(cid));
+
+
+
+
+        if(StringUtils.isEmpty(newImg)) //说明还是用旧图片
+        {
+          product.setImg(oldProduct.getImg());
+        }else {
+          product.setImg(newImg);
+        }
+
+        productFeign.updateProduct(product);
+
+        //打印修改成功日志
+        String username = springSecurityUtil.currentUser(session);
+        java.util.Date date2 = new java.util.Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String time2 = simpleDateFormat.format(date2);
+        String ipAddr = IpUtils.getIpAddr(request);
+        log.debug(time2 + "   用户名：" + username + "修改商品信息成功,ip为：" + ipAddr);
+        json.setSuccess(true);
+        json.setMsg("修改成功");
+        return JSON.toJSONString(json);
+      } catch (Exception e) {
+
+        e.printStackTrace();
+        json.setSuccess(false);
+        json.setMsg("修改失败");
+        return JSON.toJSONString(json);
+      }
+
+    }
+
+  }
+
+
+
+
+
+
 }

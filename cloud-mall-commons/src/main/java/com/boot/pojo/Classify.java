@@ -18,6 +18,10 @@ public class Classify implements Serializable {
     public Classify() {
     }
 
+    public Classify(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }

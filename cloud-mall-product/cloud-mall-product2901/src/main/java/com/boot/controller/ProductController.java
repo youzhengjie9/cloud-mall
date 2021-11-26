@@ -77,6 +77,16 @@ public class ProductController {
         return commonResult;
 
     }
+    @ResponseBody
+    @PostMapping(path = "/updateProduct")
+    public CommonResult<Product> updateProduct(@RequestBody Product product)
+    {
+        CommonResult<Product> commonResult = new CommonResult<>();
+
+        productService.updateProduct(product);
+
+        return commonResult;
+    }
 
 
 

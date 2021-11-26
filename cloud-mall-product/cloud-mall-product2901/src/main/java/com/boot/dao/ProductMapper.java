@@ -35,5 +35,6 @@ public interface ProductMapper {
     //查询所有商品数量
     int selectProductCount();
 
+    void updateProduct(Product product);
 
 }

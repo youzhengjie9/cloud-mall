@@ -21,4 +21,8 @@ public interface ProductFeign {
     @ResponseBody
     @PostMapping(path = "/feign/product/insertProduct")
     public CommonResult<Product> insertProduct(@RequestBody Product product);
+
+    @ResponseBody
+    @PostMapping(path = "/feign/product/updateProduct")
+    public CommonResult<Product> updateProduct(@RequestBody Product product);
 }

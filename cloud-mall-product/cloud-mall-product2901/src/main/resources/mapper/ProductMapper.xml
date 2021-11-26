@@ -6,7 +6,7 @@
 <mapper namespace="com.boot.dao.ProductMapper">
 
     <resultMap id="res1" type="com.boot.pojo.Product">
-        <result column="productId" property="productId"/>
+        <id column="productId" property="productId"/>
         <result column="name" property="name"/>
         <result column="price" property="price"/>
         <result column="img" property="img"/>
@@ -15,11 +15,11 @@
         <result column="content" property="content"/>
         <result column="userid" property="userid"/>
         <association property="brand" javaType="com.boot.pojo.Brand">
-            <result column="id" property="id"/>
+            <id column="b_id" property="id"/>
             <result column="brandName" property="brandName"/>
         </association>
         <association property="classify" javaType="com.boot.pojo.Classify">
-            <result column="id" property="id"/>
+            <id column="fl_id" property="id"/>
             <result column="text" property="text"/>
             <result column="isNav" property="isNav"/>
         </association>
@@ -33,14 +33,14 @@
         product.price,
         product.img,
         product.number,
-        brand.id,
-        brand.brandName,
-        classify.id,
-        classify.text,
-        classify.isNav,
         product.introduce_img,
         product.content,
-        product.userid
+        product.userid,
+        product.b_id,
+        brand.brandName,
+        product.fl_id,
+        classify.text,
+        classify.isNav
         from product,brand,classify
         WHERE product.b_id=brand.id
         and product.fl_id=classify.id
@@ -63,7 +63,7 @@
     </insert>
 
     <resultMap id="res2" type="com.boot.pojo.Product">
-        <result column="productId" property="productId"/>
+        <id property="productId" column="productId"/>
         <result column="name" property="name"/>
         <result column="price" property="price"/>
         <result column="img" property="img"/>
@@ -72,11 +72,11 @@
         <result column="content" property="content"/>
         <result column="userid" property="userid"/>
         <association property="brand" javaType="com.boot.pojo.Brand">
-            <result column="id" property="id"/>
+            <id column="b_id" property="id"/>
             <result column="brandName" property="brandName"/>
         </association>
         <association property="classify" javaType="com.boot.pojo.Classify">
-            <result column="id" property="id"/>
+            <id column="fl_id" property="id"/>
             <result column="text" property="text"/>
             <result column="isNav" property="isNav"/>
         </association>
@@ -89,14 +89,14 @@
         product.price,
         product.img,
         product.number,
-        brand.id,
-        brand.brandName,
-        classify.id,
-        classify.text,
-        classify.isNav,
         product.introduce_img,
         product.content,
-        product.userid
+        product.userid,
+        product.b_id,
+        brand.brandName,
+        product.fl_id,
+        classify.text,
+        classify.isNav
         from product,brand,classify
         WHERE product.b_id=brand.id
         and product.fl_id=classify.id
@@ -111,5 +111,11 @@
         select count(*) from product
     </select>
 
+
+    <update id="updateProduct" parameterType="com.boot.pojo.Product">
+        update product set `name`=#{name} ,price=#{price} , img=#{img}
+        ,`number`=#{number},b_id=#{brand.id} ,fl_id=#{classify.id},content=#{content}
+        where productId=#{productId}
+    </update>
 
 </mapper>

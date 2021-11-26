@@ -61,7 +61,13 @@ public class ProductTest {
     }
 
 
+    @Test
+    public void test2()
+    {
 
+        Product product = productService.selectProductByPid(1);
+     System.out.println(product);
+    }
 
 
 }

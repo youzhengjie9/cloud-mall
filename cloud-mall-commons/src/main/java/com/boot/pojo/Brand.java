@@ -10,6 +10,13 @@ public class Brand implements Serializable {
     private long id;
     private String brandName; //品牌名
 
+    public Brand() {
+    }
+
+    public Brand(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }

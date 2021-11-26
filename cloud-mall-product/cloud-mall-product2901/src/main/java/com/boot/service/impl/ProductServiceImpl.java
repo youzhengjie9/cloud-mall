@@ -61,5 +61,10 @@ public class ProductServiceImpl implements ProductService {
         return productsMapper.selectProductCount();
     }
 
+    @Override
+    public void updateProduct(Product product) {
+        productsMapper.updateProduct(product);
+    }
+
 
 }

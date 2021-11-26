@@ -71,20 +71,34 @@
 					&nbsp;&nbsp;商品名称：
 					<input id="name" name="name" class="layui-input" type="text" style="width: 34%" required>
 					&nbsp;&nbsp;品牌选择:
-					<select id="brandid" name="brandid" lay-verify="" class="layui-input layui-unselect" style="width: 12%">
+					<select id="brandid" th:if="${curBrand eq null}" name="brandid" lay-verify="" class="layui-input layui-unselect" style="width: 12%">
 								<option value="-1">请选择一个品牌</option>
 								<option th:each="brand:${brandList}" th:text="${brand.getBrandName()}" th:value="${brand.getId()}"></option>
 					</select>
+					<select id="brandid" th:if="${curBrand ne null}" name="brandid" lay-verify="" class="layui-input layui-unselect" style="width: 12%">
+						<option th:value="${curBrand.getId()}" th:text="${curBrand.getBrandName()}"></option>
+						<option th:each="brand:${brandList}" th:text="${brand.getBrandName()}" th:value="${brand.getId()}">
+						</option>
+
+					</select>
 					&nbsp;&nbsp;分类选择:
-					<select id="classifyid" name="classifyid" lay-verify="" class="layui-input layui-unselect" style="width: 12%">
+					<select id="classifyid" name="classifyid" th:if="${curClassify eq null}" lay-verify="" class="layui-input layui-unselect" style="width: 12%">
 						<option value="-1">请选择一个分类</option>
 						<option th:each="classify:${classifyList}" th:text="${classify.getText()}" th:value="${classify.getId()}"></option>
 					</select>
+					<select id="classifyid" name="classifyid" th:if="${curClassify ne null}" lay-verify="" class="layui-input layui-unselect" style="width: 12%">
+						<option th:value="${curClassify.getId()}" th:text="${curClassify.getText()}"></option>
+						<option th:each="classify:${classifyList}" th:text="${classify.getText()}" th:value="${classify.getId()}"></option>
+					</select>
 					&nbsp;&nbsp;商品价格:
-					<input id="price" name="price" class="layui-input" type="text" style="width: 12%" required>元
+					<input id="price" name="price" th:if="${price eq null}" class="layui-input" type="text" style="width: 12%" required>
+					<input id="price" name="price" th:if="${price ne null}" th:value="${price}" class="layui-input" type="text" style="width: 12%" required>
+					元
 					<br/>
 					&nbsp;&nbsp;商品数量:
-					<input id="number" name="number" class="layui-input" type="text" style="width: 12%" required>件
+					<input id="number" name="number" th:if="${number eq null}" class="layui-input" type="text" style="width: 12%" required>
+					<input id="number" name="number" th:if="${number ne null}" th:value="${number}" class="layui-input" type="text" style="width: 12%" required>
+					件
 					<br/>
 					&nbsp;&nbsp;商品图片：
 					<div
@@ -142,7 +156,7 @@
 			//编辑商品的数据填充
 			var productContent=[[${contents}]];
 			if(productContent!=null){
-				$('#editProductId').val(productContent.id);
+				$('#editProductId').val(productContent.productId);
 				$('#name').val(productContent.name);
 				tinymce.activeEditor.setContent(productContent.content);
 			}
@@ -220,6 +234,7 @@
 							layer.close(index);
 							var data = new FormData($('#global-form')[0]);
 							data.append('content',myedit.getContent());
+							data.append('editProductid',document.getElementById('editProductId').value)
 							let loading = layer.load();
 
 							if($('#brandid').val()=='-1'||$('#classifyid').val()=='-1'
