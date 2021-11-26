@@ -39,23 +39,12 @@ spring:
         dashboard: localhost:8080  #Sentinel dashboard的地址
       #sentinel-nacos持久化
       datasource:
-        #持久化==限流规则
-        flow:
-          nacos:
-            server-addr: localhost:8848 #nacos服务器地址
-            dataId: ${spring.application.name}-sentinel-flow    #这个dataId我们使用微服务名+ "-sentinel-flow"
-            groupId: DEFAULT_GROUP
-            data-type: json
-            rule-type: flow  #指定规则为flow（限流）
-        #            namespace:
-        #持久化==降级规则
-        degrade:
-          nacos:
+        - nacos:
             server-addr: localhost:8848
-            dataId: ${spring.application.name}-sentinel-degrade
-            groupId: SENTINEL_GROUP
-            rule-type: degrade  #指定规则为degrade（降级）
-
+            data-id: ${spring.application.name}-sentinel-flow
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
 
     #配置seata
     alibaba:

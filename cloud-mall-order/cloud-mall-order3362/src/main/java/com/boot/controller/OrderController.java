@@ -78,8 +78,9 @@ public class OrderController {
   /**
    * sentinel文档
    * https://github.com/alibaba/Sentinel/wiki/%E6%B3%A8%E8%A7%A3%E6%94%AF%E6%8C%81
+   *
+   * 目前最高压测结果为490qps
    */
-
   @ResponseBody
   @PostMapping(path = "/orderBegin/{addressid}/{id}")
   @SentinelResource(value = "orderBegin",blockHandler = "orderBeginExceptionHandle")  //sentinel对流量进行控制，有效防止高并发产生的问题
@@ -118,7 +119,6 @@ public class OrderController {
     return commonResult;
   }
 
-  //------------无效
   public CommonResult<Order> orderBeginExceptionHandle(String addressid, long id, BlockException ex){
 
     CommonResult<Order> commonResult = new CommonResult<>();
