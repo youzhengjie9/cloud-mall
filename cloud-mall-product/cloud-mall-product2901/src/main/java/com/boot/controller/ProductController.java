@@ -88,6 +88,22 @@ public class ProductController {
         return commonResult;
     }
 
+    @ResponseBody
+    @GetMapping(path = "/deleteProduct/{productId}")
+    public CommonResult<String> deleteProduct(@PathVariable("productId") long productId){
+        CommonResult<String> commonResult = new CommonResult<>();
+        productService.deleteProduct(productId);
+        return commonResult;
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/batchDeleteProducts")
+    public CommonResult<String> batchDeleteProducts(@RequestParam("ids")long[] ids){
+
+        CommonResult<String> commonResult = new CommonResult<>();
+        productService.batchDeleteProducts(ids);
+        return commonResult;
+    }
 
 
 }

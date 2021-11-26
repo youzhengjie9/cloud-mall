@@ -269,14 +269,14 @@
 
 
 		window.remove = function(obj) {
-			layer.confirm('确定要删除该文章', {
+			layer.confirm('确定要删除该商品', {
 				icon: 3,
 				title: '提示'
 			}, function(index) {
 				layer.close(index);
 				let loading = layer.load();
 				$.ajax({
-					url: "/pear/deleteArticle/"+obj.data['id'],
+					url: "/pear/deleteProduct/"+obj.data['productId'],
 					dataType: 'json',
 					type: 'GET',
 					success: function(result) {
@@ -301,7 +301,7 @@
 
 		window.batchRemove = function(obj) {
 
-			var checkIds = common.checkField(obj,'id');
+			var checkIds = common.checkField(obj,'productId');
 
 			if (checkIds === "") {
 				layer.msg("未选中数据", {
@@ -311,14 +311,14 @@
 				return false;
 			}
 
-			layer.confirm('确定要删除这些文章', {
+			layer.confirm('确定要删除这些商品', {
 				icon: 3,
 				title: '提示'
 			}, function(index) {
 				layer.close(index);
 				let loading = layer.load();
 				$.ajax({
-					url: "/pear/batchRemove/"+checkIds,
+					url: "/pear/batchDelete/"+checkIds,
 					dataType: 'json',
 					type: 'get',
 					success: function(result) {

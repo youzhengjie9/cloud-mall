@@ -36,6 +36,13 @@ public interface SearchService {
     long searchProductCountByName(String text) throws IOException;
 
 
+    //修改商品
+    void updateProduct(Product product) throws IOException;
 
+    //删除商品
+    void deleteProduct(long productid) throws IOException;
+
+    //批量删除商品
+    void batchDeleteProcts(long[] ids) throws IOException;
 
 }

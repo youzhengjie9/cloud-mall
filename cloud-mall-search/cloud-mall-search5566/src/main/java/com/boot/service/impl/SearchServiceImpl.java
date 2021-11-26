@@ -1,5 +1,6 @@
 package com.boot.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.boot.feign.product.fallback.ProductFallbackFeign;
 import com.boot.pojo.Brand;
 import com.boot.pojo.Classify;
@@ -8,11 +9,14 @@ import com.boot.service.SearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -428,6 +433,50 @@ public class SearchServiceImpl implements SearchService {
     TotalHits totalHits = searchResponse.getHits().getTotalHits();
 
     return totalHits.value;
+  }
+
+  @Override
+  public void updateProduct(Product product) throws IOException {
+
+    UpdateRequest updateRequest = new UpdateRequest(INDEX_NAME,product.getProductId()+"");
+
+    Map<String, Object> doc = new HashMap<>();
+    doc.put("name", product.getName());
+    doc.put("price", product.getPrice());
+    doc.put("img", product.getImg());
+    doc.put("number", product.getNumber());
+    doc.put("fl_id", String.valueOf(product.getClassify().getId()));
+    doc.put("b_id", String.valueOf(product.getBrand().getId()));
+    doc.put("fl_name", String.valueOf(product.getClassify().getText()));
+    doc.put("b_name", String.valueOf(product.getBrand().getBrandName()));
+    doc.put("introduce_img", product.getIntroduce_img());
+
+    updateRequest.doc(JSON.toJSONString(doc), XContentType.JSON);
+
+    restHighLevelClient.update(updateRequest,RequestOptions.DEFAULT);
+
+  }
+
+  @Override
+  public void deleteProduct(long productid) throws IOException {
+
+    DeleteRequest deleteRequest = new DeleteRequest(INDEX_NAME,productid+"");
+
+    restHighLevelClient.delete(deleteRequest,RequestOptions.DEFAULT);
+
+  }
+
+  @Override
+  public void batchDeleteProcts(long[] ids) throws IOException {
+
+    BulkRequest bulkRequest = new BulkRequest(); //批量执行
+    for (long id : ids) {
+      DeleteRequest deleteRequest = new DeleteRequest(INDEX_NAME);
+      deleteRequest.id(id+"");
+      bulkRequest.add(deleteRequest);
+    }
+    restHighLevelClient.bulk(bulkRequest,RequestOptions.DEFAULT);
+
   }
 
 }

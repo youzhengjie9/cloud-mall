@@ -34,4 +34,9 @@ public interface ProductService {
     int selectProductCount();
 
     void updateProduct(Product product);
+
+    //删除商品
+    void deleteProduct(long productId);
+
+    void batchDeleteProducts(long[] ids);
 }

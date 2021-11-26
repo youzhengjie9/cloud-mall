@@ -5,10 +5,7 @@ import com.boot.feign.search.fallback.impl.SearchFallbackFeignImpl;
 import com.boot.pojo.Product;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -64,4 +61,21 @@ public interface SearchFallbackFeign {
     @ResponseBody
     @GetMapping(path = "/feign/search/searchProductCountByName/{text}")
     public CommonResult<Long> searchProductCountByName(@PathVariable("text") String text) throws IOException;
+
+
+    @ResponseBody
+    @GetMapping(path = "/feign/search/updateProduct")
+    public CommonResult<String> updateProduct(@RequestBody Product product) throws IOException;
+
+
+    @ResponseBody
+    @GetMapping(path = "/feign/search/deleteProduct/{productId}")
+    public CommonResult<String> deleteProduct(@PathVariable("productId") long productId);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/search/batchDeleteProcts")
+    public CommonResult<String> batchDeleteProcts (@RequestParam("ids")long[] ids) throws IOException;
+
+
+
 }

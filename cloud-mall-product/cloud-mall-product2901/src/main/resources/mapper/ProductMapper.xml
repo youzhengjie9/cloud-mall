@@ -118,4 +118,15 @@
         where productId=#{productId}
     </update>
 
+
+    <delete id="deleteProduct">
+        delete from product where productId=#{productId}
+    </delete>
+
+
+
+
+
+
+
 </mapper>

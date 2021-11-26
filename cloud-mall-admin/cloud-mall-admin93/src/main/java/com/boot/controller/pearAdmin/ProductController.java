@@ -332,11 +332,10 @@ public class ProductController {
           throw new RuntimeException("请选择品牌分类");
         }
         // 修改商品sql
-        product.setBrand(new Brand(bid));
-        product.setClassify(new Classify(cid));
-
-
-
+        Brand brand = brandFallbackFeign.selectBrandByid(bid);
+        product.setBrand(brand);
+        Classify classify = classifyFallbackFeign.selectClassifyByid(cid);
+        product.setClassify(classify);
 
         if(StringUtils.isEmpty(newImg)) //说明还是用旧图片
         {
@@ -345,7 +344,10 @@ public class ProductController {
           product.setImg(newImg);
         }
 
-        productFeign.updateProduct(product);
+        productFeign.updateProduct(product); //修改数据库
+
+        searchFallbackFeign.updateProduct(product); //修改elasticsearch
+
 
         //打印修改成功日志
         String username = springSecurityUtil.currentUser(session);
@@ -369,6 +371,68 @@ public class ProductController {
 
   }
 
+
+  @Operation("删除商品")
+  @ResponseBody
+  @RequestMapping(path = "/deleteProduct/{productId}")
+  public String deleteProduct(@PathVariable("productId") String productId, HttpSession session
+          , HttpServletRequest request) {
+
+    layuiJSON layuiJSON = new layuiJSON();
+    try {
+      long pid = Long.parseLong(productId);
+
+      //删除elasticsearch商品
+      searchFallbackFeign.deleteProduct(pid);
+
+      //删除数据库商品
+      productFeign.deleteProduct(pid);
+
+      String username = springSecurityUtil.currentUser(session);
+      java.util.Date date = new java.util.Date();
+      SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+      String time = simpleDateFormat.format(date);
+      String ipAddr = IpUtils.getIpAddr(request);
+      log.debug(time + "   用户名：" + username + "删除商品成功，删除的商品id为：" + productId + ",ip为：" + ipAddr);
+      layuiJSON.setMsg("删除商品成功");
+      layuiJSON.setSuccess(true);
+    } catch (Exception e) {
+      e.printStackTrace();
+      layuiJSON.setMsg("删除商品失败");
+      layuiJSON.setSuccess(false);
+    }
+
+    return JSON.toJSONString(layuiJSON);
+  }
+
+  @Operation("批量删除商品")
+  @ResponseBody
+  @RequestMapping(path = "/batchDelete/{checkIds}")
+  public String batchDeleteProduct(@PathVariable("checkIds") String checkIds) {
+
+    layuiJSON layuiJSON = new layuiJSON();
+    try {
+      String[] split = checkIds.split(",");
+      long [] arr=new long[split.length];
+
+      for (int i = 0; i < split.length; i++) {
+        arr[i]=Long.parseLong(split[i]);
+      }
+
+      searchFallbackFeign.batchDeleteProcts(arr);
+
+      productFeign.batchDeleteProducts(arr);
+
+      layuiJSON.setSuccess(true);
+      layuiJSON.setMsg("批量删除成功");
+    } catch (Exception e) {
+      e.printStackTrace();
+      layuiJSON.setSuccess(false);
+      layuiJSON.setMsg("批量删除失败");
+    }
+
+    return JSON.toJSONString(layuiJSON);
+  }
 
 
 

@@ -54,4 +54,22 @@ public class SearchFallbackFeignImpl implements SearchFallbackFeign {
         log.error("searchProductCountByName error");
         return null;
     }
+
+    @Override
+    public CommonResult<String> updateProduct(Product product) throws IOException {
+        log.error("updateProduct error");
+        return null;
+    }
+
+    @Override
+    public CommonResult<String> deleteProduct(long productId) {
+        log.error("deleteProduct error");
+        return null;
+    }
+
+    @Override
+    public CommonResult<String> batchDeleteProcts(long[] ids) throws IOException {
+        log.error("batchDeleteProcts error");
+        return null;
+    }
 }

@@ -159,4 +159,30 @@ public class SearchController {
         return commonResult;
     }
 
+    @ResponseBody
+    @GetMapping(path = "/updateProduct")
+    public CommonResult<String> updateProduct(@RequestBody Product product) throws IOException {
+        CommonResult<String> commonResult = new CommonResult<>();
+        searchService.updateProduct(product);
+
+        return commonResult;
+    }
+    @ResponseBody
+    @GetMapping(path = "/deleteProduct/{productId}")
+    public CommonResult<String> deleteProduct(@PathVariable("productId") long productId) throws IOException {
+        CommonResult<String> commonResult = new CommonResult<>();
+        searchService.deleteProduct(productId);
+        return commonResult;
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/batchDeleteProcts")
+    public CommonResult<String> batchDeleteProcts (@RequestParam("ids")long[] ids) throws IOException {
+
+        CommonResult<String> commonResult = new CommonResult<>();
+        searchService.batchDeleteProcts(ids);
+        return commonResult;
+    }
+
+
 }

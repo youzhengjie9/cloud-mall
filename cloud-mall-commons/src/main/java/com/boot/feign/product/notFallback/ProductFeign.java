@@ -25,4 +25,12 @@ public interface ProductFeign {
     @ResponseBody
     @PostMapping(path = "/feign/product/updateProduct")
     public CommonResult<Product> updateProduct(@RequestBody Product product);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/product/deleteProduct/{productId}")
+    public CommonResult<String> deleteProduct(@PathVariable("productId") long productId);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/product/batchDeleteProducts")
+    public CommonResult<String> batchDeleteProducts(@RequestParam("ids")long[] ids);
 }

@@ -37,4 +37,7 @@ public interface ProductMapper {
 
     void updateProduct(Product product);
 
+    //删除商品
+    void deleteProduct(@Param("productId") long productId);
+
 }
