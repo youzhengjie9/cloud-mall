@@ -3,6 +3,7 @@ package com.boot.dao;
 import com.boot.pojo.Brand;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,8 +24,11 @@ public interface BrandMapper {
     //通过品牌id查询品牌对象
     Brand selectBrandByid(@Param("bid") long bid);
 
+    int selectBrandCount();
 
 
 
+    List<Brand> selectBrandByName(@Param("brandName") String brandName);
 
+    int selectBrandCountByName(@Param("brandName") String brandName);
 }

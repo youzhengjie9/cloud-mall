@@ -17,5 +17,16 @@
         select * from brand where id=#{bid}
     </select>
 
+    <select id="selectBrandCount" resultType="int">
+        select count(*) from brand
+    </select>
+
+    <select id="selectBrandByName" resultType="com.boot.pojo.Brand">
+        select * from brand where brandName like "%" #{brandName} "%"
+    </select>
+
+    <select id="selectBrandCountByName" resultType="int">
+        select count(*) from brand where brandName like "%" #{brandName} "%"
+    </select>
 
 </mapper>

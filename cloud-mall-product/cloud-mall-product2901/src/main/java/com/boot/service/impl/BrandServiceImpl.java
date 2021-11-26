@@ -31,6 +31,20 @@ public class BrandServiceImpl implements BrandService {
         return brandMapper.selectBrandByid(bid);
     }
 
+    @Override
+    public int selectBrandCount() {
+        return brandMapper.selectBrandCount();
+    }
+
+    @Override
+    public List<Brand> selectBrandByName(String brandName) {
+        return brandMapper.selectBrandByName(brandName);
+    }
+
+    @Override
+    public int selectBrandCountByName(String brandName) {
+        return brandMapper.selectBrandCountByName(brandName);
+    }
 
 
 }

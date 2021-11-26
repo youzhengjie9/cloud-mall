@@ -48,5 +48,22 @@ public class BrandController {
 
         return brandService.selectBrandByid(bid);
     }
+    @ResponseBody
+    @GetMapping(path = "/selectBrandCount")
+    public int selectBrandCount(){
 
+        return brandService.selectBrandCount();
+    }
+    @ResponseBody
+    @GetMapping(path = "/selectBrandByName/{brandName}")
+    public List<Brand> selectBrandByName(@PathVariable("brandName") String brandName){
+
+        return brandService.selectBrandByName(brandName);
+    }
+    @ResponseBody
+    @GetMapping(path = "/selectBrandCountByName/{brandName}")
+    public int selectBrandCountByName(@PathVariable("brandName") String brandName){
+
+        return brandService.selectBrandCountByName(brandName);
+    }
 }

@@ -29,4 +29,18 @@ public interface BrandFallbackFeign {
     @GetMapping(path = "/feign/brand/selectBrandByid/{bid}")
     public Brand selectBrandByid(@PathVariable("bid") long bid);
 
+    @ResponseBody
+    @GetMapping(path = "/feign/brand/selectBrandCount")
+    public int selectBrandCount();
+
+    @ResponseBody
+    @GetMapping(path = "/feign/brand/selectBrandByName/{brandName}")
+    public List<Brand> selectBrandByName(@PathVariable("brandName") String brandName);
+
+
+
+    @ResponseBody
+    @GetMapping(path = "/feign/brand/selectBrandCountByName/{brandName}")
+    public int selectBrandCountByName(@PathVariable("brandName") String brandName);
+
 }

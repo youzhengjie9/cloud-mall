@@ -28,4 +28,22 @@ public class BrandFallbackFeignImpl implements BrandFallbackFeign {
         log.error("selectBrandByid error");
         return null;
     }
+
+    @Override
+    public int selectBrandCount() {
+        log.error("selectBrandCount error");
+        return 0;
+    }
+
+    @Override
+    public List<Brand> selectBrandByName(String brandName) {
+        log.error("selectBrandByName error");
+        return null;
+    }
+
+    @Override
+    public int selectBrandCountByName(String brandName) {
+        log.error("selectBrandCountByName error");
+        return 0;
+    }
 }

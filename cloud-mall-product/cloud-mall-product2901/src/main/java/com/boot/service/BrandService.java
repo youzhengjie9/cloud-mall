@@ -14,5 +14,9 @@ public interface BrandService {
     //通过品牌id查询品牌对象
     Brand selectBrandByid(long bid);
 
+    int selectBrandCount();
 
+    List<Brand> selectBrandByName(String brandName);
+
+    int selectBrandCountByName(String brandName);
 }
