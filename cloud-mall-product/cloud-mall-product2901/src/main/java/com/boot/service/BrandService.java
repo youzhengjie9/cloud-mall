@@ -19,4 +19,13 @@ public interface BrandService {
     List<Brand> selectBrandByName(String brandName);
 
     int selectBrandCountByName(String brandName);
+
+    void insertBrand(Brand brand);
+
+    void updateBrandName(Brand brand);
+
+    void deleteBrand(long id);
+
+    void batchDeleteBrand(long[] ids);
+
 }

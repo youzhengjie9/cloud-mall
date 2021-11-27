@@ -24,5 +24,22 @@ public class ClassifyFallbackFeignImpl implements ClassifyFallbackFeign {
         return null;
     }
 
+    @Override
+    public int selectClassifyCount() {
+        log.error("selectClassifyCount error");
+        return 0;
+    }
+
+    @Override
+    public List<Classify> selectClassifiesByText(String text) {
+        log.error("selectClassifiesByText error");
+        return null;
+    }
+
+    @Override
+    public int selectClassifiesCountByText(String text) {
+        log.error("selectClassifiesCountByText error");
+        return 0;
+    }
 
 }

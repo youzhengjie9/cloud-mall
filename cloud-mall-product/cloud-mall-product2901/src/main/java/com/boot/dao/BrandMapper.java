@@ -31,4 +31,15 @@ public interface BrandMapper {
     List<Brand> selectBrandByName(@Param("brandName") String brandName);
 
     int selectBrandCountByName(@Param("brandName") String brandName);
+
+
+    void insertBrand(Brand brand);
+
+
+    void updateBrandName(Brand brand);
+
+
+    void deleteBrand(@Param("id") long id);
+
+
 }

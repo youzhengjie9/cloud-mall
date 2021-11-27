@@ -13,4 +13,30 @@ public interface ClassifyService {
 
     Classify selectClassifyByid(long id);
 
+    int selectClassifyCount();
+
+    List<Classify> selectClassifiesByText(String text);
+
+    int selectClassifiesCountByText(String text);
+
+    int navEnable(long id);
+
+    int navDisable(long id);
+
+
+    //添加分类
+    void insertClassify(Classify classify);
+
+    //修改分类
+    void updateClassify(Classify classify);
+
+    //删除分类
+    void deleteClassify(long id);
+
+    //批量删除分类
+    void batchDeleteClassify(long[] ids);
+
+
+
+
 }

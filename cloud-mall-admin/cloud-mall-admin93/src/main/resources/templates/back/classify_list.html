@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
-	<title>品牌管理</title>
+	<title>分类管理</title>
 	<link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}" />
 </head>
 <body class="pear-container">
@@ -11,7 +11,7 @@
 		<form class="layui-form" action="" autocomplete="off">
 			<div class="layui-form-item">
 				<div class="layui-form-item layui-inline">
-					<label class="layui-form-label">品牌名称</label>
+					<label class="layui-form-label">分类名称</label>
 					<div class="layui-input-inline">
 						<input type="text" name="title" placeholder="" class="layui-input">
 					</div>
@@ -53,6 +53,15 @@
 	<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
 </script>
 
+<script type="text/html" id="nav-enable">
+	{{#  if(d.isNav == 0){ }}
+	<input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="nav-enable"/>
+	{{#  } else { }}
+	<input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="nav-enable" checked="checked"/>
+	{{#  } }}
+
+</script>
+
 
 
 <script th:src="@{/static/resource/lib/jquery.min.js}"></script>
@@ -78,9 +87,15 @@
 					width: 100
 				},
 				{
-					title: '品牌名称',
-					field: 'brandName',
+					title: '分类名称',
+					field: 'text',
 					align: 'center'
+				},
+				{
+					title: '是否导航',
+					field: 'isNav',
+					align: 'center',
+					templet: '#nav-enable'
 				},
 				{
 					title: '操作',
@@ -93,12 +108,12 @@
 
 		table.render({
 			elem: '#user-table',
-			url: '/pear/brandData',
+			url: '/pear/classifyData',
 			page: true,
 			cols: cols,
 			skin: 'line',
 			toolbar: '#user-toolbar',
-			text: {none: '暂无品牌信息'},
+			text: {none: '暂无分类信息'},
 			defaultToolbar: [{
 				title: '刷新',
 				layEvent: 'refresh',
@@ -131,7 +146,7 @@
 				title: '新增',
 				shade: 0.1,
 				area: ['500px', '400px'],
-				content: '/pear/addBrandPage'
+				content: '/pear/addClassifyPage'
 			});
 		}
 
@@ -141,7 +156,7 @@
 				title: '修改',
 				shade: 0.1,
 				area: ['500px', '400px'],
-				content: '/pear/modifyBrandPage?id='+obj.data.id
+				content: '/pear/modifyClassifyPage?id='+obj.data.id
 			});
 		}
 
@@ -153,17 +168,45 @@
 			return false;
 		});
 
-
+		form.on('switch(nav-enable)', function (obj) {
+			let operate;
+			let v=obj.elem.value;
+			if (obj.elem.checked) {
+				operate = "enable";
+			} else {
+				operate = "disable";
+			}
+			let loading = layer.load();
+			$.ajax({
+				url: '/pear/'+operate+'Nav',
+				//data不能加[]，不然传值不了
+				data: {
+						"classifyid": v
+				      }
+				,
+				dataType: 'json',
+				contentType: 'application/json',
+				type: 'get',
+				success: function (result) {
+					layer.close(loading);
+					if (result.success) {
+						popup.success(result.msg);
+					} else {
+						popup.failure(result.msg);
+					}
+				}
+			})
+		});
 
 		window.remove = function(obj) {
-			layer.confirm('确定要删除该品牌', {
+			layer.confirm('确定要删除该分类', {
 				icon: 3,
 				title: '提示'
 			}, function(index) {
 				layer.close(index);
 				let loading = layer.load();
 				$.ajax({
-					url: "/pear/deleteBrand/"+obj.data['id'],
+					url: "/pear/deleteClassify/"+obj.data['id'],
 					dataType: 'json',
 					type: 'GET',
 					success: function(result) {
@@ -198,14 +241,14 @@
 				return false;
 			}
 
-			layer.confirm('确定要删除这些品牌', {
+			layer.confirm('确定要删除这些分类', {
 				icon: 3,
 				title: '提示'
 			}, function(index) {
 				layer.close(index);
 				let loading = layer.load();
 				$.ajax({
-					url: "/pear/batchDeleteBrand/"+checkIds,
+					url: "/pear/batchDeleteClassify/"+checkIds,
 					dataType: 'json',
 					type: 'get',
 					success: function(result) {

@@ -24,4 +24,16 @@ public interface ClassifyFallbackFeign {
     @GetMapping(path = "/feign/Classify/selectClassifyByPid/{id}")
     public Classify selectClassifyByid(@PathVariable("id") long id);
 
+    @ResponseBody
+    @GetMapping(path = "/feign/Classify/selectClassifyCount")
+    public int selectClassifyCount();
+
+
+    @ResponseBody
+    @GetMapping(path = "/feign/Classify/selectClassifiesByText/{text}")
+    public List<Classify> selectClassifiesByText(@PathVariable("text") String text);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/Classify/selectClassifiesCountByText/{text}")
+    public int selectClassifiesCountByText(@PathVariable("text") String text);
 }

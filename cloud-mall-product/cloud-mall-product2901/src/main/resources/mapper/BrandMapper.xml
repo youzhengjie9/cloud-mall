@@ -29,4 +29,17 @@
         select count(*) from brand where brandName like "%" #{brandName} "%"
     </select>
 
+    <insert id="insertBrand" parameterType="com.boot.pojo.Brand">
+        insert into brand values (#{id},#{brandName})
+    </insert>
+
+    <update id="updateBrandName" parameterType="com.boot.pojo.Brand">
+        update brand set brandName = #{brandName} where id=#{id}
+    </update>
+
+    <delete id="deleteBrand">
+        delete from brand where id=#{id}
+    </delete>
+
+
 </mapper>

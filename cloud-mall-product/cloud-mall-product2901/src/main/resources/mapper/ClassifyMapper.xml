@@ -14,4 +14,17 @@
         select * from classify where id=#{id}
     </select>
 
+
+    <insert id="insertClassify" parameterType="com.boot.pojo.Classify">
+        insert into classify values(#{id},#{text},#{isNav})
+    </insert>
+
+    <update id="updateClassify" parameterType="com.boot.pojo.Classify">
+        update classify set text=#{text} ,isNav=#{isNav} where id=#{id}
+    </update>
+
+    <delete id="deleteClassify">
+        delete from classify where id=#{id}
+    </delete>
+
 </mapper>

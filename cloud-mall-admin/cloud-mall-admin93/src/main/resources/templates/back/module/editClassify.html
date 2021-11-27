@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>编辑分类</title>
+    <script th:src="@{/static/assets/js/jquery.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}" />
+</head>
+
+<style>
+
+    .layui-input, .layui-textarea{
+        width: 75%;
+    }
+    .layui-form-select dl{
+        margin-left: 25%;
+        min-width: 75%;
+    }
+
+</style>
+
+<body>
+<form class="layui-form" th:action="@{/pear/modify/classify}" method="post" id="fm">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="main-container">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">新分类名</label>
+                    <div class="layui-input-block">
+                        <input type="hidden" name="id" th:value="${id}">
+                        <input type="text" name="classifyName" lay-verify="title" autocomplete="off" placeholder="请输入新分类名" class="layui-input">
+                    </div>
+
+                    <label class="layui-form-label">是否导航</label>
+                    <select th:if="${curNav eq 0}" id="nav" name="nav" lay-verify="" class="layui-input layui-unselect" style="width: 12%">
+                        <option value="0">否</option>
+                        <option value="1">是</option>
+                    </select>
+
+                    <select th:if="${curNav eq 1}" id="nav" name="nav" lay-verify="" class="layui-input layui-unselect" style="width: 12%">
+                        <option value="1">是</option>
+                        <option value="0">否</option>
+                    </select>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="user-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                修改
+            </button>
+            <button type="reset" class="pear-btn pear-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+
+<script th:src="@{/static/component/layui/layui.js}"></script>
+<script th:src="@{/static/component/pear/pear.js}"></script>
+<script>
+    layui.use(['form','jquery'],function(){
+        let form = layui.form;
+        let $ = layui.jquery;
+        let jq = $.noConflict();
+        // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        var headers = {"X-CSRF-TOKEN": token}
+        form.on('submit(user-save)', function(data){
+
+            $.ajax({
+                url:'/pear/modify/classify',
+                data: jq('#fm').serialize(),
+                dataType:'json',
+                //一定不能写contentType: xxx json ,不然响应结果就会输出到页面上，success回调函数就接收不到
+                type:'post',
+                headers: headers,
+                success:function(result){
+                    if(result.success){
+                        layer.msg(result.msg,{icon:1,time:1000},function(){
+                            parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
+                            parent.layui.table.reload("user-table");
+                        });
+                    }else{
+                        layer.msg(result.msg,{icon:2,time:1000});
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+<script>
+</script>
+</body>
+</html>

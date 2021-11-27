@@ -106,7 +106,7 @@
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.5</version>
+            <version>1.4.0</version>
         </dependency>
 
         <!--        springsession redis 解决分布式单点登录问题-->
