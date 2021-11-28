@@ -3,6 +3,9 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1226">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>云商城-首页</title>
     <!--bootstrap-->
     <link rel="stylesheet" th:href="@{/static/resource/css/lib/bootstrap.min.css}"/>
@@ -32,6 +35,9 @@
 <!-- ui-router local-storage -->
 <script th:src="@{/static/resource/lib/angular-ui-router.min.js}"></script>
 <script th:src="@{/static/resource/lib/swx-local-storage.js}"></script>
+<!-- 资 源 引 入 -->
+<script th:src="@{/static/component/layui/layui.js}"></script>
+<script th:src="@{/static/component/pear/pear.js}"></script>
 <!-- app.js -->
 <script th:src="@{/static/js/app.js}"></script>
 <script th:src="@{/static/js/module/home.js}"></script>

@@ -23,11 +23,18 @@ public class VerifyCodeFilter extends OncePerRequestFilter {
      * 验证码过滤器
      */
 
-    private String defaultFilterProcessUrl = "/web/login/login";
+    //前台登录接口
+    private String defaultFilterProcessUrl1 = "/web/login/login";
+
+    //后台登录接口
+    private String defaultFilterProcessUrl2="/adminLogin/login";
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
 
-        if ("POST".equalsIgnoreCase(request.getMethod()) && defaultFilterProcessUrl.equals(request.getServletPath())) {
+        if (("POST".equalsIgnoreCase(request.getMethod()) && defaultFilterProcessUrl1.equals(request.getServletPath()))
+                || ("POST".equalsIgnoreCase(request.getMethod())&&defaultFilterProcessUrl2.equals(request.getServletPath()))
+        ) {
             // 登录请求校验验证码，非登录请求不用校验
             HttpSession session = request.getSession();
             String requestCaptcha = request.getParameter("captcha");
@@ -37,10 +44,12 @@ public class VerifyCodeFilter extends OncePerRequestFilter {
                 //删除缓存里的验证码信息
                 session.removeAttribute("captcha");
                 throw new AuthenticationServiceException("验证码不能为空!");
+//                request.setAttribute("captchaError","验证码不能为空");
             }
             if (!genCaptcha.toLowerCase().equals(requestCaptcha.toLowerCase())) {
                 session.removeAttribute("captcha");
                 throw new AuthenticationServiceException("验证码错误!");
+//                request.setAttribute("captchaError","验证码错误");
             }
         }
 

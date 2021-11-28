@@ -3,6 +3,7 @@ package com.boot.config;
 import com.alibaba.fastjson.JSON;
 import com.boot.constant.LoginType;
 import com.boot.data.RememberJson;
+import com.boot.data.layuiJSON;
 import com.boot.feign.log.notFallback.LoginLogFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.filter.VerifyCodeFilter;
@@ -20,7 +21,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -142,14 +145,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     e.printStackTrace();
                   }
                 }
-
-                // 这里不要用转发，不然会有一些bug
-                //
-                // request.getRequestDispatcher("/web/").forward(request,httpServletResponse);
-                httpServletResponse.sendRedirect(GATEWAY_URL+"/web/index/");
+                // ajax回调
+                layuiJSON layuiJSON = new layuiJSON();
+                layuiJSON.setMsg("登录成功");
+                layuiJSON.setSuccess(true);
+                httpServletResponse.setContentType("application/json;charset=UTF-8");
+                httpServletResponse.getWriter().append(JSON.toJSONString(layuiJSON));
               }
             })
-        .failureForwardUrl("/web/login/LoginfailPage")
+//        .failureForwardUrl("/web/login/LoginfailPage")
+            .failureHandler(
+                    new AuthenticationFailureHandler() {
+                      @Override
+                      public void onAuthenticationFailure(
+                              HttpServletRequest httpServletRequest,
+                              HttpServletResponse httpServletResponse,
+                              AuthenticationException e)
+                              throws IOException, ServletException {
+
+                        // ajax回调
+                        layuiJSON layuiJSON = new layuiJSON();
+                        layuiJSON.setMsg("登录失败");
+                        layuiJSON.setSuccess(false);
+                        httpServletResponse.setContentType("application/json;charset=UTF-8");
+                        httpServletResponse.getWriter().append(JSON.toJSONString(layuiJSON));
+                      }
+                    })
         .and()
         // 不写这段代码，druid监控sql将失效（原因未明）
         .csrf()
@@ -198,16 +219,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/static/favicon.ico")
         .permitAll()
             //只有admin权限才能访问(后台管理)
-        .antMatchers(
-            "/admin/**","/pear/**")
-        .hasRole("admin")
+//        .antMatchers(
+//            "/admin/**","/pear/**")
+//        .hasRole("admin")
 
             //只有登录以后才能访问
-        .antMatchers("/myuser/**", "/img/**", "/admin/","/web/cart/**",
-                "/web/order/**","/web/address/**")
+        .antMatchers("/myuser/**", "/img/**","/web/cart/**",
+                "/web/order/**","/web/address/**","/web/logout/logout")
         .hasAnyRole("admin", "common")
-
-        .antMatchers("/web/sliderCaptcha/**", "/web/logout")
+        .antMatchers("/web/sliderCaptcha/**")
         .permitAll()
 
             //其他的任何请求登录不登录都可以访问

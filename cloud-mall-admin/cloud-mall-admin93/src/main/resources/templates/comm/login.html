@@ -15,7 +15,7 @@
 </head>
 <!-- 代 码 结 构 -->
 <body background="/static/pear-admin/images/background.svg" style="background-size: cover;">
-<form id="fm" class="layui-form" th:action="@{/web/login/login}" autocomplete="off" method="post">
+<form id="fm" class="layui-form" th:action="@{/adminLogin/login}" autocomplete="off" method="post">
     <div class="layui-form-item">
         <img class="logo" th:src="@{/static/pear-admin/images/logo2.png}" />
         <div class="title">cloud mall</div>
@@ -64,56 +64,59 @@
         document.getElementById('cap').src = '/web/pear/captcha?r=' + Math.random();
     }
 
-    layui.use('form', function(){
-        var form = layui.form;
-        form.on('submit(login)', function(data){
-            var data = new FormData();
-            data.append('captcha',$('#captcha').val());
-            data.append('username',$('#username').val());
-            data.append('password',$('#password').val());
-            $.ajax({
-                url: "/web/login/login",
-                data: data,  //ajax提交表单
-                dataType: 'json',
-                type: 'POST',
-                headers: headers,
-                async:false,
-                processData: false,
-                contentType: false,
-                //请求的页面响应成功，则进行处理：
-                success:function(result){
-                    if (result.success) {
-                        layer.msg(result.msg, {
-                            icon: 1,
-                            time: 1500
-                        });
-                        setTimeout(function()
-                        {
-                            window.location.href='/web/index/'
+        layui.use('form', function(){
+            var form = layui.form;
+            form.on('submit(login)', function(data){
+                var data = new FormData();
+                data.append('captcha',$('#captcha').val());
+                data.append('username',$('#username').val());
+                data.append('password',$('#password').val());
+                $.ajax({
+                    url: "/adminLogin/login",
+                    data: data,  //ajax提交表单
+                    dataType: 'json',
+                    type: 'POST',
+                    headers: headers,
+                    async:false,
+                    processData: false,
+                    contentType: false,
+                    //请求的页面响应成功，则进行处理：
+                    success:function(result){
+                        if (result.success) {
+                            layer.msg(result.msg, {
+                                icon: 1,
+                                time: 1500
+                            });
+                            setTimeout(function()
+                                {
+                                    window.location.href='/admin/'
+                                }
+                                ,1700);
+                        } else {
+                            layer.msg(result.msg, {
+                                icon: 2,
+                                time: 1000
+                            });
+                            //刷新验证码
+                            document.getElementById('cap').src = '/web/pear/captcha?r=' + Math.random();
                         }
-                        ,1700);
-
-                    } else {
-                        layer.msg(result.msg, {
+                    },
+                    error: function(e) {
+                        layer.msg("验证码错误", {
                             icon: 2,
-                            time: 1700
+                            time: 1000
                         });
                         //刷新验证码
                         document.getElementById('cap').src = '/web/pear/captcha?r=' + Math.random();
                     }
-                },
-                error: function(e) {
-                    layer.msg("验证码错误", {
-                        icon: 2,
-                        time: 1000
-                    });
-                    //刷新验证码
-                    document.getElementById('cap').src = '/web/pear/captcha?r=' + Math.random();
-                }
 
-            })
+                })
+            });
         });
-    });
+
+
+
+
 
 </script>
 </body>

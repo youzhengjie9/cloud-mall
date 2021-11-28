@@ -3,12 +3,15 @@ package com.boot.controller.config;
 import com.alibaba.fastjson.JSON;
 import com.boot.constant.LoginType;
 import com.boot.data.RememberJson;
+import com.boot.data.layuiJSON;
 import com.boot.feign.log.notFallback.LoginLogFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.filter.VerifyCodeFilter;
 import com.boot.pojo.LoginLog;
 import com.boot.utils.*;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -20,7 +23,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -36,12 +42,13 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @author 游政杰
+ * 后台安全配置
  */
 @Configuration
 @EnableWebSecurity // 开启SpringSecurity的功能
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 开启注解控制权限
 @Slf4j
-@Order(5)
+@Order(4)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
@@ -52,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   private LoginLogFeign loginLogFeign;
+
 
   @Autowired
   private VerifyCodeFilter verifyCodeFilter;
@@ -86,70 +94,94 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.formLogin()
         .usernameParameter("username")
         .passwordParameter("password")
-        .loginPage(GATEWAY_URL+"/web/login/toLoginPage") // 登录页接口
-        .loginProcessingUrl("/web/login/login") // 登录过程接口（也就是登录表单提交的接口）
+        .loginPage(GATEWAY_URL + "/adminLogin/toLoginPage") // 登录页接口
+        .loginProcessingUrl("/adminLogin/login") // 登录过程接口（也就是登录表单提交的接口）
         // 登录成功处理
         .successHandler(
             new AuthenticationSuccessHandler() {
+              @SneakyThrows
               @Override
               public void onAuthenticationSuccess(
                   HttpServletRequest request,
                   HttpServletResponse httpServletResponse,
                   Authentication authentication)
                   throws IOException, ServletException {
-                String val = "";
-                String ipAddr = IpUtils.getIpAddr(request); //获取ip
-                log.info("登录成功：访问者ip地址：" + ipAddr);
 
-                // 登入成功之后要把登入验证码的缓存标记给删除掉
-                redisTemplate.delete(ipAddr + "_lg");
+                  String val = "";
+                  String ipAddr = IpUtils.getIpAddr(request); // 获取ip
+                  log.info("后台登录成功：访问者ip地址：" + ipAddr);
 
-                UsernamePasswordAuthenticationToken s =
-                    (UsernamePasswordAuthenticationToken) authentication;
+                  // 登入成功之后要把登入验证码的缓存标记给删除掉
+                  redisTemplate.delete(ipAddr + "_lg");
 
-                String name = s.getName(); // 获取登录用户名
+                  UsernamePasswordAuthenticationToken s =
+                          (UsernamePasswordAuthenticationToken) authentication;
 
-                // 查询数据库密码
-                String psd = userFallbackFeign.selectPasswordByuserName(name);
+                  String name = s.getName(); // 获取登录用户名
 
+                  // 查询数据库密码
+                  String psd = userFallbackFeign.selectPasswordByuserName(name);
 
-                log.debug("ip地址：" + ipAddr + "登录成功");
+                  log.debug("ip地址：" + ipAddr + "后台登录成功");
 
-                // 封装登录日志信息放到数据库
+                  // 封装登录日志信息放到数据库
 
-                LoginLog loginLog = new LoginLog();
-                loginLog.setId(SnowId.nextId());
-                loginLog.setIp(ipAddr);
-                loginLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
-                loginLog.setBrowser(BrowserOS.getBrowserName(request));
-                loginLog.setOs(BrowserOS.getOsName(request));
-                loginLog.setUsername(name);
-                Date d = new Date();
-                java.sql.Date date = new java.sql.Date(d.getTime());
-                SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String t = fm.format(date);
-                loginLog.setTime(t);
-                loginLog.setType(LoginType.NORMAL_LOGIN); // 走SecurityConfig类的登录都是正常的登录
-                loginLogFeign.insertLoginLog(loginLog);
+                  LoginLog loginLog = new LoginLog();
+                  loginLog.setId(SnowId.nextId());
+                  loginLog.setIp(ipAddr);
+                  loginLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
+                  loginLog.setBrowser(BrowserOS.getBrowserName(request));
+                  loginLog.setOs(BrowserOS.getOsName(request));
+                  loginLog.setUsername(name);
+                  Date d = new Date();
+                  java.sql.Date date = new java.sql.Date(d.getTime());
+                  SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                  String t = fm.format(date);
+                  loginLog.setTime(t);
+                  loginLog.setType(LoginType.NORMAL_LOGIN); // 走SecurityConfig类的登录都是正常的登录
+                  loginLogFeign.insertLoginLog(loginLog);
 
-                 //使用cookie+Redis实现记住我功能
-                String rememberme = request.getParameter("remember-me");
-                if (rememberme != null && rememberme.equals("on")) { // 此时激活记住我
+                  // 使用cookie+Redis实现记住我功能
+                  String rememberme = request.getParameter("remember-me");
+                  if (rememberme != null && rememberme.equals("on")) { // 此时激活记住我
 
-                  try {
+                    try {
                       setRememberme(name, psd, request, httpServletResponse); // 记住我实现
-                  } catch (Exception e) {
-                    e.printStackTrace();
+                    } catch (Exception e) {
+                      e.printStackTrace();
+                    }
                   }
-                }
 
-                // 这里不要用转发，不然会有一些bug
-                //
-                // request.getRequestDispatcher("/web/").forward(request,httpServletResponse);
-                httpServletResponse.sendRedirect(GATEWAY_URL+"/admin/");
+                  // ajax回调
+                  layuiJSON layuiJSON = new layuiJSON();
+                  layuiJSON.setMsg("后台登录成功");
+                  layuiJSON.setSuccess(true);
+                  httpServletResponse.setContentType("application/json;charset=UTF-8");
+                  httpServletResponse.getWriter().append(JSON.toJSONString(layuiJSON));
+
+
+
+
               }
             })
-        .failureForwardUrl("/web/login/LoginfailPage")
+        .failureForwardUrl("/adminLogin/LoginfailPage")
+        .failureHandler(
+            new AuthenticationFailureHandler() {
+              @Override
+              public void onAuthenticationFailure(
+                  HttpServletRequest httpServletRequest,
+                  HttpServletResponse httpServletResponse,
+                  AuthenticationException e)
+                  throws IOException, ServletException {
+
+                // ajax回调
+                layuiJSON layuiJSON = new layuiJSON();
+                layuiJSON.setMsg("后台登录失败");
+                layuiJSON.setSuccess(false);
+                httpServletResponse.setContentType("application/json;charset=UTF-8");
+                httpServletResponse.getWriter().append(JSON.toJSONString(layuiJSON));
+              }
+            })
         .and()
         // 不写这段代码，druid监控sql将失效（原因未明）
         .csrf()
@@ -157,7 +189,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .logout()
         .logoutUrl("/web/logout/logout")
-        .logoutSuccessUrl(GATEWAY_URL+"/web/login/toLoginPage")
+        .logoutSuccessUrl(GATEWAY_URL + "/adminLogin/toLoginPage")
         .logoutSuccessHandler(
             new LogoutSuccessHandler() {
               @Override
@@ -171,7 +203,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 退出从Redis删除记住我记录
                 redisTemplate.delete(REMEMBER_KEY + IpUtils.getIpAddr(httpServletRequest));
-                httpServletResponse.sendRedirect(GATEWAY_URL+"/web/login/toLoginPage");
+                httpServletResponse.sendRedirect(GATEWAY_URL + "/adminLogin/toLoginPage");
               }
             })
         .and()
@@ -197,24 +229,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/static/config/**",
             "/static/favicon.ico")
         .permitAll()
-            //只有admin权限才能访问(后台管理)
-        .antMatchers(
-            "/admin/**","/pear/**")
+        // 只有admin权限才能访问(后台管理)
+        .antMatchers("/admin/**", "/pear/**")
         .hasRole("admin")
-
-            //只有登录以后才能访问
-        .antMatchers("/myuser/**", "/img/**", "/admin/","/web/cart/**",
-                "/web/order/**","/web/address/**")
+        // 只有登录以后才能访问
+        .antMatchers("/myuser/**", "/img/**", "/web/cart/**", "/web/order/**", "/web/address/**")
         .hasAnyRole("admin", "common")
-
-        .antMatchers("/web/sliderCaptcha/**", "/web/logout")
+        .antMatchers("/web/sliderCaptcha/**", "/web/logout/logout")
         .permitAll()
-
-            //其他的任何请求登录不登录都可以访问
+        // 其他的任何请求登录不登录都可以访问
         .anyRequest()
         .permitAll()
         .and()
-        //如果不加这段代码，iframe嵌入的Druid监控界面会出现（使用 X-Frame-Options 拒绝网页被 Frame 嵌入）
+        // 如果不加这段代码，iframe嵌入的Druid监控界面会出现（使用 X-Frame-Options 拒绝网页被 Frame 嵌入）
         .headers()
         .frameOptions()
         .disable();

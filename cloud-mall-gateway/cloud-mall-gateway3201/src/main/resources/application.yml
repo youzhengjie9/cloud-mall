@@ -99,3 +99,9 @@ spring:
           uri: lb://cloud-mall-admin
           predicates:
             - Path=/pear/**
+
+        #配置admin的登录模块路由
+        - id: cloud-mall-admin
+          uri: lb://cloud-mall-admin
+          predicates:
+            - Path=/adminLogin/**
