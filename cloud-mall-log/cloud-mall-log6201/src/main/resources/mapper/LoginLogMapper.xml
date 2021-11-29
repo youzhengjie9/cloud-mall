@@ -10,4 +10,15 @@
         insert into loginlog values (#{id},#{username},#{ip},#{address},#{browser},#{os},#{time},#{type})
     </insert>
 
+    <select id="selectLoginLogBylimit" resultType="com.boot.pojo.LoginLog">
+        select * from loginlog  ORDER BY `time` DESC limit #{page} , #{limit}
+    </select>
+
+    <select id="selectLoginLogCount" resultType="int">
+        select count(*) from loginlog
+    </select>
+
+
+
+
 </mapper>

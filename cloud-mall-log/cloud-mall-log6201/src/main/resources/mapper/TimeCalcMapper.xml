@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+<mapper namespace="com.boot.dao.TimeCalcMapper">
+
+    <insert id="insertTimeCalc" parameterType="com.boot.pojo.TimeCalc">
+        insert into timecalc values (#{id},#{uri},#{calc},#{time})
+    </insert>
+
+    <select id="selectTimeCalcBylimit" resultType="com.boot.pojo.TimeCalc">
+        select * from timecalc  ORDER BY `time` DESC limit #{page} , #{size}
+    </select>
+
+    <select id="selectTimeCalcCount" resultType="int">
+        select count(*) from timecalc
+    </select>
+
+    <select id="selectTimeCalcByUriLimit" resultType="com.boot.pojo.TimeCalc">
+        select * from timecalc WHERE uri=#{uri} ORDER BY `time` DESC limit #{page} , #{size}
+    </select>
+
+    <select id="selectTimeCalcCountBylimit" resultType="int">
+        select count(*) from timecalc WHERE uri=#{uri}
+    </select>
+
+
+
+
+</mapper>

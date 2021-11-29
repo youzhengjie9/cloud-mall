@@ -128,23 +128,7 @@
 				"icon":"layui-icon layui-icon-face-smile",
 				"type":1,
 				"openType":"_iframe",
-				"href":"/pear/toVisitor"
-			},
-			{
-				"id":602,
-				"title":"黑名单",
-				"icon":"layui-icon layui-icon-face-cry",
-				"type":1,
-				"openType":"_iframe",
-				"href":"/pear/toBlack"
-			},
-			{
-				"id":604,
-				"title":"拦截记录",
-				"icon":"layui-icon layui-icon-face-cry",
-				"type":1,
-				"openType":"_iframe",
-				"href":"/pear/toInterceptorLog"
+				"href":"/pear/toVisitorList"
 			},
 			{
 				"id":605,

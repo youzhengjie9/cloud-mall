@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+<mapper namespace="com.boot.dao.VisitorMapper">
+
+    <insert id="insertVisitor" parameterType="com.boot.pojo.Visitor">
+        insert into visitor values(#{id},#{visit_ip},#{visit_address},#{browser},#{os},#{visit_time},#{visit_describe})
+    </insert>
+
+    <select id="selectVisitorBylimit" resultType="com.boot.pojo.Visitor">
+        select * from visitor limit #{page} ,#{size}
+    </select>
+
+    <select id="selectVisitorCount" resultType="int">
+        select count(*) from visitor
+    </select>
+
+
+</mapper>
