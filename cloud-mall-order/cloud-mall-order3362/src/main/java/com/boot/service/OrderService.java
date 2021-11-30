@@ -31,4 +31,13 @@ public interface OrderService {
 
     //查询近7天的日期
     List<String> selectDateBysevenDay();
+
+
+    List<Order> selectAllOrderBylimit(int page,int limit);
+
+    //查询指定订单
+    Order selectOrderById(long id);
+
+    void updateOrderStatus(long id, long statusid);
+
 }

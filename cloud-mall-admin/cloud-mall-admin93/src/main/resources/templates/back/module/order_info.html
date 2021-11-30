@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>订单详情</title>
+    <script th:src="@{/static/assets/js/jquery.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}" />
+</head>
+订单编号：<span th:text="${order.id}"></span><br/>
+商品信息：<span th:text="${order.goodsInfo}"></span><br/>
+商品参数：<span th:text="${order.getGoodsParams()}"></span><br/>
+数量：<span th:text="${order.getGoodsCount()}"></span><br/>
+总价格：<span th:text="${order.singleGoodsMoney}"></span><br/>
+收货人姓名：<span th:text="${order.realname}"></span><br/>
+收货人电话：<span th:text="${order.phone}"></span><br/>
+收货地址：<span th:text="${order.address}"></span><br/>
+下单时间：<span th:text="${order.created}"></span><br/>
+订单状态：<span th:text="${order.getOrderStatus().status}"></span>
+
+<body>
+
+<script th:src="@{/static/component/layui/layui.js}"></script>
+<script th:src="@{/static/component/pear/pear.js}"></script>
+
+
+
+
+</body>
+</html>

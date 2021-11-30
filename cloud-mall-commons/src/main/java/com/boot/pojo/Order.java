@@ -24,7 +24,7 @@ public class Order implements Serializable {
     private String created; //创建订单时间
     private long userid;
     private long productid;
-    private long statusid; //订单状态
+    private OrderStatus orderStatus; //订单状态
 
 
     public long getId() {
@@ -99,6 +99,14 @@ public class Order implements Serializable {
         this.address = address;
     }
 
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
     public long getUserid() {
         return userid;
     }
@@ -115,20 +123,12 @@ public class Order implements Serializable {
         this.productid = productid;
     }
 
-    public long getStatusid() {
-        return statusid;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatusid(long statusid) {
-        this.statusid = statusid;
-    }
-
-    public String getCreated() {
-        return created;
-    }
-
-    public void setCreated(String created) {
-        this.created = created;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     @Override
@@ -146,7 +146,7 @@ public class Order implements Serializable {
                 ", created='" + created + '\'' +
                 ", userid=" + userid +
                 ", productid=" + productid +
-                ", statusid=" + statusid +
+                ", orderStatus=" + orderStatus +
                 '}';
     }
 }

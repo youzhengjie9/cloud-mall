@@ -81,16 +81,6 @@
 
 </script>
 
-<!--<script type="text/html" id="brand-list">-->
-<!--	{{#  if(d.b_id > 0){ }}-->
-<!--	<div></div>-->
-<!--	{{#  } else { }}-->
-<!--	<div></div>-->
-<!--	{{#  } }}-->
-
-<!--</script>-->
-
-
 <script th:src="@{/static/resource/lib/jquery.min.js}"></script>
 <script th:src="@{/static/component/layui/layui.js}"></script>
 <script th:src="@{/static/component/pear/pear.js}"></script>
@@ -125,12 +115,12 @@
 					title: 'id',
 					field: 'productId',
 					align: 'center',
+					sort: true,
 					width: 100
 				},
 				{
 					field: 'img',
 					title: '商品图片',
-					sort: true,
 					templet: function(d){
 						return '<div onclick="show_img(this)" ><img src="'+d.img+'" alt="" width="45px" height="45px"></a></div>';
 					}
@@ -143,11 +133,13 @@
 				{
 					title: '价格',
 					field: 'price',
+					sort: true,
 					align: 'center'
 				},
 				{
 					title: '数量',
 					field: 'number',
+					sort: true,
 					align: 'center'
 				},
 				{

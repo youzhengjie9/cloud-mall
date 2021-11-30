@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * @author 游政杰
+ */
 @Mapper
 @Repository
 public interface OrderMapper {
@@ -34,5 +37,12 @@ public interface OrderMapper {
     //查询近7天的日期
     List<String> selectDateBysevenDay();
 
+
+    List<Order> selectAllOrderBylimit(@Param("page") int page,@Param("limit") int limit);
+
+    //查询指定订单
+    Order selectOrderById(@Param("id") long id);
+
+    void updateOrderStatus(@Param("id") long id,@Param("statusid") long statusid);
 
 }

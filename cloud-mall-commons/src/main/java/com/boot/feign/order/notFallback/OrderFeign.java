@@ -5,10 +5,7 @@ import com.boot.feign.order.fallback.impl.OrderFallbackFeignImpl;
 import com.boot.pojo.Order;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -27,5 +24,11 @@ public interface OrderFeign {
     @PostMapping(path = "/feign/order/orderBegin/{addressid}/{id}")
     public CommonResult<Order> orderBegin(@PathVariable("addressid") String addressid,@PathVariable("id") long id);
 
+
+    //修改订单状态
+    @ResponseBody
+    @GetMapping(path = "/feign/order/updateOrderStatus/{id}/{statusid}")
+    public String updateOrderStatus(@PathVariable("id") long id,
+                                    @PathVariable("statusid") long statusid);
 
 }

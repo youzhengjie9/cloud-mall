@@ -4,6 +4,26 @@
 
 <mapper namespace="com.boot.dao.OrderMapper">
 
+    <resultMap id="res" type="com.boot.pojo.Order">
+        <id column="id" property="id"/>
+        <result column="imgUrl" property="imgUrl"/>
+        <result column="goodsInfo" property="goodsInfo"/>
+        <result column="goodsParams" property="goodsParams"/>
+        <result column="goodsCount" property="goodsCount"/>
+        <result column="singleGoodsMoney" property="singleGoodsMoney"/>
+        <result column="realname" property="realname"/>
+        <result column="phone" property="phone"/>
+        <result column="address" property="address"/>
+        <result column="created" property="created"/>
+        <result column="userid" property="userid"/>
+        <result column="productid" property="productid"/>
+        <association property="orderStatus" javaType="com.boot.pojo.OrderStatus">
+            <id column="statusid" property="id"/>
+            <result column="status" property="status"/>
+        </association>
+
+    </resultMap>
+
 
     <insert id="insertOrder" parameterType="com.boot.pojo.Order">
         insert into `order` values(
@@ -16,12 +36,28 @@
         <if test="created !=null and created !=''">
             #{created},
         </if>
-        #{userid},#{productid},#{statusid})
+        #{userid},#{productid},#{orderStatus.id})
     </insert>
 
 
-    <select id="selectAllOrdersByUserId" resultType="com.boot.pojo.Order">
-        select * from `order` where userid=#{userid}
+    <select id="selectAllOrdersByUserId" resultMap="res">
+    SELECT
+    `order`.id,
+    `order`.imgUrl,
+    `order`.goodsInfo,
+    `order`.goodsParams,
+    `order`.goodsCount,
+    `order`.singleGoodsMoney,
+    `order`.realname,
+    `order`.phone,
+    `order`.address,
+    `order`.created,
+    `order`.userid,
+    `order`.productid,
+    `order`.statusid,
+    orderstatus.`status`
+    FROM `order`,orderstatus
+    WHERE `order`.statusid=orderstatus.id
     </select>
 
     <select id="selectOrderStatusById" resultType="com.boot.pojo.OrderStatus">
@@ -60,8 +96,55 @@
     </select>
 
 
+    <select id="selectAllOrderBylimit" resultMap="res">
+    SELECT
+    `order`.id,
+    `order`.imgUrl,
+    `order`.goodsInfo,
+    `order`.goodsParams,
+    `order`.goodsCount,
+    `order`.singleGoodsMoney,
+    `order`.realname,
+    `order`.phone,
+    `order`.address,
+    `order`.created,
+    `order`.userid,
+    `order`.productid,
+    `order`.statusid,
+    orderstatus.`status`
+    FROM `order`,orderstatus
+    WHERE `order`.statusid=orderstatus.id
+    ORDER BY created desc LIMIT #{page} , #{limit}
+    </select>
 
 
+    <select id="selectOrderById" resultMap="res">
+    SELECT
+    `order`.id,
+    `order`.imgUrl,
+    `order`.goodsInfo,
+    `order`.goodsParams,
+    `order`.goodsCount,
+    `order`.singleGoodsMoney,
+    `order`.realname,
+    `order`.phone,
+    `order`.address,
+    `order`.created,
+    `order`.userid,
+    `order`.productid,
+    `order`.statusid,
+    orderstatus.`status`
+    FROM `order`,orderstatus
+    WHERE `order`.statusid=orderstatus.id
+    and `order`.id =#{id}
+    </select>
 
+    
+    <update id="updateOrderStatus">
+        update `order` set statusid=#{statusid} where id=#{id}
+    </update>
+    
+    
+    
 
 </mapper>

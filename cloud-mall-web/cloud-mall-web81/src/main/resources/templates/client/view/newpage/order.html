@@ -264,25 +264,25 @@
                 <b style="color: red;">[[${order.getSingleGoodsMoney()}]]元</b>
             </div>
 
-            <div class="stat blue" th:if="${order.getStatusid()==1}">
+            <div class="stat blue" th:if="${order.getOrderStatus().getId()==1}">
                 待发货
             </div>
-            <div class="stat green" th:if="${order.getStatusid()==2}">
+            <div class="stat green" th:if="${order.getOrderStatus().getId()==2}">
                 已发货
             </div>
 
-            <div class="stat green" th:if="${order.getStatusid()==3}">
+            <div class="stat green" th:if="${order.getOrderStatus().getId()==3}">
                 交易成功
             </div>
 
-            <div class="stat" th:if="${order.getStatusid()==4}">
+            <div class="stat" th:if="${order.getOrderStatus().getId()==4}">
                 已取消
             </div>
-            <div class="stat red" th:if="${order.getStatusid()==5}">
+            <div class="stat red" th:if="${order.getOrderStatus().getId()==5}">
                 退款中
             </div>
-            <div class="stat red" th:if="${order.getStatusid()==6}">
-                已发货
+            <div class="stat red" th:if="${order.getOrderStatus().getId()==6}">
+                退款完成
             </div>
 
         </div>

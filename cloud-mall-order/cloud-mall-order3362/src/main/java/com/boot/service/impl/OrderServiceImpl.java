@@ -134,7 +134,9 @@ public class OrderServiceImpl implements OrderService {
             order.setCreated(created);
             order.setUserid(id);
             order.setProductid(id1);
-            order.setStatusid(1);
+            OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setId(1);
+            order.setOrderStatus(orderStatus);
 
             orderMapper.insertOrder(order);
 
@@ -154,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
                 //调用多个服务
                 productFeign.decrNumberByPid(id1,goodsCount); //减库存
                 userFeign.decrMoneyByUserId(id,singleGoodsMoney.toString()); //减余额
-//                cartFeign.deleteCartByCartId(cartid); //移除购物车
+                cartFeign.deleteCartByCartId(cartid); //移除购物车
 
             }
         }
@@ -181,5 +183,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<String> selectDateBysevenDay() {
         return orderMapper.selectDateBysevenDay();
+    }
+
+    @Override
+    public List<Order> selectAllOrderBylimit(int page, int limit) {
+        return orderMapper.selectAllOrderBylimit(page, limit);
+    }
+
+    @Override
+    public Order selectOrderById(long id) {
+        return orderMapper.selectOrderById(id);
+    }
+
+    @Override
+    public void updateOrderStatus(long id, long statusid) {
+        orderMapper.updateOrderStatus(id, statusid);
     }
 }

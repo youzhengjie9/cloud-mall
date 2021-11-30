@@ -14,6 +14,12 @@
     <artifactId>cloud-mall-commons</artifactId>
 
     <dependencies>
+        <!-- redisson -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.8.2</version>
+        </dependency>
         <!--        引入springcloud sleuth+zipkin-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>

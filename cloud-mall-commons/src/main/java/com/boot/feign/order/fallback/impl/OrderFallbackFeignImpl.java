@@ -50,4 +50,16 @@ public class OrderFallbackFeignImpl implements OrderFallbackFeign {
         return null;
     }
 
+    @Override
+    public List<Order> selectAllOrderBylimit(int page, int limit) {
+        log.error("selectAllOrderBylimit error");
+        return null;
+    }
+
+    @Override
+    public Order selectOrderById(long id) {
+        log.error("selectOrderById error");
+        return null;
+    }
+
 }

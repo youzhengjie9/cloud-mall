@@ -150,7 +150,7 @@ public class CartController {
         Cart cart = new Cart();
 
         cart.setId(SnowId.nextId());
-        cart.setImgUrl("/static/img/nav/"+product.getImg()+".jpg");
+        cart.setImgUrl(product.getImg());
         cart.setGoodsInfo(product.getName());
 
         StringBuffer params=new StringBuffer();

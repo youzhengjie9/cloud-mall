@@ -49,4 +49,14 @@ public interface OrderFallbackFeign {
     public List<String> selectDateBysevenDay();
 
 
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectAllOrderBylimit/{page}/{limit}")
+    public List<Order> selectAllOrderBylimit(@PathVariable("page") int page,
+                                             @PathVariable("limit") int limit);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectOrderById/{id}")
+    public Order selectOrderById(@PathVariable("id") long id);
+
+
 }

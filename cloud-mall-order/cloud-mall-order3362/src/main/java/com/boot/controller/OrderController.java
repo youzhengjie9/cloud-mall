@@ -165,5 +165,33 @@ public class OrderController {
     return orderService.selectDateBysevenDay();
   }
 
+  @ResponseBody
+  @GetMapping(path = "/selectAllOrderBylimit/{page}/{limit}")
+  public List<Order> selectAllOrderBylimit(@PathVariable("page") int page,
+                                           @PathVariable("limit") int limit){
+
+    List<Order> orders = orderService.selectAllOrderBylimit(page, limit);
+    return orders;
+  }
+
+  //查询指定订单
+  @ResponseBody
+  @GetMapping(path = "/selectOrderById/{id}")
+  public Order selectOrderById(@PathVariable("id") long id){
+
+    Order order = orderService.selectOrderById(id);
+    return order;
+  }
+  //修改订单状态
+  @ResponseBody
+  @GetMapping(path = "/updateOrderStatus/{id}/{statusid}")
+  public String updateOrderStatus(@PathVariable("id") long id,
+                                  @PathVariable("statusid") long statusid){
+
+    orderService.updateOrderStatus(id, statusid);
+
+    return "success";
+  }
+
 
 }
