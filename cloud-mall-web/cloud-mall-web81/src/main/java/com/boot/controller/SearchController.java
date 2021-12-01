@@ -257,6 +257,7 @@ public class SearchController {
         int odd=(pagecount%5==0)?5:pagecount%5; //求最后一组有多少页
         jsonObject.put("odd",odd);
 
+
         return JSON.toJSONString(jsonObject);
     }
 

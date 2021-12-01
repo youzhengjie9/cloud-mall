@@ -10,6 +10,7 @@ import com.boot.pojo.Order;
 import com.boot.pojo.OrderStatus;
 import com.boot.service.OrderService;
 import io.swagger.annotations.Api;
+import org.apache.ibatis.annotations.Param;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -191,6 +192,24 @@ public class OrderController {
     orderService.updateOrderStatus(id, statusid);
 
     return "success";
+  }
+  @ResponseBody
+  @GetMapping(path = "/selectAllOrderBylimitAndId/{userid}/{page}/{limit}")
+  public List<Order> selectAllOrderBylimitAndId(@PathVariable("userid") long userid,
+                                                @PathVariable("page") int page,
+                                                @PathVariable("limit") int limit){
+
+    List<Order> orders = orderService.selectAllOrderBylimitAndId(userid, page, limit);
+
+    return orders;
+  }
+
+  @ResponseBody
+  @GetMapping(path = "/selectOrderCountByid/{userid}")
+  public int selectOrderCountByid(@PathVariable("userid") long userid){
+
+
+    return orderService.selectOrderCountByid(userid);
   }
 
 

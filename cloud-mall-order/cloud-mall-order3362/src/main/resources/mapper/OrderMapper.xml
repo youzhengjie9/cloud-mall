@@ -143,8 +143,36 @@
     <update id="updateOrderStatus">
         update `order` set statusid=#{statusid} where id=#{id}
     </update>
-    
-    
-    
+
+    <select id="selectAllOrderBylimitAndId" resultMap="res">
+
+    SELECT
+    `order`.id,
+    `order`.imgUrl,
+    `order`.goodsInfo,
+    `order`.goodsParams,
+    `order`.goodsCount,
+    `order`.singleGoodsMoney,
+    `order`.realname,
+    `order`.phone,
+    `order`.address,
+    `order`.created,
+    `order`.userid,
+    `order`.productid,
+    `order`.statusid,
+    orderstatus.`status`
+    FROM `order`,orderstatus
+    WHERE `order`.statusid=orderstatus.id
+    and `order`.userid=#{userid}
+    ORDER BY created desc LIMIT #{page} , #{limit}
+
+    </select>
+
+
+    <select id="selectOrderCountByid" resultType="int">
+        select count(*) from `order` where `order`.userid=#{userid}
+    </select>
+
+
 
 </mapper>

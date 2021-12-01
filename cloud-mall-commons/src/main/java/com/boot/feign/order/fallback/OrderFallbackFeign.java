@@ -59,4 +59,15 @@ public interface OrderFallbackFeign {
     public Order selectOrderById(@PathVariable("id") long id);
 
 
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectAllOrderBylimitAndId/{userid}/{page}/{limit}")
+    public List<Order> selectAllOrderBylimitAndId(@PathVariable("userid") long userid,
+                                                  @PathVariable("page") int page,
+                                                  @PathVariable("limit") int limit);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectOrderCountByid/{userid}")
+    public int selectOrderCountByid(@PathVariable("userid") long userid);
+
+
 }

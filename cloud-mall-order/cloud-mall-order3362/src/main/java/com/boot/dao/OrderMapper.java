@@ -45,4 +45,9 @@ public interface OrderMapper {
 
     void updateOrderStatus(@Param("id") long id,@Param("statusid") long statusid);
 
+    List<Order> selectAllOrderBylimitAndId(@Param("userid") long userid,@Param("page") int page,@Param("limit") int limit);
+
+    //查询用户总订单数
+    int selectOrderCountByid(@Param("userid") long userid);
+
 }

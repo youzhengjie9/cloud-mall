@@ -8,6 +8,9 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * @author 游政杰
+ */
 public interface OrderService {
 
     void insertOrder(Order order);
@@ -39,5 +42,9 @@ public interface OrderService {
     Order selectOrderById(long id);
 
     void updateOrderStatus(long id, long statusid);
+
+    List<Order> selectAllOrderBylimitAndId(long userid,int page,int limit);
+
+    int selectOrderCountByid(long userid);
 
 }

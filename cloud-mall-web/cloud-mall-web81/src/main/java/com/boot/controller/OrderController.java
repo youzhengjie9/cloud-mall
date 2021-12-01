@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
@@ -42,6 +43,10 @@ public class OrderController {
   private static final String TOTAL_MONEY="totalMoney";
 
   private static final String TOTAL_COUNT="totalCount";
+
+  private final int from=0; //分页起始，从id=from+1 开始
+
+  private final int size=5;//分页大小
 
   @Autowired private RedisTemplate redisTemplate;
 
@@ -68,17 +73,21 @@ public class OrderController {
 
     long userid = userFallbackFeign.selectUserIdByName(currentUser);
 
-    CommonResult<List<Order>> listCommonResult = orderFallbackFeign.selectAllOrdersByUserId(userid);
-
-    List<Order> orderList = listCommonResult.getObj();
+    List<Order> orderList = orderFallbackFeign.selectAllOrderBylimitAndId(userid, 0, 5);
 
     model.addAttribute("orderList",orderList);
 
-//    model.addAttribute("orderFallbackFeign",orderFallbackFeign);
+    int pageProductCount = orderFallbackFeign.selectOrderCount();//获取分页前查询的总数
+
+    int x=size-from; //计算出每一页数量的Max
+    int pagecount=(pageProductCount%x==0)?pageProductCount/x:(pageProductCount/x)+1; //页的总数
+
+    model.addAttribute("pagecount",pagecount);
+
+    model.addAttribute("curPage",1); //默认第一页
 
     return "client/view/newpage/order";
   }
-
 
   @GetMapping(path = "/getCheckOrderInfo")
   @ResponseBody
@@ -112,7 +121,7 @@ public class OrderController {
 
     List<Cart> carts = new ArrayList<>();
     // 解析json数组
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < 3; i++) {
       Cart cart = new Cart();
       String jsonString = JSON.toJSONString(jsonArray.get(i));
       JSONObject jsonObject = JSONObject.parseObject(jsonString);
@@ -134,6 +143,14 @@ public class OrderController {
       carts.add(cart);
     }
 
+    int x=3;
+    int pagecount=(size%x==0)?size/x:(size/x)+1; //页的总数
+
+    model.addAttribute("pagecount",pagecount);
+
+    model.addAttribute("curPage",1); //默认第一页
+
+
     // 把解析到的list集合传入到前端
     model.addAttribute("carts", carts);
 
@@ -151,6 +168,110 @@ public class OrderController {
 
     return "client/view/newpage/checkOrder";
   }
+
+
+  @ResponseBody
+  @GetMapping(path = "/checkOrderData",produces = "application/json; charset=utf-8")
+  public String checkOrderData(@RequestParam(value = "from",defaultValue = "1") int from,
+                               HttpSession session){
+    int curPage=from;  //当前页
+    int pagesize=3;
+    String currentUser = springSecurityUtil.currentUser(session);
+    long id = userFallbackFeign.selectUserIdByName(currentUser);
+    String json = (String) redisTemplate.opsForValue().get(CHECK_ORDER_KEY + id);
+    JSONArray jsonArray = JSONArray.parseArray(json);
+
+    int size = jsonArray.size(); // 获取这个json数组有多少个对象
+
+    from=pagesize*(from-1);
+
+    List<Cart> carts = new ArrayList<>();
+    // 解析json数组
+    //0 1 2 3 4
+    if(from+pagesize-1<=size-1){ //说明下一组能够3个为一组
+
+      for (int i = from; i < from+3; i++) {
+        Cart cart = new Cart();
+        String jsonString = JSON.toJSONString(jsonArray.get(i));
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+        long id1 = Long.valueOf((String) jsonObject.get("id")); //购物车id
+
+        String imgUrl = (String) jsonObject.get("imgUrl");
+        String goodsInfo = (String) jsonObject.get("goodsInfo");
+        String goodsParams = (String) jsonObject.get("goodsParams");
+        int goodsCount = Integer.valueOf((String) jsonObject.get("goodsCount"));
+        BigDecimal singleGoodsMoney = new BigDecimal((String) jsonObject.get("singleGoodsMoney"));
+
+        cart.setId(id1);
+        cart.setImgUrl(imgUrl);
+        cart.setGoodsInfo(goodsInfo);
+        cart.setGoodsParams(goodsParams);
+        cart.setGoodsCount(goodsCount);
+        cart.setSingleGoodsMoney(singleGoodsMoney);
+
+        carts.add(cart);
+      }
+
+
+    }else{ //说明下一组不够3个为一组
+
+      int n=size-from;
+      for (int i = from; i < from+n; i++) {
+        Cart cart = new Cart();
+        String jsonString = JSON.toJSONString(jsonArray.get(i));
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+        long id1 = Long.valueOf((String) jsonObject.get("id")); //购物车id
+
+        String imgUrl = (String) jsonObject.get("imgUrl");
+        String goodsInfo = (String) jsonObject.get("goodsInfo");
+        String goodsParams = (String) jsonObject.get("goodsParams");
+        int goodsCount = Integer.valueOf((String) jsonObject.get("goodsCount"));
+        BigDecimal singleGoodsMoney = new BigDecimal((String) jsonObject.get("singleGoodsMoney"));
+
+        cart.setId(id1);
+        cart.setImgUrl(imgUrl);
+        cart.setGoodsInfo(goodsInfo);
+        cart.setGoodsParams(goodsParams);
+        cart.setGoodsCount(goodsCount);
+        cart.setSingleGoodsMoney(singleGoodsMoney);
+
+        carts.add(cart);
+      }
+    }
+
+
+    String s = springSecurityUtil.currentUser(session);
+    long userid = userFallbackFeign.selectUserIdByName(s);
+
+
+    JSONObject jsonObject = new JSONObject();
+
+    jsonObject.put("curPage",curPage);//传入当前页
+
+    jsonObject.put("carts",carts);
+
+
+    int pageOrderCount = jsonArray.size();
+
+    int pagecount=(pageOrderCount%pagesize==0)?pageOrderCount/pagesize:(pageOrderCount/pagesize)+1; //页的总数
+
+    jsonObject.put("pagecount",pagecount);
+
+    int curPageGroup=(curPage%5==0)?curPage/5:(curPage/5)+1; //当前页属于第几组
+    //1-5为第一组导航 ,6-10为第二组以此类推
+    int pageGroup=(pagecount%5==0)?pagecount/5:(pagecount/5)+1; //能够分多少组导航
+
+    jsonObject.put("curPageGroup",curPageGroup);
+    jsonObject.put("pageGroup",pageGroup);
+
+    //比如总共15页,5个一组，15%5=0;此时租后一组就为5个
+    int odd=(pagecount%5==0)?5:pagecount%5; //求最后一组有多少页
+    jsonObject.put("odd",odd);
+
+    return JSON.toJSONString(jsonObject);
+
+  }
+
 
   //下订单主要逻辑
   @GetMapping(path = "/orderbegin")
@@ -173,6 +294,49 @@ public class OrderController {
 
   }
 
+  @ResponseBody
+  @GetMapping(path = "/orderData",produces = "application/json; charset=utf-8")
+  public String orderData(@RequestParam(value = "from",defaultValue = "1") int from,
+                          @RequestParam(value = "size",defaultValue = "5") int size,
+                          HttpSession session)
+  {
+    int curPage=from;  //当前页
+    from=size*(from-1);
+
+    String s = springSecurityUtil.currentUser(session);
+    long userid = userFallbackFeign.selectUserIdByName(s);
+
+    List<Order> orders = orderFallbackFeign.selectAllOrderBylimitAndId(userid, from, size);
+
+    JSONObject jsonObject = new JSONObject();
+
+    jsonObject.put("curPage",curPage);//传入当前页
+
+    jsonObject.put("orders",orders);
+
+
+
+    int pageOrderCount = orderFallbackFeign.selectOrderCountByid(userid);//获取分页前查询的总数
+
+    int x=size; //计算出每一页数量的Max
+    int pagecount=(pageOrderCount%x==0)?pageOrderCount/x:(pageOrderCount/x)+1; //页的总数
+
+    jsonObject.put("pagecount",pagecount);
+
+    int curPageGroup=(curPage%5==0)?curPage/5:(curPage/5)+1; //当前页属于第几组
+    //1-5为第一组导航 ,6-10为第二组以此类推
+    int pageGroup=(pagecount%5==0)?pagecount/5:(pagecount/5)+1; //能够分多少组导航
+
+    jsonObject.put("curPageGroup",curPageGroup);
+    jsonObject.put("pageGroup",pageGroup);
+
+    //比如总共15页,5个一组，15%5=0;此时租后一组就为5个
+    int odd=(pagecount%5==0)?5:pagecount%5; //求最后一组有多少页
+    jsonObject.put("odd",odd);
+
+    return JSON.toJSONString(jsonObject);
+
+  }
 
 
 

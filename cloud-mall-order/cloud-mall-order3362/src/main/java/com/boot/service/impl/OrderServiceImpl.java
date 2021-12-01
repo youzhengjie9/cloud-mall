@@ -199,4 +199,14 @@ public class OrderServiceImpl implements OrderService {
     public void updateOrderStatus(long id, long statusid) {
         orderMapper.updateOrderStatus(id, statusid);
     }
+
+    @Override
+    public List<Order> selectAllOrderBylimitAndId(long userid, int page, int limit) {
+        return orderMapper.selectAllOrderBylimitAndId(userid, page, limit);
+    }
+
+    @Override
+    public int selectOrderCountByid(long userid) {
+        return orderMapper.selectOrderCountByid(userid);
+    }
 }
