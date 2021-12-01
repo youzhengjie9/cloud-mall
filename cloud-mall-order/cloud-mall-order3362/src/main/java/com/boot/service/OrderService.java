@@ -47,4 +47,12 @@ public interface OrderService {
 
     int selectOrderCountByid(long userid);
 
+    //查询所有有关退货的订单（包括退货完成的）
+    List<Order> selectReturnGoods(int page,int limit);
+
+    //查询有关退货的数量（包括退货完成的）
+    int selectReturnGoodsCount();
+
+    //查询退货并且指定id
+    Order selectReturnGoodsById(long id);
 }

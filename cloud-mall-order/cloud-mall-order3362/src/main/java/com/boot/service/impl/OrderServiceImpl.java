@@ -209,4 +209,19 @@ public class OrderServiceImpl implements OrderService {
     public int selectOrderCountByid(long userid) {
         return orderMapper.selectOrderCountByid(userid);
     }
+
+    @Override
+    public List<Order> selectReturnGoods(int page, int limit) {
+        return orderMapper.selectReturnGoods(page, limit);
+    }
+
+    @Override
+    public int selectReturnGoodsCount() {
+        return orderMapper.selectReturnGoodsCount();
+    }
+
+    @Override
+    public Order selectReturnGoodsById(long id) {
+        return orderMapper.selectReturnGoodsById(id);
+    }
 }

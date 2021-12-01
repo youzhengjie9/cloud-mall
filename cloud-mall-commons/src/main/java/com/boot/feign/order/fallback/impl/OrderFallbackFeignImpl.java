@@ -74,4 +74,22 @@ public class OrderFallbackFeignImpl implements OrderFallbackFeign {
         return 0;
     }
 
+    @Override
+    public List<Order> selectReturnGoods(int page, int limit) {
+        log.error("selectReturnGoods error");
+        return null;
+    }
+
+    @Override
+    public int selectReturnGoodsCount() {
+        log.error("selectReturnGoodsCount error");
+        return 0;
+    }
+
+    @Override
+    public Order selectReturnGoodsById(long id) {
+        log.error("selectReturnGoodsById error");
+        return null;
+    }
+
 }

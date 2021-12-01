@@ -50,4 +50,14 @@ public interface OrderMapper {
     //查询用户总订单数
     int selectOrderCountByid(@Param("userid") long userid);
 
+
+    //查询所有有关退货的订单（包括退货完成的）
+    List<Order> selectReturnGoods(@Param("page") int page,@Param("limit") int limit);
+
+    //查询有关退货的数量（包括退货完成的）
+    int selectReturnGoodsCount();
+
+    Order selectReturnGoodsById(@Param("id") long id);
+
+
 }

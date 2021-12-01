@@ -31,7 +31,7 @@
 
     .textDiv {
         width: 98%;
-        height: 85px;
+        height: 105px;
         border-radius: 10px;
         background-color: white;
         border: 2px solid gainsboro;
@@ -267,6 +267,12 @@
             <div class="price">
                 <b>订单价格：</b>
                 <b style="color: red;">[[${order.getSingleGoodsMoney()}]]元</b>
+                <button th:if="${order.orderStatus.id==1 or order.orderStatus.id==2 ||order.orderStatus.id==3}"
+                        type="button" th:onclick="returnGoods([[${order.id}]])" class="layui-btn layui-btn-danger layui-btn-radius">申请退货</button>
+
+                <button th:if="${order.orderStatus.id==5}"
+                        type="button" th:onclick="cancelGoods([[${order.id}]])" class="layui-btn layui-btn-warm layui-btn-radius">撤销退货</button>
+
             </div>
 
             <div class="stat blue" th:if="${order.getOrderStatus().getId()==1}">
@@ -426,6 +432,60 @@
 
 <script>
 
+    //申请退货
+    function returnGoods(id) {
+
+        let b = confirm('您确定要申请退货吗？');
+        if(b)
+        {
+            $.ajax({
+                url: "/web/order/returnGoods/" + id,
+                dataType: 'json',
+                type: 'GET',
+                success: function (result) {
+
+                    if(result.success)
+                    {
+                        alert(result.msg);
+                        window.location.reload();
+                    }else {
+                        alert(result.msg);
+                    }
+
+                }
+            })
+
+
+        }
+
+    }
+
+    //撤销退货
+    function cancelGoods(id) {
+
+        let b = confirm('您确定要撤销退货吗？'+id);
+        if(b)
+        {
+
+            $.ajax({
+                url: "/web/order/cancelGoods/" + id,
+                dataType: 'json',
+                type: 'GET',
+                success: function (result) {
+
+                    if(result.success)
+                    {
+                        alert(result.msg);
+                        window.location.reload();
+                    }else {
+                        alert(result.msg);
+                    }
+
+                }
+            })
+        }
+    }
+
 
 
 
@@ -501,6 +561,25 @@
                     html += ' <div class="price"> <b>订单价格：</b>'
 
                     html += '<b style="color: red;">' + json.orders[i].singleGoodsMoney + '元</b>'
+
+
+                    if(json.orders[i].orderStatus.id==1
+                    ||json.orders[i].orderStatus.id==2
+                    ||json.orders[i].orderStatus.id==3){
+
+                        html+='<button type="button" onclick=\"';
+                        html+='returnGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-danger layui-btn-radius"';
+                        html+='>申请退货</button>'
+
+
+                    }
+
+                    if(json.orders[i].orderStatus.id==5){
+
+                        html+='<button type="button" onclick=\"';
+                        html+='cancelGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-warm layui-btn-radius"';
+                        html+='>撤销退货</button>'
+                    }
 
                     html+='</div>'
 
@@ -707,6 +786,25 @@
                     html += ' <div class="price"> <b>订单价格：</b>'
 
                     html += '<b style="color: red;">' + json.orders[i].singleGoodsMoney + '元</b>'
+
+                    if(json.orders[i].orderStatus.id==1
+                        ||json.orders[i].orderStatus.id==2
+                        ||json.orders[i].orderStatus.id==3){
+
+                        html+='<button type="button" onclick=\"';
+                        html+='returnGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-danger layui-btn-radius"';
+                        html+='>申请退货</button>'
+
+
+                    }
+
+                    if(json.orders[i].orderStatus.id==5){
+
+                        html+='<button type="button" onclick=\"';
+                        html+='cancelGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-warm layui-btn-radius"';
+                        html+='>撤销退货</button>'
+                    }
+
 
                     html+='</div>'
 
@@ -943,6 +1041,24 @@
                     html += ' <div class="price"> <b>订单价格：</b>'
 
                     html += '<b style="color: red;">' + json.orders[i].singleGoodsMoney + '元</b>'
+
+                    if(json.orders[i].orderStatus.id==1
+                        ||json.orders[i].orderStatus.id==2
+                        ||json.orders[i].orderStatus.id==3){
+
+                        html+='<button type="button" onclick=\"';
+                        html+='returnGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-danger layui-btn-radius"';
+                        html+='>申请退货</button>'
+
+
+                    }
+
+                    if(json.orders[i].orderStatus.id==5){
+
+                        html+='<button type="button" onclick=\"';
+                        html+='cancelGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-warm layui-btn-radius"';
+                        html+='>撤销退货</button>'
+                    }
 
                     html+='</div>'
 

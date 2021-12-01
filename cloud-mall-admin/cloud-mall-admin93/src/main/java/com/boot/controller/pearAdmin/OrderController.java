@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -120,6 +121,62 @@ public class OrderController {
         }
 
     }
+
+
+    @RequestMapping(path = "/toReturnGoods")
+    public String toReturnGoods()
+    {
+
+        return "back/returnGoods_list";
+    }
+
+
+    //查询所有有关退货的订单（包括退货完成的）
+    @ResponseBody
+    @GetMapping(path = "/returnGoodsData")
+    public String returnGoodsData(@RequestParam(value = "page", defaultValue = "0") int page,
+                                  @RequestParam(value = "limit", defaultValue = "6") int limit,
+                                  @RequestParam(value = "orderid", defaultValue = "") String orderid){
+
+        page=limit*(page-1);
+        layuiData<Order> layuiData = new layuiData();
+
+        if(StringUtils.isEmpty(orderid)){ //查询全部
+
+            List<Order> orders = orderFallbackFeign.selectReturnGoods(page, limit);
+
+            int count = orderFallbackFeign.selectReturnGoodsCount();
+
+            layuiData.setData(orders);
+            layuiData.setCount(count);
+            layuiData.setCode(0);
+            layuiData.setMsg("");
+
+            return JSON.toJSONString(layuiData);
+        }else {
+
+            ArrayList<Order> list = new ArrayList<>();
+            Order order = orderFallbackFeign.selectReturnGoodsById(Long.parseLong(orderid));
+
+
+            if(order==null){ //防止数据差不到
+                list=null;
+                layuiData.setCount(0);
+            }else {
+                list.add(order);
+                layuiData.setCount(1);
+            }
+            layuiData.setData(list);
+            layuiData.setCode(0);
+            layuiData.setMsg("");
+
+            return JSON.toJSONString(layuiData);
+        }
+    }
+
+
+
+
 
 
 }

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.boot.constant.ResultCode;
 import com.boot.data.CommonResult;
+import com.boot.data.layuiJSON;
 import com.boot.feign.order.fallback.AddressFallbackFeign;
 import com.boot.feign.order.fallback.OrderFallbackFeign;
 import com.boot.feign.order.notFallback.OrderFeign;
@@ -20,10 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
@@ -337,6 +335,56 @@ public class OrderController {
     return JSON.toJSONString(jsonObject);
 
   }
+
+
+  @ResponseBody
+  @GetMapping(path = "/returnGoods/{id}")
+  public String returnGoods(@PathVariable("id") long id)
+  {
+
+
+    layuiJSON layuiJSON = new layuiJSON();
+
+
+    try {
+      orderFeign.updateOrderStatus(id,5);
+      layuiJSON.setMsg("申请退货成功");
+      layuiJSON.setSuccess(true);
+      return JSON.toJSONString(layuiJSON);
+    } catch (Exception e) {
+      e.printStackTrace();
+      layuiJSON.setMsg("申请退货失败");
+      layuiJSON.setSuccess(false);
+      return JSON.toJSONString(layuiJSON);
+    }
+
+  }
+
+
+
+  @ResponseBody
+  @GetMapping(path = "/cancelGoods/{id}")
+  public String cancelGoods(@PathVariable("id") long id)
+  {
+
+
+    layuiJSON layuiJSON = new layuiJSON();
+
+
+    try {
+      orderFeign.updateOrderStatus(id,1); //默认变成待发货状态
+      layuiJSON.setMsg("撤销退货成功");
+      layuiJSON.setSuccess(true);
+      return JSON.toJSONString(layuiJSON);
+    } catch (Exception e) {
+      e.printStackTrace();
+      layuiJSON.setMsg("撤销退货失败");
+      layuiJSON.setSuccess(false);
+      return JSON.toJSONString(layuiJSON);
+    }
+
+  }
+
 
 
 

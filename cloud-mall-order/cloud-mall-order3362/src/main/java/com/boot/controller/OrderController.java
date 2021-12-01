@@ -213,4 +213,32 @@ public class OrderController {
   }
 
 
+  //查询所有有关退货的订单（包括退货完成的）
+  @ResponseBody
+  @GetMapping(path = "/selectReturnGoods/{page}/{limit}")
+  public List<Order> selectReturnGoods(@PathVariable("page") int page,
+                                @PathVariable("limit") int limit){
+
+    return orderService.selectReturnGoods(page, limit);
+  }
+
+  //查询有关退货的数量（包括退货完成的）
+  @ResponseBody
+  @GetMapping(path = "/selectReturnGoodsCount")
+  public int selectReturnGoodsCount(){
+
+     return orderService.selectReturnGoodsCount();
+  }
+
+
+  //查询退货并且指定id
+  @ResponseBody
+  @GetMapping(path = "/selectReturnGoodsById/{id}")
+  public Order selectReturnGoodsById(@PathVariable("id") long id){
+
+    return orderService.selectReturnGoodsById(id);
+
+  }
+
+
 }

@@ -70,4 +70,21 @@ public interface OrderFallbackFeign {
     public int selectOrderCountByid(@PathVariable("userid") long userid);
 
 
+
+    //查询所有有关退货的订单（包括退货完成的）
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectReturnGoods/{page}/{limit}")
+    public List<Order> selectReturnGoods(@PathVariable("page") int page,
+                                         @PathVariable("limit") int limit);
+
+    //查询有关退货的数量（包括退货完成的）
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectReturnGoodsCount")
+    public int selectReturnGoodsCount();
+
+
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectReturnGoodsById/{id}")
+    public Order selectReturnGoodsById(@PathVariable("id") long id);
+
 }

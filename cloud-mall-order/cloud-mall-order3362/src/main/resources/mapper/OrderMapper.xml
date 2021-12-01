@@ -175,4 +175,64 @@
 
 
 
+    <select id="selectReturnGoods" resultMap="res">
+
+    SELECT
+    `order`.id,
+    `order`.imgUrl,
+    `order`.goodsInfo,
+    `order`.goodsParams,
+    `order`.goodsCount,
+    `order`.singleGoodsMoney,
+    `order`.realname,
+    `order`.phone,
+    `order`.address,
+    `order`.created,
+    `order`.userid,
+    `order`.productid,
+    `order`.statusid,
+    orderstatus.`status`
+    FROM `order`,orderstatus
+    WHERE `order`.statusid=orderstatus.id
+	and (`order`.statusid=5 OR `order`.statusid=6)
+    </select>
+
+
+    <select id="selectReturnGoodsCount" resultType="int">
+
+	SELECT
+	COUNT(*)
+    FROM `order`
+    WHERE `order`.statusid=5 OR `order`.statusid=6
+
+    </select>
+
+
+    <select id="selectReturnGoodsById" resultMap="res">
+    SELECT
+    `order`.id,
+    `order`.imgUrl,
+    `order`.goodsInfo,
+    `order`.goodsParams,
+    `order`.goodsCount,
+    `order`.singleGoodsMoney,
+    `order`.realname,
+    `order`.phone,
+    `order`.address,
+    `order`.created,
+    `order`.userid,
+    `order`.productid,
+    `order`.statusid,
+    orderstatus.`status`
+    FROM `order`,orderstatus
+    WHERE `order`.statusid=orderstatus.id
+	and (`order`.statusid=5 OR `order`.statusid=6)
+	AND `order`.id=#{id}
+    </select>
+
+
+
+
+
+
 </mapper>
