@@ -31,6 +31,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author 游政杰
+ */
 @Transactional
 @Service
 @Slf4j
@@ -223,5 +226,25 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order selectReturnGoodsById(long id) {
         return orderMapper.selectReturnGoodsById(id);
+    }
+
+    //全局分布式事务
+    @GlobalTransactional(name = "seata_agreedReturnGoods",rollbackFor = Exception.class)
+    @Override
+    public void agreedReturnGoods(long userid, long orderid) {
+
+
+        //通过orderid查询订单
+        Order order = orderMapper.selectOrderById(orderid);
+
+        //获得该订单总价值singleGoodsMoney
+        BigDecimal singleGoodsMoney = order.getSingleGoodsMoney();
+
+        //修改订单状态为退款完成
+        orderMapper.updateOrderStatus(orderid,6);
+
+        //调用user服务，所以这里要受到全局事务的保证
+        userFeign.incrMoneyByUserId(userid,singleGoodsMoney.toString());
+
     }
 }

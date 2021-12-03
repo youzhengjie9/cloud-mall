@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<title>用户管理</title>
+	<link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}" />
+</head>
+<body class="pear-container">
+<div class="layui-card">
+	<div class="layui-card-body">
+		<form class="layui-form" action="" autocomplete="off">
+			<div class="layui-form-item">
+				<div class="layui-form-item layui-inline">
+					<label class="layui-form-label">用户id</label>
+					<div class="layui-input-inline">
+						<input type="text" name="userid" placeholder="" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item layui-inline">
+					<button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
+						<i class="layui-icon layui-icon-search"></i>
+						查询
+					</button>
+					<button type="reset" class="pear-btn pear-btn-md">
+						<i class="layui-icon layui-icon-refresh"></i>
+						重置
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div class="layui-card">
+	<div class="layui-card-body">
+<!--		表格-->
+		<table id="user-table" lay-filter="user-table"></table>
+	</div>
+</div>
+
+<script type="text/html" id="user-bar">
+	<button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i></button>
+	<button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i></button>
+</script>
+
+
+<script type="text/html" id="user-sex">
+	{{#  if(d.userDetail.sex ==0){ }}
+	<div>男</div>
+	{{#  } else {}}
+	<div>女</div>
+	{{#  } }}
+</script>
+
+<script type="text/html" id="user-authority">
+
+	{{#  if(d.userAuthority.authority_id==1){ }}
+	<div>超级管理员</div>
+	{{#  } else if(d.userAuthority.authority_id==2){ }}
+	<div>普通用户</div>
+	{{# } else{ }}
+	<div>无该权限</div>
+	{{#  } }}
+</script>
+
+<script type="text/html" id="user-createTime">
+	{{#  if(d.date !=null){ }}
+	<div>{{layui.util.toDateString(d.date, 'yyyy-MM-dd')}}</div>
+	{{#  } else {}}
+	<div>{{}}</div>
+	{{#  } }}
+</script>
+
+<script type="text/html" id="allow-enable">
+	{{#  if(d.valid == 0){ }}
+	<input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable"/>
+	{{#  } else { }}
+	<input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable" checked="checked"/>
+	{{#  } }}
+
+</script>
+
+<script th:src="@{/static/resource/lib/jquery.min.js}"></script>
+<script th:src="@{/static/component/layui/layui.js}"></script>
+<script th:src="@{/static/component/pear/pear.js}"></script>
+<script>
+
+    function show_img(t) {
+        var t = $(t).find("img");
+        //页面层
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['80%', '80%'], //宽高
+            shadeClose: true, //开启遮罩关闭
+            end: function (index, layero) {
+                return false;
+            },
+            content: '<div style="text-align:center"><img src="' + $(t).attr('src') + '" style="width: 40%;height: 40%" /></div>'
+        });
+    }
+	layui.use(['table', 'form', 'jquery','common'], function() {
+		let table = layui.table;
+		let form = layui.form;
+		let $ = layui.jquery;
+		let common = layui.common;
+
+
+		let cols = [
+			[{
+				type: 'checkbox'
+			},
+				{
+					title: 'id',
+					field: 'id',
+					align: 'center',
+					sort: true,
+					width: 100
+				},
+				{
+					field: 'img',
+					title: '用户头像',
+					templet: function(d){
+						return '<div onclick="show_img(this)" ><img src="'+d.userDetail.icon+'" alt="" width="45px" height="45px"></a></div>';
+					}
+				},
+				{
+					title: '用户名',
+					field: 'username',
+					align: 'center'
+				},
+				{
+					title: '用户余额',
+					field: 'money',
+					sort: true,
+					align: 'center'
+				},
+				{
+					title: '邮箱',
+					field: 'email',
+					align: 'center',
+				},
+
+				{
+					title: '注册时间',
+					field: 'date',
+					sort: true,
+					align: 'center',
+					templet: '#user-createTime'
+				},
+				{
+					title: '权限',
+					align: 'center',
+					templet: '#user-authority',
+				},
+				{
+					title: '个性签名',
+					align: 'center',
+					templet: '<div>{{createFormat(d.userDetail.signature)}}</div>',
+				},
+				{
+					title: '性别',
+					align: 'center',
+					templet: '#user-sex',
+				},
+				{
+					title: '是否生效',
+					field: 'valid',
+					align: 'center',
+					templet: '#allow-enable'
+				},
+				{
+					title: '操作',
+					toolbar: '#user-bar',
+					align: 'center',
+					width: 130
+				}
+			]
+		]
+
+		table.render({
+			elem: '#user-table',
+			url: '/pear/allUserData',
+			page: true,
+			cols: cols,
+			skin: 'line',
+			text: {none: '暂无用户信息'},
+			defaultToolbar: [{
+				title: '刷新',
+				layEvent: 'refresh',
+				icon: 'layui-icon-refresh',
+			}, 'filter', 'print', 'exports']
+		});
+
+
+		table.on('tool(user-table)', function(obj) {
+			if (obj.event === 'remove') {
+				window.remove(obj);
+			} else if (obj.event === 'edit') {
+				window.edit(obj);
+			}
+		});
+
+		window.edit = function(obj) {
+			layer.open({
+				type: 2,
+				title: '修改',
+				shade: 0.1,
+				area: ['500px', '400px'],
+				content: '/pear/modifyUserPage?id='+obj.data.id
+			});
+		}
+
+		form.on('submit(user-query)', function(data) {
+			table.reload('user-table', {
+				where: data.field
+			})
+			return false;
+		});
+
+		form.on('switch(allow-enable)', function (obj) {
+			let operate;
+			let v=obj.elem.value;
+			if (obj.elem.checked) {
+				operate = "enable";
+			} else {
+				operate = "disable";
+			}
+			let loading = layer.load();
+			$.ajax({
+				url: '/pear/'+operate+'Valid',
+				data: {
+						"userid": v
+				      }
+				,
+				dataType: 'json',
+				contentType: 'application/json',
+				type: 'get',
+				success: function (result) {
+					layer.close(loading);
+					if (result.success) {
+						layer.msg(result.msg, {
+							icon: 1,
+							time: 1000
+						});
+					} else {
+						layer.msg(result.msg, {
+							icon: 2,
+							time: 1000
+						});
+					}
+				}
+			})
+		});
+
+		window.remove = function(obj) {
+			layer.confirm('确定要删除该用户', {
+				icon: 3,
+				title: '提示'
+			}, function(index) {
+				layer.close(index);
+				let loading = layer.load();
+				$.ajax({
+					url: "/pear/deleteUser/"+obj.data['id'],
+					dataType: 'json',
+					type: 'GET',
+					success: function(result) {
+						layer.close(loading);
+						if (result.success) {
+							layer.msg(result.msg, {
+								icon: 1,
+								time: 1000
+							}, function() {
+								obj.del();
+							});
+						} else {
+							layer.msg(result.msg, {
+								icon: 2,
+								time: 1000
+							}
+							);
+						}
+					}
+				})
+			});
+		}
+
+
+
+		window.refresh = function(param) {
+			table.reload('user-table');
+		}
+
+
+	})
+
+
+	//解决layui的field获取属性中的类中的属性无法显示问题
+	function createFormat(obj) {
+
+		return obj;
+	}
+</script>
+</body>
+</html>

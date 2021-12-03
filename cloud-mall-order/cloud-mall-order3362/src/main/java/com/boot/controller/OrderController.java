@@ -5,6 +5,8 @@ import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSONObject;
 import com.boot.constant.ResultCode;
 import com.boot.data.CommonResult;
+import com.boot.enums.OrderStatusConstant;
+import com.boot.enums.ResultConstant;
 import com.boot.pojo.Address;
 import com.boot.pojo.Order;
 import com.boot.pojo.OrderStatus;
@@ -237,8 +239,21 @@ public class OrderController {
   public Order selectReturnGoodsById(@PathVariable("id") long id){
 
     return orderService.selectReturnGoodsById(id);
-
   }
+
+
+  //同意退货
+  @ResponseBody
+  @GetMapping(path = "/agreedReturnGoods/{userid}/{orderid}")
+  public String agreedReturnGoods(@PathVariable("userid") long userid,
+                                  @PathVariable("orderid") long orderid){
+
+
+    orderService.agreedReturnGoods(userid, orderid);
+
+    return ResultConstant.SUCCESS.getCodeStat();
+  }
+
 
 
 }

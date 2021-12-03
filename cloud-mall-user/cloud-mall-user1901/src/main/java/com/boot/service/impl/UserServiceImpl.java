@@ -1,9 +1,11 @@
 package com.boot.service.impl;
 
 import com.boot.dao.UserAuthorityMapper;
+import com.boot.dao.UserDetailMapper;
 import com.boot.dao.UserMapper;
 import com.boot.pojo.User;
 import com.boot.pojo.UserAuthority;
+import com.boot.pojo.UserDetail;
 import com.boot.service.UserService;
 import com.boot.utils.SnowId;
 import io.seata.spring.annotation.GlobalTransactional;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
 /** @author 游政杰 */
 @Transactional // 本地事务
@@ -25,6 +28,9 @@ public class UserServiceImpl implements UserService {
   @Autowired private UserMapper userMapper;
 
   @Autowired private UserAuthorityMapper userAuthorityMapper;
+
+  @Autowired
+  private UserDetailMapper userDetailMapper;
 
   @Override
   public String selectPasswordByuserName(String username) {
@@ -73,6 +79,15 @@ public class UserServiceImpl implements UserService {
 
       userAuthorityMapper.insertUserAuthority(userAuthority);
 
+
+      //添加用户详情
+      UserDetail userDetail = new UserDetail();
+      userDetail.setId(SnowId.nextId());
+      userDetail.setSignature("默认的个性签名");
+      userDetail.setIcon("/static/img/user-icon/default-icon.jpg");
+      userDetail.setUserid(userid);
+      userDetailMapper.insertUserDetail(userDetail);
+
     } catch (Exception e) {
       throw new RuntimeException("注册用户失败");
     }
@@ -82,6 +97,27 @@ public class UserServiceImpl implements UserService {
   public int selectUserCount() {
     return userMapper.selectUserCount();
   }
+
+  @Override
+  public void incrMoneyByUserId(long userid, BigDecimal money) {
+    userMapper.incrMoneyByUserId(userid, money);
+  }
+
+  @Override
+  public List<User> selectAllUserInfo(int page, int limit) {
+    return userMapper.selectAllUserInfo(page, limit);
+  }
+
+  @Override
+  public User selectUserInfoById(long userid) {
+    return userMapper.selectUserInfoById(userid);
+  }
+
+  @Override
+  public void updateValid(long userid, int valid) {
+    userMapper.updateValid(userid, valid);
+  }
+
 
 }
 

@@ -31,4 +31,10 @@ public interface OrderFeign {
     public String updateOrderStatus(@PathVariable("id") long id,
                                     @PathVariable("statusid") long statusid);
 
+    //同意退货
+    @ResponseBody
+    @GetMapping(path = "/feign/order/agreedReturnGoods/{userid}/{orderid}")
+    public String agreedReturnGoods(@PathVariable("userid") long userid,
+                                    @PathVariable("orderid") long orderid);
+
 }

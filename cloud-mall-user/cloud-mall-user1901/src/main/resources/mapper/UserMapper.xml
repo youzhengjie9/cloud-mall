@@ -33,4 +33,71 @@
     </select>
 
 
+    <update id="incrMoneyByUserId">
+        update t_user set money = money+#{money} where id=#{userid}
+    </update>
+
+    <resultMap id="res1" type="com.boot.pojo.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="money" column="money"/>
+        <result property="email" column="email"/>
+        <result property="date" column="created"/>
+        <result property="valid" column="valid"/>
+        <association property="UserAuthority" javaType="com.boot.pojo.UserAuthority">
+            <result property="authority_id" column="authority_id"/>
+        </association>
+        <association property="userDetail" javaType="com.boot.pojo.UserDetail">
+            <result property="sex" column="sex"/>
+            <result property="signature" column="signature"/>
+            <result property="icon" column="icon"/>
+        </association>
+
+    </resultMap>
+
+
+    <select id="selectAllUserInfo" resultMap="res1">
+    SELECT
+    t_user.id,
+    t_user.username,
+    t_user.money,
+    t_user.email,
+    t_user.created,
+    t_user.valid,
+    t_user_authority.authority_id,
+    t_user_detail.sex,
+    t_user_detail.icon,
+    t_user_detail.signature
+    FROM t_user,t_user_detail,t_user_authority
+    WHERE t_user.id=t_user_authority.user_id
+    AND t_user.id=t_user_detail.userid
+    LIMIT #{page},#{limit}
+    </select>
+
+
+
+    <select id="selectUserInfoById" resultMap="res1">
+    SELECT
+    t_user.id,
+    t_user.username,
+    t_user.money,
+    t_user.email,
+    t_user.created,
+    t_user.valid,
+    t_user_authority.authority_id,
+    t_user_detail.sex,
+    t_user_detail.icon,
+    t_user_detail.signature
+    FROM t_user,t_user_detail,t_user_authority
+    WHERE t_user.id=t_user_authority.user_id
+    AND t_user.id=t_user_detail.userid
+    AND t_user.id=#{userid}
+    </select>
+
+
+    <update id="updateValid">
+        update t_user set valid = #{valid} where id=#{userid}
+    </update>
+
+
 </mapper>

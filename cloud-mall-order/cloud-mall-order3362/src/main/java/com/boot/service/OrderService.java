@@ -55,4 +55,9 @@ public interface OrderService {
 
     //查询退货并且指定id
     Order selectReturnGoodsById(long id);
+
+
+    //同意退货
+    void agreedReturnGoods(long userid,long orderid);
+
 }

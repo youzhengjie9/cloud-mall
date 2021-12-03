@@ -3,10 +3,12 @@ package com.boot.controller.pearAdmin;
 import com.alibaba.fastjson.JSON;
 import com.boot.data.layuiData;
 import com.boot.data.layuiJSON;
+import com.boot.enums.OrderStatusConstant;
 import com.boot.feign.order.fallback.OrderFallbackFeign;
 import com.boot.feign.order.notFallback.OrderFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.pojo.Order;
+import com.boot.utils.SpringSecurityUtil;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -28,6 +31,12 @@ public class OrderController {
 
     @Autowired
     private OrderFallbackFeign orderFallbackFeign;
+
+    @Autowired
+    private SpringSecurityUtil springSecurityUtil;
+
+    @Autowired
+    private UserFallbackFeign userFallbackFeign;
 
     @Autowired
     private OrderFeign orderFeign;
@@ -175,8 +184,49 @@ public class OrderController {
     }
 
 
+    //同意退货
+    @ResponseBody
+    @GetMapping(path = "/agreedReturnGoods/{orderid}")
+    public String agreedReturnGoods(@PathVariable("orderid") String orderid, HttpSession session)
+    {
+
+        layuiJSON layuiJSON = new layuiJSON();
+        try {
+            String username = springSecurityUtil.currentUser(session);
+            long userid = userFallbackFeign.selectUserIdByName(username);
+            orderFeign.agreedReturnGoods(userid,Long.parseLong(orderid));
+            layuiJSON.setSuccess(true);
+            layuiJSON.setMsg("退货成功");
+            return JSON.toJSONString(layuiJSON);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            layuiJSON.setSuccess(false);
+            layuiJSON.setMsg("退货失败");
+            return JSON.toJSONString(layuiJSON);
+        }
+
+    }
 
 
+    //不同意退货
+    @ResponseBody
+    @GetMapping(path = "/disagreedReturnGoods/{orderid}")
+    public String disagreedReturnGoods(@PathVariable("orderid") String orderid, HttpSession session)
+    {
 
+        layuiJSON layuiJSON = new layuiJSON();
+        try {
+            orderFeign.updateOrderStatus(Long.parseLong(orderid), OrderStatusConstant.waitSend.getId());
+            layuiJSON.setSuccess(true);
+            layuiJSON.setMsg("打回成功");
+            return JSON.toJSONString(layuiJSON);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            layuiJSON.setSuccess(false);
+            layuiJSON.setMsg("打回失败");
+            return JSON.toJSONString(layuiJSON);
+        }
+
+    }
 
 }

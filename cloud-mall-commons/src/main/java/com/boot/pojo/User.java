@@ -20,6 +20,7 @@ public class User implements Serializable {
     private Date date; //创建日期
     private int valid;  //是否有效
     private UserAuthority UserAuthority;//拥有权限
+    private UserDetail userDetail;
 
     public long getId() {
         return id;
@@ -85,6 +86,14 @@ public class User implements Serializable {
         this.money = money;
     }
 
+    public UserDetail getUserDetail() {
+        return userDetail;
+    }
+
+    public void setUserDetail(UserDetail userDetail) {
+        this.userDetail = userDetail;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -96,6 +105,7 @@ public class User implements Serializable {
                 ", date=" + date +
                 ", valid=" + valid +
                 ", UserAuthority=" + UserAuthority +
+                ", userDetail=" + userDetail +
                 '}';
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * @author 游政杰
@@ -42,4 +43,13 @@ public interface UserFallbackFeign {
     @ResponseBody
     @GetMapping(path = "/feign/user/selectUserCount")
     public int selectUserCount();
+
+    @ResponseBody
+    @GetMapping(path = "/feign/user/selectAllUserInfo/{page}/{limit}")
+    public List<User> selectAllUserInfo(@PathVariable("page") int page,
+                                        @PathVariable("limit") int limit);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/user/selectUserInfoById/{userid}")
+    public User selectUserInfoById(@PathVariable("userid") long userid);
 }

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -41,6 +42,18 @@ public class UserFallbackFeignImpl implements UserFallbackFeign {
     public int selectUserCount() {
         log.error("selectUserCount error");
         return 0;
+    }
+
+    @Override
+    public List<User> selectAllUserInfo(int page, int limit) {
+        log.error("selectAllUserInfo error");
+        return null;
+    }
+
+    @Override
+    public User selectUserInfoById(long userid) {
+        log.error("selectUserInfoById error");
+        return null;
     }
 
 }

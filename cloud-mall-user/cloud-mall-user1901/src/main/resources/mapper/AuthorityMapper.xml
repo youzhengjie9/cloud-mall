@@ -7,7 +7,9 @@
     <select id="selectAuthorityNameById" resultType="java.lang.String">
         select authority from t_authority where id=#{id}
     </select>
-    
 
+    <select id="selectAuthorityExcludeCurAuthority" resultType="com.boot.pojo.Authority">
+        SELECT * FROM t_authority WHERE t_authority.id!=#{id}
+    </select>
 
 </mapper>

@@ -180,7 +180,7 @@
 				layer.close(index);
 				let loading = layer.load();
 				$.ajax({
-					url: "/pear/"+obj.data['id'],
+					url: "/pear/agreedReturnGoods/"+obj.data['id'],
 					dataType: 'json',
 					type: 'GET',
 					success: function(result) {
@@ -212,7 +212,7 @@
 				layer.close(index);
 				let loading = layer.load();
 				$.ajax({
-					url: "/pear/"+obj.data['id'],
+					url: "/pear/disagreedReturnGoods/"+obj.data['id'],
 					dataType: 'json',
 					type: 'GET',
 					success: function(result) {

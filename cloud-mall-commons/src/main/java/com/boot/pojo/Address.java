@@ -1,6 +1,7 @@
 package com.boot.pojo;
 
 import io.swagger.annotations.ApiModel;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
