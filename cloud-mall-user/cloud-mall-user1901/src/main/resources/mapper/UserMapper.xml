@@ -99,5 +99,15 @@
         update t_user set valid = #{valid} where id=#{userid}
     </update>
 
+    
+    <update id="updateUserName">
+        update t_user set username = #{username} where id=#{id}
+    </update>
+
+
+    <delete id="deleteUserById">
+        delete from t_user  where id=#{id}
+    </delete>
+    
 
 </mapper>

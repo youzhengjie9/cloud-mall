@@ -40,5 +40,13 @@ public interface UserService {
     //修改是否生效
     void updateValid(long userid,int valid);
 
+    //修改用户名
+    void updateUserName(long id,String username);
+
+    //修改用户名和权限
+    void modifyUserNameAndAuthority(String id,String userName,String authorityId);
+
+    void deleteUserById(long id);
+
 
 }

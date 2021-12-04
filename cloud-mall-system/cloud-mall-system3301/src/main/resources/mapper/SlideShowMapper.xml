@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.boot.dao.SlideShowMapper">
+
+    <select id="selectSlideShow" resultType="com.boot.pojo.SlideShow">
+        select * from slideshow
+        order by sort desc
+        limit 0 ,5
+    </select>
+
+
+    <select id="selectAllSlideShowByLimit" resultType="com.boot.pojo.SlideShow">
+        select * from slideshow
+        order by sort desc
+        limit #{page} ,#{limit}
+    </select>
+
+
+    <select id="selectSlideShowCount" resultType="int">
+        select count(*) from slideshow
+    </select>
+
+    
+    <update id="updateSort">
+        update slideshow set sort =#{sort}  where id=#{id}
+    </update>
+    
+    <delete id="deleteSlideShow">
+        delete from slideshow where id=#{id}
+    </delete>
+    
+
+</mapper>

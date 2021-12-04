@@ -104,14 +104,6 @@
 				"type":1,
 				"openType":"_iframe",
 				"href":"/pear/toUserManager"
-			},
-			{
-				"id":500,
-				"title":"个人资料",
-				"icon":"layui-icon layui-icon-face-cry",
-				"type":1,
-				"openType":"_iframe",
-				"href":"/pear/touser"
 			}
 		]
 	},
@@ -194,24 +186,32 @@
 				"icon":"layui-icon layui-icon-face-smile",
 				"type":1,
 				"openType":"_iframe",
-				"href":"/pear/toEcharts"
+				"href":"/pear/toCharts"
 			}
 		]
 	},
 	{
 		"id":"code",
-		"title":"系统设置",
+		"title":"系统管理",
 		"icon":"layui-icon layui-icon-util",
 		"type":0,
 		"href":"",
 		"children":[
 			{
 				"id":801,
-				"title":"系统设置",
+				"title":"轮播图管理",
 				"icon":"layui-icon layui-icon-util",
 				"type":1,
 				"openType":"_iframe",
-				"href":"/pear/toSetting"
+				"href":"/pear/toSlideShow"
+			},
+			{
+				"id":802,
+				"title":"优惠券管理",
+				"icon":"layui-icon layui-icon-face-cry",
+				"type":1,
+				"openType":"_iframe",
+				"href":"/pear/toCoupons"
 			}
 		]
 	}

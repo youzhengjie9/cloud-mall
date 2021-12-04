@@ -41,6 +41,9 @@ public interface UserMapper {
     //修改是否生效
     void updateValid(@Param("userid") long userid,@Param("valid") int valid);
 
+    //修改用户名
+    void updateUserName(@Param("id") long id,@Param("username") String username);
 
+    void deleteUserById(@Param("id") long id);
 
 }

@@ -7,9 +7,11 @@ import com.boot.data.layuiJSON;
 import com.boot.feign.user.fallback.AuthorityFallbackFeign;
 import com.boot.feign.user.fallback.UserAuthorityFallbackFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
+import com.boot.feign.user.notFallback.UserAuthorityFeign;
 import com.boot.feign.user.notFallback.UserFeign;
 import com.boot.pojo.Authority;
 import com.boot.pojo.User;
+import com.boot.pojo.UserAuthority;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,6 +34,9 @@ public class UserController {
 
     @Autowired
     private UserFeign userFeign;
+
+    @Autowired
+    private UserAuthorityFeign userAuthorityFeign;
 
     @Autowired
     private AuthorityFallbackFeign authorityFallbackFeign;
@@ -136,6 +141,7 @@ public class UserController {
     {
         layuiJSON layuiJSON = new layuiJSON();
         try {
+            userFeign.deleteUserById(Long.parseLong(userid));
             layuiJSON.setSuccess(true);
             layuiJSON.setMsg("用户:"+userid+"删除成功");
             return JSON.toJSONString(layuiJSON);
@@ -151,6 +157,10 @@ public class UserController {
     @RequestMapping(path = "/modifyUserPage")
     public String modifyUserPage(@RequestParam(value = "id",required = true) String id, Model model)
     {
+        User user = userFallbackFeign.selectUserInfoById(Long.parseLong(id));
+        String username = user.getUsername();
+        model.addAttribute("username",username);
+
         CommonResult<Integer> integerCommonResult = userAuthorityFallbackFeign.selectAuthorityIdByUserId(Long.parseLong(id));
 
         Integer curAuthorityid = integerCommonResult.getObj();
@@ -168,6 +178,26 @@ public class UserController {
 
         model.addAttribute("id",id);
         return "back/module/editUser";
+    }
+
+
+    @ResponseBody
+    @PostMapping(path = "/modifyUserNameAndAuthority")
+    public String modifyUserNameAndAuthority(String id,String userName,String authorityId)
+    {
+        layuiJSON layuiJSON = new layuiJSON();
+        try {
+            userFeign.modifyUserNameAndAuthority(id, userName, authorityId);
+            layuiJSON.setSuccess(true);
+            layuiJSON.setMsg("修改用户成功");
+            return JSON.toJSONString(layuiJSON);
+        } catch (Exception e) {
+            e.printStackTrace();
+            layuiJSON.setSuccess(false);
+            layuiJSON.setMsg("修改用户失败");
+            return JSON.toJSONString(layuiJSON);
+        }
+
     }
 
 

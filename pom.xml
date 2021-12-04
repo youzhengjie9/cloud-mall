@@ -19,9 +19,9 @@
         <module>cloud-mall-user</module>
         <module>cloud-mall-async</module>
         <module>cloud-mall-order</module>
-        <module>cloud-mall-chart</module>
         <module>cloud-mall-log</module>
         <module>cloud-mall-admin</module>
+        <module>cloud-mall-chat</module>
     </modules>
     <!--    打包方式为pom-->
     <packaging>pom</packaging>

@@ -42,9 +42,14 @@ xmStoreApp
         }
 
         //调用服务获取主页需要显示的焦点图
-        httpService.get('/static/json/tsconfig.json').then(function (data) {
+        // httpService.get('/static/json/tsconfig.json').then(function (data) {
+        //     $rootScope.imgItems = data.focusImg;
+        // });
+
+        httpService.get('/web/slideshow/selectSlideShow').then(function (data) {
             $rootScope.imgItems = data.focusImg;
         });
+
 
         //调用服务获取分类表的数据 =====这里会报错？？暂时没发现原因
         // httpService.get('/Classify/selectAllClassify').then(function (data) {

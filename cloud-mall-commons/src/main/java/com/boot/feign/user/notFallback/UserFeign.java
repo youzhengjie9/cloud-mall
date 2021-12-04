@@ -5,10 +5,7 @@ import com.boot.data.CommonResult;
 import com.boot.pojo.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Component
 @FeignClient(value = "cloud-mall-user")
@@ -33,4 +30,14 @@ public interface UserFeign {
     public String updateValid(@PathVariable("userid") long userid,
                               @PathVariable("valid") int valid);
 
+    //修改用户名和权限
+    @ResponseBody
+    @GetMapping(path = "/feign/user/updateUserName/{id}/{userName}/{authorityId}")
+    public String modifyUserNameAndAuthority(@PathVariable("id") String id,
+                                             @PathVariable("userName") String userName,
+                                             @PathVariable("authorityId") String authorityId);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/user/deleteUserById/{id}")
+    public String deleteUserById(@PathVariable("id") long id);
 }

@@ -11,6 +11,7 @@
       <set>
         <option value="$PROJECT_DIR$/cloud-mall-async1660/pom.xml" />
         <option value="$PROJECT_DIR$/cloud-mall-char/pom.xml" />
+        <option value="$PROJECT_DIR$/cloud-mall-chart/pom.xml" />
         <option value="$PROJECT_DIR$/cloud-mall-order/cloud-mall-order3361/pom.xml" />
         <option value="$PROJECT_DIR$/cloud-mall-order/pom.xml" />
       </set>

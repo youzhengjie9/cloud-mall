@@ -14,4 +14,7 @@ public interface UserAuthorityMapper {
 
     int selectAuthorityIdByUserId(@Param("userid") long userid);
 
+    //修改用户权限
+    void updateUserAuthority(UserAuthority userAuthority);
+
 }

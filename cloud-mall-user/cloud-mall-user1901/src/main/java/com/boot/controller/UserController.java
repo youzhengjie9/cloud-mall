@@ -142,5 +142,28 @@ public class UserController {
     }
 
 
+    //修改用户名和权限
+    @ResponseBody
+    @GetMapping(path = "/updateUserName/{id}/{userName}/{authorityId}")
+    public String modifyUserNameAndAuthority(@PathVariable("id") String id,
+                                             @PathVariable("userName") String userName,
+                                             @PathVariable("authorityId") String authorityId){
+
+        userService.modifyUserNameAndAuthority(id, userName, authorityId);
+
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/deleteUserById/{id}")
+    public String deleteUserById(@PathVariable("id") long id){
+
+
+        userService.deleteUserById(id);
+
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
+
+
 
 }

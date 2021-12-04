@@ -118,6 +118,30 @@ public class UserServiceImpl implements UserService {
     userMapper.updateValid(userid, valid);
   }
 
+  @Override
+  public void updateUserName(long id, String username) {
+    userMapper.updateUserName(id, username);
+  }
+
+  @Override
+  public void modifyUserNameAndAuthority(String id, String userName, String authorityId) {
+
+    //修改权限
+    UserAuthority userAuthority = new UserAuthority();
+    userAuthority.setUser_id(Long.parseLong(id));
+    userAuthority.setAuthority_id(Integer.parseInt(authorityId));
+    userAuthorityMapper.updateUserAuthority(userAuthority);
+
+    //修改用户名
+    userMapper.updateUserName(Long.parseLong(id),userName);
+
+  }
+
+  @Override
+  public void deleteUserById(long id) {
+    userMapper.deleteUserById(id);
+  }
+
 
 }
 

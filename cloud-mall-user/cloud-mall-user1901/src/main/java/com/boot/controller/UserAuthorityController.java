@@ -2,13 +2,12 @@ package com.boot.controller;
 
 import com.boot.constant.ResultCode;
 import com.boot.data.CommonResult;
+import com.boot.enums.ResultConstant;
+import com.boot.pojo.UserAuthority;
 import com.boot.service.UserAuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping(path = "/feign/userAuthority")
@@ -33,6 +32,17 @@ public class UserAuthorityController {
         }
 
     }
+
+    //修改用户权限
+    @ResponseBody
+    @PostMapping(path = "/updateUserAuthority")
+    public String updateUserAuthority(@RequestBody UserAuthority userAuthority){
+
+        userAuthorityService.updateUserAuthority(userAuthority);
+
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
+
 
 
 }
