@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/cloud-mall-chart/cloud-mall-chart5533/cloud-mall-chart5533.iml" filepath="$PROJECT_DIR$/cloud-mall-chart/cloud-mall-chart5533/cloud-mall-chart5533.iml" />
       <module fileurl="file://$PROJECT_DIR$/cloud-mall-order/cloud-mall-order.iml" filepath="$PROJECT_DIR$/cloud-mall-order/cloud-mall-order.iml" />
       <module fileurl="file://$PROJECT_DIR$/cloud-mall-order/cloud-mall-order3361/cloud-mall-order3361.iml" filepath="$PROJECT_DIR$/cloud-mall-order/cloud-mall-order3361/cloud-mall-order3361.iml" />
     </modules>

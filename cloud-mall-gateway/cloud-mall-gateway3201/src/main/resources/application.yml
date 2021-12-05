@@ -105,3 +105,9 @@ spring:
           uri: lb://cloud-mall-admin
           predicates:
             - Path=/adminLogin/**
+
+        #配置人工客服模块路由
+        - id: cloud-mall-chat
+          uri: lb://cloud-mall-chat
+          predicates:
+            - Path=/chat/**

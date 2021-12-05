@@ -166,6 +166,39 @@
         text-align: center;
     }
     /***** footer 页面底部 end*/
+
+    /* 下拉框*/
+
+    .dropbtn {
+        border: none;
+        cursor: pointer;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        z-index: 100;
+        margin-left:25px
+    }
+
+    .dropdown-content {
+        display: none;
+        background-color: #f9f9f9;
+        min-width: 50px;
+        overflow: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown a:hover {background-color: #f1f1f1}
+
+    .show {display:block;}
 </style>
 
 
@@ -193,14 +226,18 @@
         <div class="topbar_cart fr">
             <a href="/web/order/toOrderPage">我的订单</a>
         </div>
-        <div class="topbar_info fr">
+        <div class="topbar_info fr" style="width:150px">
             <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
             <a class="nav-link" th:href="@{/web/register/toregister}">注册</a>
             <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
-            <a class="nav-link" sec:authorize="isAuthenticated()"
-               href="javascript:document.logoutform.submit();">
-                退出
-            </a>
+            <a sec:authorize="isAuthenticated()" class="nav-link dropbtn" onclick="myFunction()">admin</a>
+            <a href="http://localhost:5677/chat/toChat">人工客服</a>
+            <div class="dropdown">
+                <div id="myDropdown" class="dropdown-content" style="width: 120px;height: 70px">
+                    <a href="#" style="width: 100px;height: 30px;">个人中心</a>
+                    <a href="javascript:document.logoutform.submit();" style="width: 100px;height: 30px;">退出登录</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

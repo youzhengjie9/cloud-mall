@@ -6,7 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="cloud-mall-chart5533" />
         <module name="cloud-mall-gateway3201" />
         <module name="cloud-mall-async1660" />
         <module name="cloud-mall-product2901" />
