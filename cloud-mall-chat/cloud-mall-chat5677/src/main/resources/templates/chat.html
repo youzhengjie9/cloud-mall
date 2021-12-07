@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>人工客服</title>
     <link rel="stylesheet" type="text/css" th:href="@{/static/chat/css/easyui.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/static/chat/css/layui.css}">
 
     <script type="text/javascript" th:src="@{/static/chat/js/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/chat/js/jquery.easyui.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/chat/js/json2.js}"></script>
     <style type="text/css">
-        *{font-size: 14px; padding:0; margin:0;}
-        #chatRecord{
+        * {
+            font-size: 14px;
+            padding: 0;
+            margin: 0;
+        }
+
+        #chatRecord {
             position: relative;
             margin: 20px auto;
             border: 1px solid steelblue;
@@ -18,8 +24,8 @@
             height: 500px;
         }
 
-        .msgContent{
-            width:auto;
+        .msgContent {
+            width: auto;
             max-width: 250px;
             height: auto;
             word-break: break-all;
@@ -28,45 +34,52 @@
             border-radius: 5px;
         }
 
-        #chatZone .left{
-            list-style:none;
+        #chatZone .left {
+            list-style: none;
             text-align: left;
         }
-        #chatZone .left .p{
+
+        #chatZone .left .p {
             float: left;
             text-align: left;
             background-color: lightgrey;
             font-size: 4ex;
 
         }
-        #chatZone .left .title{
+
+        #chatZone .left .title {
             text-align: left;
             font-size: 5px;
-            color:grey;
+            color: grey;
         }
-        #chatZone .right{
+
+        #chatZone .right {
             float: right;
-            list-style:none;
+            list-style: none;
             text-align: right;
         }
-        #chatZone .right .title{
+
+        #chatZone .right .title {
             text-align: right;
             font-size: 5px;
-            color:grey;
-            clear:both;
+            color: grey;
+            clear: both;
         }
-        #chatZone .right .p{
+
+        #chatZone .right .p {
             float: right;
             text-align: right;
             background-color: yellowgreen;
             font-size: 4ex;
 
         }
-        #chatZone .right .title{
+
+        #chatZone .right .title {
 
             font-size: 15px;
         }
-        #chatZone .left .title{
+
+        #chatZone .left .title {
 
             font-size: 15px;
         }
@@ -81,10 +94,11 @@
     <div id="chatBox">
 
         <p>
-            帐号<input type="text" id="linkAgent" class="easyui-textbox" style="width: 150px" />
-            昵称<input type="text" id="nickname" class="easyui-textbox" style="width: 150px" />
+            帐号<input type="text" id="linkAgent" class="easyui-textbox" style="width: 150px"/>
+            昵称<input type="text" id="nickname" class="easyui-textbox" style="width: 150px"/>
             <a id="btnLink" href="javascript:void(0)" class="easyui-linkbutton c1">开始聊天</a></p>
-        <div data-options="region:'center'" class="easyui-panel" style="width: 50%;height:500px;  padding: 5px;" id="chatRecord">
+        <div data-options="region:'center'" class="easyui-panel" style="width: 50%;height:500px;  padding: 5px;"
+             id="chatRecord">
             <ul class="chatDialog-main clearfix" id="chatZone">
 
             </ul>
@@ -96,14 +110,15 @@
                         <table cellpadding="5px" cellspacing="0" border="0">
                             <tr style="vertical-align: middle;">
                                 <td>
-													<textarea
-                                                            style="width: 600px; height: 100px; overflow: auto; vertical-align: middle;"
-                                                            id="txtMessage" name="txtMessage"></textarea>
+							         <textarea
+                                             style="width: 670px; height: 100px; overflow: auto; vertical-align: middle;"
+                                             id="txtMessage" name="txtMessage">
+                                     </textarea>
                                 </td>
                                 <td style="width: 6px"></td>
                                 <td style="vertical-align: middle;">
                                     <a id="btnSend" href="javascript:void(0)"
-                                       class="easyui-linkbutton c3" data-options="size:'large'">发送</a>
+                                       class="layui-btn layui-btn-radius" data-options="size:'large'">发送</a>
                                 </td>
                             </tr>
                         </table>
@@ -113,7 +128,6 @@
         </div>
 
     </div>
-
 
 
 </div>
@@ -149,67 +163,66 @@
             + seperator2 + seconds;
         return currentdate;
     }
-    $(function() {
+
+    $(function () {
         var websocket;
         var nickname;
-        $(window).keyup(function(event){
-            if(event.keyCode == 13) {
+        $(window).keyup(function (event) {
+            if (event.keyCode == 13) {   //监控回车键，发送信息
                 $("#btnSend").click();
                 return true;
             }
         });
-        $("#btnSend").click(function() {
+        $("#btnSend").click(function () {
             var from = $("#linkAgent").val();
             var msg = $("#txtMessage").val();
-            var obj=new Object();
-            obj.from=from;
-            obj.message=msg;
+            var obj = new Object();
+            obj.from = from;
+            obj.message = msg;
 
-            obj.nickname=nickname;
+            obj.nickname = nickname;
             var json = JSON.stringify(obj);
-            var result =websocket.send(json);
-            var message ="<li class='msgContent right'>"+
-                "<p class='msgContent right title'>"+nickname+" ("+getNowFormatDate()+"):</p>"+
-                "<p class='msgContent right p'>"+msg+"</p></li>"+
+            var result = websocket.send(json);
+            var message = "<li class='msgContent right'>" +
+                "<p class='msgContent right title'>" + nickname + " (" + getNowFormatDate() + "):</p>" +
+                "<p class='msgContent right p'>" + msg + "</p></li>" +
                 "<div style='clear:both'></div>";
             $("#chatZone").append(message);
             $("#txtMessage").val("");
 
         });
 
-        $("#btnLink").click(function() {
+        $("#btnLink").click(function () {
             var agent = $("#linkAgent").val();
             nickname = $("#nickname").val();
-            if('WebSocket' in window){
+            if ('WebSocket' in window) {
 
-            }else{
+            } else {
                 alert("您的浏览器版本太低，请升级浏览器版本！");
                 return;
             }
-            if('WebSocket' in window){
-                var wsUrl = "ws://"+window.location.host+"/websocket/";
+            if ('WebSocket' in window) {
+                var wsUrl = "ws://" + window.location.host + "/websocket/";
 
-                websocket = new WebSocket(wsUrl+agent);
-
-
+                websocket = new WebSocket(wsUrl + agent);
 
                 //连接发生错误的回调方法
-                websocket.onerror = function(){
+                websocket.onerror = function () {
                     console.log(" websocket.onerror :error");
                 };
 
                 //连接成功建立的回调方法
-                websocket.onopen = function(event){
+                websocket.onopen = function (event) {
 
                 }
 
                 //接收到消息的回调方法
-                websocket.onmessage = function(event){
+                websocket.onmessage = function (event) {
                     msg = eval('(' + event.data + ')');
-                    if(msg.from != agent) {
-                        var message ="<li class='msgContent left'>"+
-                            "<p class='msgContent left title'>"+msg.nickname+" ("+getNowFormatDate()+"):</p>"+
-                            "<p class='msgContent left p'>"+msg.message+"</p></li>"+
+                    if (msg.from != agent) {
+                        var message = "<li class='msgContent left'>" +
+                            "<p class='msgContent left title'>" + msg.nickname + " (" + getNowFormatDate() + "):</p>" +
+                            "<p class='msgContent left p'>" + msg.message + "</p></li>" +
                             "<div style='clear:both'></div>";
                         $("#chatZone").append(message);
                     }
@@ -217,13 +230,13 @@
                 }
 
                 //连接关闭的回调方法
-                websocket.onclose = function(){
+                websocket.onclose = function () {
                     console.log(" websocket.onclose :close");
-                    websocket = new WebSocket(wsUrl+agent);
+                    websocket = new WebSocket(wsUrl + agent);
                 }
 
                 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
-                window.onbeforeunload = function(){
+                window.onbeforeunload = function () {
                     websocket.close();
                 }
             }

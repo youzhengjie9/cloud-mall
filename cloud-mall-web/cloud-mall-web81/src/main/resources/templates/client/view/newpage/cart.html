@@ -189,7 +189,7 @@
         <div class="topbar_cart fr">
             <a href="/web/order/toOrderPage">我的订单</a>
         </div>
-        <div class="topbar_info fr" style="width:150px">
+        <div class="topbar_info fr" style="width:220px">
             <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
             <a class="nav-link" th:href="@{/web/register/toregister}">注册</a>
             <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
@@ -197,7 +197,7 @@
             <a href="http://localhost:5677/chat/toChat">人工客服</a>
             <div class="dropdown">
                 <div id="myDropdown" class="dropdown-content" style="width: 120px;height: 70px">
-                    <a href="#" style="width: 100px;height: 30px;">个人中心</a>
+                    <a th:href="@{/web/center/toBaseInfo}" style="width: 100px;height: 30px;">个人中心</a>
                     <a href="javascript:document.logoutform.submit();" style="width: 100px;height: 30px;">退出登录</a>
                 </div>
             </div>
@@ -491,7 +491,25 @@
 
     }
 
+    /* 点击按钮，下拉菜单在 显示/隐藏 之间切换 */
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
 
+    // 点击下拉菜单意外区域隐藏
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
 
     /*单击出现爱心特效*/
     (function (window, document, undefined) {

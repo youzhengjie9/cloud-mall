@@ -8,10 +8,17 @@
 
     <insert id="insertUserDetail" parameterType="com.boot.pojo.UserDetail">
 
-        insert into t_user_authority values (#{id},#{userid},#{sex},#{signature},#{icon})
+        insert into t_user_detail values (#{id},#{userid},#{sex},#{signature},#{icon})
 
     </insert>
 
+    <update id="updateSex">
+        update t_user_detail set sex = #{sex} where userid=#{userid}
+    </update>
+
+    <update id="updateSignature">
+        update t_user_detail set signature = #{signature} where userid=#{userid}
+    </update>
 
 
 </mapper>

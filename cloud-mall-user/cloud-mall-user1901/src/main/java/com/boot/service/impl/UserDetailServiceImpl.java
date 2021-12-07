@@ -24,4 +24,14 @@ public class UserDetailServiceImpl implements UserDetailService {
         userDetailMapper.insertUserDetail(userDetail);
 
     }
+
+    @Override
+    public void updateSex(long userid, int sex) {
+        userDetailMapper.updateSex(userid, sex);
+    }
+
+    @Override
+    public void updateSignature(long userid, String signature) {
+        userDetailMapper.updateSignature(userid, signature);
+    }
 }

@@ -225,7 +225,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             //只有登录以后才能访问
         .antMatchers("/myuser/**", "/img/**","/web/cart/**",
-                "/web/order/**","/web/address/**","/web/logout/logout")
+                "/web/order/**","/web/address/**","/web/logout/logout","/web/center/**")
         .hasAnyRole("admin", "common")
         .antMatchers("/web/sliderCaptcha/**")
         .permitAll()

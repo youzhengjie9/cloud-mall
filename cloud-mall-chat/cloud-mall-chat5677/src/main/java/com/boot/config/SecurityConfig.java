@@ -227,7 +227,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/myuser/**", "/img/**","/web/cart/**",
                 "/web/order/**","/web/address/**","/web/logout/logout")
         .hasAnyRole("admin", "common")
-        .antMatchers("/web/sliderCaptcha/**")
+        .antMatchers("/web/sliderCaptcha/**","/chat/**")
         .permitAll()
 
             //其他的任何请求登录不登录都可以访问

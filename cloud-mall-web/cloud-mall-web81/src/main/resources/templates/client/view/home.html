@@ -5,8 +5,8 @@
 <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 <style>
     * {
-        box-sizing: border-box;
-    }
+          box-sizing: border-box;
+      }
     #container {
         width: 300px;
         height: 42px;
@@ -124,7 +124,7 @@
             <a href="/web/order/toOrderPage">我的订单</a>
         </div>
 
-        <div class="topbar_info fr" style="width:150px">
+        <div class="topbar_info fr" style="width:220px">
             <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
             <a class="nav-link" th:href="@{/web/register/toregister}">注册</a>
                 <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
@@ -132,7 +132,7 @@
             <a href="http://localhost:5677/chat/toChat">人工客服</a>
             <div class="dropdown">
                 <div id="myDropdown" class="dropdown-content" style="width: 120px;height: 70px">
-                    <a href="#" style="width: 100px;height: 30px;">个人中心</a>
+                    <a th:href="@{/web/center/toBaseInfo}" style="width: 100px;height: 30px;">个人中心</a>
                     <a href="javascript:document.logoutform.submit();" style="width: 100px;height: 30px;">退出登录</a>
                 </div>
             </div>
