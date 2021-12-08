@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+<mapper namespace="com.boot.dao.RechargeRecordMapper">
+
+    <insert id="insertRechargeRecord" parameterType="com.boot.pojo.RechargeRecord">
+        insert into recharge_record values(#{id},#{cardNumber},#{money},#{created},#{userid})
+    </insert>
+
+
+</mapper>

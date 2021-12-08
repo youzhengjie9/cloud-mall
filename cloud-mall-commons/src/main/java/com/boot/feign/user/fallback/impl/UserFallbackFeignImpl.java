@@ -56,4 +56,10 @@ public class UserFallbackFeignImpl implements UserFallbackFeign {
         return null;
     }
 
+    @Override
+    public String selectPassword(long id) {
+        log.error("selectPassword error");
+        return null;
+    }
+
 }

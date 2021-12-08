@@ -165,5 +165,23 @@ public class UserController {
     }
 
 
+    //修改密码
+    @ResponseBody
+    @PostMapping(path = "/updatePassword")
+    public String updatePassword(@RequestBody User user){
 
+        userService.updatePassword(user.getId(),user.getPassword());
+
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/selectPassword/{id}")
+    public String selectPassword(@PathVariable("id") long id){
+
+
+        String password = userService.selectPassword(id);
+
+        return password;
+    }
 }

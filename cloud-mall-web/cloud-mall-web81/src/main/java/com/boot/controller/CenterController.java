@@ -3,14 +3,21 @@ package com.boot.controller;
 import com.alibaba.fastjson.JSON;
 import com.boot.data.layuiJSON;
 import com.boot.enums.ResultConstant;
+import com.boot.feign.system.fallback.RechargeCardFallbackFeign;
+import com.boot.feign.user.fallback.UserDetailFallbackFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.feign.user.notFallback.UserDetailFeign;
+import com.boot.feign.user.notFallback.UserFeign;
+import com.boot.pojo.RechargeCard;
 import com.boot.pojo.User;
 import com.boot.pojo.UserDetail;
+import com.boot.utils.FileUtil;
 import com.boot.utils.SpringSecurityUtil;
 import io.swagger.annotations.Api;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.uhighlight.LabelledCharArrayMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping(path = "/web/center")
@@ -30,9 +39,21 @@ public class CenterController {
     private UserFallbackFeign userFallbackFeign;
 
     @Autowired
+    private RechargeCardFallbackFeign rechargeCardFallbackFeign;
+
+    @Autowired
+    private UserDetailFallbackFeign userDetailFallbackFeign;
+
+    @Autowired
     private UserDetailFeign userDetailFeign;
     @Autowired
     private SpringSecurityUtil springSecurityUtil;
+
+    @Autowired
+    private UserFeign userFeign;
+
+
+    //个人信息
 
     @RequestMapping(path = "/toBaseInfo")
     public String toBaseInfo(Model model, HttpSession session)
@@ -115,6 +136,33 @@ public class CenterController {
             String currentUser = springSecurityUtil.currentUser(session);
             long userid = userFallbackFeign.selectUserIdByName(currentUser);
 
+            if(file.getSize()==0) //如果没传入头像
+            {
+                layuiJSON.setMsg("请传入头像");
+                layuiJSON.setSuccess(false);
+                return JSON.toJSONString(layuiJSON);
+            }else {
+                UserDetail oldUserDetail = userDetailFallbackFeign.selectUserDetail(userid);
+                String oldIcon = oldUserDetail.getIcon(); //旧头像
+                String oldPath = FileUtil.getStaticPathByRedis();
+                oldPath+=oldIcon;
+                //避免删除到默认头像
+                String defaultPath = FileUtil.getStaticPathByRedis();
+                defaultPath+="/static/img/user-icon/default-icon.jpg";
+                if(!oldPath.equals(defaultPath)){
+                    File oldFile = new File(oldPath);
+                    oldFile.delete(); //删除旧头像
+                }
+
+                //写入新头像
+                String newIconPath = FileUtil.writeIcon(file.getOriginalFilename(), file.getBytes());
+
+                UserDetail newUserDetail = new UserDetail();
+                newUserDetail.setUserid(userid);
+                newUserDetail.setIcon(newIconPath);
+                userDetailFeign.updateIcon(newUserDetail);
+
+            }
 
             layuiJSON.setMsg("修改成功");
             layuiJSON.setSuccess(true);
@@ -127,5 +175,144 @@ public class CenterController {
         }
 
     }
+
+
+    //修改密码
+
+    @RequestMapping(path = "/toChangePassword")
+    public String toChangePassword(Model model, HttpSession session)
+    {
+        String currentUser = springSecurityUtil.currentUser(session);
+        long userid = userFallbackFeign.selectUserIdByName(currentUser);
+
+        model.addAttribute("userid",userid);
+
+
+        return "client/view/newpage/change_password";
+    }
+
+    @ResponseBody
+    @PostMapping(path = "/updatePassword")
+    public String updatePassword(String userid,String oldPassword,
+                                 String newPassword1,String newPassword2,
+                                 HttpSession session)
+    {
+        layuiJSON layuiJSON = new layuiJSON();
+        try{
+            long uid = Long.parseLong(userid);
+            if(StringUtils.isBlank(oldPassword)
+               || StringUtils.isBlank(newPassword1)
+               || StringUtils.isBlank(newPassword2)){
+
+                layuiJSON.setMsg("请确保选项都已输入！");
+                layuiJSON.setSuccess(false);
+                return JSON.toJSONString(layuiJSON);
+            }else {
+
+                boolean check=newPassword1.equals(newPassword2)?true:false;
+
+                if(check) //说明第一次新密码和再次输入密码一致，可以修改
+                {
+                    //BCrypt加密器
+                    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+                    String odp = userFallbackFeign.selectPassword(uid);//数据库旧密码
+                    boolean matches = bCryptPasswordEncoder.matches(oldPassword, odp);
+
+                    if(matches)
+                    {
+                        //对新密码进行加密
+                        String encodePassword = bCryptPasswordEncoder.encode(newPassword1);
+
+                        User user1 = new User();
+                        user1.setId(uid);
+                        user1.setPassword(encodePassword);
+
+                        userFeign.updatePassword(user1);
+                        layuiJSON.setMsg("修改密码成功");
+                        layuiJSON.setSuccess(true);
+                        return JSON.toJSONString(layuiJSON);
+                    }else {
+
+                        layuiJSON.setMsg("旧密码和数据库保存的密码不一致，请重新输入！");
+                        layuiJSON.setSuccess(false);
+                        return JSON.toJSONString(layuiJSON);
+                    }
+
+                }else {
+
+                    layuiJSON.setMsg("再次输入的密码和新密码不一致，请重新输入！");
+                    layuiJSON.setSuccess(false);
+                    return JSON.toJSONString(layuiJSON);
+                }
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            layuiJSON.setMsg("修改密码失败");
+            layuiJSON.setSuccess(false);
+            return JSON.toJSONString(layuiJSON);
+        }
+
+    }
+
+
+
+
+
+    //充值
+
+    @RequestMapping(path = "/toWallet")
+    public String toWallet(Model model, HttpSession session)
+    {
+        String currentUser = springSecurityUtil.currentUser(session);
+        long userid = userFallbackFeign.selectUserIdByName(currentUser);
+        BigDecimal userMoney = userFallbackFeign.selectUserMoneyByUserId(userid);
+
+        model.addAttribute("userid",userid);
+        model.addAttribute("userMoney",userMoney);
+
+
+        return "client/view/newpage/wallet";
+    }
+
+
+
+    @ResponseBody
+    @PostMapping(path = "/recharge")
+    public String recharge(String cardNumber,String password,HttpSession session)
+    {
+        layuiJSON layuiJSON = new layuiJSON();
+        try{
+
+            if(StringUtils.isBlank(cardNumber)||StringUtils.isBlank(password))
+            {
+                layuiJSON.setMsg("请输入卡号和密码，充值失败");
+                layuiJSON.setSuccess(false);
+                return JSON.toJSONString(layuiJSON);
+            }else {
+
+                String currentUser = springSecurityUtil.currentUser(session);
+                long userid = userFallbackFeign.selectUserIdByName(currentUser);
+
+                RechargeCard rechargeCard1 = new RechargeCard();
+
+                rechargeCard1.setId(userid);//这里的属性为userid。。。。。。。。。。。仅此这里为userid而已
+                rechargeCard1.setCardNumber(cardNumber);
+                rechargeCard1.setPassword(Long.parseLong(password));
+
+                String recharge = rechargeCardFallbackFeign.recharge(rechargeCard1);
+                return recharge;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            layuiJSON.setMsg("充值失败");
+            layuiJSON.setSuccess(false);
+            return JSON.toJSONString(layuiJSON);
+        }
+
+    }
+
+
 
 }

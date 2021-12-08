@@ -22,4 +22,9 @@ public interface UserDetailFeign {
     @PostMapping(path = "/feign/userDetail/updateSignature")
     public String updateSignature(@RequestBody UserDetail userDetail);
 
+    //修改头像
+    @ResponseBody
+    @PostMapping(path = "/feign/userDetail/updateIcon")
+    public String updateIcon(@RequestBody UserDetail userDetail);
+
 }

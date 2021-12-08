@@ -226,7 +226,6 @@
 
 
 <body>
-<script th:src="@{/static/resource/lib/angular.js}"></script>
 
 <!--头部工具栏-->
 <div class="topbar">
@@ -391,11 +390,11 @@
                     <a href="#" style="color: red;pointer-events: none;">个人信息</a>
                 </li>
                 <li>
-                    <a href="#">修改密码</a>
+                    <a th:href="@{/web/center/toChangePassword}">修改密码</a>
                 </li>
 
                 <li>
-                    <a href="#">我的钱包</a>
+                    <a th:href="@{/web/center/toWallet}">我的钱包</a>
                 </li>
 
                 <li>

@@ -108,6 +108,16 @@
     <delete id="deleteUserById">
         delete from t_user  where id=#{id}
     </delete>
-    
+
+
+    <update id="updatePassword">
+        update t_user set password = #{password} where id=#{id}
+    </update>
+
+
+    <select id="selectPassword" resultType="java.lang.String">
+        select password from t_user where id=#{id}
+    </select>
+
 
 </mapper>

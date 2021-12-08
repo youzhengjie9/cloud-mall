@@ -46,4 +46,9 @@ public interface UserMapper {
 
     void deleteUserById(@Param("id") long id);
 
+
+    void updatePassword(@Param("id") long id,@Param("password") String password);
+
+    String selectPassword(@Param("id") long id);
+
 }

@@ -32,6 +32,26 @@ public class UserDetailController {
         return ResultConstant.SUCCESS.getCodeStat();
     }
 
+    //修改头像
+    @ResponseBody
+    @PostMapping(path = "/updateIcon")
+    public String updateIcon(@RequestBody UserDetail userDetail){
+
+        userDetailService.updateIcon(userDetail.getUserid(),userDetail.getIcon());
+
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/selectUserDetail/{userid}")
+    public UserDetail selectUserDetail(@PathVariable("userid") long userid){
+
+
+        UserDetail userDetail = userDetailService.selectUserDetail(userid);
+        return userDetail;
+    }
+
+
 
 
 }

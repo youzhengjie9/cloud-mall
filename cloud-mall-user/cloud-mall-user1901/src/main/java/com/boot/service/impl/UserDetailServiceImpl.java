@@ -34,4 +34,14 @@ public class UserDetailServiceImpl implements UserDetailService {
     public void updateSignature(long userid, String signature) {
         userDetailMapper.updateSignature(userid, signature);
     }
+
+    @Override
+    public void updateIcon(long userid, String icon) {
+        userDetailMapper.updateIcon(userid, icon);
+    }
+
+    @Override
+    public UserDetail selectUserDetail(long userid) {
+        return userDetailMapper.selectUserDetail(userid);
+    }
 }

@@ -142,6 +142,16 @@ public class UserServiceImpl implements UserService {
     userMapper.deleteUserById(id);
   }
 
+  @Override
+  public void updatePassword(long id, String password) {
+    userMapper.updatePassword(id, password);
+  }
+
+  @Override
+  public String selectPassword(long id) {
+    return userMapper.selectPassword(id);
+  }
+
 
 }
 

@@ -12,4 +12,11 @@ public interface UserDetailService {
 
     void updateSignature(long userid,String signature);
 
+    //修改头像
+    void updateIcon(long userid,String icon);
+
+    UserDetail selectUserDetail(long userid);
+
+
+
 }

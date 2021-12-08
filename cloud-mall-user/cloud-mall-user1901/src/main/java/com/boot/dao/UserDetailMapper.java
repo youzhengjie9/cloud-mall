@@ -15,6 +15,9 @@ public interface UserDetailMapper {
 
   void updateSignature(@Param("userid") long userid, @Param("signature") String signature);
 
+  //修改头像
+  void updateIcon(@Param("userid") long userid,@Param("icon") String icon);
 
+  UserDetail selectUserDetail(@Param("userid") long userid);
 
 }

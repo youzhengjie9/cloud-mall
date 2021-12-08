@@ -48,5 +48,8 @@ public interface UserService {
 
     void deleteUserById(long id);
 
+    void updatePassword(long id,String password);
+
+    String selectPassword(long id);
 
 }

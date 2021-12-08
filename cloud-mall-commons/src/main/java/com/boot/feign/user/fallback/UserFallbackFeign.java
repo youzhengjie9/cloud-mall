@@ -52,4 +52,8 @@ public interface UserFallbackFeign {
     @ResponseBody
     @GetMapping(path = "/feign/user/selectUserInfoById/{userid}")
     public User selectUserInfoById(@PathVariable("userid") long userid);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/user/selectPassword/{id}")
+    public String selectPassword(@PathVariable("id") long id);
 }

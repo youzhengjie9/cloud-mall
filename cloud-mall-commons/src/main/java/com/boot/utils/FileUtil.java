@@ -76,6 +76,8 @@ public final class FileUtil {
         return staticPath;
     }
 
+    //商品图片存储*****
+
     //获取图片文件夹路径
     public static final String getBigImgPath() throws FileNotFoundException {
         String staticPath = getStaticPathByRedis();
@@ -114,5 +116,55 @@ public final class FileUtil {
         return usericonPath_datebase; //返回需要存储到数据库的图片地址
     }
 
+    //用户头像存储**************
+
+    //获取头像文件夹路径
+    public static final String getIconPath() throws FileNotFoundException {
+        String staticPath = getStaticPathByRedis();
+        staticPath+="/static/img/user-icon/";
+        return staticPath;
+    }
+
+
+    public static final String writeIcon(String originalFilename, byte[] fileByteArray) throws IOException {
+        FileOutputStream fileOutputStream=null;
+        BufferedOutputStream bufferedOutputStream=null;
+        String usericonPath_datebase="/static/img/user-icon/"; //存入数据库的地址
+        try{
+            String staticPath = FileUtil.getStaticPathByRedis();
+
+
+            String randomName = FileUtil.getRandomName();
+            String fileSuffix = FileUtil.getFileSuffix(originalFilename); //获取文件后缀名
+            String fileName=randomName+"."+fileSuffix;
+            usericonPath_datebase+=fileName;
+
+            staticPath+=usericonPath_datebase;
+
+            //写头像
+            fileOutputStream = new FileOutputStream(new File(staticPath));
+            bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+            bufferedOutputStream.write(fileByteArray);
+
+
+            bufferedOutputStream.flush(); //刷新缓冲区
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+
+        }finally{
+            if(bufferedOutputStream!=null){
+                bufferedOutputStream.close();
+            }
+            if(fileOutputStream!=null)
+            {
+                fileOutputStream.close();
+            }
+        }
+
+        return usericonPath_datebase;
+    }
 
 }

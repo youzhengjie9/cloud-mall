@@ -40,4 +40,10 @@ public interface UserFeign {
     @ResponseBody
     @GetMapping(path = "/feign/user/deleteUserById/{id}")
     public String deleteUserById(@PathVariable("id") long id);
+
+
+    //修改密码
+    @ResponseBody
+    @PostMapping(path = "/feign/user/updatePassword")
+    public String updatePassword(@RequestBody User user);
 }

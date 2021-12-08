@@ -21,4 +21,13 @@
     </update>
 
 
+    <update id="updateIcon">
+        update t_user_detail set icon = #{icon} where userid=#{userid}
+    </update>
+
+    <select id="selectUserDetail" resultType="com.boot.pojo.UserDetail">
+        select * from t_user_detail where userid=#{userid}
+    </select>
+
+
 </mapper>
