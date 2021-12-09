@@ -4,10 +4,7 @@ import com.boot.feign.system.fallback.impl.SlideShowFallbackFeignImpl;
 import com.boot.pojo.SlideShow;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,5 +26,9 @@ public interface SlideShowFeign {
     @ResponseBody
     @GetMapping(path = "/feign/slideshow/batchDeleteSlideShow")
     public String batchDeleteSlideShow(@RequestParam("ids")long[] ids);
+
+    @ResponseBody
+    @PostMapping(path = "/feign/slideshow/addSlideShow")
+    public String addSlideShow(@RequestBody SlideShow slideShow);
 
 }

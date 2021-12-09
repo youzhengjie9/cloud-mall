@@ -7,13 +7,18 @@ import com.boot.data.layuiJSON;
 import com.boot.feign.system.fallback.SlideShowFallbackFeign;
 import com.boot.feign.system.notfallback.SlideShowFeign;
 import com.boot.pojo.SlideShow;
+import com.boot.pojo.UserDetail;
+import com.boot.utils.FileUtil;
+import com.boot.utils.SnowId;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 
 @Slf4j
@@ -137,6 +142,46 @@ public class SlideShowController {
     public String toAddSlideShow()
     {
         return "back/module/addSlideShow";
+    }
+
+
+    @ResponseBody
+    @PostMapping(path = "/addSlideShow")
+    public String addSlideShow(MultipartFile file,SlideShow show)
+    {
+
+        layuiJSON layuiJSON = new layuiJSON();
+
+        try{
+
+            if(file.getSize()==0) //如果没传入轮播图
+            {
+                layuiJSON.setMsg("请传入轮播图");
+                layuiJSON.setSuccess(false);
+                return JSON.toJSONString(layuiJSON);
+            }else {
+
+                //写入轮播图
+                String newPath = FileUtil.writeSlideShow(file.getOriginalFilename(), file.getBytes());
+
+                SlideShow slideShow = new SlideShow();
+                slideShow.setId(SnowId.nextId());
+                slideShow.setProductId(show.getProductId());
+                slideShow.setSort(show.getSort());
+                slideShow.setSrc(newPath);
+
+                slideShowFeign.addSlideShow(slideShow);
+            }
+            layuiJSON.setSuccess(true);
+            layuiJSON.setMsg("添加轮播图成功");
+            return JSON.toJSONString(layuiJSON);
+        }catch (Exception e){
+            e.printStackTrace();
+            layuiJSON.setSuccess(false);
+            layuiJSON.setMsg("添加轮播图失败");
+            return JSON.toJSONString(layuiJSON);
+        }
+
     }
 
 

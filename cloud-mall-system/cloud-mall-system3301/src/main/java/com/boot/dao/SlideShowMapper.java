@@ -29,5 +29,6 @@ public interface SlideShowMapper {
     void deleteSlideShow(@Param("id") long id);
 
 
+    void addSlideShow(SlideShow slideShow);
 
 }

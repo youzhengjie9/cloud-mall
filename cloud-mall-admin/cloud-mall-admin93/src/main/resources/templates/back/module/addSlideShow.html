@@ -6,11 +6,40 @@
     <!-- 默认的header name是X-CSRF-TOKEN -->
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>添加轮播图</title>
-    <script th:src="@{/static/assets/js/jquery.min.js}"></script>
-    <link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}" />
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/css/fileinput.min.css" rel="stylesheet">
+
+    <!-- jquery-->
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script th:src="@{/static/component/layui/layui.js}"></script>
+    <script th:src="@{/static/component/pear/pear.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}"/>
+
+    <!-- 如果你想在上传之前修改图片大小需要加入canvas-to-blob.min.js  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/javascript-canvas-to-blob/3.14.0/js/canvas-to-blob.js"></script>
+
+    <!-- 如果你想在最初的预览中排序/重新排列需要引入sortable.min.js  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/plugins/sortable.min.js"></script>
+
+    <!-- 如果你想在HTML文件预览中净化HTML内容则要引入purify.min.js is  它必须在fileinput.min.js之前引入 -->
+    <script src="https://cdn.bootcss.com/dompurify/1.0.10/purify.min.js"></script>
+
+    <!-- 主要的 fileinput 插件库 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/fileinput.min.js"></script>
+
+    <!-- 如果你想在放大的模态页面中查看文件详细信息需要引入bootstrap.js -->
+<!--    <script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>-->
+
+    <!-- 可选，如果你需要像font awesome 这样的主题，就像下面的代码一样引入它 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/locales/fa.min.js"></script>
+
+    <!-- 可选，如果你需要转换语言或翻译，就包含这个库 -->
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/js/locales/zh.min.js"></script>
+
+
 </head>
 <body>
-<form class="layui-form" th:action="@{/pear/add/slideshow}" method="post" id="fm">
+<form class="layui-form" th:action="@{/pear/addSlideShow}" method="post" id="fm">
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
@@ -20,9 +49,28 @@
 
 
 
+                    <label class="layui-form-label">商品id</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="productId" lay-verify="title" autocomplete="off" placeholder="请输入商品id" class="layui-input">
+                    </div>
+                    <br/>
+
+                    <label class="layui-form-label">排序</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sort" lay-verify="title" autocomplete="off" placeholder="请输入排序" class="layui-input">
+                    </div>
+
+                    <br/>
+                    <label class="layui-form-label">轮播图</label>
+                    <div class="layui-input-block" style="width: 70%">
+                        <input id="uploadPicture"
+                               name="file" type="file"
+                               multiple=true class="file-loading">
+                    </div>
+
+
+
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -40,9 +88,54 @@
     </div>
 </form>
 
-<script th:src="@{/static/component/layui/layui.js}"></script>
-<script th:src="@{/static/component/pear/pear.js}"></script>
 <script>
+
+
+    //图片上传
+    $(function () {
+        $("#uploadPicture").fileinput({
+            uploadUrl: "/pear/addSlideShow",
+            previewFileType: "image",
+            uploadAsync: true,
+            showCaption: false,
+            allowedFileExtensions: ["png", "jpg", "jpeg", "ico", "bmp"],
+            enctype: 'multipart/form-data',
+            //隐藏上传按钮
+            showUpload: false,
+            //最大上传文件数量
+            maxFileCount: 1,
+            maxFileSize: 3072,
+            showBrowse: true,
+            dropZoneTitle: '拖拽图片到这里...',
+            browseLabel: "选择图片",
+            uploadClass: "btn btn-info",
+            uploadLabel: "上传",
+            removeClass: "btn btn-danger",
+            autoReplace: true,
+            removeLabel: "移除",
+            msgSizeTooLarge: '图片文件太大！',
+            msgFilesTooMany: "选择上传的文件数量为({n}) 超过允许的最大数值({m})！",
+            msgUploadEnd: '图片上传成功！',
+            msgUploadBegin: '初始化中...',
+            msgZoomModalHeading: '图片详情预览',
+            msgInvalidFileExtension: '非法文件扩展名 "{name}"！ 仅支持 "{extensions}" 的文件扩展名！'
+        }).on('fileerror', function (event, data, msg) {
+            alert('图片上传失败！' + msg);
+        }).on('fileuploaded', function (event, data) {
+            $("#picName").val(data.response.name);
+            $('#uploadPicture').fileinput('disable');
+        }).on('fileclear', function (event) {
+            alert("图片被清除啦！");
+        });
+
+    });
+
+
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token}
+
     layui.use(['form','jquery'],function(){
         let form = layui.form;
         let $ = layui.jquery;
@@ -52,13 +145,16 @@
         var header = $("meta[name='_csrf_header']").attr("content");
         var headers = {"X-CSRF-TOKEN": token}
         form.on('submit(user-save)', function(data){
-
+            var data = new FormData($('#fm')[0]);
             $.ajax({
-                url:'/pear/add/slideshow',
-                data: jq('#fm').serialize(),
+                url:'/pear/addSlideShow',
+                data: data,
                 dataType:'json',
                 type:'post',
                 headers: headers,
+                async: false,
+                processData: false,
+                contentType: false,
                 success:function(result){
                     if(result.success){
                         layer.msg(result.msg,{icon:1,time:1000},function(){
@@ -74,7 +170,6 @@
         });
     })
 </script>
-<script>
-</script>
+
 </body>
 </html>

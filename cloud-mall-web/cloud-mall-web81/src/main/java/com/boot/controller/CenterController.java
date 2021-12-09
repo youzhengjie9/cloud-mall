@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.boot.data.layuiJSON;
 import com.boot.enums.ResultConstant;
 import com.boot.feign.system.fallback.RechargeCardFallbackFeign;
+import com.boot.feign.system.fallback.RechargeRecordFallbackFeign;
 import com.boot.feign.user.fallback.UserDetailFallbackFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.feign.user.notFallback.UserDetailFeign;
 import com.boot.feign.user.notFallback.UserFeign;
 import com.boot.pojo.RechargeCard;
+import com.boot.pojo.RechargeRecord;
 import com.boot.pojo.User;
 import com.boot.pojo.UserDetail;
 import com.boot.utils.FileUtil;
@@ -29,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 @RequestMapping(path = "/web/center")
@@ -40,6 +43,9 @@ public class CenterController {
 
     @Autowired
     private RechargeCardFallbackFeign rechargeCardFallbackFeign;
+
+    @Autowired
+    private RechargeRecordFallbackFeign rechargeRecordFallbackFeign;
 
     @Autowired
     private UserDetailFallbackFeign userDetailFallbackFeign;
@@ -264,6 +270,9 @@ public class CenterController {
     @RequestMapping(path = "/toWallet")
     public String toWallet(Model model, HttpSession session)
     {
+        int page=0;
+        int size=10;
+
         String currentUser = springSecurityUtil.currentUser(session);
         long userid = userFallbackFeign.selectUserIdByName(currentUser);
         BigDecimal userMoney = userFallbackFeign.selectUserMoneyByUserId(userid);
@@ -271,6 +280,9 @@ public class CenterController {
         model.addAttribute("userid",userid);
         model.addAttribute("userMoney",userMoney);
 
+        List<RechargeRecord> rechargeRecords = rechargeRecordFallbackFeign.selectUserRechargeRecord(page, size, userid);
+
+        model.addAttribute("rechargeRecords",rechargeRecords);
 
         return "client/view/newpage/wallet";
     }

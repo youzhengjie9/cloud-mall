@@ -74,6 +74,14 @@ public class SlideShowController {
         return ResultConstant.SUCCESS.getCodeStat();
     }
 
+    @ResponseBody
+    @PostMapping(path = "/addSlideShow")
+    public String addSlideShow(@RequestBody SlideShow slideShow){
+
+        slideShowService.addSlideShow(slideShow);
+
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
 
 
 }

@@ -157,7 +157,9 @@
         -webkit-box-orient: vertical;
     }
 
-
+    .topbar a:hover{
+        color: orange;
+    }
 
 
 </style>
@@ -274,9 +276,6 @@
                     <a href="#">我的优惠券</a>
                 </li>
 
-                <li>
-                    <a href="#">地址管理</a>
-                </li>
 
             </ul>
 
@@ -302,7 +301,7 @@
                         <div class="layui-card-body layui-row layui-col-space7" style="margin-top: 30px">
 
                             <span>账户余额：</span>
-                            <span style="color: orange"><b>1222元</b></span>
+                            <span style="color: orange"><b>[[${userMoney}]]元</b></span>
 
                             <input style="width: 50px;color: black;margin-left: 20px;" class="btn btn-primary btn-sm" type="button" value="充值" data-toggle="modal" data-target="#myModal1">
 
@@ -321,7 +320,23 @@
 
 
 
+            <div style="width: 98%;height: 421px">
+                <span><b>用户近10次充值记录:</b></span><br/>
+                <table class="table table-hover">
+                    <tr>
+                        <td>卡号</td>
+                        <td>面值</td>
+                        <td>充值时间</td>
+                    </tr>
+                    <tr th:if="${rechargeRecords.size()>0}" th:each="record:${rechargeRecords}">
 
+                        <td th:text="${record.getCardNumber()}"></td>
+                        <td th:text="${record.getMoney()}"></td>
+                        <td th:text="${record.getCreated()}"></td>
+                    </tr>
+                </table>
+
+            </div>
 
         </div>
 

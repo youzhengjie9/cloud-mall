@@ -24,4 +24,6 @@ public interface SlideShowService {
     void deleteSlideShow(long id);
 
     void batchDeleteSlideShow(long[] ids);
+
+    void addSlideShow(SlideShow slideShow);
 }

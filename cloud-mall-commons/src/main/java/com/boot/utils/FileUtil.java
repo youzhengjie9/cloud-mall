@@ -167,4 +167,52 @@ public final class FileUtil {
         return usericonPath_datebase;
     }
 
+
+    //写轮播图
+    public static final String writeSlideShow(String originalFilename, byte[] fileByteArray) throws IOException {
+        FileOutputStream fileOutputStream=null;
+        BufferedOutputStream bufferedOutputStream=null;
+        String usericonPath_datebase="/static/img/"; //存入数据库的地址
+        try{
+            String staticPath = FileUtil.getStaticPathByRedis();
+
+
+            String randomName = FileUtil.getRandomName();
+            String fileSuffix = FileUtil.getFileSuffix(originalFilename); //获取文件后缀名
+            String fileName=randomName+"."+fileSuffix;
+            usericonPath_datebase+=fileName;
+
+            staticPath+=usericonPath_datebase;
+
+            //写轮播图
+            fileOutputStream = new FileOutputStream(new File(staticPath));
+            bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
+
+            bufferedOutputStream.write(fileByteArray);
+
+
+            bufferedOutputStream.flush(); //刷新缓冲区
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+
+        }finally{
+            if(bufferedOutputStream!=null){
+                bufferedOutputStream.close();
+            }
+            if(fileOutputStream!=null)
+            {
+                fileOutputStream.close();
+            }
+        }
+
+        return usericonPath_datebase;
+    }
+
+
+
+
+
+
 }

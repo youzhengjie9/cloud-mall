@@ -54,4 +54,9 @@ public class SlideShowServiceImpl implements SlideShowService {
            }
         }
     }
+
+    @Override
+    public void addSlideShow(SlideShow slideShow) {
+        slideShowMapper.addSlideShow(slideShow);
+    }
 }

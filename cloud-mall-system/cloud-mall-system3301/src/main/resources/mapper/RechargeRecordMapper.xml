@@ -10,5 +10,12 @@
         insert into recharge_record values(#{id},#{cardNumber},#{money},#{created},#{userid})
     </insert>
 
+    <select id="selectUserRechargeRecord" resultType="com.boot.pojo.RechargeRecord">
+        select * from recharge_record WHERE userid=#{userid}
+        ORDER BY created DESC
+        LIMIT #{page},#{size}
+    </select>
+
+
 
 </mapper>
