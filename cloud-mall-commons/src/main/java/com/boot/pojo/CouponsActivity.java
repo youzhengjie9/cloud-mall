@@ -15,7 +15,7 @@ public class CouponsActivity implements Serializable {
     private int couponsCount; //优惠券数量
     private BigDecimal amount; //优惠券金额
     private int limitCount; //每人限制领取多少张
-    private BigDecimal minPoint;//使用门槛
+    private BigDecimal minPoint;//使用门槛 ====也就是满多少元才可以使用
     private String startTime;//优惠券开始时间
     private String endTime; //优惠券结束时间
     private String note;//优惠券备注

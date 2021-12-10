@@ -61,6 +61,14 @@
 	{{layui.util.toDateString(d.endTime,  "yyyy-MM-dd")}}
 </script>
 
+<script type="text/html" id="allow-enable">
+	{{#  if(d.valid == 0){ }}
+	<input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable"/>
+	{{#  } else { }}
+	<input type="checkbox" name="allow" value="{{d.id}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="allow-enable" checked="checked"/>
+	{{#  } }}
+
+</script>
 
 <script th:src="@{/static/resource/lib/jquery.min.js}"></script>
 <script th:src="@{/static/component/layui/layui.js}"></script>
@@ -123,6 +131,18 @@
 					align:'center'
 				},
 				{
+					title: '是否生效',
+					field: 'valid',
+					align: 'center',
+					templet: '#allow-enable'
+				},
+				{
+					title: '备注',
+					field: 'note',
+					align: 'center'
+				},
+
+				{
 					title: '操作',
 					toolbar: '#user-bar',
 					align: 'center',
@@ -133,12 +153,12 @@
 
 		table.render({
 			elem: '#user-table',
-			url: '/pear/brandData',
+			url: '/pear/couponsActivityData',
 			page: true,
 			cols: cols,
 			skin: 'line',
 			toolbar: '#user-toolbar',
-			text: {none: '暂无优惠券活动'},
+			text: {none: '暂无优惠券活动信息'},
 			defaultToolbar: [{
 				title: '刷新',
 				layEvent: 'refresh',
@@ -171,7 +191,7 @@
 				title: '新增',
 				shade: 0.1,
 				area: ['500px', '400px'],
-				content: '/pear/addBrandPage'
+				content: '/pear/toAddCouponsActivityPage'
 			});
 		}
 
@@ -181,7 +201,7 @@
 				title: '修改',
 				shade: 0.1,
 				area: ['500px', '400px'],
-				content: '/pear/modifyBrandPage?id='+obj.data.id
+				content: '/pear/toEditCouponsActivityPage?id='+obj.data.id
 			});
 		}
 
@@ -194,16 +214,51 @@
 		});
 
 
+		form.on('switch(allow-enable)', function (obj) {
+			let operate;
+			let v=obj.elem.value;
+			if (obj.elem.checked) {
+				operate = "couponsEnable";
+			} else {
+				operate = "couponsDisable";
+			}
+			let loading = layer.load();
+			$.ajax({
+				url: '/pear/'+operate+'Valid',
+				data: {
+					"id": v
+				},
+				dataType: 'json',
+				contentType: 'application/json',
+				type: 'get',
+				success: function (result) {
+					layer.close(loading);
+					if (result.success) {
+						layer.msg(result.msg, {
+							icon: 1,
+							time: 1000
+						});
+					} else {
+						layer.msg(result.msg, {
+							icon: 2,
+							time: 1000
+						});
+					}
+				}
+			})
+		});
+
+
 
 		window.remove = function(obj) {
-			layer.confirm('确定要删除该品牌', {
+			layer.confirm('确定要删除该优惠券活动', {
 				icon: 3,
 				title: '提示'
 			}, function(index) {
 				layer.close(index);
 				let loading = layer.load();
 				$.ajax({
-					url: "/pear/deleteBrand/"+obj.data['id'],
+					url: "/pear/deleteCouponsActivity/"+obj.data['id'],
 					dataType: 'json',
 					type: 'GET',
 					success: function(result) {
@@ -238,14 +293,14 @@
 				return false;
 			}
 
-			layer.confirm('确定要删除这些品牌', {
+			layer.confirm('确定要删除这些优惠券活动', {
 				icon: 3,
 				title: '提示'
 			}, function(index) {
 				layer.close(index);
 				let loading = layer.load();
 				$.ajax({
-					url: "/pear/batchDeleteBrand/"+checkIds,
+					url: "/pear/batchDeleteCouponsActivity/"+checkIds,
 					dataType: 'json',
 					type: 'get',
 					success: function(result) {

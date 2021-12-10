@@ -7,10 +7,52 @@
 <mapper namespace="com.boot.dao.CouponsActivityMapper">
 
     <insert id="insertCouponsActivity" parameterType="com.boot.pojo.CouponsActivity">
-        insert into coupons_activity values(#{id},#{couponsName},#{couponsCount},#{amount},#{limitCount},#{minPoint},#{startTime},#{endTime},#{note},#{valid})
+        insert into coupons_activity values(#{id},#{couponsName},#{couponsCount},#{amount},#{limitCount},#{minPoint},#{startTime},#{endTime},#{note},1)
     </insert>
 
 
+    <resultMap id="res1" type="com.boot.pojo.CouponsActivity">
+        <id property="id" column="id"/>
+        <result column="coupons_name" property="couponsName"/>
+        <result column="coupons_count" property="couponsCount"/>
+        <result column="amount" property="amount"/>
+        <result column="limit_count" property="limitCount"/>
+        <result column="min_point" property="minPoint"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="note" property="note"/>
+        <result column="valid" property="valid"/>
+    </resultMap>
 
+    <select id="selectAllCouponsActivityByLimit" resultMap="res1">
+        select * from coupons_activity limit #{page},#{size}
+    </select>
+
+    <select id="selectCouponsActivityCount" resultType="int">
+        select count(*) from coupons_activity
+    </select>
+
+    <update id="updateValid">
+        update coupons_activity set valid = #{valid} where id=#{id}
+    </update>
+
+
+    <delete id="deleteCouponsActivity">
+        delete from coupons_activity where id=#{id}
+    </delete>
+
+
+    <select id="selectCouponsActivityById" resultMap="res1">
+        select * from coupons_activity where id=#{id}
+    </select>
+
+    
+    <update id="updateCouponsActivity" parameterType="com.boot.pojo.CouponsActivity">
+        update coupons_activity set coupons_name=#{couponsName}
+        ,coupons_count=#{couponsCount},amount=#{amount},limit_count=#{limitCount}
+        ,min_point=#{minPoint},start_time=#{startTime},end_time=#{endTime}
+        ,note=#{note} where id=#{id}
+    </update>
+    
 
 </mapper>
