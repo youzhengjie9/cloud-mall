@@ -6,7 +6,9 @@
   </a>
 </p>
 <p align=center>
-   cloud-mall是一个基于分布式、微服务架构开发的商城系统,将由本人持续改进与维护！
+   cloud-mall是一个基于分布式、微服务架构开发的商城系统,会继续完善主流商城应有的功能以及没有的功能,
+   作者前期注重功能的实现，后期作者将全心投入到性能优化以及安全方面上的优化,
+   希望未来的某一天能够把cloud-mall打造成一个能够抗住高的并发量。
 </p>
 
 <p align=center>
@@ -86,6 +88,17 @@
 
 
 #### 怎么安装cloud-mall
+
+* 配置数据库
+* 打开cloud-mall-doc模块，里面有个“sql”文件夹，导入到自己的Navicat即可
+
+* 配置Nacos、seata、sentinel
+* cloud-mall-doc模块中Nacos1.4.1、seata1.3.0、sentinel1.8.0导入到自己电脑即可，最好不要使用自己的
+* 因为这些软件都是作者开发系统时用的，没什么使用上的问题，比如sentinel是修改过源码重新打的jar包
+
+* 配置zipkin
+* 这个就随便吧，没啥需要注意的
+
 * 配置Nginx反向代理服务器
 ```text
 worker_processes  2;
@@ -157,7 +170,7 @@ http {
 
 ###### GitHub
 * GitHub第三方配置有点复杂，也弄了一两天，主要还是GitHub中国地区登录很慢
-* 我们只需要把cloud-yblog-commons模块中的com.boot.GitHubConstant的CLIENT_ID和CLIENT_SECRET换成自己的
+* 我们只需要把cloud-mall-commons模块中的com.boot.GitHubConstant的CLIENT_ID和CLIENT_SECRET换成自己的
 * 然后在login.html的GitHub第三方登录超链接中client_id=xxx换成自己的id，即可
 
 
