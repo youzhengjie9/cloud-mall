@@ -5,6 +5,7 @@ import com.boot.pojo.CouponsActivity;
 import com.boot.service.CouponsActivityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,10 +18,33 @@ public class CouponsActivityServiceImpl implements CouponsActivityService {
 
     @Autowired
     private CouponsActivityMapper couponsActivityMapper;
+    private static final String COUPONS_ACTIVITY_KEY="coupons_activity_key_";
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    private String link(String ...strs)
+    {
+        if(strs.length==0){
+            return null;
+        }else if(strs.length==1){
+            return strs[0];
+        }else {
+            String res="";
+            String cut=",";
+            res+=strs[0];
+            for (int i = 1; i < strs.length; i++) {
+                res+=cut+strs[i];
+            }
+            return res;
+        }
+    }
 
     @Override
     public void insertCouponsActivity(CouponsActivity couponsActivity) {
         couponsActivityMapper.insertCouponsActivity(couponsActivity);
+        redisTemplate.opsForValue().set(COUPONS_ACTIVITY_KEY+couponsActivity.getId(),
+                link(String.valueOf(couponsActivity.getLimitCount()),couponsActivity.getMinPoint().toString()));
     }
 
     @Override
@@ -41,6 +65,7 @@ public class CouponsActivityServiceImpl implements CouponsActivityService {
     @Override
     public void deleteCouponsActivity(long id) {
         couponsActivityMapper.deleteCouponsActivity(id);
+        redisTemplate.delete(COUPONS_ACTIVITY_KEY+id);
     }
 
     @Override
@@ -48,6 +73,9 @@ public class CouponsActivityServiceImpl implements CouponsActivityService {
         try{
             for (long id : ids) {
                 couponsActivityMapper.deleteCouponsActivity(id);
+            }
+            for (long id : ids) {
+                redisTemplate.delete(COUPONS_ACTIVITY_KEY+id);
             }
         }catch (Exception e)
         {
@@ -64,5 +92,22 @@ public class CouponsActivityServiceImpl implements CouponsActivityService {
     @Override
     public void updateCouponsActivity(CouponsActivity couponsActivity) {
         couponsActivityMapper.updateCouponsActivity(couponsActivity);
+        redisTemplate.opsForValue().set(COUPONS_ACTIVITY_KEY+couponsActivity.getId(),
+                link(String.valueOf(couponsActivity.getLimitCount()),couponsActivity.getMinPoint().toString()));
+    }
+
+    @Override
+    public List<CouponsActivity> selectAllCouponsActivityByLimitAndValid(int page, int size) {
+        return couponsActivityMapper.selectAllCouponsActivityByLimitAndValid(page, size);
+    }
+
+    @Override
+    public int selectCouponsActivityCountByValid() {
+        return couponsActivityMapper.selectCouponsActivityCountByValid();
+    }
+
+    @Override
+    public List<CouponsActivity> selectAllCouponsActivityLimitAndPoint() {
+        return couponsActivityMapper.selectAllCouponsActivityLimitAndPoint();
     }
 }

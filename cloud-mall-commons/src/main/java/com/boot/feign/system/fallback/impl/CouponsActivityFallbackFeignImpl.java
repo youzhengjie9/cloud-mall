@@ -29,4 +29,16 @@ public class CouponsActivityFallbackFeignImpl implements CouponsActivityFallback
         log.error("selectCouponsActivityById error");
         return null;
     }
+
+    @Override
+    public List<CouponsActivity> selectAllCouponsActivityByLimitAndValid(int page, int size) {
+        log.error("selectAllCouponsActivityByLimitAndValid error");
+        return null;
+    }
+
+    @Override
+    public int selectCouponsActivityCountByValid() {
+        log.error("selectCouponsActivityCountByValid error");
+        return 0;
+    }
 }

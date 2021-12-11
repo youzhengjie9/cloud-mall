@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.boot.dao.CouponsRecordMapper">
+
+    <insert id="insertCouponsRecord" parameterType="com.boot.pojo.CouponsRecord">
+        insert into coupons_record values(#{id},#{couponsActivity.id},#{user_id},#{getTime},#{useType},#{useTime})
+    </insert>
+
+    <select id="selectCouponsCountByUserIdAndCouponsId" resultType="int">
+        select count(*) from coupons_record where user_id=#{userid} and coupons_id=#{couponsid}
+    </select>
+
+
+</mapper>

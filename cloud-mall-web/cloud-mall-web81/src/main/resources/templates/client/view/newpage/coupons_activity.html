@@ -4,7 +4,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1226">
-    <title>云商城-商品搜索</title>
+    <title>云商城-领劵中心</title>
     <!-- 引入图标库-->
     <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!--bootstrap-->
@@ -26,6 +26,26 @@
 </head>
 
 <style>
+
+
+    #couponsBox {
+
+        width: 100%;
+        height: 726px;
+
+    }
+
+    #coupons {
+        width: 1250px;
+        height: 1200px;
+        margin: 0 auto;
+
+    }
+
+
+    .topbar a:hover{
+        color: orange;
+    }
     * {
         box-sizing: border-box;
     }
@@ -64,155 +84,6 @@
         position: absolute;
     }
 
-    /*搜索框6*/
-    .bar6 input {
-        border: 2px solid #c5464a;
-        border-radius: 5px;
-        background: transparent;
-        top: 0;
-        right: 0;
-    }
-
-    .bar6 button {
-        background: #c5464a;
-        border-radius: 0 5px 5px 0;
-        width: 60px;
-        top: 0;
-        right: 0;
-    }
-
-    .bar6 button:before {
-        content: "\f002";
-        font-family: FontAwesome;
-        font-size: 13px;
-        color: #F9F0DA;
-    }
-
-    .search input {
-        height: 42px;
-    }
-
-
-
-
-    ul, ol {
-        list-style: none;
-    }
-
-    input, button {
-        outline: none;
-        border: none;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-    .clearfix::before,
-    .clearfix::after {
-        content: "";
-        height: 0;
-        line-height: 0;
-        display: block;
-        visibility: hidden;
-    }
-
-    .clearfix::after {
-        clear: both;
-    }
-
-    .product li {
-        float: left;
-        width: 234px;
-        height: 246px;
-        padding: 34px 0 20px;
-        z-index: 1;
-        margin-left: 14px;
-        margin-bottom: 35px;
-        background: #fff;
-        -webkit-transition: all .2s linear;
-        transition: all .2s linear;
-        position: relative;
-    }
-
-    .pro-img {
-        width: 150px;
-        height: 150px;
-        margin: 0 auto 18px;
-    }
-
-    .pro-img a {
-        width: 100%;
-        height: 100%;
-    }
-
-    .pro-img img {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
-
-    .product li h3 {
-        margin: 0 10px;
-        font-size: 14px;
-        font-weight: 400;
-        text-align: center;
-    }
-
-    .product li h3 a {
-        color: #333;
-    }
-
-
-
-    .price del {
-        color: #b0b0b0;
-    }
-
-
-
-    .review a {
-        color: #757575;
-        display: block;
-        padding: 8px 30px;
-        outline: 0;
-    }
-
-    .review a span {
-        display: block;
-        margin-bottom: 5px;
-        color: #fff;
-    }
-
-    .product li:hover {
-        -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        -webkit-transform: translate3d(0, -2px, 0);
-        transform: translate3d(0, -2px, 0);
-    }
-
-    .product li:hover .review {
-        opacity: 1;
-        height: 76px;
-    }
-
-
-    #searchBox {
-
-        width: 100%;
-        height: 100px;
-
-
-    }
-
-    #searchDiv {
-
-        width: 1226px;
-        height: 80px;
-        margin: 0 auto;
-
-    }
-
     /* 下拉框*/
 
     .dropbtn {
@@ -246,9 +117,97 @@
 
     .show {display:block;}
 
-    .topbar a:hover{
-        color: orange;
+/*    优惠券*/
+
+    .coupon{
+        position:relative;
+        background:#d51d27;
+        color:#fff;
+        width: 550px;
+        height:78px;
+        line-height:25px;
+        overflow:hidden;
+        margin-top:15px;
+        float: left;
+        margin-right: 50px;
     }
+    .coupon-diabled{
+        background:#c3c3c3;
+        color:#666;
+
+    }
+    .coupon:after{
+        content:".";
+        display:block;
+        height:0;
+        clear:both;
+        visibility:hidden;
+
+    }
+    .coupon-money .sum{
+        font-size:25px;
+    }
+    .coupon-left{
+        float:left;
+        text-align:left;
+        width:60%;
+        font-size:12px;
+        background:url(./circle-border-left.png) left center no-repeat;
+    }
+    .coupon-right{
+        float:right;
+        text-align: center;
+        width:40%;
+        font-size:14px;
+        background:url(./circle-border-right.png) right center no-repeat;
+
+    }
+    .coupon-inner{
+        padding:10px 15px;
+        height:75px;
+        position: relative;
+    }
+    .coupon-right .coupon-inner{
+        border-left:2px dashed rgba(255,255,255,.5);
+    }
+    .coupon-money,.coupon-time{
+        margin-top:12px;
+    }
+    .coupon-circle{
+        display:inline-block;
+        width:16px;
+        height:16px;
+        background:#fff;
+        position: absolute;
+        left:-9px;
+        border-radius:50%;
+    }
+    .coupon-circle.top{
+        top:-8px;
+    }
+    .coupon-circle.bottom{
+        bottom:-8px;
+    }
+    .coupon-light{
+        position:absolute;
+        top:20px;
+        left:20%;
+        height:150px;
+        width:100%;
+        background:rgba(255,255,255,.2);
+        transform: rotate(-30deg);
+        -webkit-transform: rotate(-30deg);
+        -moz-transform: rotate(-30deg);
+    }
+
+    .liji{
+
+        color: #FFFFFF;
+        /*text-decoration: none;*/
+
+    }
+
+
 </style>
 
 <body>
@@ -273,7 +232,7 @@
         <div class="topbar_cart fr">
             <a href="/web/order/toOrderPage">我的订单</a>
         </div>
-        <div class="topbar_info fr" style="width:150px">
+        <div class="topbar_info fr" style="width:220px">
             <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
             <a class="nav-link" th:href="@{/web/register/toregister}">注册</a>
             <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
@@ -290,42 +249,40 @@
 </div>
 
 
-<div id="searchBox">
 
-    <div id="searchDiv">
-        <!--            搜索框-->
-        <div id="container">
-            <div class="search bar6">
-                <form method="GET" th:action="@{/web/search/toSearchPage}" autocomplete="off">
-                    <input type="text" placeholder="请输入您要搜索的内容..." name="text">
-                    <button type="submit"></button>
-                </form>
+<div id="couponsBox">
+
+
+    <!--    所有优惠券div-->
+    <div id="coupons">
+
+        <!--可用-->
+        <div class="coupon" th:each="coupons:${couponsActivities}">
+            <div class="coupon-left">
+                <div class="coupon-inner">
+                    <div class="coupon-money">
+                        <span>¥</span>
+                        <span class="sum" th:text="${coupons.getAmount()}"></span>
+                    </div>
+                    <div class="coupon-condition">
+                        <p>满[[${coupons.minPoint}]]可用
+                            &nbsp;&nbsp;使用期限:[[${coupons.startTime}]]~[[${coupons.endTime}]]
+                        </p>
+                    </div>
+                </div>
             </div>
+            <div class="coupon-right">
+                <div class="coupon-inner">
+                    <br />
+                    <a style="cursor: pointer" class="liji" th:href="@{/web/couponsActivity(id=${coupons.id})}">立即领劵</a>
+                    <i class="coupon-circle top"></i>
+                    <i class="coupon-circle bottom"></i>
+                </div>
+            </div>
+<!--            <div class="coupon-light"></div>-->
         </div>
 
     </div>
-
-</div>
-
-
-<div class="product_hd">
-
-    <div class="container">
-        <div class="product_title fl">
-            <h1 style="width: 1100px;text-align: center">[[${product.name}]]</h1>
-        </div>
-        <div class="product_buy fr">
-            <a th:href="'/web/index/buyNowPage/'+${product.productId}" class="btn btn-primary">立即购买</a>
-        </div>
-    </div>
-
-</div>
-
-
-
-<div align="center" th:each="img:${imgs}">
-
-    <img th:src="${img}"/>
 
 </div>
 
@@ -417,11 +374,11 @@
     function submitData() {
         document.getElementById("form").submit();
     }
-
     /* 点击按钮，下拉菜单在 显示/隐藏 之间切换 */
     function myFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
     }
+
 
     // 点击下拉菜单意外区域隐藏
     window.onclick = function(event) {
@@ -437,6 +394,8 @@
             }
         }
     }
+
+
     /*单击出现爱心特效*/
     (function (window, document, undefined) {
         var hearts = [];

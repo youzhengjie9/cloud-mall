@@ -25,4 +25,19 @@ public interface CouponsActivityFallbackFeign {
     @GetMapping(path = "/feign/couponsActivity/selectCouponsActivityById/{id}")
     public CouponsActivity selectCouponsActivityById(@PathVariable("id") long id);
 
+    @ResponseBody
+    @GetMapping(path = "/feign/couponsActivity/selectAllCouponsActivityByLimitAndValid/{page}/{size}")
+    public List<CouponsActivity> selectAllCouponsActivityByLimitAndValid(@PathVariable("page") int page,
+                                                                         @PathVariable("size") int size);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/couponsActivity/selectCouponsActivityCountByValid")
+    public int selectCouponsActivityCountByValid();
+
+
+
+
+
+
+
 }

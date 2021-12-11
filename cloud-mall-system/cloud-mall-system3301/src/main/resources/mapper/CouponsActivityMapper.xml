@@ -53,6 +53,24 @@
         ,min_point=#{minPoint},start_time=#{startTime},end_time=#{endTime}
         ,note=#{note} where id=#{id}
     </update>
-    
+
+
+    <select id="selectAllCouponsActivityByLimitAndValid" resultMap="res1">
+        select * from coupons_activity WHERE valid=1 limit #{page},#{size}
+    </select>
+
+    <select id="selectCouponsActivityCountByValid" resultType="int">
+        select count(*) from coupons_activity  WHERE valid=1
+    </select>
+
+    <resultMap id="res2" type="com.boot.pojo.CouponsActivity">
+        <id property="id" column="id"/>
+        <result column="limit_count" property="limitCount"/>
+        <result column="min_point" property="minPoint"/>
+    </resultMap>
+
+    <select id="selectAllCouponsActivityLimitAndPoint" resultMap="res2">
+        select id,limit_count,min_point from coupons_activity
+    </select>
 
 </mapper>

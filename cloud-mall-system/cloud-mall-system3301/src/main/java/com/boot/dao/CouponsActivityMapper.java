@@ -27,6 +27,13 @@ public interface CouponsActivityMapper {
 
     void updateCouponsActivity(CouponsActivity couponsActivity);
 
+    List<CouponsActivity> selectAllCouponsActivityByLimitAndValid(@Param("page") int page,
+                                                                  @Param("size") int size);
+
+    int selectCouponsActivityCountByValid();
+
+    //查询所有优惠券活动每人限领和最低门槛
+    List<CouponsActivity> selectAllCouponsActivityLimitAndPoint();
 
 
 }

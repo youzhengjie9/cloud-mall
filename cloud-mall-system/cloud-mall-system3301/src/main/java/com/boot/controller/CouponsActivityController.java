@@ -84,5 +84,18 @@ public class CouponsActivityController {
     }
 
 
+    @ResponseBody
+    @GetMapping(path = "/selectAllCouponsActivityByLimitAndValid/{page}/{size}")
+    public List<CouponsActivity> selectAllCouponsActivityByLimitAndValid(@PathVariable("page") int page,
+                                                                 @PathVariable("size") int size){
+
+        return couponsActivityService.selectAllCouponsActivityByLimitAndValid(page, size);
+    }
+    @ResponseBody
+    @GetMapping(path = "/selectCouponsActivityCountByValid")
+    public int selectCouponsActivityCountByValid(){
+
+        return couponsActivityService.selectCouponsActivityCountByValid();
+    }
 
 }
