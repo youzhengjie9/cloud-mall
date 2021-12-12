@@ -4,6 +4,9 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1226">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>云商城-领劵中心</title>
     <!-- 引入图标库-->
     <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -206,7 +209,14 @@
         /*text-decoration: none;*/
 
     }
-
+    .spanStyle {
+        white-space: nowrap; /*强制span不换行*/
+        display: inline-block; /*将span当做块级元素对待*/
+        width: 190px; /*限制宽度*/
+        overflow: hidden; /*超出宽度部分隐藏*/
+        text-overflow: ellipsis; /*超出部分以点号代替*/
+        font-size: 15px;
+    }
 
 </style>
 
@@ -263,6 +273,7 @@
                     <div class="coupon-money">
                         <span>¥</span>
                         <span class="sum" th:text="${coupons.getAmount()}"></span>
+                        <span class="spanStyle">&nbsp;&nbsp;[[${coupons.couponsName}]]</span>
                     </div>
                     <div class="coupon-condition">
                         <p>满[[${coupons.minPoint}]]可用
@@ -274,7 +285,7 @@
             <div class="coupon-right">
                 <div class="coupon-inner">
                     <br />
-                    <a style="cursor: pointer" class="liji" th:href="@{/web/couponsActivity(id=${coupons.id})}">立即领劵</a>
+                    <a style="cursor: pointer" class="liji" th:onclick="getcoupons([[${coupons.id}]])">立即领劵</a>
                     <i class="coupon-circle top"></i>
                     <i class="coupon-circle bottom"></i>
                 </div>
@@ -370,6 +381,7 @@
 
 
 <script th:inline="javascript">
+
     //js提交表单
     function submitData() {
         document.getElementById("form").submit();
@@ -377,6 +389,39 @@
     /* 点击按钮，下拉菜单在 显示/隐藏 之间切换 */
     function myFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token};
+
+
+    //ajax领取优惠券
+    function getcoupons(cid)
+    {
+
+        $.ajax({
+            url:'/web/couponsRecord/getCoupons',
+            data:
+                {
+                    "couponsid": cid
+                },
+            type:'POST',
+            dataType:'json',
+            headers: headers,
+            success:function(result){
+                if(result.success){
+                    alert(result.msg);
+                }else{
+                    alert(result.msg);
+                }
+            },
+            error:function () {
+                alert('领取失败')
+            }
+        })
+
     }
 
 

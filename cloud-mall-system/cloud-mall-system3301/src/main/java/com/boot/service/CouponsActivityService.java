@@ -31,4 +31,10 @@ public interface CouponsActivityService {
     //查询所有优惠券活动每人限领和最低门槛
     List<CouponsActivity> selectAllCouponsActivityLimitAndPoint();
 
+
+    int selectCouponsCount(long id);
+
+    //扣除优惠券数量-1
+    void decrCouponsCount(long id);
+
 }

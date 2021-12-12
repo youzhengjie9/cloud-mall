@@ -14,9 +14,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 @Import({SwaggerConfig.class}) //导入swaggerConfig的配置类

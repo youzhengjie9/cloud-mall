@@ -110,4 +110,14 @@ public class CouponsActivityServiceImpl implements CouponsActivityService {
     public List<CouponsActivity> selectAllCouponsActivityLimitAndPoint() {
         return couponsActivityMapper.selectAllCouponsActivityLimitAndPoint();
     }
+
+    @Override
+    public int selectCouponsCount(long id) {
+        return couponsActivityMapper.selectCouponsCount(id);
+    }
+
+    @Override
+    public void decrCouponsCount(long id) {
+        couponsActivityMapper.decrCouponsCount(id);
+    }
 }

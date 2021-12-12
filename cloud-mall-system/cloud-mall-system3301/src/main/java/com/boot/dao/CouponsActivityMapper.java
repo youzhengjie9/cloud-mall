@@ -35,5 +35,12 @@ public interface CouponsActivityMapper {
     //查询所有优惠券活动每人限领和最低门槛
     List<CouponsActivity> selectAllCouponsActivityLimitAndPoint();
 
+    //查询活动优惠券数量
+    int selectCouponsCount(@Param("id") long id);
+
+    //扣除优惠券数量-1
+    void decrCouponsCount(@Param("id") long id);
+
+
 
 }

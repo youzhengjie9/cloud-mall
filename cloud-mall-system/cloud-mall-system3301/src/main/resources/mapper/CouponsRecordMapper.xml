@@ -5,12 +5,13 @@
 <mapper namespace="com.boot.dao.CouponsRecordMapper">
 
     <insert id="insertCouponsRecord" parameterType="com.boot.pojo.CouponsRecord">
-        insert into coupons_record values(#{id},#{couponsActivity.id},#{user_id},#{getTime},#{useType},#{useTime})
+        insert into coupons_record values(#{id},#{couponsActivity.id},#{user_id},#{getTime},#{useType},NULL)
     </insert>
 
     <select id="selectCouponsCountByUserIdAndCouponsId" resultType="int">
         select count(*) from coupons_record where user_id=#{userid} and coupons_id=#{couponsid}
     </select>
+
 
 
 </mapper>

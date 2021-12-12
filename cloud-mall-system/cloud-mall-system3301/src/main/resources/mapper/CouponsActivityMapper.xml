@@ -73,4 +73,12 @@
         select id,limit_count,min_point from coupons_activity
     </select>
 
+    <select id="selectCouponsCount" resultType="int">
+        select coupons_count from coupons_activity where id=#{id}
+    </select>
+
+    <update id="decrCouponsCount">
+        update coupons_activity set coupons_count = coupons_count-1 where id=#{id}
+    </update>
+
 </mapper>
