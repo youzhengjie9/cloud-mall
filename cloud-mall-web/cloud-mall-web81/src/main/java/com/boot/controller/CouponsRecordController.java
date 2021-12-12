@@ -1,5 +1,7 @@
 package com.boot.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.boot.data.layuiJSON;
 import com.boot.feign.system.fallback.CouponsActivityFallbackFeign;
@@ -36,7 +38,9 @@ public class CouponsRecordController {
 
     /** 领取优惠券*/
     @ResponseBody
-    @PostMapping(path = "/getCoupons")
+    //一定要加produces,不然ajax get会乱码
+    @GetMapping(path = "/getCoupons",produces = "application/json; charset=utf-8")
+    @SentinelResource(value = "getCoupons",blockHandler = "getCoupons_block")
     public String getCoupons(long couponsid, HttpSession session){
 
         String currentUser = springSecurityUtil.currentUser(session);
@@ -57,6 +61,10 @@ public class CouponsRecordController {
         couponsRecord.setUseTime("");
         String json = couponsRecordFeign.insertCouponsRecord(couponsRecord);
         return json;
+    }
+    public String getCoupons_block(long couponsid, HttpSession session, BlockException ex){
+
+        return "该接口访问量过高,采取限流措施";
     }
 
 
