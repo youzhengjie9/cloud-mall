@@ -7,7 +7,7 @@
         </div>
         <div class="product_buy fr">
 <!--            <a ui-sref="buyNow({productId:product.productId})" class="btn btn-primary">立即购买</a>-->
-            <a th:href="'/web/index/buyNowPage/'+${pid}" class="btn btn-primary">立即购买</a>
+            <a id="buy" th:href="'/web/index/buyNowPage/'" class="btn btn-primary">立即购买</a>
         </div>
 <!--        <div class="product_nav fr">-->
 <!--            <ul>-->
@@ -22,6 +22,39 @@
 
 <!-- product detail info-->
 <div ui-view></div>
+
+
+
+<script th:inline="javascript">
+
+    let id='';
+
+    setTimeout(function () {
+        $.ajax({
+            url: "/web/index/view/getCookie",
+            type: "GET",
+            async:false,
+            success: function (data) {
+                id=data;
+            }
+        });
+    },30);
+
+
+
+    setTimeout(function () {
+        console.log(document.getElementById('buy').href)
+        console.log(id);
+
+        document.getElementById('buy').href+=id;
+
+    },40);
+
+</script>
+
+
+
+
 
 
 </html>

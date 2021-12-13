@@ -75,20 +75,20 @@ public class IndexController {
     @RequestMapping(path = "/view/homeProduct")
     public String homeProduct(HttpServletRequest request,Model model)
     {
-        try{
-            Cookie[] cookies = request.getCookies();
-            // 找到cookie名为cur_introduce_pid
-            for (Cookie cookie : cookies) {
-                if(cookie.getName().equals("cur_introduce_pid"))
-                {
-                    //这里可能会报错,怕用户修改此cookie导致Long.valueof报错
-                    Long v = Long.valueOf(cookie.getValue());
-                    model.addAttribute("pid",v);
+            try{
+                Cookie[] cookies = request.getCookies();
+                // 找到cookie名为cur_introduce_pid
+                for (Cookie cookie : cookies) {
+                    if(cookie.getName().equals("cur_introduce_pid"))
+                    {
+                        //这里可能会报错,怕用户修改此cookie导致Long.valueof报错
+                        Long v = Long.valueOf(cookie.getValue());
+                        model.addAttribute("pid",v);
+                    }
                 }
+            }catch (Exception e){
+                e.printStackTrace();
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
         return "client/view/page/home.product";
     }
@@ -97,7 +97,6 @@ public class IndexController {
     @RequestMapping(path = "/view/homeProductDetail/{pid}")
     public String homeProductDetail1(@PathVariable("pid") long pid,Model model, HttpServletRequest request)
     {
-
         String[] strings = productFallbackFeign.selectIntroduceByPid(pid);
         model.addAttribute("imgs",strings);
 
@@ -111,6 +110,22 @@ public class IndexController {
     @RequestMapping(path = "/view/homeProductDetail")
     public String homeProductDetail2(Model model, HttpServletRequest request)
     {
+//        try{
+//            Cookie[] cookies = request.getCookies();
+//            // 找到cookie名为cur_introduce_pid
+//            for (Cookie cookie : cookies) {
+//                if(cookie.getName().equals("cur_introduce_pid"))
+//                {
+//                    //这里可能会报错,怕用户修改此cookie导致Long.valueof报错
+//                    Long v = Long.valueOf(cookie.getValue());
+//                    String[] strings = productFallbackFeign.selectIntroduceByPid(v);
+//                    model.addAttribute("imgs",strings);
+//                }
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+
         try{
             Cookie[] cookies = request.getCookies();
             // 找到cookie名为cur_introduce_pid
@@ -119,13 +134,13 @@ public class IndexController {
                 {
                     //这里可能会报错,怕用户修改此cookie导致Long.valueof报错
                     Long v = Long.valueOf(cookie.getValue());
-                    String[] strings = productFallbackFeign.selectIntroduceByPid(v);
-                    model.addAttribute("imgs",strings);
+                    model.addAttribute("psid",v);
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+
         return "client/view/page/home.product.detail";
     }
     @RequestMapping(path = "/view/homeSearch")
@@ -181,6 +196,28 @@ public class IndexController {
         }catch (Exception e){
             return "send fail";
         }
+    }
+
+
+    @GetMapping(path = "/view/getCookie")
+    @ResponseBody
+    public String getCookie(HttpServletRequest request)
+    {
+        try{
+            Cookie[] cookies = request.getCookies();
+            // 找到cookie名为cur_introduce_pid
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals("cur_introduce_pid"))
+                {
+                    //这里可能会报错,怕用户修改此cookie导致Long.valueof报错
+                    Long v = Long.valueOf(cookie.getValue());
+                   return v+"";
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
     }
 
 

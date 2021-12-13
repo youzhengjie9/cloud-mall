@@ -54,6 +54,7 @@ angular.module('home', ['ui.router'])
                 .state("home.products",{ //产品信息
                     //home.products({productId:childrenItem.id})
                     url:'/product/:productId',
+                    // url:'/product?product=:productId',
                     //abstract:true,
                     templateUrl: '/web/index/view/homeProduct',
                     resolve: {
@@ -68,14 +69,14 @@ angular.module('home', ['ui.router'])
                         $scope.product =productObj;
                         $scope.product.details = productsResolve.detail_info;
                         $scope.isFlag = false;
-
-                        //因为不会获取angular定义的product属性,所以选择用AJAX发送productid给后端
+                        // //因为不会获取angular定义的product属性,所以选择用AJAX发送productid给后端
                         $.ajax({
                             url: "/web/index/view/sendCookie",
                             data: {
                                 "pid": productObj.productId
                             },
                             type: "GET",
+                            async:false,
                             success: function (data) {
 
                             }
@@ -93,7 +94,9 @@ angular.module('home', ['ui.router'])
                         }
                         //$state.go('.detail',{detailType:"监听"}); 报错
                         //Could not resolve '.detail' from state 'home.products.detail'
+
                         $state.go('home.products.detail',{detailType:$scope.product.details[0].name});
+
                     }
 
                 })
@@ -102,6 +105,7 @@ angular.module('home', ['ui.router'])
                     templateUrl: '/web/index/view/homeProductDetail',
                     controller:function($scope,$stateParams,util){
                         $scope.product.detail =util.queryItemByField($scope.product.details,$stateParams.detailType,"name");
+
                     }
                 })
 
