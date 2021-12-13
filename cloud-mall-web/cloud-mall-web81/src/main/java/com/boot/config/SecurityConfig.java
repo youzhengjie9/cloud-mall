@@ -89,7 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     http.formLogin()
         .usernameParameter("username")
         .passwordParameter("password")
-        .loginPage(GATEWAY_URL+"/web/login/toLoginPage") // 登录页接口
+        .loginPage(GATEWAY_URL + "/web/login/toLoginPage") // 登录页接口
         .loginProcessingUrl("/web/login/login") // 登录过程接口（也就是登录表单提交的接口）
         // 登录成功处理
         .successHandler(
@@ -101,7 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                   Authentication authentication)
                   throws IOException, ServletException {
                 String val = "";
-                String ipAddr = IpUtils.getIpAddr(request); //获取ip
+                String ipAddr = IpUtils.getIpAddr(request); // 获取ip
                 log.info("登录成功：访问者ip地址：" + ipAddr);
 
                 // 登入成功之后要把登入验证码的缓存标记给删除掉
@@ -114,7 +114,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 查询数据库密码
                 String psd = userFallbackFeign.selectPasswordByuserName(name);
-
 
                 log.debug("ip地址：" + ipAddr + "登录成功");
 
@@ -135,16 +134,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 loginLog.setType(LoginType.NORMAL_LOGIN); // 走SecurityConfig类的登录都是正常的登录
                 loginLogFeign.insertLoginLog(loginLog);
 
-                 //使用cookie+Redis实现记住我功能
-                String rememberme = request.getParameter("remember-me");
+                // 使用cookie+Redis实现记住我功能
+                String rememberme = request.getParameter("remember");
                 if (rememberme != null && rememberme.equals("on")) { // 此时激活记住我
-
                   try {
-                      setRememberme(name, psd, request, httpServletResponse); // 记住我实现
+                    setRememberme(name, psd, request, httpServletResponse); // 记住我实现
                   } catch (Exception e) {
                     e.printStackTrace();
                   }
                 }
+
                 // ajax回调
                 layuiJSON layuiJSON = new layuiJSON();
                 layuiJSON.setMsg("登录成功");
@@ -153,24 +152,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 httpServletResponse.getWriter().append(JSON.toJSONString(layuiJSON));
               }
             })
-//        .failureForwardUrl("/web/login/LoginfailPage")
-            .failureHandler(
-                    new AuthenticationFailureHandler() {
-                      @Override
-                      public void onAuthenticationFailure(
-                              HttpServletRequest httpServletRequest,
-                              HttpServletResponse httpServletResponse,
-                              AuthenticationException e)
-                              throws IOException, ServletException {
+        //        .failureForwardUrl("/web/login/LoginfailPage")
+        .failureHandler(
+            new AuthenticationFailureHandler() {
+              @Override
+              public void onAuthenticationFailure(
+                  HttpServletRequest httpServletRequest,
+                  HttpServletResponse httpServletResponse,
+                  AuthenticationException e)
+                  throws IOException, ServletException {
 
-                        // ajax回调
-                        layuiJSON layuiJSON = new layuiJSON();
-                        layuiJSON.setMsg("登录失败");
-                        layuiJSON.setSuccess(false);
-                        httpServletResponse.setContentType("application/json;charset=UTF-8");
-                        httpServletResponse.getWriter().append(JSON.toJSONString(layuiJSON));
-                      }
-                    })
+                // ajax回调
+                layuiJSON layuiJSON = new layuiJSON();
+                layuiJSON.setMsg("登录失败");
+                layuiJSON.setSuccess(false);
+                httpServletResponse.setContentType("application/json;charset=UTF-8");
+                httpServletResponse.getWriter().append(JSON.toJSONString(layuiJSON));
+              }
+            })
         .and()
         // 不写这段代码，druid监控sql将失效（原因未明）
         .csrf()
@@ -178,7 +177,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         .logout()
         .logoutUrl("/web/logout/logout")
-        .logoutSuccessUrl(GATEWAY_URL+"/web/index/")
+        .logoutSuccessUrl(GATEWAY_URL + "/web/index/")
         .logoutSuccessHandler(
             new LogoutSuccessHandler() {
               @Override
@@ -192,7 +191,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 退出从Redis删除记住我记录
                 redisTemplate.delete(REMEMBER_KEY + IpUtils.getIpAddr(httpServletRequest));
-                httpServletResponse.sendRedirect(GATEWAY_URL+"/web/index/");
+                httpServletResponse.sendRedirect(GATEWAY_URL + "/web/index/");
               }
             })
         .and()
@@ -218,24 +217,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/static/config/**",
             "/static/favicon.ico")
         .permitAll()
-            //只有admin权限才能访问(后台管理)
-//        .antMatchers(
-//            "/admin/**","/pear/**")
-//        .hasRole("admin")
+        // 只有admin权限才能访问(后台管理)
+        //        .antMatchers(
+        //            "/admin/**","/pear/**")
+        //        .hasRole("admin")
 
-            //只有登录以后才能访问
-        .antMatchers("/myuser/**", "/img/**","/web/cart/**",
-                "/web/order/**","/web/address/**","/web/logout/logout","/web/center/**","/web/couponsActivity/**"
-        ,"/web/couponsRecord/**")
+        // 只有登录以后才能访问
+        .antMatchers(
+            "/myuser/**",
+            "/img/**",
+            "/web/cart/**",
+            "/web/order/**",
+            "/web/address/**",
+            "/web/logout/logout",
+            "/web/center/**",
+            "/web/couponsActivity/**",
+            "/web/couponsRecord/**")
         .hasAnyRole("admin", "common")
         .antMatchers("/web/sliderCaptcha/**")
         .permitAll()
 
-            //其他的任何请求登录不登录都可以访问
+        // 其他的任何请求登录不登录都可以访问
         .anyRequest()
         .permitAll()
         .and()
-        //如果不加这段代码，iframe嵌入的Druid监控界面会出现（使用 X-Frame-Options 拒绝网页被 Frame 嵌入）
+        // 如果不加这段代码，iframe嵌入的Druid监控界面会出现（使用 X-Frame-Options 拒绝网页被 Frame 嵌入）
         .headers()
         .frameOptions()
         .disable();
@@ -256,6 +262,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // 暂且用ip作为key
     redisTemplate.opsForValue().set(REMEMBER_KEY + ipAddr, token, 60 * 60 * 3, TimeUnit.SECONDS);
-
   }
 }

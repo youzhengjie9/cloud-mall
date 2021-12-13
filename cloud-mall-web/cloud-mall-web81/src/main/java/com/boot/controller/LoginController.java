@@ -23,7 +23,7 @@ public class LoginController {
     }
 
     @RequestMapping(path = "/login")
-    public void login(String username, String password, String code, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public void login(String username, String password, String code,String remember, HttpServletResponse response, HttpServletRequest request) throws IOException {
 
 
         response.sendRedirect("http://localhost:80/web/index/"); //重定向到首页

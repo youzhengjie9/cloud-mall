@@ -107,61 +107,56 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                   Authentication authentication)
                   throws IOException, ServletException {
 
-                  String val = "";
-                  String ipAddr = IpUtils.getIpAddr(request); // 获取ip
-                  log.info("后台登录成功：访问者ip地址：" + ipAddr);
+                String val = "";
+                String ipAddr = IpUtils.getIpAddr(request); // 获取ip
+                log.info("后台登录成功：访问者ip地址：" + ipAddr);
 
-                  // 登入成功之后要把登入验证码的缓存标记给删除掉
-                  redisTemplate.delete(ipAddr + "_lg");
+                // 登入成功之后要把登入验证码的缓存标记给删除掉
+                redisTemplate.delete(ipAddr + "_lg");
 
-                  UsernamePasswordAuthenticationToken s =
-                          (UsernamePasswordAuthenticationToken) authentication;
+                UsernamePasswordAuthenticationToken s =
+                    (UsernamePasswordAuthenticationToken) authentication;
 
-                  String name = s.getName(); // 获取登录用户名
+                String name = s.getName(); // 获取登录用户名
 
-                  // 查询数据库密码
-                  String psd = userFallbackFeign.selectPasswordByuserName(name);
+                // 查询数据库密码
+                String psd = userFallbackFeign.selectPasswordByuserName(name);
 
-                  log.debug("ip地址：" + ipAddr + "后台登录成功");
+                log.debug("ip地址：" + ipAddr + "后台登录成功");
 
-                  // 封装登录日志信息放到数据库
+                // 封装登录日志信息放到数据库
 
-                  LoginLog loginLog = new LoginLog();
-                  loginLog.setId(SnowId.nextId());
-                  loginLog.setIp(ipAddr);
-                  loginLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
-                  loginLog.setBrowser(BrowserOS.getBrowserName(request));
-                  loginLog.setOs(BrowserOS.getOsName(request));
-                  loginLog.setUsername(name);
-                  Date d = new Date();
-                  java.sql.Date date = new java.sql.Date(d.getTime());
-                  SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                  String t = fm.format(date);
-                  loginLog.setTime(t);
-                  loginLog.setType(LoginType.NORMAL_LOGIN); // 走SecurityConfig类的登录都是正常的登录
-                  loginLogFeign.insertLoginLog(loginLog);
+                LoginLog loginLog = new LoginLog();
+                loginLog.setId(SnowId.nextId());
+                loginLog.setIp(ipAddr);
+                loginLog.setAddress(IpToAddressUtil.getCityInfo(ipAddr));
+                loginLog.setBrowser(BrowserOS.getBrowserName(request));
+                loginLog.setOs(BrowserOS.getOsName(request));
+                loginLog.setUsername(name);
+                Date d = new Date();
+                java.sql.Date date = new java.sql.Date(d.getTime());
+                SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String t = fm.format(date);
+                loginLog.setTime(t);
+                loginLog.setType(LoginType.NORMAL_LOGIN); // 走SecurityConfig类的登录都是正常的登录
+                loginLogFeign.insertLoginLog(loginLog);
 
-                  // 使用cookie+Redis实现记住我功能
-                  String rememberme = request.getParameter("remember-me");
-                  if (rememberme != null && rememberme.equals("on")) { // 此时激活记住我
-
-                    try {
-                      setRememberme(name, psd, request, httpServletResponse); // 记住我实现
-                    } catch (Exception e) {
-                      e.printStackTrace();
-                    }
+                // 使用cookie+Redis实现记住我功能
+                String rememberme = request.getParameter("remember");
+                if (rememberme != null && rememberme.equals("on")) { // 此时激活记住我
+                  try {
+                    setRememberme(name, psd, request, httpServletResponse); // 记住我实现
+                  } catch (Exception e) {
+                    e.printStackTrace();
                   }
+                }
 
-                  // ajax回调
-                  layuiJSON layuiJSON = new layuiJSON();
-                  layuiJSON.setMsg("后台登录成功");
-                  layuiJSON.setSuccess(true);
-                  httpServletResponse.setContentType("application/json;charset=UTF-8");
-                  httpServletResponse.getWriter().append(JSON.toJSONString(layuiJSON));
-
-
-
-
+                // ajax回调
+                layuiJSON layuiJSON = new layuiJSON();
+                layuiJSON.setMsg("后台登录成功");
+                layuiJSON.setSuccess(true);
+                httpServletResponse.setContentType("application/json;charset=UTF-8");
+                httpServletResponse.getWriter().append(JSON.toJSONString(layuiJSON));
               }
             })
         .failureForwardUrl("/adminLogin/LoginfailPage")
@@ -262,6 +257,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // 暂且用ip作为key
     redisTemplate.opsForValue().set(REMEMBER_KEY + ipAddr, token, 60 * 60 * 3, TimeUnit.SECONDS);
-
   }
 }

@@ -31,7 +31,7 @@
         <img id="cap" onclick="refreshCaptcha()" th:src="@{/web/pear/captcha}" class="codeImage" />
     </div>
     <div class="layui-form-item">
-        <input type="checkbox" name="remember-me" title="记住密码" lay-skin="primary" checked>
+        <input id="remember" type="checkbox" name="remember-me" title="记住密码" lay-skin="primary" checked>
     </div>
     <div class="layui-form-item">
         <button type="button" lay-submit lay-filter="login" class="pear-btn pear-btn-success login">
@@ -71,6 +71,7 @@
             data.append('captcha',$('#captcha').val());
             data.append('username',$('#username').val());
             data.append('password',$('#password').val());
+            data.append('remember',$('#remember').val());
             $.ajax({
                 url: "/web/login/login",
                 data: data,  //ajax提交表单
