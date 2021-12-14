@@ -13,5 +13,51 @@
     </select>
 
 
+    <resultMap id="res1" type="com.boot.pojo.CouponsRecord">
+        <id column="id" property="id"/>
+        <result column="user_id" property="user_id"/>
+        <result column="get_time" property="getTime"/>
+        <result column="use_type" property="useType"/>
+        <result column="use_time" property="useTime"/>
+        <association property="couponsActivity" javaType="com.boot.pojo.CouponsActivity">
+            <id column="id" property="id"/>
+            <result column="coupons_name" property="couponsName"/>
+            <result column="coupons_count" property="couponsCount"/>
+            <result column="amount" property="amount"/>
+            <result column="limit_count" property="limitCount"/>
+            <result column="min_point" property="minPoint"/>
+            <result column="start_time" property="startTime"/>
+            <result column="end_time" property="endTime"/>
+            <result column="note" property="note"/>
+            <result column="valid" property="valid"/>
+        </association>
+
+    </resultMap>
+
+    <select id="selectCouponsRecordByUserIdAndLimit" resultMap="res1">
+        select
+        coupons_record.id,
+        coupons_record.user_id,
+		coupons_record.get_time,
+        coupons_record.use_type,
+        coupons_record.use_time,
+        coupons_activity.coupons_name,
+        coupons_activity.coupons_count,
+        coupons_activity.amount,
+        coupons_activity.limit_count,
+        coupons_activity.min_point,
+        coupons_activity.start_time,
+        coupons_activity.end_time,
+        coupons_activity.note,
+        coupons_activity.valid
+        from coupons_record,coupons_activity
+        where coupons_record.coupons_id=coupons_activity.id
+        <if test="usetype !=-1">
+            AND coupons_record.use_type=#{usetype}
+        </if>
+        and coupons_record.user_id=#{userid}
+        LIMIT #{page},#{size}
+    </select>
+
 
 </mapper>

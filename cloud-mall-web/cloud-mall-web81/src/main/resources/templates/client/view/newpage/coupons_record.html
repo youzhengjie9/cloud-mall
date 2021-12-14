@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8">
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <!-- 默认的header name是X-CSRF-TOKEN -->
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>我的优惠券</title>
+    <link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}" />
+    <!-- jquery-->
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <!--bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+    <!--    引入alibaba iconfont-->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2608271_v7p87hrx9q.css">
+    <link rel="stylesheet" type="text/css" href="http://at.alicdn.com/t/font_2994454_wlpdbkmmipc.css">
+    <!--css-->
+    <link rel="stylesheet" th:href="@{/static/resource/css/reset.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/index.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/cart.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/home.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/order.css}"/>
+    <link rel="stylesheet" th:href="@{/static/resource/css/common/common.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/search.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/focusImg.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/focusImgMult.css}"/>
+    <link rel="stylesheet" th:href="@{/static/js/directives/css/ulBox2.css}"/>
+    <!--    layui-->
+    <link rel="stylesheet" th:href="@{/static/layui/css/layui.css}">
+
+    <script th:src="@{/static/component/layui/layui.js}"></script>
+    <script th:src="@{/static/component/pear/pear.js}"></script>
+
+
+</head>
+
+
+<style>
+
+
+    * {
+        box-sizing: border-box;
+    }
+
+    /* 下拉框*/
+
+    .dropbtn {
+        border: none;
+        cursor: pointer;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+        z-index: 100;
+        margin-left:25px
+    }
+
+    .dropdown-content {
+        display: none;
+        background-color: #f9f9f9;
+        min-width: 50px;
+        overflow: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown a:hover {background-color: #f1f1f1}
+
+    .show {display:block;}
+
+/*    内容*/
+    #box{
+
+        width: 100%;
+        height: 830px;
+
+    }
+
+    #leftbox{
+
+        width: 200px;
+        height: 400px;
+        border: 2px solid #666666;
+
+
+        float: left;
+        margin-left: 160px;
+        margin-top: 70px;
+    }
+
+    #leftMenu{
+
+        width: 150px;
+        height: 200px;
+        /*border: 1px solid;*/
+        margin: 0 auto;
+        margin-top: 23%
+    }
+
+
+    #leftMenu ul>li
+    {
+        list-style: none;
+        line-height: 35px;
+        margin-left: 40px;
+    }
+    #leftMenu ul>li>a{
+
+        text-decoration: none;
+        color: #000000;
+
+    }
+
+
+
+    #rightBox{
+
+        width: 72%;
+        height: 700px;
+        border: 1px solid  #666666;
+
+        float: left;
+        margin-left: 20px;
+        margin-top: 40px;
+    }
+
+    #rightContent{
+
+        /*width: 70%;*/
+        /*height: 520px;*/
+        /*margin: 0 auto;*/
+    }
+
+
+
+    .info{
+
+        line-height: 40px;
+        /*两行超出变成...*/
+        word-break: break-all;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .topbar a:hover{
+        color: orange;
+    }
+
+
+    /*    优惠券*/
+
+    .couponbx{
+        position:relative;
+        /*color:#fff;*/
+        width: 510px;
+        height:92px;
+        line-height:25px;
+        overflow:hidden;
+        margin-top:15px;
+        float: left;
+        margin-right: 20px;
+    }
+
+
+    .coupon{
+        position:relative;
+        background:#d51d27;
+        color:#fff;
+        width: 510px;
+        height:95px;
+        line-height:25px;
+        overflow:hidden;
+        margin-top:15px;
+        float: left;
+        margin-right: 20px;
+    }
+    .coupon-diabled{
+        background:#c3c3c3;
+        color:#666;
+
+    }
+    .coupon:after{
+        content:".";
+        display:block;
+        height:0;
+        clear:both;
+        visibility:hidden;
+
+    }
+    .coupon-money .sum{
+        font-size:25px;
+    }
+    .coupon-left{
+        float:left;
+        text-align:left;
+        width:60%;
+        font-size:12px;
+        background:url(./circle-border-left.png) left center no-repeat;
+    }
+    .coupon-right{
+        float:right;
+        text-align: center;
+        width:40%;
+        font-size:14px;
+        background:url(./circle-border-right.png) right center no-repeat;
+
+    }
+    .coupon-inner{
+        padding:10px 15px;
+        height:75px;
+        position: relative;
+    }
+    .coupon-right .coupon-inner{
+        border-left:2px dashed rgba(255,255,255,.5);
+    }
+    .coupon-money,.coupon-time{
+        margin-top:12px;
+    }
+    .coupon-circle{
+        display:inline-block;
+        width:16px;
+        height:16px;
+        background:#fff;
+        position: absolute;
+        left:-9px;
+        border-radius:50%;
+    }
+    .coupon-circle.top{
+        top:-8px;
+    }
+    .coupon-circle.bottom{
+        bottom:-8px;
+    }
+    .coupon-light{
+        position:absolute;
+        top:20px;
+        left:20%;
+        height:150px;
+        width:100%;
+        background:rgba(255,255,255,.2);
+        transform: rotate(-30deg);
+        -webkit-transform: rotate(-30deg);
+        -moz-transform: rotate(-30deg);
+    }
+    .spanStyle {
+        white-space: nowrap; /*强制span不换行*/
+        display: inline-block; /*将span当做块级元素对待*/
+        width: 190px; /*限制宽度*/
+        overflow: hidden; /*超出宽度部分隐藏*/
+        text-overflow: ellipsis; /*超出部分以点号代替*/
+        font-size: 15px;
+    }
+    .seldisable{
+        pointer-events:none;
+    }
+
+
+</style>
+
+
+
+
+<body>
+
+<!--头部工具栏-->
+<div class="topbar">
+    <div class="container">
+        <div class="topbar_nav fl">
+            <ul>
+                <li><a th:href="@{/web/index/}">首页</a></li>
+                <li><a th:href="@{/web/couponsActivity/toCouponsActivity}">领劵中心</a></li>
+                <li><a href="#">秒杀</a></li>
+                <li><a href="https://github.com/youzhengjie9/cloud-mall">项目链接</a></li>
+            </ul>
+        </div>
+        <div class="topbar_cart fr">
+            <a href="/web/cart/tocart">购物车</a>
+        </div>
+
+        <div class="topbar_cart fr">
+            <a href="/web/order/toOrderPage">我的订单</a>
+        </div>
+
+        <div class="topbar_info fr" style="width:220px">
+            <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
+            <a class="nav-link" th:href="@{/web/register/toregister}">注册</a>
+            <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
+            <a sec:authorize="isAuthenticated()" class="nav-link dropbtn" onclick="myFunction()">admin</a>
+            <a href="http://localhost:5677/chat/toChat">人工客服</a>
+            <div class="dropdown">
+                <div id="myDropdown" class="dropdown-content" style="width: 120px;height: 70px">
+                    <a th:href="@{/web/center/toBaseInfo}" style="width: 100px;height: 30px;">个人中心</a>
+                    <a href="javascript:document.logoutform.submit();" style="width: 100px;height: 30px;">退出登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--左侧导航以及右侧内容-->
+<div id="box">
+
+    <div id="leftbox">
+
+        <div id="leftMenu">
+
+            <span class="iconfont icon-zhanghu" style="color: red;font-size: 25px;"></span>
+            <span><b>我的账户</b></span>
+            <ul>
+                <li>
+                    <a th:href="@{/web/center/toBaseInfo}">个人信息</a>
+                </li>
+                <li>
+                    <a th:href="@{/web/center/toChangePassword}">修改密码</a>
+                </li>
+
+                <li>
+                    <a th:href="@{/web/center/toWallet}">我的钱包</a>
+                </li>
+
+                <li>
+                    <a href="#" style="color: red;pointer-events: none;">我的优惠券</a>
+                </li>
+
+
+            </ul>
+
+        </div>
+
+
+
+    </div>
+
+
+    <!--  右边-->
+
+    <div id="rightBox">
+
+
+        <!-- 信息内容-->
+        <div id="rightContent">
+
+            <span style="width: 100%;height: 20px"><b>我的优惠券:</b></span><br/><br/>
+            <div id="sel" style="width: 100%;height: 15px;float: left">
+                <span id="se1" class="seldisable" style="color: orange;margin-right: 7px;" onclick="getall()">全部</span>
+                <span id="se2" style="margin-right: 10px;cursor: pointer" onclick="getnotused()">未使用</span>
+                <span id="se3" style="cursor: pointer" onclick="getused()">已使用</span>
+            </div>
+
+
+            <div id="couponsBox">
+
+
+                <!--    优惠券div-->
+                <div id="coupons">
+
+                    <div class="couponbx" th:each="coupons:${couponsRecords}">
+
+                        <!--未使用-->
+                        <div class="coupon" th:if="${coupons.useType==0}">
+                            <div class="coupon-left">
+                                <div class="coupon-inner">
+                                    <div class="coupon-money">
+                                        <span>¥</span>
+                                        <span class="sum" th:text="${coupons.couponsActivity.getAmount()}"></span>
+                                        <span class="spanStyle">&nbsp;&nbsp;[[${coupons.couponsActivity.couponsName}]]</span>
+                                    </div>
+                                    <div class="coupon-condition">
+                                        <p>满[[${coupons.couponsActivity.minPoint}]]可用
+                                            &nbsp;&nbsp;使用期限:[[${coupons.getTime}]]~[[${coupons.couponsActivity.endTime}]]
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="coupon-right">
+                                <div class="coupon-inner">
+                                    <br />
+                                    <a th:href="@{/web/search/toSearchPage(text='')}" style="cursor: pointer" class="liji">去使用</a>
+                                    <i class="coupon-circle top"></i>
+                                    <i class="coupon-circle bottom"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!--已使用-->
+                        <div class="coupon coupon-diabled" th:if="${coupons.useType==1}">
+                            <div class="coupon-left">
+                                <div class="coupon-inner">
+                                    <div class="coupon-money">
+                                        <span>¥</span>
+                                        <span class="sum" th:text="${coupons.couponsActivity.getAmount()}"></span>
+                                        <span class="spanStyle">&nbsp;&nbsp;[[${coupons.couponsActivity.couponsName}]]</span>
+                                    </div>
+                                    <div class="coupon-condition">
+                                        <p>满[[${coupons.couponsActivity.minPoint}]]可用
+                                            &nbsp;&nbsp;使用期限:[[${coupons.getTime}]]~[[${coupons.couponsActivity.endTime}]]
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="coupon-right">
+                                <div class="coupon-inner">
+                                    <br />
+                                    <a style="pointer-events:none; " class="liji">已使用</a>
+                                    <i class="coupon-circle top"></i>
+                                    <i class="coupon-circle bottom"></i>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+
+
+
+    </div>
+
+</div>
+
+
+</body>
+
+<script th:inline="javascript">
+    // 获取<meta>标签中封装的_csrf信息 ,否则会请求403
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    var headers = {"X-CSRF-TOKEN": token}
+    /* 点击按钮，下拉菜单在 显示/隐藏 之间切换 */
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // 点击下拉菜单意外区域隐藏
+    window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+
+    function getall() {
+
+        document.getElementById('sel').innerHTML='';
+
+        var html='';
+
+        html+='<span id=\"'+'se1'+'\" class="seldisable" style="color: orange;margin-right: 10px;cursor: pointer" onclick="getall()">'+'全部</span>'
+        html+='<span id=\"'+'se2'+'\" style="margin-right: 10px;cursor: pointer" onclick="getnotused()">'+'未使用</span>'
+        html+='<span id=\"'+'se3'+'\" style="cursor: pointer" onclick="getused()">'+'已使用</span>'
+
+        $('#sel').append(html);
+
+
+        $.ajax({
+
+            url: '/web/couponsRecord/queryCouponsData',
+            type: 'get',
+            data: {
+                "type": '-1'
+            },
+            success:function (json) {
+                console.log(json);
+                console.log(json.length);
+                console.log(json[1]);
+                console.log(json[1].getTime)
+                console.log(json[1].couponsActivity.couponsName)
+            }
+
+
+
+        })
+
+
+
+    }
+
+    function getnotused() {
+
+        document.getElementById('sel').innerHTML='';
+
+        var html='';
+
+        html+='<span id=\"'+'se1'+'\" style="margin-right: 10px;cursor: pointer" onclick="getall()">'+'全部</span>';
+        html+='<span id=\"'+'se2'+'\" class="seldisable" style="color: orange;margin-right: 10px;cursor: pointer" onclick="getnotused()">'+'未使用</span>';
+        html+='<span id=\"'+'se3'+'\" style="cursor: pointer" onclick="getused()">'+'已使用</span>';
+
+
+
+        $('#sel').append(html);
+
+        $.ajax({
+
+            url: '/web/couponsRecord/queryCouponsData',
+            type: 'get',
+            data: {
+                "type": '0'
+            },
+            success:function (json) {
+                console.log(json);
+                console.log(json.length);
+                console.log(json[1]);
+                console.log(json[1].getTime)
+                console.log(json[1].couponsActivity.couponsName)
+            }
+
+
+
+        })
+
+    }
+
+    function getused() {
+
+        document.getElementById('sel').innerHTML='';
+
+        var html='';
+
+        html+='<span id=\"'+'se1'+'\" style="margin-right: 10px;cursor: pointer" onclick="getall()">'+'全部</span>'
+        html+='<span id=\"'+'se2'+'\"  style="margin-right: 10px;cursor: pointer" onclick="getnotused()">'+'未使用</span>'
+        html+='<span id=\"'+'se3'+'\" class="seldisable" style="color: orange;cursor: pointer" onclick="getused()">'+'已使用</span>'
+
+
+        $('#sel').append(html);
+
+        $.ajax({
+
+            url: '/web/couponsRecord/queryCouponsData',
+            type: 'get',
+            data: {
+                "type": '1'
+            },
+            success:function (json) {
+                console.log(json);
+                console.log(json.length);
+                console.log(json[1]);
+                console.log(json[1].getTime)
+                console.log(json[1].couponsActivity.couponsName)
+            }
+
+
+
+        })
+
+    }
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+</html>

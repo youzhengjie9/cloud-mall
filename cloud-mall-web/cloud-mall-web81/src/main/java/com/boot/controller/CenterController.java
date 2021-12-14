@@ -2,17 +2,16 @@ package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.boot.data.layuiJSON;
+import com.boot.enums.CouponsUseType;
 import com.boot.enums.ResultConstant;
+import com.boot.feign.system.fallback.CouponsRecordFallbackFeign;
 import com.boot.feign.system.fallback.RechargeCardFallbackFeign;
 import com.boot.feign.system.fallback.RechargeRecordFallbackFeign;
 import com.boot.feign.user.fallback.UserDetailFallbackFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.feign.user.notFallback.UserDetailFeign;
 import com.boot.feign.user.notFallback.UserFeign;
-import com.boot.pojo.RechargeCard;
-import com.boot.pojo.RechargeRecord;
-import com.boot.pojo.User;
-import com.boot.pojo.UserDetail;
+import com.boot.pojo.*;
 import com.boot.utils.FileUtil;
 import com.boot.utils.SpringSecurityUtil;
 import io.swagger.annotations.Api;
@@ -49,6 +48,9 @@ public class CenterController {
 
     @Autowired
     private UserDetailFallbackFeign userDetailFallbackFeign;
+
+    @Autowired
+    private CouponsRecordFallbackFeign couponsRecordFallbackFeign;
 
     @Autowired
     private UserDetailFeign userDetailFeign;
@@ -262,9 +264,6 @@ public class CenterController {
     }
 
 
-
-
-
     //充值
 
     @RequestMapping(path = "/toWallet")
@@ -324,6 +323,26 @@ public class CenterController {
         }
 
     }
+
+
+    @RequestMapping(path = "/toCouponsRecord")
+    public String toCouponsRecord(Model model,HttpSession session)
+    {
+        int page=0;
+        int size=8;
+        int usetype= CouponsUseType.all.getUsetype();
+
+        String currentUser = springSecurityUtil.currentUser(session);
+        long userid = userFallbackFeign.selectUserIdByName(currentUser);
+
+        List<CouponsRecord> couponsRecords = couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(page, size, userid, usetype);
+
+
+        model.addAttribute("couponsRecords",couponsRecords);
+
+        return "client/view/newpage/coupons_record";
+    }
+
 
 
 

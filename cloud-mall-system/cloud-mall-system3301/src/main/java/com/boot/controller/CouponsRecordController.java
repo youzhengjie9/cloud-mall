@@ -28,6 +28,15 @@ public class CouponsRecordController {
 
         return res;
     }
+    @ResponseBody
+    @GetMapping(path = "/selectCouponsRecordByUserIdAndLimit/{page}/{size}/{userid}/{usetype}")
+    public List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(@PathVariable("page") int page,
+                                                                   @PathVariable("size") int size,
+                                                                   @PathVariable("userid") long userid,
+                                                                   @PathVariable("usetype") int usetype){
+
+        return couponsRecordService.selectCouponsRecordByUserIdAndLimit(page, size, userid, usetype);
+    }
 
 
 }

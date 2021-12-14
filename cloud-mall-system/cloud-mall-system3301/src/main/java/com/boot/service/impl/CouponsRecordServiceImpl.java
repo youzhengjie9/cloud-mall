@@ -14,6 +14,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Transactional
@@ -95,5 +96,10 @@ public class CouponsRecordServiceImpl implements CouponsRecordService {
   @Override
   public int selectCouponsCountByUserIdAndCouponsId(long userid, long couponsid) {
     return couponsRecordMapper.selectCouponsCountByUserIdAndCouponsId(userid, couponsid);
+  }
+
+  @Override
+  public List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(int page, int size, long userid, int usetype) {
+    return couponsRecordMapper.selectCouponsRecordByUserIdAndLimit(page, size, userid, usetype);
   }
 }
