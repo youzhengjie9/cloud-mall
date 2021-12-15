@@ -498,11 +498,58 @@
                 "type": '-1'
             },
             success:function (json) {
-                console.log(json);
-                console.log(json.length);
-                console.log(json[1]);
-                console.log(json[1].getTime)
-                console.log(json[1].couponsActivity.couponsName)
+
+                document.getElementById('coupons').innerHTML='';
+
+                var html='';
+
+                for (let i=0;i<json.length;i++){
+
+                    if(json[i].useType==0)
+                    {
+                        html+='<div class="couponbx">'
+                        html+='<div class="coupon"> <div class="coupon-left"> <div class="coupon-inner">'
+
+                        html+='<div class="coupon-money">'
+                        html+='<span>¥</span>';
+                        html+='<span class="sum">'+json[i].couponsActivity.amount+'</span>'
+                        html+='<span class="spanStyle">&nbsp;&nbsp;'+json[i].couponsActivity.couponsName+'</span>';
+                        html+='</div>'
+
+                        html+='<div class="coupon-condition"><p>满'+json[i].couponsActivity.minPoint+'可用';
+                        html+='&nbsp;&nbsp;使用期限:'+json[i].getTime+'~'+json[i].couponsActivity.endTime+'</p>'
+                        html+='</div></div></div><div class="coupon-right"><div class="coupon-inner"><br />'
+                        html+='<a href=\"'+'/web/search/toSearchPage?text='+'\" style="cursor: pointer" class="liji">'+'去使用</a>'
+                        html+=' <i class="coupon-circle top"></i>';
+                        html+=' <i class="coupon-circle bottom"></i>'
+
+                        html+='</div></div></div></div>'
+                    }else {
+
+                        html+='<div class="couponbx">'
+                        html+='<div class="coupon coupon-diabled"> <div class="coupon-left"> <div class="coupon-inner">'
+
+                        html+='<div class="coupon-money">'
+                        html+='<span>¥</span>';
+                        html+='<span class="sum">'+json[i].couponsActivity.amount+'</span>'
+                        html+='<span class="spanStyle">&nbsp;&nbsp;'+json[i].couponsActivity.couponsName+'</span>';
+                        html+='</div>'
+
+                        html+='<div class="coupon-condition"><p>满'+json[i].couponsActivity.minPoint+'可用';
+                        html+='&nbsp;&nbsp;使用期限:'+json[i].getTime+'~'+json[i].couponsActivity.endTime+'</p>'
+                        html+='</div></div></div><div class="coupon-right"><div class="coupon-inner"><br />'
+                        html+='<a style="pointer-events:none; " class="liji">已使用</a>'
+                        html+=' <i class="coupon-circle top"></i>';
+                        html+=' <i class="coupon-circle bottom"></i>'
+
+                        html+='</div></div></div></div>'
+
+                    }
+
+                }
+
+                $('#coupons').append(html)
+
             }
 
 
@@ -535,14 +582,37 @@
                 "type": '0'
             },
             success:function (json) {
-                console.log(json);
-                console.log(json.length);
-                console.log(json[1]);
-                console.log(json[1].getTime)
-                console.log(json[1].couponsActivity.couponsName)
+                document.getElementById('coupons').innerHTML='';
+
+                var html='';
+
+                for (let i=0;i<json.length;i++){
+                    if(json[i].useType==0)
+                    {
+                        html+='<div class="couponbx">'
+                        html+='<div class="coupon"> <div class="coupon-left"> <div class="coupon-inner">'
+
+                        html+='<div class="coupon-money">'
+                        html+='<span>¥</span>';
+                        html+='<span class="sum">'+json[i].couponsActivity.amount+'</span>'
+                        html+='<span class="spanStyle">&nbsp;&nbsp;'+json[i].couponsActivity.couponsName+'</span>';
+                        html+='</div>'
+
+                        html+='<div class="coupon-condition"><p>满'+json[i].couponsActivity.minPoint+'可用';
+                        html+='&nbsp;&nbsp;使用期限:'+json[i].getTime+'~'+json[i].couponsActivity.endTime+'</p>'
+                        html+='</div></div></div><div class="coupon-right"><div class="coupon-inner"><br />'
+                        html+='<a href=\"'+'/web/search/toSearchPage?text='+'\" style="cursor: pointer" class="liji">'+'去使用</a>'
+                        html+=' <i class="coupon-circle top"></i>';
+                        html+=' <i class="coupon-circle bottom"></i>'
+
+                        html+='</div></div></div></div>'
+                    }
+
+                }
+
+                $('#coupons').append(html)
+
             }
-
-
 
         })
 
@@ -569,11 +639,37 @@
                 "type": '1'
             },
             success:function (json) {
-                console.log(json);
-                console.log(json.length);
-                console.log(json[1]);
-                console.log(json[1].getTime)
-                console.log(json[1].couponsActivity.couponsName)
+
+                document.getElementById('coupons').innerHTML='';
+
+                var html='';
+
+                for (let i=0;i<json.length;i++){
+                    if(json[i].useType==1)
+                    {
+                        html+='<div class="couponbx">'
+                        html+='<div class="coupon coupon-diabled"> <div class="coupon-left"> <div class="coupon-inner">'
+
+                        html+='<div class="coupon-money">'
+                        html+='<span>¥</span>';
+                        html+='<span class="sum">'+json[i].couponsActivity.amount+'</span>'
+                        html+='<span class="spanStyle">&nbsp;&nbsp;'+json[i].couponsActivity.couponsName+'</span>';
+                        html+='</div>'
+
+                        html+='<div class="coupon-condition"><p>满'+json[i].couponsActivity.minPoint+'可用';
+                        html+='&nbsp;&nbsp;使用期限:'+json[i].getTime+'~'+json[i].couponsActivity.endTime+'</p>'
+                        html+='</div></div></div><div class="coupon-right"><div class="coupon-inner"><br />'
+                        html+='<a style="pointer-events:none; " class="liji">已使用</a>'
+                        html+=' <i class="coupon-circle top"></i>';
+                        html+=' <i class="coupon-circle bottom"></i>'
+
+                        html+='</div></div></div></div>'
+                    }
+
+                }
+
+                $('#coupons').append(html)
+
             }
 
 
