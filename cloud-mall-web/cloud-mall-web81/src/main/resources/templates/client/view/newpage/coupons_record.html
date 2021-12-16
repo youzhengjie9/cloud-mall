@@ -359,7 +359,7 @@
             <span style="width: 100%;height: 20px"><b>我的优惠券:</b></span><br/><br/>
             <div id="sel" style="width: 100%;height: 15px;float: left">
                 <span id="se1" class="seldisable" style="color: orange;margin-right: 7px;" onclick="getall()">全部</span>
-                <span id="se2" style="margin-right: 10px;cursor: pointer" onclick="getnotused()">未使用</span>
+                <span id="se2" style="margin-right: 10px;cursor: pointer" onclick="getnotused()">可使用</span>
                 <span id="se3" style="cursor: pointer" onclick="getused()">已使用</span>
             </div>
 
@@ -372,7 +372,7 @@
 
                     <div class="couponbx" th:each="coupons:${couponsRecords}">
 
-                        <!--未使用-->
+                        <!--可使用-->
                         <div class="coupon" th:if="${coupons.useType==0}">
                             <div class="coupon-left">
                                 <div class="coupon-inner">
@@ -484,7 +484,7 @@
         var html='';
 
         html+='<span id=\"'+'se1'+'\" class="seldisable" style="color: orange;margin-right: 10px;cursor: pointer" onclick="getall()">'+'全部</span>'
-        html+='<span id=\"'+'se2'+'\" style="margin-right: 10px;cursor: pointer" onclick="getnotused()">'+'未使用</span>'
+        html+='<span id=\"'+'se2'+'\" style="margin-right: 10px;cursor: pointer" onclick="getnotused()">'+'可使用</span>'
         html+='<span id=\"'+'se3'+'\" style="cursor: pointer" onclick="getused()">'+'已使用</span>'
 
         $('#sel').append(html);
@@ -567,7 +567,7 @@
         var html='';
 
         html+='<span id=\"'+'se1'+'\" style="margin-right: 10px;cursor: pointer" onclick="getall()">'+'全部</span>';
-        html+='<span id=\"'+'se2'+'\" class="seldisable" style="color: orange;margin-right: 10px;cursor: pointer" onclick="getnotused()">'+'未使用</span>';
+        html+='<span id=\"'+'se2'+'\" class="seldisable" style="color: orange;margin-right: 10px;cursor: pointer" onclick="getnotused()">'+'可使用</span>';
         html+='<span id=\"'+'se3'+'\" style="cursor: pointer" onclick="getused()">'+'已使用</span>';
 
 
@@ -625,7 +625,7 @@
         var html='';
 
         html+='<span id=\"'+'se1'+'\" style="margin-right: 10px;cursor: pointer" onclick="getall()">'+'全部</span>'
-        html+='<span id=\"'+'se2'+'\"  style="margin-right: 10px;cursor: pointer" onclick="getnotused()">'+'未使用</span>'
+        html+='<span id=\"'+'se2'+'\"  style="margin-right: 10px;cursor: pointer" onclick="getnotused()">'+'可使用</span>'
         html+='<span id=\"'+'se3'+'\" class="seldisable" style="color: orange;cursor: pointer" onclick="getused()">'+'已使用</span>'
 
 

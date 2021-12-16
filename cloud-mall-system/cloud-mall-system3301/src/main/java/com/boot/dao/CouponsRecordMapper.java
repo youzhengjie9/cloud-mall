@@ -19,7 +19,8 @@ public interface CouponsRecordMapper {
     List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(@Param("page") int page,
                                                             @Param("size") int size,
                                                             @Param("userid") long userid,
-                                                            @Param("usetype") int usetype);
+                                                            @Param("usetype") int usetype,
+                                                            @Param("nowtime") String nowtime);
 
     CouponsRecord selectCouponsRecord(@Param("couponsid") long couponsid,
                                    @Param("userid") long userid,

@@ -13,11 +13,12 @@ import java.util.List;
 public interface CouponsRecordFallbackFeign {
 
     @ResponseBody
-    @GetMapping(path = "/feign/couponsRecord/selectCouponsRecordByUserIdAndLimit/{page}/{size}/{userid}/{usetype}")
+    @GetMapping(path = "/feign/couponsRecord/selectCouponsRecordByUserIdAndLimit/{page}/{size}/{userid}/{usetype}/{nowtime}")
     public List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(@PathVariable("page") int page,
                                                                    @PathVariable("size") int size,
                                                                    @PathVariable("userid") long userid,
-                                                                   @PathVariable("usetype") int usetype);
+                                                                   @PathVariable("usetype") int usetype,
+                                                                   @PathVariable("nowtime") String nowtime);
 
     @ResponseBody
     @GetMapping(path = "/feign/couponsRecord/selectCouponsRecord/{couponsid}/{userid}/{usetype}")

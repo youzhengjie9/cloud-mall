@@ -33,6 +33,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 @Api("优惠券记录 web api")
 public class CouponsRecordController {
 
+    private final String DEFAULT_TIME="1970-1-1";
+
     @Autowired
     private CouponsRecordFeign couponsRecordFeign;
 
@@ -87,16 +89,19 @@ public class CouponsRecordController {
         int page=0;
         int size=8;
         List<CouponsRecord> arrayList = new CopyOnWriteArrayList<>();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String nowtime = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+
         switch (tp)
         {
             case -1: //全部
-                arrayList=couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(page,size,userid,-1);
+                arrayList=couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(page,size,userid,-1,DEFAULT_TIME);
                 break;
-            case 0: //未使用
-                arrayList=couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(page,size,userid,0);
+            case 0: //可使用
+                arrayList=couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(page,size,userid,0,nowtime);
                 break;
             case 1: //已使用
-                arrayList=couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(page,size,userid,1);
+                arrayList=couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(page,size,userid,1,DEFAULT_TIME);
                 break;
             default:
                 break;

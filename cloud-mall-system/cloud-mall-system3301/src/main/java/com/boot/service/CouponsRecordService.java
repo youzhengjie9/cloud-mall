@@ -12,7 +12,7 @@ public interface CouponsRecordService {
     int selectCouponsCountByUserIdAndCouponsId(long userid,long couponsid);
 
 
-    List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(int page, int size, long userid, int usetype);
+    List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(int page, int size, long userid, int usetype,String nowtime);
 
     CouponsRecord selectCouponsRecord(long couponsid, long userid, int usetype);
 

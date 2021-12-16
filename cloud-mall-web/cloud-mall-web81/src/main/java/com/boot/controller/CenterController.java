@@ -37,6 +37,8 @@ import java.util.List;
 @Api("个人中心 web api")
 public class CenterController {
 
+    private final String DEFAULT_TIME="1970-1-1";
+
     @Autowired
     private UserFallbackFeign userFallbackFeign;
 
@@ -335,7 +337,7 @@ public class CenterController {
         String currentUser = springSecurityUtil.currentUser(session);
         long userid = userFallbackFeign.selectUserIdByName(currentUser);
 
-        List<CouponsRecord> couponsRecords = couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(page, size, userid, usetype);
+        List<CouponsRecord> couponsRecords = couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(page, size, userid, usetype,DEFAULT_TIME);
 
 
         model.addAttribute("couponsRecords",couponsRecords);

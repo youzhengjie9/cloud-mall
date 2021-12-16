@@ -99,8 +99,8 @@ public class CouponsRecordServiceImpl implements CouponsRecordService {
   }
 
   @Override
-  public List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(int page, int size, long userid, int usetype) {
-    return couponsRecordMapper.selectCouponsRecordByUserIdAndLimit(page, size, userid, usetype);
+  public List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(int page, int size, long userid, int usetype,String nowtime) {
+    return couponsRecordMapper.selectCouponsRecordByUserIdAndLimit(page, size, userid, usetype,nowtime);
   }
 
   @Override

@@ -199,7 +199,9 @@ public class OrderController {
 
 
     //查询优惠券
-    List<CouponsRecord> couponsRecords = couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(0, 3, id, 0);
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    String nowtime = simpleDateFormat.format(new Date(System.currentTimeMillis()));
+    List<CouponsRecord> couponsRecords = couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(0, 3, id, 0,nowtime);
 
     model.addAttribute("couponsRecords",couponsRecords);
 

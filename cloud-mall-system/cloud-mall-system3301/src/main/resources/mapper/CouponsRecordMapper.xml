@@ -55,6 +55,9 @@
         <if test="usetype !=-1">
             AND coupons_record.use_type=#{usetype}
         </if>
+        <if test="nowtime !='1970-1-1'">
+            and #{nowtime} between coupons_activity.start_time and coupons_activity.end_time
+        </if>
         and coupons_record.user_id=#{userid}
         ORDER BY amount DESC
         LIMIT #{page},#{size}

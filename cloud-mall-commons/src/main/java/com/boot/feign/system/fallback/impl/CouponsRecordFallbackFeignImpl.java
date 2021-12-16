@@ -13,7 +13,7 @@ public class CouponsRecordFallbackFeignImpl implements CouponsRecordFallbackFeig
 
 
     @Override
-    public List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(int page, int size, long userid, int usetype) {
+    public List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(int page, int size, long userid, int usetype,String nowtime) {
         log.error("selectCouponsRecordByUserIdAndLimit error");
         return null;
     }
