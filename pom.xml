@@ -22,6 +22,7 @@
         <module>cloud-mall-log</module>
         <module>cloud-mall-admin</module>
         <module>cloud-mall-chat</module>
+        <module>cloud-mall-seckill</module>
     </modules>
     <!--    打包方式为pom-->
     <packaging>pom</packaging>
