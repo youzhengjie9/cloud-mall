@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -20,7 +21,13 @@ public interface CouponsRecordMapper {
                                                             @Param("userid") long userid,
                                                             @Param("usetype") int usetype);
 
+    CouponsRecord selectCouponsRecord(@Param("couponsid") long couponsid,
+                                   @Param("userid") long userid,
+                                   @Param("usetype") int usetype);
 
+    void updateCouponsRecordUsetype(@Param("couponsid") long couponsid,
+                                    @Param("usetype") int usetype,
+                                    @Param("usetime") String usetime);
 
 
 }

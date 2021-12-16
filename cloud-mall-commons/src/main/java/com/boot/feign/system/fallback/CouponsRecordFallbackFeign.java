@@ -19,5 +19,11 @@ public interface CouponsRecordFallbackFeign {
                                                                    @PathVariable("userid") long userid,
                                                                    @PathVariable("usetype") int usetype);
 
+    @ResponseBody
+    @GetMapping(path = "/feign/couponsRecord/selectCouponsRecord/{couponsid}/{userid}/{usetype}")
+    public CouponsRecord selectCouponsRecord(@PathVariable("couponsid") long couponsid,
+                                             @PathVariable("userid") long userid,
+                                             @PathVariable("usetype") int usetype);
+
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
 
 
 @FeignClient(value = "cloud-mall-order")
@@ -21,8 +22,9 @@ public interface OrderFeign {
 
 
     @ResponseBody
-    @PostMapping(path = "/feign/order/orderBegin/{addressid}/{id}")
-    public CommonResult<Order> orderBegin(@PathVariable("addressid") String addressid,@PathVariable("id") long id);
+    @PostMapping(path = "/feign/order/orderBegin/{addressid}/{id}/{couponsid}")
+    public CommonResult<Order> orderBegin(@PathVariable("addressid") String addressid,@PathVariable("id") long id,
+                                          @PathVariable("couponsid") String couponsid) throws InterruptedException, ParseException;
 
 
     //修改订单状态

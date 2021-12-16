@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public interface OrderService {
     //查询订单状态
     OrderStatus selectOrderStatusById(long id);
 
-    void orderBegin(String addressid, long id);
+    void orderBegin(String addressid, long id,long couponsid) throws ParseException;
 
     //查询订单数
     int selectOrderCount();

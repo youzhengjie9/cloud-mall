@@ -93,7 +93,7 @@
 
             width: 100%;
             min-height: 85px;
-            max-height: 575px;
+            max-height: 875px;
             float: left;
 
         }
@@ -208,6 +208,105 @@
 
         .topbar a:hover{
             color: orange;
+        }
+
+
+    /*    coupons*/
+        .coupon{
+            position:relative;
+            background:#d51d27;
+            color:#fff;
+            width: 240px;
+            height:75px;
+            line-height:25px;
+            overflow:hidden;
+            margin-top:15px;
+            float: left;
+            margin-right: 50px;
+        }
+        .coupon-diabled{
+            background:#c3c3c3;
+            color:#666;
+
+        }
+        .coupon:after{
+            content:".";
+            display:block;
+            height:0;
+            clear:both;
+            visibility:hidden;
+
+        }
+        .coupon-money .sum{
+            font-size:25px;
+        }
+        .coupon-left{
+            float:left;
+            text-align:left;
+            width:60%;
+            font-size:12px;
+            background:url(./circle-border-left.png) left center no-repeat;
+        }
+        .coupon-right{
+            float:right;
+            text-align: center;
+            width:40%;
+            font-size:14px;
+            background:url(./circle-border-right.png) right center no-repeat;
+
+        }
+        .coupon-inner{
+            padding:10px 15px;
+            height:75px;
+            position: relative;
+        }
+        .coupon-right .coupon-inner{
+            border-left:2px dashed rgba(255,255,255,.5);
+        }
+        .coupon-money,.coupon-time{
+            margin-top:12px;
+        }
+        .coupon-circle{
+            display:inline-block;
+            width:16px;
+            height:16px;
+            background:#fff;
+            position: absolute;
+            left:-9px;
+            border-radius:50%;
+        }
+        .coupon-circle.top{
+            top:-8px;
+        }
+        .coupon-circle.bottom{
+            bottom:-8px;
+        }
+        .coupon-light{
+            position:absolute;
+            top:20px;
+            left:20%;
+            height:150px;
+            width:100%;
+            background:rgba(255,255,255,.2);
+            transform: rotate(-30deg);
+            -webkit-transform: rotate(-30deg);
+            -moz-transform: rotate(-30deg);
+        }
+
+        .liji{
+
+            color: #FFFFFF;
+            text-decoration: none;
+
+        }
+
+        .spanStyle {
+            white-space: nowrap; /*强制span不换行*/
+            display: inline-block; /*将span当做块级元素对待*/
+            width: 190px; /*限制宽度*/
+            overflow: hidden; /*超出宽度部分隐藏*/
+            text-overflow: ellipsis; /*超出部分以点号代替*/
+            font-size: 15px;
         }
     </style>
 
@@ -326,6 +425,48 @@
 
         </div>
 
+
+
+<!--        优惠券-->
+
+        <span style="width: 100px;height: 20px;float: left;">使用优惠券</span>
+
+        <div id="couponbox" style="width: 100%;height: 105px;float: left;">
+
+            <div th:if="${couponsRecords ne null}" th:each="coupons:${couponsRecords}">
+
+                <input style="width: 15px;height: 15px;float: left;margin-top: 50px;" type="radio" th:value="${coupons.id}" name="coupons" th:onclick="changeAmount([[${coupons.couponsActivity.amount}]])"/>
+                <!--可用-->
+                <div class="coupon">
+                    <div class="coupon-left">
+                        <div class="coupon-inner">
+                            <div class="coupon-money">
+                                <span>¥</span>
+                                <span class="sum" th:text="${coupons.getCouponsActivity().amount}"></span>
+                            </div>
+                            <div class="coupon-condition">
+                                <p>满[[${coupons.getCouponsActivity().minPoint}]]可用</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <input style="width: 15px;height: 15px;float: left;margin-top: 50px;" type="radio" value="-1" name="coupons" onclick="changeAmount(0)" checked />
+            <div style="width: 100px;height: 100px;float: left;margin-top: 50px;" >
+                不使用优惠券
+            </div>
+
+        </div>
+
+
+<!--        -->
+
+
         <span style="float: left;">确认订单信息</span>
         <div id="orderbox">
 
@@ -409,10 +550,13 @@
 
             <input onclick="orderBegin()" type="button" class="btn btn-warning btn-lg" value="确认下单" style="float: right;margin-right: 8%;"/>
             <div style="float: right;margin-right: 5%;">
-                合计<b style="color: orangered;" th:text="${totalmoney}"></b>元
+                合计<b style="color: orangered;" id="all" th:text="${totalmoney}"></b>元
             </div>
             <div style="float: right;margin-right: 35px;">
                 已选商品<b style="color: orangered;" th:text="${totalCount}"></b>件
+            </div>
+            <div  style="float: right;margin-right: 35px;">
+                优惠<b style="color: orangered;" id="cp">0</b>元
             </div>
 
         </div>
@@ -429,15 +573,15 @@
 <!--footer-->
 <footer class="footer">
     <div class="container">
-        <div class="footer_service">
-            <ul class="clearfix">
-                <li><a href="">1小时快修服务</a></li>
-                <li><a href="">7天无理由退货</a></li>
-                <li><a href="">30天免费换货</a></li>
-                <li><a href="">满200元包邮</a></li>
-                <li><a href="">520余家售后网点</a></li>
-            </ul>
-        </div>
+<!--        <div class="footer_service">-->
+<!--            <ul class="clearfix">-->
+<!--                <li><a href="">1小时快修服务</a></li>-->
+<!--                <li><a href="">7天无理由退货</a></li>-->
+<!--                <li><a href="">30天免费换货</a></li>-->
+<!--                <li><a href="">满200元包邮</a></li>-->
+<!--                <li><a href="">520余家售后网点</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
 
         <div class="footer_link clearfix">
             <dl>
@@ -506,6 +650,15 @@
     var header = $("meta[name='_csrf_header']").attr("content");
     var headers = {"X-CSRF-TOKEN": token}
     var addressArr=new Array();
+
+
+    function changeAmount(amount) {
+        // let am=Number(document.getElementById('cp').innerText);
+
+        document.getElementById('cp').innerText=amount;
+
+
+    }
 
 
     //上一页
@@ -1008,7 +1161,8 @@
             $.ajax({
                 url: "/web/order/orderbegin",
                 data: {
-                    "addressid": addressArr[0]
+                    "addressid": addressArr[0],
+                    "couponsid":$('input[type=radio][name=coupons]:checked').val()
                 },
                 type: "GET",
                 success: function (data) {

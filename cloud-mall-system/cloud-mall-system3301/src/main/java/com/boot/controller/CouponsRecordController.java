@@ -37,6 +37,26 @@ public class CouponsRecordController {
 
         return couponsRecordService.selectCouponsRecordByUserIdAndLimit(page, size, userid, usetype);
     }
+    @ResponseBody
+    @GetMapping(path = "/selectCouponsRecord/{couponsid}/{userid}/{usetype}")
+    public CouponsRecord selectCouponsRecord(@PathVariable("couponsid") long couponsid,
+                                             @PathVariable("userid") long userid,
+                                             @PathVariable("usetype") int usetype){
+
+        return couponsRecordService.selectCouponsRecord(couponsid, userid, usetype);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/updateCouponsRecordUsetype/{couponsid}/{usetype}/{usetime}")
+    public String updateCouponsRecordUsetype(@PathVariable("couponsid") long couponsid,
+                                             @PathVariable("usetype") int usetype,
+                                             @PathVariable("usetime") String usetime){
+
+        couponsRecordService.updateCouponsRecordUsetype(couponsid, usetype,usetime);
+
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
+
 
 
 }

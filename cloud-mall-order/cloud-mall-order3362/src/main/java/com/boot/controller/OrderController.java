@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Controller
 @RequestMapping(path = "/feign/order")
@@ -85,9 +87,10 @@ public class OrderController {
    * 目前最高压测结果为490qps
    */
   @ResponseBody
-  @PostMapping(path = "/orderBegin/{addressid}/{id}")
+  @PostMapping(path = "/orderBegin/{addressid}/{id}/{couponsid}")
   @SentinelResource(value = "orderBegin",blockHandler = "orderBeginExceptionHandle")  //sentinel对流量进行控制，有效防止高并发产生的问题
-  public CommonResult<Order> orderBegin(@PathVariable("addressid") String addressid,@PathVariable("id") long id){
+  public CommonResult<Order> orderBegin(@PathVariable("addressid") String addressid,@PathVariable("id") long id,
+                                        @PathVariable("couponsid") String couponsid) throws InterruptedException, ParseException {
 
     CommonResult<Order> commonResult = new CommonResult<>();
     commonResult.setCode(ResultCode.FAILURE); //修改为默认为失败
@@ -97,7 +100,7 @@ public class OrderController {
 
     try{
 
-      if(lock.isLocked()) //如果被锁，则说明已经有线程提交订单，所以直接返回即可
+      if(!lock.tryLock(15,30, TimeUnit.SECONDS)) //如果被锁，则说明已经有线程提交订单，所以直接返回即可
       {
         Order order = new Order();
         order.setGoodsInfo("锁还没被释放,提交失败");
@@ -107,7 +110,8 @@ public class OrderController {
       }else {
         //如果没有被锁，说明没有线程提交订单，此时我们在加锁即可
         lock.lock(); //加锁
-        orderService.orderBegin(addressid,id);
+        long cid = Long.parseLong(couponsid);
+        orderService.orderBegin(addressid,id,cid);
       }
 
     }finally{

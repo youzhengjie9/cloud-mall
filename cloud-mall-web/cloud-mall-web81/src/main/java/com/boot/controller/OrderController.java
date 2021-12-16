@@ -10,9 +10,11 @@ import com.boot.feign.order.fallback.AddressFallbackFeign;
 import com.boot.feign.order.fallback.OrderFallbackFeign;
 import com.boot.feign.order.notFallback.OrderFeign;
 import com.boot.feign.product.fallback.CartFallbackFeign;
+import com.boot.feign.system.fallback.CouponsRecordFallbackFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.pojo.Address;
 import com.boot.pojo.Cart;
+import com.boot.pojo.CouponsRecord;
 import com.boot.pojo.Order;
 import com.boot.utils.SnowId;
 import com.boot.utils.SpringSecurityUtil;
@@ -49,6 +51,9 @@ public class OrderController {
   @Autowired private RedisTemplate redisTemplate;
 
   @Autowired private AddressFallbackFeign addressFallbackFeign;
+
+  @Autowired
+  private CouponsRecordFallbackFeign couponsRecordFallbackFeign;
 
   @Autowired
   private CartFallbackFeign cartFallbackFeign;
@@ -119,27 +124,56 @@ public class OrderController {
 
     List<Cart> carts = new ArrayList<>();
     // 解析json数组
-    for (int i = 0; i < 3; i++) {
-      Cart cart = new Cart();
-      String jsonString = JSON.toJSONString(jsonArray.get(i));
-      JSONObject jsonObject = JSONObject.parseObject(jsonString);
-      long id1 = Long.valueOf((String) jsonObject.get("id")); //购物车id
+    if(size>3)
+    {
+      for (int i = 0; i < 3; i++) {
+        Cart cart = new Cart();
+        String jsonString = JSON.toJSONString(jsonArray.get(i));
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+        long id1 = Long.valueOf((String) jsonObject.get("id")); //购物车id
 
-      String imgUrl = (String) jsonObject.get("imgUrl");
-      String goodsInfo = (String) jsonObject.get("goodsInfo");
-      String goodsParams = (String) jsonObject.get("goodsParams");
-      int goodsCount = Integer.valueOf((String) jsonObject.get("goodsCount"));
-      BigDecimal singleGoodsMoney = new BigDecimal((String) jsonObject.get("singleGoodsMoney"));
+        String imgUrl = (String) jsonObject.get("imgUrl");
+        String goodsInfo = (String) jsonObject.get("goodsInfo");
+        String goodsParams = (String) jsonObject.get("goodsParams");
+        int goodsCount = Integer.valueOf((String) jsonObject.get("goodsCount"));
+        BigDecimal singleGoodsMoney = new BigDecimal((String) jsonObject.get("singleGoodsMoney"));
 
-      cart.setId(id1);
-      cart.setImgUrl(imgUrl);
-      cart.setGoodsInfo(goodsInfo);
-      cart.setGoodsParams(goodsParams);
-      cart.setGoodsCount(goodsCount);
-      cart.setSingleGoodsMoney(singleGoodsMoney);
+        cart.setId(id1);
+        cart.setImgUrl(imgUrl);
+        cart.setGoodsInfo(goodsInfo);
+        cart.setGoodsParams(goodsParams);
+        cart.setGoodsCount(goodsCount);
+        cart.setSingleGoodsMoney(singleGoodsMoney);
 
-      carts.add(cart);
+        carts.add(cart);
+      }
+
+    }else if (size>=1&&size<=3){
+
+      for (int i = 0; i < size; i++) {
+        Cart cart = new Cart();
+        String jsonString = JSON.toJSONString(jsonArray.get(i));
+        JSONObject jsonObject = JSONObject.parseObject(jsonString);
+        long id1 = Long.valueOf((String) jsonObject.get("id")); //购物车id
+
+        String imgUrl = (String) jsonObject.get("imgUrl");
+        String goodsInfo = (String) jsonObject.get("goodsInfo");
+        String goodsParams = (String) jsonObject.get("goodsParams");
+        int goodsCount = Integer.valueOf((String) jsonObject.get("goodsCount"));
+        BigDecimal singleGoodsMoney = new BigDecimal((String) jsonObject.get("singleGoodsMoney"));
+
+        cart.setId(id1);
+        cart.setImgUrl(imgUrl);
+        cart.setGoodsInfo(goodsInfo);
+        cart.setGoodsParams(goodsParams);
+        cart.setGoodsCount(goodsCount);
+        cart.setSingleGoodsMoney(singleGoodsMoney);
+
+        carts.add(cart);
+      }
+
     }
+
 
     int x=3;
     int pagecount=(size%x==0)?size/x:(size/x)+1; //页的总数
@@ -163,6 +197,11 @@ public class OrderController {
     List<Address> addresses = addressFallbackFeign.selectAddressByUserId(id);
     model.addAttribute("addresses", addresses);
 
+
+    //查询优惠券
+    List<CouponsRecord> couponsRecords = couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(0, 3, id, 0);
+
+    model.addAttribute("couponsRecords",couponsRecords);
 
     return "client/view/newpage/checkOrder";
   }
@@ -274,22 +313,19 @@ public class OrderController {
   //下订单主要逻辑
   @GetMapping(path = "/orderbegin")
   @ResponseBody
-  public CommonResult<Address> orderbegin(String addressid,HttpSession session)
+  public CommonResult<Address> orderbegin(String addressid,String couponsid,HttpSession session)
   {
     CommonResult<Address> commonResult = new CommonResult<>();
-
     String currentUser = springSecurityUtil.currentUser(session);
     long id = userFallbackFeign.selectUserIdByName(currentUser);
-
     try {
-      orderFeign.orderBegin(addressid,id);
+      orderFeign.orderBegin(addressid,id,couponsid);
       return commonResult;
     } catch (Exception e) {
       e.printStackTrace();
       commonResult.setCode(ResultCode.FAILURE);
       return commonResult;
     }
-
   }
 
   @ResponseBody

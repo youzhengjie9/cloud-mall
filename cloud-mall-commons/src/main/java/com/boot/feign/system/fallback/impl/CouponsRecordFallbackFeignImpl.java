@@ -17,4 +17,10 @@ public class CouponsRecordFallbackFeignImpl implements CouponsRecordFallbackFeig
         log.error("selectCouponsRecordByUserIdAndLimit error");
         return null;
     }
+
+    @Override
+    public CouponsRecord selectCouponsRecord(long couponsid, long userid, int usetype) {
+        log.error("selectCouponsRecord error");
+        return null;
+    }
 }

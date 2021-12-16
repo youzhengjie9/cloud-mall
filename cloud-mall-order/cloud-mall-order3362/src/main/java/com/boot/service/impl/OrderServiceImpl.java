@@ -11,6 +11,8 @@ import com.boot.feign.product.fallback.CartFallbackFeign;
 import com.boot.feign.product.fallback.ProductFallbackFeign;
 import com.boot.feign.product.notFallback.CartFeign;
 import com.boot.feign.product.notFallback.ProductFeign;
+import com.boot.feign.system.fallback.CouponsRecordFallbackFeign;
+import com.boot.feign.system.notfallback.CouponsRecordFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.feign.user.notFallback.UserFeign;
 import com.boot.pojo.*;
@@ -27,7 +29,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +69,12 @@ public class OrderServiceImpl implements OrderService {
     private SpringSecurityUtil springSecurityUtil;
 
     @Autowired
+    private CouponsRecordFallbackFeign couponsRecordFallbackFeign;
+
+    @Autowired
+    private CouponsRecordFeign couponsRecordFeign;
+
+    @Autowired
     @Lazy
     private UserFallbackFeign userFallbackFeign;
 
@@ -92,8 +102,7 @@ public class OrderServiceImpl implements OrderService {
     //分布式事务
     @GlobalTransactional(name = "seata_orderbegin",rollbackFor = Exception.class)
     @Override
-    public void orderBegin(String addressid ,long id) {
-
+    public void orderBegin(String addressid ,long id,long couponsid) throws ParseException {
 
         String json = (String) redisTemplate.opsForValue().get(CHECK_ORDER_KEY + id);
         JSONArray jsonArray = JSONArray.parseArray(json);
@@ -101,6 +110,23 @@ public class OrderServiceImpl implements OrderService {
         int size = jsonArray.size(); // 获取这个json数组有多少个对象
 
         Address address = addressFallbackFeign.selectAddressByid(Long.valueOf(addressid));
+        CouponsRecord couponsRecord=null;
+        boolean usecoupons=false;
+        if(couponsid!=-1){
+            couponsRecord=couponsRecordFallbackFeign.selectCouponsRecord(couponsid, id, 0);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date start = simpleDateFormat.parse(couponsRecord.getCouponsActivity().getStartTime());
+            Date now = new Date(System.currentTimeMillis());
+            Date end = simpleDateFormat.parse(couponsRecord.getCouponsActivity().getEndTime());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(end);
+            cal.add(Calendar.DATE,1);
+            end =cal.getTime(); //结束时间加一天
+            if(now.after(start)&&now.before(end)) //校验优惠券的使用时间
+            {
+                usecoupons=true;
+            }
+        }
 
         // 解析json数组
         for (int i = 0; i < size; i++) {
@@ -116,7 +142,10 @@ public class OrderServiceImpl implements OrderService {
             String goodsParams = (String) jsonObject.get("goodsParams");
             int goodsCount = Integer.valueOf((String) jsonObject.get("goodsCount"));
             BigDecimal singleGoodsMoney = new BigDecimal((String) jsonObject.get("singleGoodsMoney"));
-
+            if(i==0&&usecoupons==true){ //给第一个商品进行使用优惠券&&可以使用优惠券
+                BigDecimal amount = couponsRecord.getCouponsActivity().getAmount();
+                singleGoodsMoney=singleGoodsMoney.subtract(amount);
+            }
             Order order = new Order();
             order.setId(SnowId.nextId());
             order.setImgUrl(imgUrl);
@@ -160,12 +189,12 @@ public class OrderServiceImpl implements OrderService {
                 productFeign.decrNumberByPid(id1,goodsCount); //减库存
                 userFeign.decrMoneyByUserId(id,singleGoodsMoney.toString()); //减余额
                 cartFeign.deleteCartByCartId(cartid); //移除购物车
-
+                if(i==0&&usecoupons==true)
+                {
+                    couponsRecordFeign.updateCouponsRecordUsetype(couponsid,1,created);
+                }
             }
         }
-
-
-
     }
 
     @Override

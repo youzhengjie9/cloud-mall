@@ -56,8 +56,39 @@
             AND coupons_record.use_type=#{usetype}
         </if>
         and coupons_record.user_id=#{userid}
+        ORDER BY amount DESC
         LIMIT #{page},#{size}
     </select>
+
+
+
+    <select id="selectCouponsRecord" resultMap="res1">
+        select
+        coupons_record.id,
+        coupons_record.user_id,
+        coupons_record.get_time,
+        coupons_record.use_type,
+        coupons_record.use_time,
+        coupons_activity.coupons_name,
+        coupons_activity.coupons_count,
+        coupons_activity.amount,
+        coupons_activity.limit_count,
+        coupons_activity.min_point,
+        coupons_activity.start_time,
+        coupons_activity.end_time,
+        coupons_activity.note,
+        coupons_activity.valid
+        from coupons_record,coupons_activity
+        where coupons_record.coupons_id=coupons_activity.id
+        AND coupons_record.use_type=#{usetype}
+        and coupons_record.user_id=#{userid}
+        and coupons_record.id=#{couponsid}
+    </select>
+
+    
+    <update id="updateCouponsRecordUsetype">
+        update coupons_record set use_type = #{usetype} ,use_time=#{usetime} where id=#{couponsid}
+    </update>
 
 
 </mapper>

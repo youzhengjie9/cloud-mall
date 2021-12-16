@@ -14,4 +14,8 @@ public interface CouponsRecordService {
 
     List<CouponsRecord> selectCouponsRecordByUserIdAndLimit(int page, int size, long userid, int usetype);
 
+    CouponsRecord selectCouponsRecord(long couponsid, long userid, int usetype);
+
+    void updateCouponsRecordUsetype(long couponsid, int usetype,String usetime);
+
 }
