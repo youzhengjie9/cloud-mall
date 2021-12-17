@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="com.boot.dao.SeckillMapper">
+
+    <update id="decrSeckillNumber">
+        update seckill set seckill_number = seckill_number-1 where seckill_id=#{seckillId}
+        and seckill_number>0
+    </update>
+
+    <insert id="insertSeckillSuccess" parameterType="com.boot.pojo.SeckillSuccess">
+        insert into seckill_success values (#{id},#{secKill.seckillId},#{createTime},#{state},#{userId})
+    </insert>
+
+    <resultMap id="res1" type="com.boot.pojo.Seckill">
+        <id column="seckill_id" property="seckillId"/>
+        <result property="seckillName" column="seckill_name"/>
+        <result property="seckillNumber" column="seckill_number"/>
+        <result property="price" column="price"/>
+        <result property="img" column="img"/>
+        <result property="limitCount" column="limit_count"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="createTime" column="create_time"/>
+        <association property="user" javaType="com.boot.pojo.User">
+            <id property="id" column="userid"/>
+        </association>
+
+    </resultMap>
+
+
+    <select id="selectAllSeckill" resultMap="res1">
+        select
+        seckill.seckill_id,
+        seckill.seckill_name,
+        seckill.seckill_number,
+        seckill.price,
+        seckill.img,
+        seckill.limit_count,
+        seckill.start_time,
+        seckill.end_time,
+        seckill.create_time,
+        seckill.userid
+        from
+        seckill
+
+    </select>
+    
+
+</mapper>

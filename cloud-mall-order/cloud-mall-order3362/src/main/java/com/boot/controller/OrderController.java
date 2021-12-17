@@ -11,6 +11,7 @@ import com.boot.pojo.Address;
 import com.boot.pojo.Order;
 import com.boot.pojo.OrderStatus;
 import com.boot.service.OrderService;
+import com.google.common.util.concurrent.RateLimiter;
 import io.swagger.annotations.Api;
 import org.apache.ibatis.annotations.Param;
 import org.redisson.api.RLock;
@@ -34,6 +35,13 @@ public class OrderController {
 
   @Autowired
   private RedissonClient redissonClient;
+
+  private static RateLimiter rateLimiter;
+
+  static {
+
+    rateLimiter=RateLimiter.create(20.0);
+  }
 
   @ResponseBody
   @PostMapping(path = "/insertOrder")
@@ -88,42 +96,50 @@ public class OrderController {
    */
   @ResponseBody
   @PostMapping(path = "/orderBegin/{addressid}/{id}/{couponsid}")
-  @SentinelResource(value = "orderBegin",blockHandler = "orderBeginExceptionHandle")  //sentinel对流量进行控制，有效防止高并发产生的问题
+//  @SentinelResource(value = "orderBegin",blockHandler = "orderBeginExceptionHandle")  //sentinel对流量进行控制，有效防止高并发产生的问题
+
   public CommonResult<Order> orderBegin(@PathVariable("addressid") String addressid,@PathVariable("id") long id,
                                         @PathVariable("couponsid") String couponsid) throws InterruptedException, ParseException {
-
     CommonResult<Order> commonResult = new CommonResult<>();
     commonResult.setCode(ResultCode.FAILURE); //修改为默认为失败
-    String lockkey="lockorder_"+id; //锁订单，防止用户并发攻击提交订单，id为userid
+    if(rateLimiter.tryAcquire()){
 
-    RLock lock = redissonClient.getLock(lockkey);
+      String lockkey="lockorder_"+id; //锁订单，防止用户并发攻击提交订单，id为userid
 
-    try{
+      RLock lock = redissonClient.getLock(lockkey);
 
-      if(!lock.tryLock(15,30, TimeUnit.SECONDS)) //如果被锁，则说明已经有线程提交订单，所以直接返回即可
-      {
-        Order order = new Order();
-        order.setGoodsInfo("锁还没被释放,提交失败");
-        commonResult.setObj(order);
-        commonResult.setCode(ResultCode.FAILURE);
-        return commonResult;
-      }else {
-        //如果没有被锁，说明没有线程提交订单，此时我们在加锁即可
-        lock.lock(); //加锁
-        long cid = Long.parseLong(couponsid);
-        orderService.orderBegin(addressid,id,cid);
+      try{
+
+        if(!lock.tryLock(15,30, TimeUnit.SECONDS)) //如果被锁，则说明已经有线程提交订单，所以直接返回即可
+        {
+          Order order = new Order();
+          order.setGoodsInfo("锁还没被释放,提交失败");
+          commonResult.setObj(order);
+          commonResult.setCode(ResultCode.FAILURE);
+          return commonResult;
+        }else {
+          //如果没有被锁，说明没有线程提交订单，此时我们在加锁即可
+          lock.lock(); //加锁
+          long cid = Long.parseLong(couponsid);
+          orderService.orderBegin(addressid,id,cid);
+        }
+
+      }finally{
+        if(lock.isHeldByCurrentThread()){ //如果当前线程持有锁则解锁
+          lock.unlock();
+        }
+
       }
+      //最后在修改回来为成功
+      commonResult.setCode(ResultCode.SUCCESS);
+      return commonResult;
 
-    }finally{
-      if(lock.isHeldByCurrentThread()){ //如果当前线程持有锁则解锁
-        lock.unlock();
-      }
+    }else {
 
+      return commonResult;
     }
 
-    //最后在修改回来为成功
-    commonResult.setCode(ResultCode.SUCCESS);
-    return commonResult;
+
   }
 
   public CommonResult<Order> orderBeginExceptionHandle(String addressid, long id, BlockException ex){

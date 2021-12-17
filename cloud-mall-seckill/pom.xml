@@ -16,6 +16,14 @@
     </modules>
 
     <dependencies>
+
+<!--        google guava limit rate-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>23.0</version>
+        </dependency>
+
         <!--        springBoot Admin client-->
         <dependency>
             <groupId>de.codecentric</groupId>
