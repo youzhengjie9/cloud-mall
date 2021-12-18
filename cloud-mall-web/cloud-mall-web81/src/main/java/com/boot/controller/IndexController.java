@@ -35,19 +35,21 @@ public class IndexController {
     @Autowired
     private VersionInfoFallbackFeign versionInfoFallbackFeign;
 
-    @RateLimiter
+    @RateLimiter(permitsPerSecond = 1.0) //限流
     @RequestMapping(path = "/")
     public String index()
     {
         return "client/index";
     }
 
+    @RateLimiter(permitsPerSecond = 100.0) //限流
     @RequestMapping(path = "/view/homePage")
     public String homePage()
     {
         return "client/view/home";
     }
 
+    @RateLimiter(permitsPerSecond = 100.0) //限流
     @RequestMapping(path = "/cart")
     public String cart()
     {
@@ -55,25 +57,30 @@ public class IndexController {
     }
 
     @RequestMapping(path = "/view/log")
+    @RateLimiter(permitsPerSecond = 100.0) //限流
     public String log()
     {
         return "client/view/common/log";
     }
+    @RateLimiter(permitsPerSecond = 100.0) //限流
     @RequestMapping(path = "/view/footer")
     public String footer()
     {
         return "client/view/common/footer";
     }
+    @RateLimiter(permitsPerSecond = 100.0) //限流
     @RequestMapping(path = "/view/homeMain")
     public String homeMain()
     {
         return "client/view/page/home.main";
     }
+    @RateLimiter(permitsPerSecond = 100.0) //限流
     @RequestMapping(path = "/view/homeHomeUserLogin")
     public String homeUserLogin()
     {
         return "client/view/page/home.userLogin";
     }
+    @RateLimiter(permitsPerSecond = 100.0) //限流
     @RequestMapping(path = "/view/homeProduct")
     public String homeProduct(HttpServletRequest request,Model model)
     {
@@ -95,7 +102,7 @@ public class IndexController {
         return "client/view/page/home.product";
     }
 
-
+    @RateLimiter(permitsPerSecond = 100.0) //限流
     @RequestMapping(path = "/view/homeProductDetail/{pid}")
     public String homeProductDetail1(@PathVariable("pid") long pid,Model model, HttpServletRequest request)
     {
@@ -109,6 +116,7 @@ public class IndexController {
         return "client/view/newpage/introduce";
     }
 
+    @RateLimiter(permitsPerSecond = 100.0) //限流
     @RequestMapping(path = "/view/homeProductDetail")
     public String homeProductDetail2(Model model, HttpServletRequest request)
     {
@@ -145,6 +153,7 @@ public class IndexController {
 
         return "client/view/page/home.product.detail";
     }
+    @RateLimiter(permitsPerSecond = 100.0) //限流
     @RequestMapping(path = "/view/homeSearch")
     public String homeSearch()
     {
@@ -183,6 +192,7 @@ public class IndexController {
     {
         return "directives/template/ulBoxTpl";
     }
+
 
 
     @GetMapping(path = "/view/sendCookie")

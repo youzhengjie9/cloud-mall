@@ -22,6 +22,10 @@ public class RateLimiterAspect {
 
     private static final AtomicInteger count=new AtomicInteger(0); //统计限流次数
 
+    private static final String LIMIT_SUCCESS="limit/limit_success"; //限流成功页面
+
+    private static final String LIMIT_FAIL="limit/limit_fail";//限流失败页面
+
     //限流切面切入点
     @Pointcut("@annotation(com.boot.annotation.RateLimiter)")
     public void ratelimiterPointCut(){
@@ -51,18 +55,20 @@ public class RateLimiterAspect {
                 if (rateLimiter.tryAcquire()) { //获取到令牌
 
                     proceed = joinPoint.proceed();
-
+                    return proceed;
                 }else {
                     log.warn("当前未获取到令牌，限流成功,当前限流次数共:"+RateLimiterAspect.count.incrementAndGet());
+                    return LIMIT_SUCCESS;
                 }
             }else { //不进行限流
                 proceed = joinPoint.proceed();
+                return proceed;
             }
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             log.error("@RateLimiter 限流失败......");
+            return LIMIT_FAIL;
         }
-        return proceed;
     }
 
 

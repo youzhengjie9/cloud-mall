@@ -1,5 +1,6 @@
 package com.boot.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.boot.dao.SeckillMapper;
 import com.boot.pojo.Seckill;
 import com.boot.pojo.SeckillSuccess;
@@ -8,6 +9,7 @@ import com.boot.utils.SnowId;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -39,12 +41,15 @@ public class SeckillServiceImpl implements SeckillService {
     @Autowired
     private SeckillMapper seckillMapper;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+
     @GlobalTransactional(name = "seata_seckill",rollbackFor = Exception.class)
     @Override
     public boolean seckill(long seckillId,long userid) {
 
         try{
-
             //判断是否超出秒杀时间
 
 
@@ -55,27 +60,20 @@ public class SeckillServiceImpl implements SeckillService {
             {
                 return false;
             }else { //说明库存足够
-
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("userid",userid);
+                jsonObject.put("seckillId",seckillId);
+                String msg = jsonObject.toJSONString(); //变成json发送到rabbitmq
                 //判断用户是否超出秒杀限制
                 Object st = redisTemplate.opsForValue().get(SECKILL_USER_KEY + userid + "_" + seckillId);
                 if(st==null){ //说明压根就没有参与这件商品的秒杀
-                    //把秒杀请求发送到消息队列
-                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date date = new Date();
-                    String createtime = simpleDateFormat.format(date);
-                    SeckillSuccess seckillSuccess = new SeckillSuccess();
-                    seckillSuccess.setId(SnowId.nextId())
-                                  .setSecKill(new Seckill().setSeckillId(seckillId))
-                                  .setState(0)
-                                  .setUserId(userid)
-                                  .setCreateTime(createtime);
-                    seckillMapper.decrSeckillNumber(seckillId);
-                    seckillMapper.insertSeckillSuccess(seckillSuccess);
                     //然后库存缓存-1
                     number--;
                     redisTemplate.opsForValue().set(SECKILL_NUMBER_KEY+seckillId,number,7, TimeUnit.DAYS);
                     //设置用户参与过秒杀
                     redisTemplate.opsForValue().set(SECKILL_USER_KEY+userid+"_"+seckillId,1,7,TimeUnit.DAYS);
+                    //把秒杀请求发送到消息队列
+                    rabbitTemplate.convertAndSend("seckill_Exchange","seckill_key",msg);
                     return true;
                 }else { //如果有缓存，则判断它的值是否允许秒杀
                     String s = String.valueOf(st);
@@ -83,27 +81,14 @@ public class SeckillServiceImpl implements SeckillService {
                     Integer secLimit = (Integer) redisTemplate.opsForValue().get(SECKILL_LIMIT_KEY + seckillId);
                     if(limit<secLimit)
                     {
-                        //把秒杀请求发送到消息队列
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        Date date = new Date();
-                        String createtime = simpleDateFormat.format(date);
-                        SeckillSuccess seckillSuccess = new SeckillSuccess();
-                        seckillSuccess.setId(SnowId.nextId())
-                                .setSecKill(new Seckill().setSeckillId(seckillId))
-                                .setState(0)
-                                .setUserId(userid)
-                                .setCreateTime(createtime);
-
-                        seckillMapper.decrSeckillNumber(seckillId);
-                        seckillMapper.insertSeckillSuccess(seckillSuccess);
-
                         //然后库存缓存-1
                         number--;
                         redisTemplate.opsForValue().set(SECKILL_NUMBER_KEY+seckillId,number,7, TimeUnit.DAYS);
                         limit++;
                         //设置用户参与过秒杀
                         redisTemplate.opsForValue().set(SECKILL_USER_KEY+userid+"_"+seckillId,limit,7,TimeUnit.DAYS);
-
+                        //把秒杀请求发送到消息队列
+                        rabbitTemplate.convertAndSend("seckill_Exchange","seckill_key",msg);
                         return true;
                     }else {
                         return false;
@@ -123,5 +108,29 @@ public class SeckillServiceImpl implements SeckillService {
     @Override
     public List<Seckill> selectAllSeckill() {
         return seckillMapper.selectAllSeckill();
+    }
+
+    @Override
+    public void decrSeckillNumber(long seckillId) {
+        seckillMapper.decrSeckillNumber(seckillId);
+    }
+
+    @Override
+    public void insertSeckillSuccess(SeckillSuccess seckillSuccess) {
+        seckillMapper.insertSeckillSuccess(seckillSuccess);
+    }
+
+    @GlobalTransactional(name = "seata_seckillbegin",rollbackFor = Exception.class)
+    @Override
+    public void seckillbegin(SeckillSuccess seckillSuccess) {
+
+        try{
+            seckillMapper.decrSeckillNumber(seckillSuccess.getSecKill().getSeckillId());
+
+            seckillMapper.insertSeckillSuccess(seckillSuccess);
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+
     }
 }

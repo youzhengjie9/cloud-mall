@@ -27,6 +27,12 @@ spring:
     username: root
     password: 18420163207
     driver-class-name: com.mysql.jdbc.Driver
+  #  rabbitmq
+  rabbitmq:
+    username: guest
+    virtual-host: /ems
+    password: guest
+    host: localhost
     #springcloud配置
   cloud:
     nacos:
