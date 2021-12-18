@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.boot.annotation.RateLimiter;
 import com.boot.feign.product.fallback.ProductFallbackFeign;
 import com.boot.feign.product.fallback.VersionInfoFallbackFeign;
 import com.boot.pojo.Product;
@@ -34,6 +35,7 @@ public class IndexController {
     @Autowired
     private VersionInfoFallbackFeign versionInfoFallbackFeign;
 
+    @RateLimiter
     @RequestMapping(path = "/")
     public String index()
     {
