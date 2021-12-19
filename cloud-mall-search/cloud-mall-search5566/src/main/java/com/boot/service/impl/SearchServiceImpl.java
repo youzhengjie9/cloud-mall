@@ -6,6 +6,7 @@ import com.boot.pojo.Brand;
 import com.boot.pojo.Classify;
 import com.boot.pojo.Product;
 import com.boot.service.SearchService;
+import com.boot.utils.IpUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.action.bulk.BulkRequest;
@@ -21,10 +22,15 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -32,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 游政杰
@@ -43,7 +50,7 @@ public class SearchServiceImpl implements SearchService {
 
   private final String INDEX_NAME = "cloud-mall"; // 索引名
 
-  private final String PAGE_PRODUCT_COUNT = "pageProductCount"; // 分页之前查询的总数
+  private final String PAGE_PRODUCT_COUNT = "pageProductCount_"; // 分页之前查询的总数
 
   @Autowired private RestHighLevelClient restHighLevelClient;
 
@@ -54,41 +61,54 @@ public class SearchServiceImpl implements SearchService {
   @Autowired
   private SearchService searchService;
 
-  private static final Object lock = new Object(); // lock1
+  private static final String LOCK="search_lock";
+
+  @Autowired
+  private RedissonClient redissonClient;
 
   @Override
-  public void initSearch() throws IOException {
+  public void initSearch() throws IOException, InterruptedException {
 
-    synchronized (lock) {
-      BulkRequest bulkRequest = new BulkRequest();
+    RLock lock = redissonClient.getLock(LOCK);
 
-      List<Product> products = productFallbackFeign.selectAllProduct();
-      // 插入数据
-      for (Product product : products) {
-        IndexRequest indexRequest = new IndexRequest(INDEX_NAME);
-        indexRequest.id(product.getProductId() + ""); // 商品id
+   try{
+     if(lock.tryLock(15,25, TimeUnit.SECONDS))
+     {
+       BulkRequest bulkRequest = new BulkRequest();
 
-        ConcurrentHashMap<String, Object> sources = new ConcurrentHashMap<>();
-        sources.put("name", product.getName());
-        sources.put("price", product.getPrice());
-        sources.put("img", product.getImg());
-        sources.put("number", product.getNumber());
-        sources.put("fl_id", String.valueOf(product.getClassify().getId()));
-        sources.put("b_id", String.valueOf(product.getBrand().getId()));
-        sources.put("fl_name", String.valueOf(product.getClassify().getText()));
-        sources.put("b_name", String.valueOf(product.getBrand().getBrandName()));
-        sources.put("introduce_img", product.getIntroduce_img());
-        indexRequest.source(sources);
+       List<Product> products = productFallbackFeign.selectAllProduct();
+       // 插入数据
+       for (Product product : products) {
+         IndexRequest indexRequest = new IndexRequest(INDEX_NAME);
+         indexRequest.id(product.getProductId() + ""); // 商品id
 
-        bulkRequest.add(indexRequest);
-      }
+         ConcurrentHashMap<String, Object> sources = new ConcurrentHashMap<>();
+         sources.put("name", product.getName());
+         sources.put("price", product.getPrice());
+         sources.put("img", product.getImg());
+         sources.put("number", product.getNumber());
+         sources.put("fl_id", String.valueOf(product.getClassify().getId()));
+         sources.put("b_id", String.valueOf(product.getBrand().getId()));
+         sources.put("fl_name", String.valueOf(product.getClassify().getText()));
+         sources.put("b_name", String.valueOf(product.getBrand().getBrandName()));
+         sources.put("introduce_img", product.getIntroduce_img());
+         indexRequest.source(sources);
 
-      restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT); // 批量execute
-    }
+         bulkRequest.add(indexRequest);
+       }
+
+       restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT); // 批量execute
+     }
+
+   }
+   finally{
+
+     lock.unlock();
+   }
   }
 
   @Override
-  public SearchHit[] searchProductHitByName(String text) throws IOException {
+  public SearchHit[] searchProductHitByName(String text,String ip) throws IOException {
 
     SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
 
@@ -109,7 +129,7 @@ public class SearchServiceImpl implements SearchService {
   }
 
   @Override
-  public List<Product> searchProductByHit(String text, SearchHit[] searchHits) throws IOException {
+  public List<Product> searchProductByHit(String text, SearchHit[] searchHits,String ip) throws IOException {
 
     List<Product> products = new CopyOnWriteArrayList<>(); // 存储搜索来的products
     if (searchHits != null && searchHits.length > 0 && !text.equals("^")) {
@@ -148,9 +168,11 @@ public class SearchServiceImpl implements SearchService {
       SearchResponse searchRespond2 =
           restHighLevelClient.search(searchRequest2, RequestOptions.DEFAULT);
 
+
+
       redisTemplate
           .opsForValue()
-          .set(PAGE_PRODUCT_COUNT, searchRespond2.getHits().getTotalHits().value);
+          .set(PAGE_PRODUCT_COUNT+ip, searchRespond2.getHits().getTotalHits().value);
 
     } else { // 默认搜索全部数据并分页
 
@@ -202,9 +224,11 @@ public class SearchServiceImpl implements SearchService {
       SearchResponse searchRespond3 =
           restHighLevelClient.search(searchRequest3, RequestOptions.DEFAULT);
 
+
+
       redisTemplate
           .opsForValue()
-          .set(PAGE_PRODUCT_COUNT, searchRespond3.getHits().getTotalHits().value);
+          .set(PAGE_PRODUCT_COUNT+ip, searchRespond3.getHits().getTotalHits().value);
     }
 
     return products;
@@ -255,7 +279,7 @@ public class SearchServiceImpl implements SearchService {
 
   @Override
   public List<Product> searchProductsByCondition(
-      String text, long brandid, long classifyid, int from, int size) throws IOException {
+      String text, long brandid, long classifyid, int from, int size,String ip) throws IOException {
 
     SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
 
@@ -352,7 +376,7 @@ public class SearchServiceImpl implements SearchService {
 
     redisTemplate
             .opsForValue()
-            .set(PAGE_PRODUCT_COUNT, searchRespond2.getHits().getTotalHits().value);
+            .set(PAGE_PRODUCT_COUNT+ip, searchRespond2.getHits().getTotalHits().value);
 
 
     return products;

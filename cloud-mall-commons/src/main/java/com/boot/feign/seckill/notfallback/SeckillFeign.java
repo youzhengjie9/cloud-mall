@@ -13,7 +13,7 @@ public interface SeckillFeign {
 
     @ResponseBody
     @GetMapping(path = "/feign/seckill/doSeckill/{seckillId}/{userid}")
-    public boolean doSeckill(@PathVariable("seckillId") long seckillId,
+    public String doSeckill(@PathVariable("seckillId") long seckillId,
                              @PathVariable("userid") long userid)  throws InterruptedException;
 
 

@@ -81,13 +81,14 @@ public class SearchController {
 
     //根据name进行查询
     @ResponseBody
-    @GetMapping(path = "/searchProductByName/{text}")
-    public List<Product> searchProductByName(@PathVariable("text") String text) throws IOException {
+    @GetMapping(path = "/searchProductByName/{text}/{ip}")
+    public List<Product> searchProductByName(@PathVariable("text") String text,
+                                             @PathVariable("ip") String ip) throws IOException {
 
 
-        SearchHit[] searchHits = searchService.searchProductHitByName(text);
+        SearchHit[] searchHits = searchService.searchProductHitByName(text,ip);
 
-        List<Product> products = searchService.searchProductByHit(text,searchHits);
+        List<Product> products = searchService.searchProductByHit(text,searchHits,ip);
 
         return products;
     }
@@ -111,9 +112,10 @@ public class SearchController {
                                                    @RequestParam("brandid") long brandid,
                                                    @RequestParam("classifyid")long classifyid,
                                                    @RequestParam("from")int from,
-                                                   @RequestParam("size")int size) throws IOException{
+                                                   @RequestParam("size")int size,
+                                                   @RequestParam("ip") String ip) throws IOException{
 
-        List<Product> products = searchService.searchProductsByCondition(text, brandid, classifyid, from, size);
+        List<Product> products = searchService.searchProductsByCondition(text, brandid, classifyid, from, size,ip);
 
         return products;
     }
@@ -131,7 +133,7 @@ public class SearchController {
 
     //根据商品名搜索商品集合并且分页
     @ResponseBody
-    @GetMapping(path = "/searchProductsByNameAndLimit/{from}/{size}/{text}")
+    @GetMapping(path = "/searchProductsByNameAndLimit/{from}/{size}/{text}/{ip}")
     public CommonResult<List<Product>> searchProductsByNameAndLimit(@PathVariable("from") int from ,
                                                       @PathVariable("size") int size ,
                                                       @PathVariable("text") String text) throws IOException{
@@ -147,7 +149,7 @@ public class SearchController {
 
     //根据商品名搜索商品的目标数
     @ResponseBody
-    @GetMapping(path = "/searchProductCountByName/{text}")
+    @GetMapping(path = "/searchProductCountByName/{text}/{ip}")
     public CommonResult<Long> searchProductCountByName(@PathVariable("text") String text) throws IOException{
 
         CommonResult<Long> commonResult = new CommonResult<>();

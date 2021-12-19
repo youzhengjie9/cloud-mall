@@ -11,20 +11,20 @@ import java.util.List;
  */
 public interface SearchService {
 
-    void initSearch() throws IOException;
+    void initSearch() throws IOException, InterruptedException;
 
 
-    SearchHit[] searchProductHitByName(String text) throws IOException;
+    SearchHit[] searchProductHitByName(String text,String ip) throws IOException;
 
 
-    List<Product> searchProductByHit(String text,SearchHit[] searchHits) throws IOException;
+    List<Product> searchProductByHit(String text,SearchHit[] searchHits,String ip) throws IOException;
 
 
     //查询所有数据并分页
     List<Product> searchAllProductByLimit(int from,int size) throws IOException;
 
     //from size 为分页
-    List<Product> searchProductsByCondition(String text,long brandid,long classifyid,int from,int size) throws IOException;
+    List<Product> searchProductsByCondition(String text,long brandid,long classifyid,int from,int size,String ip) throws IOException;
 
 
     long searchAllProductsCount() throws IOException;

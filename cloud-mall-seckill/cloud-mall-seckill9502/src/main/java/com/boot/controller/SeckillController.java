@@ -4,6 +4,7 @@ import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSONObject;
 import com.boot.enums.ResultConstant;
+import com.boot.pojo.Seckill;
 import com.boot.pojo.SeckillSuccess;
 import com.boot.service.SeckillService;
 import com.google.common.util.concurrent.RateLimiter;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -49,7 +51,6 @@ public class SeckillController {
      * 并发压测5000线程+1次循环 ,只启动async和seckill模块的情况下测试
      *  1：没做ratelimiter限流和没做消息队列异步处理秒杀，qps=113/s
      *  2. 做ratelimiter限“”20“”个qps和没做消息队列异步处理秒杀,qps=396/s
-     *  3. 做ratelimiter限“”20“”个qps和做消息队列异步处理秒杀,qps=
      * @param seckillId
      * @param userid
      * @return
@@ -59,7 +60,7 @@ public class SeckillController {
     @ResponseBody
     @GetMapping(path = "/doSeckill/{seckillId}/{userid}")
     @SentinelResource(value = "doSeckill",blockHandler = "doSeckill_block")
-    public boolean doSeckill(@PathVariable("seckillId") long seckillId,
+    public String doSeckill(@PathVariable("seckillId") long seckillId,
                             @PathVariable("userid") long userid) throws InterruptedException {
 
         if(rateLimiter.tryAcquire())
@@ -69,19 +70,19 @@ public class SeckillController {
 
                 if(lock.tryLock(3,5, TimeUnit.SECONDS)){
 
-                boolean seckill = seckillService.seckill(seckillId, userid);
+                String seckill = seckillService.seckill(seckillId, userid);
 
-                    return true;
+                    return seckill;
                 }else {
                     log.warn("当前锁被占用。。。");
-                    return false;
+                    return "当前秒杀活动火爆,请重试";
                 }
             }finally{
                 lock.unlock();
             }
         }else {
             log.info("秒杀限流次数："+count.incrementAndGet());
-           return false;
+           return "当前秒杀活动火爆,请重试";
         }
     }
     public boolean doSeckill_block(long seckillId, long userid, BlockException ex){
@@ -117,6 +118,13 @@ public class SeckillController {
 
         seckillService.seckillbegin(seckillSuccess);
         return ResultConstant.SUCCESS.getCodeStat();
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/selectAllSeckill")
+    public List<Seckill> selectAllSeckill(){
+
+        return seckillService.selectAllSeckill();
     }
 
 }

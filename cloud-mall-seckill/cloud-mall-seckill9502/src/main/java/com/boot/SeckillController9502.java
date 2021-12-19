@@ -36,6 +36,8 @@ public class SeckillController9502 {
 
     private final String SECKILL_LIMIT_KEY="seckill_limit_";//秒杀限购key
 
+    private final String SECKILL_TIME_KEY="seckill_time_";//秒杀开始时间和结束时间key
+
     @Autowired
     private SeckillService seckillService;
 
@@ -53,6 +55,13 @@ public class SeckillController9502 {
 
            //key =SECKILL_LIMIT_KEY加上秒杀商品id，value是限购数量
            redisTemplate.opsForValue().set(SECKILL_LIMIT_KEY+e.getSeckillId(),e.getLimitCount(),7,TimeUnit.DAYS);
+
+           //key =SECKILL_TIME_KEY加上秒杀商品id，value是（开始时间?结束时间）
+           String startTime = e.getStartTime();
+           String endTime = e.getEndTime();
+           String value=startTime+","+endTime;
+           redisTemplate.opsForValue().set(SECKILL_TIME_KEY+e.getSeckillId(),value,7,TimeUnit.DAYS);
+
 
        });
 

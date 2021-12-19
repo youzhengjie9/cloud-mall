@@ -26,8 +26,9 @@ public interface SearchFallbackFeign {
 
     //根据name进行查询
     @ResponseBody
-    @GetMapping(path = "/feign/search/searchProductByName/{text}")
-    public List<Product> searchProductByName(@PathVariable("text") String text) throws IOException;
+    @GetMapping(path = "/feign/search/searchProductByName/{text}/{ip}")
+    public List<Product> searchProductByName(@PathVariable("text") String text,
+                                             @PathVariable("ip") String ip) throws IOException;
 
 
     //查询所有数据并分页
@@ -43,7 +44,8 @@ public interface SearchFallbackFeign {
                                                    @RequestParam("brandid") long brandid,
                                                    @RequestParam("classifyid")long classifyid,
                                                    @RequestParam("from")int from,
-                                                   @RequestParam("size")int size) throws IOException;
+                                                   @RequestParam("size")int size,
+                                                   @RequestParam("ip") String ip) throws IOException;
 
     @ResponseBody
     @GetMapping(path = "/feign/search/searchAllProductsCount")

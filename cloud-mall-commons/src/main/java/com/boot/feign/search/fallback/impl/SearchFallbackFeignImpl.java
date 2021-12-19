@@ -20,7 +20,7 @@ public class SearchFallbackFeignImpl implements SearchFallbackFeign {
     }
 
     @Override
-    public List<Product> searchProductByName(String text) throws IOException {
+    public List<Product> searchProductByName(String text,String ip) throws IOException {
         log.error("searchProductByName error");
         return null;
     }
@@ -32,7 +32,7 @@ public class SearchFallbackFeignImpl implements SearchFallbackFeign {
     }
 
     @Override
-    public List<Product> searchProductsByCondition(String text, long brandid, long classifyid, int from, int size) throws IOException {
+    public List<Product> searchProductsByCondition(String text, long brandid, long classifyid, int from, int size,String ip) throws IOException {
         log.error("searchProductsByCondition error");
         return null;
     }

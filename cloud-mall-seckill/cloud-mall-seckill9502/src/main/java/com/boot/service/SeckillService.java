@@ -9,7 +9,7 @@ import java.util.List;
 public interface SeckillService {
 
 
-    boolean seckill(long seckillId,long userid);
+    String seckill(long seckillId,long userid);
 
     List<Seckill> selectAllSeckill();
 
