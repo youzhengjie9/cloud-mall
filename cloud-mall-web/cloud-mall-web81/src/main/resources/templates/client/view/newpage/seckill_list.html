@@ -313,7 +313,7 @@
             <ul>
                 <li><a th:href="@{/web/index/}">首页</a></li>
                 <li><a th:href="@{/web/couponsActivity/toCouponsActivity}">领劵中心</a></li>
-                <li><a href="#">秒杀</a></li>
+                <li><a th:href="@{/web/seckill/toSearchSeckillPage}">秒杀</a></li>
                 <li><a href="https://github.com/youzhengjie9/cloud-mall">项目链接</a></li>
             </ul>
         </div>
@@ -357,6 +357,24 @@
 
 </div>
 
+
+<div class="container">
+    <div class="filter_box">
+        <div class="filter_list_wrap clearfix">
+            <div id="brandClassifyDiv">
+                <div id="brands">
+                    <dt style="width: 100px;height: 30px;float: left;text-align: center">秒杀商品列表：</dt>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
 <div id="productsBox">
 
 
@@ -368,7 +386,7 @@
             <ul>
                 <li>
                     <div class="pro-img">
-                        <a target="_blank" th:href="@{'/web/index/view/homeProductDetail/'+${seckill.getSeckillId()}}">
+                        <a target="_blank" th:href="@{'/web/seckill/seckillDetail/'+${seckill.getSeckillId()}}">
                             <img th:src="@{${seckill.getImg()}}" alt="product">
 
                         </a>
@@ -407,20 +425,20 @@
             </li>
 
             <li th:if="${curPage>1}">
-                <a th:onclick="prePage([[${curPage}]])">&laquo;</a>
+                <a style="cursor: pointer" th:onclick="prePage([[${curPage}]])">&laquo;</a>
             </li>
 
             <li th:id="p1" class="active">
-                <a th:onclick="pagechange(1)"  th:text="1"></a>
+                <a style="cursor: pointer" th:onclick="pagechange(1)"  th:text="1"></a>
             </li>
 
 
             <li th:each="index:${#numbers.sequence(2, 5)}" th:if="${pagecount>=5}" th:id="'p'+${index}">
-                <a th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
+                <a style="cursor: pointer" th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
             </li>
 
             <li th:id="'p'+${index}" th:each="index:${#numbers.sequence(2, pagecount)}" th:if="${pagecount<5 and pagecount>=2}">
-                <a th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
+                <a style="cursor: pointer" th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
             </li>
 
 
@@ -430,7 +448,7 @@
                 <a>&raquo;</a>
             </li>
             <li th:if="${pagecount>1}">
-                <a th:onclick="nextPage([[${curPage}]])">&raquo;</a>
+                <a style="cursor: pointer" th:onclick="nextPage([[${curPage}]])">&raquo;</a>
             </li>
 
         </ul>
@@ -603,7 +621,7 @@
 
                 if(curPage>1)
                 {
-                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
                 }else {
                     pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
                 }
@@ -619,7 +637,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -650,7 +668,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -670,7 +688,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -686,7 +704,7 @@
                 {
                     pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
                 }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml+='</ul>';
@@ -759,7 +777,7 @@
 
                 if(curPage>1)
                 {
-                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
                 }else {
                     pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
                 }
@@ -776,7 +794,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -807,7 +825,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -827,7 +845,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -843,7 +861,7 @@
                 {
                     pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
                 }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml+='</ul>';
@@ -935,7 +953,7 @@
 
                 if(curPage>1)
                 {
-                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
                 }else {
                     pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
                 }
@@ -951,7 +969,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -982,7 +1000,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -1002,7 +1020,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -1018,7 +1036,7 @@
                 {
                     pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
                 }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml+='</ul>';
@@ -1035,80 +1053,6 @@
         })
     }
 
-
-    /*单击出现爱心特效*/
-    (function (window, document, undefined) {
-        var hearts = [];
-        window.requestAnimationFrame = (function () {
-            return window.requestAnimationFrame ||
-                window.webkitRequestAnimationFrame ||
-                window.mozRequestAnimationFrame ||
-                window.oRequestAnimationFrame ||
-                window.msRequestAnimationFrame ||
-                function (callback) {
-                    setTimeout(callback, 1000 / 60);
-                }
-        })();
-        init();
-
-        function init() {
-            css(".heart{width: 10px;height: 10px;position: fixed;background: #f00;transform: rotate(45deg);-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);}.heart:after,.heart:before{content: '';width: inherit;height: inherit;background: inherit;border-radius: 50%;-webkit-border-radius: 50%;-moz-border-radius: 50%;position: absolute;}.heart:after{top: -5px;}.heart:before{left: -5px;}");
-            attachEvent();
-            gameloop();
-        }
-
-        function gameloop() {
-            for (var i = 0; i < hearts.length; i++) {
-                if (hearts[i].alpha <= 0) {
-                    document.body.removeChild(hearts[i].el);
-                    hearts.splice(i, 1);
-                    continue;
-                }
-                hearts[i].y--;
-                hearts[i].scale += 0.004;
-                hearts[i].alpha -= 0.013;
-                hearts[i].el.style.cssText = "left:" + hearts[i].x + "px;top:" + hearts[i].y + "px;opacity:" + hearts[i].alpha + ";transform:scale(" + hearts[i].scale + "," + hearts[i].scale + ") rotate(45deg);background:" + hearts[i].color;
-            }
-            requestAnimationFrame(gameloop);
-        }
-
-        function attachEvent() {
-            var old = typeof window.onclick === "function" && window.onclick;
-            window.onclick = function (event) {
-                old && old();
-                createHeart(event);
-            }
-        }
-
-        function createHeart(event) {
-            var d = document.createElement("div");
-            d.className = "heart";
-            hearts.push({
-                el: d,
-                x: event.clientX - 5,
-                y: event.clientY - 5,
-                scale: 1,
-                alpha: 1,
-                color: randomColor()
-            });
-            document.body.appendChild(d);
-        }
-
-        function css(css) {
-            var style = document.createElement("style");
-            style.type = "text/css";
-            try {
-                style.appendChild(document.createTextNode(css));
-            } catch (ex) {
-                style.styleSheet.cssText = css;
-            }
-            document.getElementsByTagName('head')[0].appendChild(style);
-        }
-
-        function randomColor() {
-            return "rgb(" + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + "," + (~~(Math.random() * 255)) + ")";
-        }
-    })(window, document);
 </script>
 
 

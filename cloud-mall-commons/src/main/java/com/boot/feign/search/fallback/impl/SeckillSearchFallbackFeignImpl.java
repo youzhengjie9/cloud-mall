@@ -18,4 +18,10 @@ public class SeckillSearchFallbackFeignImpl implements SeckillSearchFallbackFeig
         log.error("searchAllSeckill error");
         return null;
     }
+
+    @Override
+    public Seckill searchSeckilltoDetailByseckillId(long seckillId) throws IOException {
+        log.error("searchSeckilltoDetailByseckillId error");
+        return null;
+    }
 }

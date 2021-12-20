@@ -25,6 +25,17 @@ public class layuiJSON {
         this.msg = msg;
     }
 
+
+    private static class layuiJSONInstance{
+        public static layuiJSON instance=new layuiJSON();
+
+    }
+
+    public static layuiJSON getInstance()
+    {
+        return  layuiJSONInstance.instance;
+    }
+
     @Override
     public String toString() {
         return "layuiArticleJSON{" +

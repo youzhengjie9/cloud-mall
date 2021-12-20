@@ -6,10 +6,7 @@ import com.boot.service.SeckillSearchService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -87,6 +84,15 @@ public class SeckillSearchController {
         List<Seckill> seckills = seckillSearchService.searchAllSeckill(text, from, size,ip);
 
         return seckills;
+    }
+
+
+    //专门把数据查询给秒杀详情，所以只查询必须要的数据
+    @ResponseBody
+    @GetMapping(path = "/searchSeckilltoDetailByseckillId/{seckillId}")
+    public Seckill searchSeckilltoDetailByseckillId(@PathVariable("seckillId") long seckillId) throws IOException{
+
+        return seckillSearchService.searchSeckilltoDetailByseckillId(seckillId);
     }
 
 

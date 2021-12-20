@@ -14,4 +14,9 @@ public interface SeckillSearchService {
     List<Seckill> searchAllSeckill(String text, int from, int size,String ip) throws IOException;
 
 
+    //专门把数据查询给秒杀详情，所以只查询必须要的数据
+    Seckill searchSeckilltoDetailByseckillId(long seckillId) throws IOException;
+
+
+
 }

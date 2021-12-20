@@ -313,7 +313,7 @@
             <ul>
                 <li><a th:href="@{/web/index/}">首页</a></li>
                 <li><a th:href="@{/web/couponsActivity/toCouponsActivity}">领劵中心</a></li>
-                <li><a href="#">秒杀</a></li>
+                <li><a th:href="@{/web/seckill/toSearchSeckillPage}">秒杀</a></li>
                 <li><a href="https://github.com/youzhengjie9/cloud-mall">项目链接</a></li>
             </ul>
         </div>
@@ -442,20 +442,20 @@
             </li>
 
             <li th:if="${curPage>1}">
-                <a th:onclick="prePage([[${curPage}]])">&laquo;</a>
+                <a style="cursor: pointer" th:onclick="prePage([[${curPage}]])">&laquo;</a>
             </li>
 
             <li th:id="p1" class="active">
-                <a th:onclick="pagechange(1)"  th:text="1"></a>
+                <a style="cursor: pointer" th:onclick="pagechange(1)"  th:text="1"></a>
             </li>
 
 
             <li th:each="index:${#numbers.sequence(2, 5)}" th:if="${pagecount>=5}" th:id="'p'+${index}">
-                <a th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
+                <a style="cursor: pointer" th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
             </li>
 
             <li th:id="'p'+${index}" th:each="index:${#numbers.sequence(2, pagecount)}" th:if="${pagecount<5 and pagecount>=2}">
-                <a th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
+                <a style="cursor: pointer" th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
             </li>
 
 
@@ -465,7 +465,7 @@
                 <a>&raquo;</a>
             </li>
             <li th:if="${pagecount>1}">
-                <a th:onclick="nextPage([[${curPage}]])">&raquo;</a>
+                <a style="cursor: pointer" th:onclick="nextPage([[${curPage}]])">&raquo;</a>
             </li>
 
         </ul>
@@ -638,7 +638,7 @@
 
                 if(curPage>1)
                 {
-                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
                 }else {
                     pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
                 }
@@ -654,7 +654,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -685,7 +685,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -705,7 +705,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -721,7 +721,7 @@
                 {
                     pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
                 }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml+='</ul>';
@@ -794,7 +794,7 @@
 
                 if(curPage>1)
                 {
-                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
                 }else {
                     pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
                 }
@@ -811,7 +811,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -842,7 +842,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -862,7 +862,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -878,7 +878,7 @@
                 {
                     pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
                 }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml+='</ul>';
@@ -970,7 +970,7 @@
 
                 if(curPage>1)
                 {
-                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
                 }else {
                     pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
                 }
@@ -986,7 +986,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -1017,7 +1017,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -1037,7 +1037,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -1053,7 +1053,7 @@
                 {
                     pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
                 }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml+='</ul>';
@@ -1227,7 +1227,7 @@
 
                 if(curPage>1)
                 {
-                    pageBarHtml+='<li><a onclick="prePage()">&laquo;</a> </li>';
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick="prePage()">&laquo;</a> </li>';
                 }else {
                     pageBarHtml+='<li class="disabled"><a onclick="prePage()">&laquo;</a> </li>';
                 }
@@ -1243,7 +1243,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -1260,7 +1260,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -1273,7 +1273,7 @@
                 {
                     pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
                 }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                    pageBarHtml+='<li><a  style="cursor: pointer"onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml+='</ul>';
@@ -1434,9 +1434,9 @@
 
                 if(curPage>1)
                 {
-                    pageBarHtml+='<li><a onclick="prePage()">&laquo;</a> </li>';
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick="prePage()">&laquo;</a> </li>';
                 }else {
-                    pageBarHtml+='<li class="disabled"><a onclick="prePage()">&laquo;</a> </li>';
+                    pageBarHtml+='<li class="disabled"><a style="cursor: pointer" onclick="prePage()">&laquo;</a> </li>';
                 }
 
                 if(pagecount<=5)
@@ -1450,7 +1450,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -1467,7 +1467,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -1480,7 +1480,7 @@
                 {
                     pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
                 }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer" onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml+='</ul>';

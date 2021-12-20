@@ -94,6 +94,10 @@
 | layui           | 模块化前端UI框架        | https://www.layui.com/         |
 | Angular        |   应用设计框架与开发平台    | https://angular.cn/        |
 
+####秒杀接口压测
+> 8000个线程并发压测秒杀接口,没有发生高并发下的超卖问题，数据和缓存都保持了一致性
+![miaoshajiekou.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/miaoshayace.png)
+
 
 #### 怎么安装cloud-mall
 

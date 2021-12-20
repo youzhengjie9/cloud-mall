@@ -5,6 +5,7 @@ import com.boot.pojo.Seckill;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -17,4 +18,5 @@ public class SeckillFallbackFeignImpl implements SeckillFallbackFeign {
         log.error("selectAllSeckill error");
         return null;
     }
+
 }
