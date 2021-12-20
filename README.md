@@ -21,9 +21,9 @@
 ## cloud-mall的架构图
 
 <p align=center>
-  <a href="#">
+  
     <img src="https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/cloud-mall-jiagou.png" alt="cloud-mall-jiagou" style="width:200px;height:200px">
-  </a>
+  
 </p>
 
 
