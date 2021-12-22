@@ -11,6 +11,8 @@ import com.boot.feign.product.fallback.CartFallbackFeign;
 import com.boot.feign.product.fallback.ProductFallbackFeign;
 import com.boot.feign.product.notFallback.CartFeign;
 import com.boot.feign.product.notFallback.ProductFeign;
+import com.boot.feign.search.fallback.SeckillSearchFallbackFeign;
+import com.boot.feign.seckill.notfallback.SeckillFeign;
 import com.boot.feign.system.fallback.CouponsRecordFallbackFeign;
 import com.boot.feign.system.notfallback.CouponsRecordFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -84,6 +87,12 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private SeckillFeign seckillFeign;
+
+    @Autowired
+    private SeckillSearchFallbackFeign seckillSearchFallbackFeign;
+
     @Override
     public void insertOrder(Order order) {
         orderMapper.insertOrder(order);
@@ -104,97 +113,105 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void orderBegin(String addressid ,long id,long couponsid) throws ParseException {
 
-        String json = (String) redisTemplate.opsForValue().get(CHECK_ORDER_KEY + id);
-        JSONArray jsonArray = JSONArray.parseArray(json);
 
-        int size = jsonArray.size(); // 获取这个json数组有多少个对象
+        try{
 
-        Address address = addressFallbackFeign.selectAddressByid(Long.valueOf(addressid));
-        CouponsRecord couponsRecord=null;
-        boolean usecoupons=false;
-        if(couponsid!=-1){
-            couponsRecord=couponsRecordFallbackFeign.selectCouponsRecord(couponsid, id, 0);
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date start = simpleDateFormat.parse(couponsRecord.getCouponsActivity().getStartTime());
-            Date now = new Date(System.currentTimeMillis());
-            Date end = simpleDateFormat.parse(couponsRecord.getCouponsActivity().getEndTime());
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(end);
-            cal.add(Calendar.DATE,1);
-            end =cal.getTime(); //结束时间加一天
-            if(now.after(start)&&now.before(end)) //校验优惠券的使用时间
-            {
-                usecoupons=true;
-            }
-        }
+            String json = (String) redisTemplate.opsForValue().get(CHECK_ORDER_KEY + id);
+            JSONArray jsonArray = JSONArray.parseArray(json);
 
-        // 解析json数组
-        for (int i = 0; i < size; i++) {
-            String jsonString = JSON.toJSONString(jsonArray.get(i));
-            JSONObject jsonObject = JSONObject.parseObject(jsonString);
-            long cartid = Long.valueOf((String) jsonObject.get("id")); //
-            CommonResult<Cart> cartCommonResult = cartFallbackFeign.selectCartByCartId(cartid);
-            Cart cart1 = cartCommonResult.getObj();
-            long id1 = cart1.getProductid(); //商品id
+            int size = jsonArray.size(); // 获取这个json数组有多少个对象
 
-            String imgUrl = (String) jsonObject.get("imgUrl");
-            String goodsInfo = (String) jsonObject.get("goodsInfo");
-            String goodsParams = (String) jsonObject.get("goodsParams");
-            int goodsCount = Integer.valueOf((String) jsonObject.get("goodsCount"));
-            BigDecimal singleGoodsMoney = new BigDecimal((String) jsonObject.get("singleGoodsMoney"));
-            if(i==0&&usecoupons==true){ //给第一个商品进行使用优惠券&&可以使用优惠券
-                BigDecimal amount = couponsRecord.getCouponsActivity().getAmount();
-                singleGoodsMoney=singleGoodsMoney.subtract(amount);
-            }
-            Order order = new Order();
-            order.setId(SnowId.nextId());
-            order.setImgUrl(imgUrl);
-            order.setGoodsInfo(goodsInfo);
-            order.setGoodsParams(goodsParams);
-            order.setGoodsCount(goodsCount);
-            order.setSingleGoodsMoney(singleGoodsMoney);
-            order.setRealname(address.getRealname());
-            order.setPhone(address.getPhone());
-            //拼接具体地址
-            String ads=address.getProvince()+address.getCity()+address.getArea()+address.getAddress();
-            order.setAddress(ads);
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
-            java.sql.Date date1 = new java.sql.Date(date.getTime());
-            String created = dateFormat.format(date1);
-            order.setCreated(created);
-            order.setUserid(id);
-            order.setProductid(id1);
-            OrderStatus orderStatus = new OrderStatus();
-            orderStatus.setId(1);
-            order.setOrderStatus(orderStatus);
-
-            orderMapper.insertOrder(order);
-
-            //分布式事务
-            //当下单成功就要减库存，和减用户余额
-
-            BigDecimal userMoney = userFallbackFeign.selectUserMoneyByUserId(id);
-            Product product = productFallbackFeign.selectProductByPid(id1);
-            int number = product.getNumber();
-
-            if (userMoney.compareTo(singleGoodsMoney)==-1||number<goodsCount) { //如果userMoney<singleGoodsMoney
-
-                //此时购买不了，进行回滚
-                throw new RuntimeException("购买失败");
-            }else { //反之可以购买
-
-                //调用多个服务
-                productFeign.decrNumberByPid(id1,goodsCount); //减库存
-                userFeign.decrMoneyByUserId(id,singleGoodsMoney.toString()); //减余额
-                cartFeign.deleteCartByCartId(cartid); //移除购物车
-                if(i==0&&usecoupons==true)
+            Address address = addressFallbackFeign.selectAddressByid(Long.valueOf(addressid));
+            CouponsRecord couponsRecord=null;
+            boolean usecoupons=false;
+            if(couponsid!=-1){
+                couponsRecord=couponsRecordFallbackFeign.selectCouponsRecord(couponsid, id, 0);
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date start = simpleDateFormat.parse(couponsRecord.getCouponsActivity().getStartTime());
+                Date now = new Date(System.currentTimeMillis());
+                Date end = simpleDateFormat.parse(couponsRecord.getCouponsActivity().getEndTime());
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(end);
+                cal.add(Calendar.DATE,1);
+                end =cal.getTime(); //结束时间加一天
+                if(now.after(start)&&now.before(end)) //校验优惠券的使用时间
                 {
-                    couponsRecordFeign.updateCouponsRecordUsetype(couponsid,1,created);
+                    usecoupons=true;
                 }
             }
+
+            // 解析json数组
+            for (int i = 0; i < size; i++) {
+                String jsonString = JSON.toJSONString(jsonArray.get(i));
+                JSONObject jsonObject = JSONObject.parseObject(jsonString);
+                long cartid = Long.valueOf((String) jsonObject.get("id")); //
+                CommonResult<Cart> cartCommonResult = cartFallbackFeign.selectCartByCartId(cartid);
+                Cart cart1 = cartCommonResult.getObj();
+                long id1 = cart1.getProductid(); //商品id
+
+                String imgUrl = (String) jsonObject.get("imgUrl");
+                String goodsInfo = (String) jsonObject.get("goodsInfo");
+                String goodsParams = (String) jsonObject.get("goodsParams");
+                int goodsCount = Integer.valueOf((String) jsonObject.get("goodsCount"));
+                BigDecimal singleGoodsMoney = new BigDecimal((String) jsonObject.get("singleGoodsMoney"));
+                if(i==0&&usecoupons==true){ //给第一个商品进行使用优惠券&&可以使用优惠券
+                    BigDecimal amount = couponsRecord.getCouponsActivity().getAmount();
+                    singleGoodsMoney=singleGoodsMoney.subtract(amount);
+                }
+                Order order = new Order();
+                order.setId(SnowId.nextId());
+                order.setImgUrl(imgUrl);
+                order.setGoodsInfo(goodsInfo);
+                order.setGoodsParams(goodsParams);
+                order.setGoodsCount(goodsCount);
+                order.setSingleGoodsMoney(singleGoodsMoney);
+                order.setRealname(address.getRealname());
+                order.setPhone(address.getPhone());
+                //拼接具体地址
+                String ads=address.getProvince()+address.getCity()+address.getArea()+address.getAddress();
+                order.setAddress(ads);
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = new Date();
+                java.sql.Date date1 = new java.sql.Date(date.getTime());
+                String created = dateFormat.format(date1);
+                order.setCreated(created);
+                order.setUserid(id);
+                order.setProductid(id1);
+                OrderStatus orderStatus = new OrderStatus();
+                orderStatus.setId(1);
+                order.setOrderStatus(orderStatus);
+
+                orderMapper.insertOrder(order);
+
+                //分布式事务
+                //当下单成功就要减库存，和减用户余额
+
+                BigDecimal userMoney = userFallbackFeign.selectUserMoneyByUserId(id);
+                Product product = productFallbackFeign.selectProductByPid(id1);
+                int number = product.getNumber();
+
+                if (userMoney.compareTo(singleGoodsMoney)==-1||number<goodsCount) { //如果userMoney<singleGoodsMoney
+
+                    //此时购买不了，进行回滚
+                    throw new RuntimeException("购买失败");
+                }else { //反之可以购买
+
+                    //调用多个服务
+                    productFeign.decrNumberByPid(id1,goodsCount); //减库存
+                    userFeign.decrMoneyByUserId(id,singleGoodsMoney.toString()); //减余额
+                    cartFeign.deleteCartByCartId(cartid); //移除购物车
+                    if(i==0&&usecoupons==true)
+                    {
+                        couponsRecordFeign.updateCouponsRecordUsetype(couponsid,1,created);
+                    }
+                }
+            }
+
+        }catch (Exception e){
+            throw new RuntimeException();
         }
+
     }
 
     @Override
@@ -276,4 +293,73 @@ public class OrderServiceImpl implements OrderService {
         userFeign.incrMoneyByUserId(userid,singleGoodsMoney.toString());
 
     }
+
+    @Override
+    public int selectOrderCountById(long userid) {
+        return orderMapper.selectOrderCountById(userid);
+    }
+
+
+    @GlobalTransactional(name = "seata_seckillOrder",rollbackFor = Exception.class)
+    @Override
+    public void seckillOrder(long addressid ,long seckillsuccessid,long seckillid,long userid) throws IOException {
+
+
+        try{
+            Address address = addressFallbackFeign.selectAddressByid(addressid);
+            Seckill seckill = seckillSearchFallbackFeign.searchSeckilltoDetailByseckillId(seckillid);
+            BigDecimal price = seckill.getPrice();
+            Order order = new Order();
+            order.setId(SnowId.nextId());
+            order.setImgUrl(seckill.getImg());
+            order.setGoodsInfo(seckill.getSeckillName());
+            order.setGoodsParams("该商品为秒杀商品");
+            order.setGoodsCount(1);
+            order.setSingleGoodsMoney(price);
+            order.setRealname(address.getRealname());
+            order.setPhone(address.getPhone());
+            //拼接具体地址
+            String ads=address.getProvince()+address.getCity()+address.getArea()+address.getAddress();
+            order.setAddress(ads);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            java.sql.Date date1 = new java.sql.Date(date.getTime());
+            String created = dateFormat.format(date1);
+            order.setCreated(created);
+            order.setUserid(userid);
+            order.setProductid(seckillid);
+            OrderStatus orderStatus = new OrderStatus();
+            orderStatus.setId(1);
+            order.setOrderStatus(orderStatus);
+
+            orderMapper.insertOrder(order);
+
+            //分布式事务
+            //当下单成功就要减库存，和减用户余额
+            BigDecimal userMoney = userFallbackFeign.selectUserMoneyByUserId(userid);
+
+            if (userMoney.compareTo(price)==-1) { //如果userMoney<singleGoodsMoney
+
+                //此时购买不了，进行回滚
+                throw new RuntimeException("支付失败");
+            }else { //反之可以购买
+
+                //调用多个服务
+
+                //删除秒杀成功记录
+                int res = seckillFeign.deleteSeckillSuccess(seckillsuccessid);
+                if(res==0){
+                    throw new RuntimeException();
+                }
+                //减余额
+                userFeign.decrMoneyByUserId(userid,price.toString());
+
+            }
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+
+    }
+
 }

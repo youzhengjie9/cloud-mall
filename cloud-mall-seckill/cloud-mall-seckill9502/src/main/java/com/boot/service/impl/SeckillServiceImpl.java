@@ -148,4 +148,19 @@ public class SeckillServiceImpl implements SeckillService {
       throw new RuntimeException();
     }
   }
+
+  @Override
+  public List<SeckillSuccess> selectSeckillSuccessByUseridAndLimit(long userid, int page, int size) {
+    return seckillMapper.selectSeckillSuccessByUseridAndLimit(userid, page, size);
+  }
+
+  @Override
+  public int selectSeckillSuccessCountByUserid(long userid) {
+    return seckillMapper.selectSeckillSuccessCountByUserid(userid);
+  }
+
+  @Override
+  public int deleteSeckillSuccess(long id) {
+    return seckillMapper.deleteSeckillSuccess(id);
+  }
 }

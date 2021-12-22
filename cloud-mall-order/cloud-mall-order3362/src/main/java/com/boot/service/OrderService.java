@@ -5,6 +5,7 @@ import com.boot.pojo.OrderStatus;
 import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
@@ -60,5 +61,12 @@ public interface OrderService {
 
     //同意退货
     void agreedReturnGoods(long userid,long orderid);
+
+    //查询订单数
+    int selectOrderCountById(long userid);
+
+    //秒杀订单支付
+    public void seckillOrder(long addressid ,long seckillsuccessid,long seckillid,long userid) throws IOException;
+
 
 }

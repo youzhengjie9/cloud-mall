@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.text.ParseException;
 
 
@@ -38,5 +39,13 @@ public interface OrderFeign {
     @GetMapping(path = "/feign/order/agreedReturnGoods/{userid}/{orderid}")
     public String agreedReturnGoods(@PathVariable("userid") long userid,
                                     @PathVariable("orderid") long orderid);
+
+    //秒杀订单支付
+    @ResponseBody
+    @GetMapping(path = "/feign/order/seckillOrder/{addressid}/{seckillsuccessid}/{seckillid}/{userid}")
+    public String seckillOrder(@PathVariable("addressid") long addressid ,
+                               @PathVariable("seckillsuccessid") long seckillsuccessid,
+                               @PathVariable("seckillid") long seckillid,
+                               @PathVariable("userid") long userid) throws IOException;
 
 }

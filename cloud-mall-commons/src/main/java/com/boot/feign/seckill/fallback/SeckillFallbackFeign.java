@@ -2,6 +2,7 @@ package com.boot.feign.seckill.fallback;
 
 import com.boot.feign.seckill.fallback.impl.SeckillFallbackFeignImpl;
 import com.boot.pojo.Seckill;
+import com.boot.pojo.SeckillSuccess;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,4 +21,13 @@ public interface SeckillFallbackFeign {
     @GetMapping(path = "/feign/seckill/selectAllSeckill")
     public List<Seckill> selectAllSeckill();
 
+    @ResponseBody
+    @GetMapping(path = "/feign/seckill/selectSeckillSuccessByUseridAndLimit/{userid}/{page}/{size}")
+    public List<SeckillSuccess> selectSeckillSuccessByUseridAndLimit(@PathVariable("userid") long userid,
+                                                                     @PathVariable("page") int page,
+                                                                     @PathVariable("size") int size);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/seckill/selectSeckillSuccessCountByUserid/{userid}")
+    public int selectSeckillSuccessCountByUserid(@PathVariable("userid") long userid);
 }

@@ -232,7 +232,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/web/logout/logout",
             "/web/center/**",
             "/web/couponsActivity/**",
-            "/web/couponsRecord/**")
+            "/web/couponsRecord/**",
+                "/web/seckill/**")
         .hasAnyRole("admin", "common")
         .antMatchers("/web/sliderCaptcha/**")
         .permitAll()

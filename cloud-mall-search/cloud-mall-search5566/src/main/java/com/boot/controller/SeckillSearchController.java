@@ -82,7 +82,6 @@ public class SeckillSearchController {
     {
 
         List<Seckill> seckills = seckillSearchService.searchAllSeckill(text, from, size,ip);
-
         return seckills;
     }
 

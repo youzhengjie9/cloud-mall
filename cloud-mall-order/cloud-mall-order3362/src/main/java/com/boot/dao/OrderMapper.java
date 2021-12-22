@@ -28,6 +28,9 @@ public interface OrderMapper {
     //查询订单数
     int selectOrderCount();
 
+    //查询订单数
+    int selectOrderCountById(@Param("userid") long userid);
+
     //查询某一天的交易额
     BigDecimal selectDealMoneyByCreated(@Param("created") String created);
 

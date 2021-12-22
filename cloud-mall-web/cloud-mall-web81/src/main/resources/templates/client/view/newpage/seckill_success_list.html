@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="UTF-8">
-    <title>云商城-订单页</title>
+    <title>云商城-秒杀成功页</title>
     <!-- 引入图标库-->
     <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!--bootstrap-->
@@ -254,92 +254,56 @@
 
 
     <div id="contentBox">
-        <span>我的订单:</span>
-<!--         一组-->
-        <div class="textDiv" th:each="order:${orderList}">
+        <span>我的秒杀:</span>
+        <!--      一组-->
+        <div class="textDiv" th:each="seckillSuccess:${seckillSuccesses}">
             <div style="width: 80px;height: 80px;border: 1px solid; float: left;">
-                <img th:src="${order.getImgUrl()}" style="width: 80px;height: 80px;border:1px solid">
+                <img th:src="${seckillSuccess.getSecKill().getImg()}" style="width: 80px;height: 80px;border:1px solid">
             </div>
 
             <div class="infos1">
                 <div class="head" style="float: left;">
-                    <b>订单编号：</b>
-                    <span th:text="${order.getId()}"></span>
+                    <b>秒杀成功号：</b>
+                    <span th:text="${seckillSuccess.getId()}"></span>
                 </div>
                 <div class="context" style="float: left;">
-                    <b>商品信息：</b>
-                    <span th:text="${order.getGoodsInfo()}"></span>
+                    <b>商品名称：</b>
+                    <span th:text="${seckillSuccess.getSecKill().getSeckillName()}"></span>
                 </div>
 
                 <div class="context">
-                    <b>商品参数：</b>
-                    <span th:text="${order.getGoodsParams()}"></span>
+                    <b>秒杀数量：</b>
+                    <span>1件</span>
                 </div>
 
             </div>
 
             <div class="infos2">
-                <div class="head" style="float: left;">
-                    <b>收货人：</b>
-                    <span th:text="${order.getRealname()}"></span>
+                <div class="head">
+                    <b>秒杀成功时间：</b>
+                    <span th:text="${seckillSuccess.getCreateTime()}"></span>
                 </div>
-
-                <div class="context" style="float: left;">
-                    <b>收货人电话：</b>
-                    <span th:text="${order.getPhone()}"></span>
+                <div class="head">
+                    <b>支付有效时间：</b>
+                    <span>秒杀成功30分钟内</span>
                 </div>
+                <div class="price">
+                    <b>订单价格：</b>
+                    <b style="color: red;">[[${seckillSuccess.secKill.price}]]元</b>
 
-                <div class="context">
-                    <b>收货地址：</b>
-                    <span th:text="${order.getAddress()}"></span>
                 </div>
-
             </div>
 
+            <button th:if="${seckillSuccess.state==0}" style="margin-top: 3%;"
+                    type="button" th:onclick="zhifu([[${seckillSuccess.id}]],[[${seckillSuccess.secKill.seckillId}]])" class="layui-btn layui-btn-danger layui-btn-radius">去支付</button>
 
-            <div class="head">
-                <b>订单时间：</b>
-                <span th:text="${order.getCreated()}"></span>
-            </div>
-            <div class="price">
-                <b>购买数量：</b>
-                <span th:text="${order.getGoodsCount()}"></span>件
-            </div>
+            <button th:if="${seckillSuccess.state!=0}" style="margin-top: 3%;"
+                    type="button" class="layui-btn layui-btn-warm layui-btn-radius disabled">已支付</button>
 
-            <div class="price">
-                <b>订单价格：</b>
-                <b style="color: red;">[[${order.getSingleGoodsMoney()}]]元</b>
-                <button th:if="${order.orderStatus.id==1 or order.orderStatus.id==2 ||order.orderStatus.id==3}"
-                        type="button" th:onclick="returnGoods([[${order.id}]])" class="layui-btn layui-btn-danger layui-btn-radius">申请退货</button>
 
-                <button th:if="${order.orderStatus.id==5}"
-                        type="button" th:onclick="cancelGoods([[${order.id}]])" class="layui-btn layui-btn-warm layui-btn-radius">撤销退货</button>
-
-            </div>
-
-            <div class="stat blue" th:if="${order.getOrderStatus().getId()==1}">
-                待发货
-            </div>
-            <div class="stat green" th:if="${order.getOrderStatus().getId()==2}">
-                已发货
-            </div>
-
-            <div class="stat green" th:if="${order.getOrderStatus().getId()==3}">
-                交易成功
-            </div>
-
-            <div class="stat darkgray" th:if="${order.getOrderStatus().getId()==4}">
-                已取消
-            </div>
-            <div class="stat red" th:if="${order.getOrderStatus().getId()==5}">
-                退款中
-            </div>
-            <div class="stat red" th:if="${order.getOrderStatus().getId()==6}">
-                退款完成
-            </div>
 
         </div>
-<!--            -->
+        <!--            -->
 
 
     </div>
@@ -356,20 +320,20 @@
                 </li>
 
                 <li th:if="${curPage>1}">
-                    <a th:onclick="prePage([[${curPage}]])">&laquo;</a>
+                    <a style="cursor: pointer;" th:onclick="prePage([[${curPage}]])">&laquo;</a>
                 </li>
 
                 <li th:id="p1" class="active">
-                    <a th:onclick="pagechange(1)"  th:text="1"></a>
+                    <a style="cursor: pointer;" th:onclick="pagechange(1)"  th:text="1"></a>
                 </li>
 
 
                 <li th:each="index:${#numbers.sequence(2, 5)}" th:if="${pagecount>=5}" th:id="'p'+${index}">
-                    <a th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
+                    <a style="cursor: pointer;" th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
                 </li>
 
                 <li th:id="'p'+${index}" th:each="index:${#numbers.sequence(2, pagecount)}" th:if="${pagecount<5 and pagecount>=2}">
-                    <a th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
+                    <a style="cursor: pointer;" th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
                 </li>
 
 
@@ -379,7 +343,7 @@
                     <a>&raquo;</a>
                 </li>
                 <li th:if="${pagecount>1}">
-                    <a th:onclick="nextPage([[${curPage}]])">&raquo;</a>
+                    <a style="cursor: pointer;" th:onclick="nextPage([[${curPage}]])">&raquo;</a>
                 </li>
 
             </ul>
@@ -492,69 +456,21 @@
             }
         }
     }
-    //申请退货
-    function returnGoods(id) {
-
-        let b = confirm('您确定要申请退货吗？');
-        if(b)
-        {
-            $.ajax({
-                url: "/web/order/returnGoods/" + id,
-                dataType: 'json',
-                type: 'GET',
-                success: function (result) {
-
-                    if(result.success)
-                    {
-                        alert(result.msg);
-                        window.location.reload();
-                    }else {
-                        alert(result.msg);
-                    }
-
-                }
-            })
 
 
-        }
+    function zhifu(seckillsuccessid,seckillid) {
+
+        window.location.href='/web/seckill/doPay/'+seckillsuccessid+'/'+seckillid;
+
 
     }
-
-    //撤销退货
-    function cancelGoods(id) {
-
-        let b = confirm('您确定要撤销退货吗？'+id);
-        if(b)
-        {
-
-            $.ajax({
-                url: "/web/order/cancelGoods/" + id,
-                dataType: 'json',
-                type: 'GET',
-                success: function (result) {
-
-                    if(result.success)
-                    {
-                        alert(result.msg);
-                        window.location.reload();
-                    }else {
-                        alert(result.msg);
-                    }
-
-                }
-            })
-        }
-    }
-
-
-
 
     //上一页
     function prePage(pgnum) {
 
 
         $.ajax({
-            url: "/web/order/orderData",
+            url: "/web/seckill/seckillSuccessData",
             data: {
                 "from": pgnum - 1
             },
@@ -562,109 +478,71 @@
             success: function (json) {
 
                 document.getElementById('contentBox').innerHTML = ""; //清空所有订单展示
-                var html = ''; //拼接订单展示html
-                html += ' <span>我的订单:</span>'
-                for (var i = 0; i < json.orders.length; i++) {
+                var html = '';
+                html += ' <span>我的秒杀:</span>'
+                for (var i = 0; i < json.seckillSuccesses.length; i++) {
                     html += '<div class="textDiv">'
                     html += ' <div style="width: 80px;height: 80px;border: 1px solid; float: left;">'
-                    html += '<img style="width: 80px;height: 80px;border:1px solid" src=\"' + json.orders[i].imgUrl + '\"' + '>'
+                    html += '<img style="width: 80px;height: 80px;border:1px solid" src=\"' + json.seckillSuccesses[i].secKill.img + '\"' + '>'
                     html += ' </div>'
 
                     html += '<div class="infos1">'
                     html += '<div class="head" style="float: left;">'
-                    html += '<b>订单编号：</b>'
-                    html += '<span>' + json.orders[i].id + '</span></div>'
+                    html += '<b>秒杀成功号：</b>'
+                    html += '<span>' + json.seckillSuccesses[i].id + '</span></div>'
 
 
                     html += '<div class="context" style="float: left;">'
-                    html += '<b>商品信息：</b>'
-                    html += '<span>' + json.orders[i].goodsInfo + '</span>'
+                    html += '<b>商品名称：</b>'
+                    html += '<span>' + json.seckillSuccesses[i].secKill.seckillName + '</span>'
                     html += '</div>'
 
 
                     html += ' <div class="context">'
-                    html += '<b>商品参数：</b>'
-                    html += '<span>' + json.orders[i].goodsParams + '</span>'
+                    html += '<b>秒杀数量：</b>'
+                    html += '<span>' + 1 + '件</span>'
                     html += ' </div>'
                     html+='</div>'
 
 
                     html += '<div class="infos2">'
-                    html += '<div class="head" style="float: left;">'
-                    html += ' <b>收货人：</b>'
-                    html += '<span>' + json.orders[i].realname + '</span>'
+                    html += '<div class="head">'
+                    html += ' <b>秒杀成功时间：</b>'
+                    html += '<span>' + json.seckillSuccesses[i].createTime + '</span>'
                     html += '</div>'
 
 
-                    html += ' <div class="context" style="float: left;">'
-                    html += ' <b>收货人电话：</b>'
-                    html += '<span>' + json.orders[i].phone + '</span>'
-                    html += '</div>'
-
-
-                    html += '<div class="context">'
-                    html += '<b>收货地址：</b>'
-                    html += '<span>' + json.orders[i].address + '</span>'
-                    html += '</div>'
-
-                    html += '</div>'
-
-
-                    html += '<div class="head"><b>订单时间：</b>'
-                    html += '<span>' + json.orders[i].created + '</span>'
-                    html += '</div>'
-
-                    html += '<div class="price"><b>购买数量：</b>'
-                    html += '<span>' + json.orders[i].goodsCount + '</span>件'
+                    html += ' <div class="head">'
+                    html += ' <b>支付有效时间：</b>'
+                    html += '<span>' + '秒杀成功30分钟内</span>'
                     html += '</div>'
 
                     html += ' <div class="price"> <b>订单价格：</b>'
 
-                    html += '<b style="color: red;">' + json.orders[i].singleGoodsMoney + '元</b>'
+                    html += '<b style="color: red;">' + json.seckillSuccesses[i].secKill.price + '元</b>'
 
 
-                    if(json.orders[i].orderStatus.id==1
-                    ||json.orders[i].orderStatus.id==2
-                    ||json.orders[i].orderStatus.id==3){
+                    html+='</div>'
+                    html+='</div>'
 
-                        html+='<button type="button" onclick=\"';
-                        html+='returnGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-danger layui-btn-radius"';
-                        html+='>申请退货</button>'
+                    if(json.seckillSuccesses[i].state==0){
 
+                        html+='<button style="margin-top: 3%;" type="button" onclick=\"';
+                        html+='zhifu('+json.seckillSuccesses[i].id+','+json.seckillSuccesses[i].secKill.seckillId+')\" class="layui-btn layui-btn-danger layui-btn-radius"';
+                        html+='>去支付</button>'
 
                     }
 
-                    if(json.orders[i].orderStatus.id==5){
+                    if(json.seckillSuccesses[i].state==1){
 
-                        html+='<button type="button" onclick=\"';
-                        html+='cancelGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-warm layui-btn-radius"';
-                        html+='>撤销退货</button>'
+                        html+='<button style="margin-top: 3%;" type="button" ';
+                        html+='class="layui-btn layui-btn-warm layui-btn-radius"';
+                        html+='>已支付</button>'
                     }
 
                     html+='</div>'
 
-                    if (json.orders[i].orderStatus.id == 1) {
 
-                        html += '<div class="stat blue">待发货</div>'
-
-                    } else if (json.orders[i].orderStatus.id == 2) {
-                        html += '<div class="stat green">已发货</div>'
-
-                    } else if (json.orders[i].orderStatus.id == 3) {
-                        html += '<div class="stat green">交易成功</div>'
-                    } else if (json.orders[i].orderStatus.id == 4) {
-
-                        html += '<div class="stat darkgray">已取消</div>'
-
-                    } else if (json.orders[i].orderStatus.id == 5) {
-
-                        html += '<div class="stat red">退款中</div>'
-
-                    } else if (json.orders[i].orderStatus.id == 6) {
-
-                        html += '<div class="stat red">退款完成</div>'
-
-                    }
                     html += '</div>'
                 }
 
@@ -688,7 +566,7 @@
                 var pageGroup = json.pageGroup;
 
                 if (curPage > 1) {
-                    pageBarHtml += '<li><a onclick=\"' + 'prePage(' + curPage + ')' + '\">&laquo;</a></li>'
+                    pageBarHtml += '<li><a style="cursor: pointer;" onclick=\"' + 'prePage(' + curPage + ')' + '\">&laquo;</a></li>'
                 } else {
                     pageBarHtml += '<li class="disabled"><a>&laquo;</a> </li>';
                 }
@@ -701,7 +579,7 @@
                         } else {
                             phtml1 += '<li id=\"' + 'p' + (i + 1) + '\">';
                         }
-                        phtml1 += '<a onclick=\"' + 'pagechange(' + (i + 1) + ')' + '\">' + (i + 1) + '</a>'
+                        phtml1 += '<a style="cursor: pointer;" onclick=\"' + 'pagechange(' + (i + 1) + ')' + '\">' + (i + 1) + '</a>'
 
                         phtml1 += '</li>'
 
@@ -729,7 +607,7 @@
                             } else {
                                 phtml1 += '<li id=\"' + 'p' + (i + 1) + '\">';
                             }
-                            phtml1 += '<a onclick=\"' + 'pagechange(' + (i + 1) + ')' + '\">' + (i + 1) + '</a>'
+                            phtml1 += '<a style="cursor: pointer;" onclick=\"' + 'pagechange(' + (i + 1) + ')' + '\">' + (i + 1) + '</a>'
 
                             phtml1 += '</li>'
                         }
@@ -747,7 +625,7 @@
                             } else {
                                 phtml1 += '<li id=\"' + 'p' + (i + 1) + '\">';
                             }
-                            phtml1 += '<a onclick=\"' + 'pagechange(' + (i + 1) + ')' + '\">' + (i + 1) + '</a>'
+                            phtml1 += '<a style="cursor: pointer;" onclick=\"' + 'pagechange(' + (i + 1) + ')' + '\">' + (i + 1) + '</a>'
 
                             phtml1 += '</li>'
                         }
@@ -761,7 +639,7 @@
                 if (curPage == pagecount) {
                     pageBarHtml += '<li class="disabled"> <a>&raquo;</a></li>';
                 } else {
-                    pageBarHtml += '<li><a onclick=\"nextPage(' + curPage + ')\">&raquo;</a></li>'
+                    pageBarHtml += '<li><a style="cursor: pointer;" onclick=\"nextPage(' + curPage + ')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml += '</ul>';
@@ -779,124 +657,89 @@
     function nextPage(pgnum) {
 
         $.ajax({
-            url: "/web/order/orderData",
+            url: "/web/seckill/seckillSuccessData",
             data: {
                 "from": pgnum + 1
             },
             type: "GET",
             success: function (json) {
+                console.log(json);
+                console.log(json.seckillSuccesses.length)
+                console.log(json.seckillSuccesses[0].id)
 
                 document.getElementById('contentBox').innerHTML = ""; //清空所有订单展示
-                var html = ''; //拼接订单展示html
-                html += ' <span>我的订单:</span>'
-                for (var i = 0; i < json.orders.length; i++) {
+                var html = '';
+                html += ' <span>我的秒杀:</span>'
+                for (var i = 0; i < json.seckillSuccesses.length; i++) {
                     html += '<div class="textDiv">'
                     html += ' <div style="width: 80px;height: 80px;border: 1px solid; float: left;">'
-                    html += '<img style="width: 80px;height: 80px;border:1px solid" src=\"' + json.orders[i].imgUrl + '\"' + '>'
+                    html += '<img style="width: 80px;height: 80px;border:1px solid" src=\"' + json.seckillSuccesses[i].secKill.img + '\"' + '>'
                     html += ' </div>'
 
                     html += '<div class="infos1">'
                     html += '<div class="head" style="float: left;">'
-                    html += '<b>订单编号：</b>'
-                    html += '<span>' + json.orders[i].id + '</span></div>'
+                    html += '<b>秒杀成功号：</b>'
+                    html += '<span>' + json.seckillSuccesses[i].id + '</span></div>'
 
 
                     html += '<div class="context" style="float: left;">'
-                    html += '<b>商品信息：</b>'
-                    html += '<span>' + json.orders[i].goodsInfo + '</span>'
+                    html += '<b>商品名称：</b>'
+                    html += '<span>' + json.seckillSuccesses[i].secKill.seckillName + '</span>'
                     html += '</div>'
 
 
                     html += ' <div class="context">'
-                    html += '<b>商品参数：</b>'
-                    html += '<span>' + json.orders[i].goodsParams + '</span>'
+                    html += '<b>秒杀数量：</b>'
+                    html += '<span>' + 1 + '件</span>'
                     html += ' </div>'
                     html+='</div>'
 
 
                     html += '<div class="infos2">'
-                    html += '<div class="head" style="float: left;">'
-                    html += ' <b>收货人：</b>'
-                    html += '<span>' + json.orders[i].realname + '</span>'
+                    html += '<div class="head">'
+                    html += ' <b>秒杀成功时间：</b>'
+                    html += '<span>' + json.seckillSuccesses[i].createTime + '</span>'
                     html += '</div>'
 
 
-                    html += ' <div class="context" style="float: left;">'
-                    html += ' <b>收货人电话：</b>'
-                    html += '<span>' + json.orders[i].phone + '</span>'
-                    html += '</div>'
-
-
-                    html += '<div class="context">'
-                    html += '<b>收货地址：</b>'
-                    html += '<span>' + json.orders[i].address + '</span>'
-                    html += '</div>'
-
-                    html += '</div>'
-
-
-                    html += '<div class="head"><b>订单时间：</b>'
-                    html += '<span>' + json.orders[i].created + '</span>'
-                    html += '</div>'
-
-                    html += '<div class="price"><b>购买数量：</b>'
-                    html += '<span>' + json.orders[i].goodsCount + '</span>件'
+                    html += ' <div class="head">'
+                    html += ' <b>支付有效时间：</b>'
+                    html += '<span>' + '秒杀成功30分钟内</span>'
                     html += '</div>'
 
                     html += ' <div class="price"> <b>订单价格：</b>'
 
-                    html += '<b style="color: red;">' + json.orders[i].singleGoodsMoney + '元</b>'
-
-                    if(json.orders[i].orderStatus.id==1
-                        ||json.orders[i].orderStatus.id==2
-                        ||json.orders[i].orderStatus.id==3){
-
-                        html+='<button type="button" onclick=\"';
-                        html+='returnGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-danger layui-btn-radius"';
-                        html+='>申请退货</button>'
-
-
-                    }
-
-                    if(json.orders[i].orderStatus.id==5){
-
-                        html+='<button type="button" onclick=\"';
-                        html+='cancelGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-warm layui-btn-radius"';
-                        html+='>撤销退货</button>'
-                    }
+                    html += '<b style="color: red;">' + json.seckillSuccesses[i].secKill.price + '元</b>'
 
 
                     html+='</div>'
+                    html+='</div>'
 
-                    if (json.orders[i].orderStatus.id == 1) {
 
-                        html += '<div class="stat blue">待发货</div>'
 
-                    } else if (json.orders[i].orderStatus.id == 2) {
-                        html += '<div class="stat green">已发货</div>'
+                    if(json.seckillSuccesses[i].state==0){
 
-                    } else if (json.orders[i].orderStatus.id == 3) {
-                        html += '<div class="stat green">交易成功</div>'
-                    } else if (json.orders[i].orderStatus.id == 4) {
-
-                        html += '<div class="stat darkgray">已取消</div>'
-
-                    } else if (json.orders[i].orderStatus.id == 5) {
-
-                        html += '<div class="stat red">退款中</div>'
-
-                    } else if (json.orders[i].orderStatus.id == 6) {
-
-                        html += '<div class="stat red">退款完成</div>'
+                        html+='<button style="margin-top: 3%;" type="button" onclick=\"';
+                        html+='zhifu('+json.seckillSuccesses[i].id+','+json.seckillSuccesses[i].secKill.seckillId+')\" class="layui-btn layui-btn-danger layui-btn-radius"';
+                        html+='>去支付</button>'
 
                     }
+
+                    if(json.seckillSuccesses[i].state==1){
+
+                        html+='<button style="margin-top: 3%;" type="button" ';
+                        html+='class="layui-btn layui-btn-warm layui-btn-radius"';
+                        html+='>已支付</button>'
+                    }
+
+                    html+='</div>'
+
+
                     html += '</div>'
                 }
 
 
                 $('#contentBox').append(html);
-
-
 
                 //修改分页bar
 
@@ -915,7 +758,7 @@
 
                 if(curPage>1)
                 {
-                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer;" onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
                 }else {
                     pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
                 }
@@ -932,7 +775,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer;" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -963,7 +806,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer;" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -983,7 +826,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer;" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -999,7 +842,7 @@
                 {
                     pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
                 }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer;" onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml+='</ul>';
@@ -1029,12 +872,10 @@
         old.classList.remove('active');
         newelem.classList.add('active')
 
-
         // var searchPage=document.getElementById('searchPage'); //搜索页div
 
-
         $.ajax({
-            url: "/web/order/orderData",
+            url: "/web/seckill/seckillSuccessData",
             data: {
                 "from": pageNum
             },
@@ -1042,114 +883,77 @@
             success: function (json) {
 
                 document.getElementById('contentBox').innerHTML = ""; //清空所有订单展示
-                var html = ''; //拼接订单展示html
-                html += ' <span>我的订单:</span>'
-                for (var i = 0; i < json.orders.length; i++) {
+                var html = '';
+                html += ' <span>我的秒杀:</span>'
+                for (var i = 0; i < json.seckillSuccesses.length; i++) {
                     html += '<div class="textDiv">'
                     html += ' <div style="width: 80px;height: 80px;border: 1px solid; float: left;">'
-                    html += '<img style="width: 80px;height: 80px;border:1px solid" src=\"' + json.orders[i].imgUrl + '\"' + '>'
+                    html += '<img style="width: 80px;height: 80px;border:1px solid" src=\"' + json.seckillSuccesses[i].secKill.img + '\"' + '>'
                     html += ' </div>'
 
                     html += '<div class="infos1">'
                     html += '<div class="head" style="float: left;">'
-                    html += '<b>订单编号：</b>'
-                    html += '<span>' + json.orders[i].id + '</span></div>'
+                    html += '<b>秒杀成功号：</b>'
+                    html += '<span>' + json.seckillSuccesses[i].id + '</span></div>'
 
 
                     html += '<div class="context" style="float: left;">'
-                    html += '<b>商品信息：</b>'
-                    html += '<span>' + json.orders[i].goodsInfo + '</span>'
+                    html += '<b>商品名称：</b>'
+                    html += '<span>' + json.seckillSuccesses[i].secKill.seckillName + '</span>'
                     html += '</div>'
 
 
                     html += ' <div class="context">'
-                    html += '<b>商品参数：</b>'
-                    html += '<span>' + json.orders[i].goodsParams + '</span>'
+                    html += '<b>秒杀数量：</b>'
+                    html += '<span>' + 1 + '件</span>'
                     html += ' </div>'
                     html+='</div>'
 
 
                     html += '<div class="infos2">'
-                    html += '<div class="head" style="float: left;">'
-                    html += ' <b>收货人：</b>'
-                    html += '<span>' + json.orders[i].realname + '</span>'
+                    html += '<div class="head">'
+                    html += ' <b>秒杀成功时间：</b>'
+                    html += '<span>' + json.seckillSuccesses[i].createTime + '</span>'
                     html += '</div>'
 
 
-                    html += ' <div class="context" style="float: left;">'
-                    html += ' <b>收货人电话：</b>'
-                    html += '<span>' + json.orders[i].phone + '</span>'
+                    html += ' <div class="head">'
+                    html += ' <b>支付有效时间：</b>'
+                    html += '<span>' + '秒杀成功30分钟内</span>'
                     html += '</div>'
 
-
-                    html += '<div class="context">'
-                    html += '<b>收货地址：</b>'
-                    html += '<span>' + json.orders[i].address + '</span>'
-                    html += '</div>'
-
-                    html += '</div>'
-
-
-                    html += '<div class="head"><b>订单时间：</b>'
-                    html += '<span>' + json.orders[i].created + '</span>'
-                    html += '</div>'
-
-                    html += '<div class="price"><b>购买数量：</b>'
-                    html += '<span>' + json.orders[i].goodsCount + '</span>件'
-                    html += '</div>'
 
                     html += ' <div class="price"> <b>订单价格：</b>'
 
-                    html += '<b style="color: red;">' + json.orders[i].singleGoodsMoney + '元</b>'
+                    html += '<b style="color: red;">' + json.seckillSuccesses[i].secKill.price + '元</b>'
 
-                    if(json.orders[i].orderStatus.id==1
-                        ||json.orders[i].orderStatus.id==2
-                        ||json.orders[i].orderStatus.id==3){
 
-                        html+='<button type="button" onclick=\"';
-                        html+='returnGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-danger layui-btn-radius"';
-                        html+='>申请退货</button>'
+                    html+='</div>'
+                    html+='</div>'
 
+                    if(json.seckillSuccesses[i].state==0){
+
+                        html+='<button style="margin-top: 3%;" type="button" onclick=\"';
+                        html+='zhifu('+json.seckillSuccesses[i].id+','+json.seckillSuccesses[i].secKill.seckillId+')\" class="layui-btn layui-btn-danger layui-btn-radius"';
+                        html+='>去支付</button>'
 
                     }
 
-                    if(json.orders[i].orderStatus.id==5){
+                    if(json.seckillSuccesses[i].state==1){
 
-                        html+='<button type="button" onclick=\"';
-                        html+='cancelGoods('+json.orders[i].id+')\" class="layui-btn layui-btn-warm layui-btn-radius"';
-                        html+='>撤销退货</button>'
+                        html+='<button style="margin-top: 3%;" type="button" ';
+                        html+='class="layui-btn layui-btn-warm layui-btn-radius"';
+                        html+='>已支付</button>'
                     }
 
                     html+='</div>'
 
-                    if (json.orders[i].orderStatus.id == 1) {
 
-                        html += '<div class="stat blue">待发货</div>'
-
-                    } else if (json.orders[i].orderStatus.id == 2) {
-                        html += '<div class="stat green">已发货</div>'
-
-                    } else if (json.orders[i].orderStatus.id == 3) {
-                        html += '<div class="stat green">交易成功</div>'
-                    } else if (json.orders[i].orderStatus.id == 4) {
-
-                        html += '<div class="stat darkgray">已取消</div>'
-
-                    } else if (json.orders[i].orderStatus.id == 5) {
-
-                        html += '<div class="stat red">退款中</div>'
-
-                    } else if (json.orders[i].orderStatus.id == 6) {
-
-                        html += '<div class="stat red">退款完成</div>'
-
-                    }
                     html += '</div>'
                 }
 
 
                 $('#contentBox').append(html);
-
 
                 //刷新分页bar
 
@@ -1168,7 +972,7 @@
 
                 if(curPage>1)
                 {
-                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer;" onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
                 }else {
                     pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
                 }
@@ -1184,7 +988,7 @@
                         }else {
                             phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                         }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                        phtml1+='<a style="cursor: pointer;" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                         phtml1+='</li>'
 
@@ -1215,7 +1019,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer;" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -1235,7 +1039,7 @@
                             }else {
                                 phtml1+='<li id=\"'+'p'+(i+1)+'\">';
                             }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
+                            phtml1+='<a style="cursor: pointer;" onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
 
                             phtml1+='</li>'
                         }
@@ -1251,7 +1055,7 @@
                 {
                     pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
                 }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
+                    pageBarHtml+='<li><a style="cursor: pointer;" onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
                 }
 
                 pageBarHtml+='</ul>';
@@ -1265,8 +1069,6 @@
         })
 
     }
-
-
 
 </script>
 

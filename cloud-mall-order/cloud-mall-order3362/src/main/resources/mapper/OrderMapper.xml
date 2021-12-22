@@ -69,6 +69,10 @@
         select count(*) from `order`
     </select>
 
+    <select id="selectOrderCountById" resultType="int">
+        select count(*) from `order` where userid=#{userid}
+    </select>
+
     <select id="selectDealMoneyByCreated" resultType="java.math.BigDecimal">
     SELECT
 	sum(singleGoodsMoney)

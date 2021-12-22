@@ -31,4 +31,8 @@ public interface SeckillFeign {
     @PostMapping(path = "/feign/seckill/seckillbegin")
     public String seckillbegin(@RequestBody SeckillSuccess seckillSuccess);
 
+    @ResponseBody
+    @GetMapping(path = "/feign/seckill/deleteSeckillSuccess/{id}")
+    public int deleteSeckillSuccess(@PathVariable("id") long id);
+
 }

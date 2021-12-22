@@ -87,4 +87,9 @@ public interface OrderFallbackFeign {
     @GetMapping(path = "/feign/order/selectReturnGoodsById/{id}")
     public Order selectReturnGoodsById(@PathVariable("id") long id);
 
+    //查询订单数
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectOrderCountById/{userid}")
+    public int selectOrderCountById(@PathVariable("userid") long userid);
+
 }

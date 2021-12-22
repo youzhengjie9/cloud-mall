@@ -127,4 +127,30 @@ public class SeckillController {
         return seckillService.selectAllSeckill();
     }
 
+    @ResponseBody
+    @GetMapping(path = "/selectSeckillSuccessByUseridAndLimit/{userid}/{page}/{size}")
+    public List<SeckillSuccess> selectSeckillSuccessByUseridAndLimit(@PathVariable("userid") long userid,
+                                                                     @PathVariable("page") int page,
+                                                                     @PathVariable("size") int size){
+
+        return seckillService.selectSeckillSuccessByUseridAndLimit(userid, page, size);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/selectSeckillSuccessCountByUserid/{userid}")
+    public int selectSeckillSuccessCountByUserid(@PathVariable("userid") long userid){
+
+        return seckillService.selectSeckillSuccessCountByUserid(userid);
+    }
+    @ResponseBody
+    @GetMapping(path = "/deleteSeckillSuccess/{id}")
+    public int deleteSeckillSuccess(@PathVariable("id") long id){
+
+
+        return seckillService.deleteSeckillSuccess(id);
+    }
+
+
+
+
 }

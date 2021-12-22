@@ -20,6 +20,15 @@ public interface SeckillMapper {
 
     List<Seckill> selectAllSeckill();
 
+    List<SeckillSuccess> selectSeckillSuccessByUseridAndLimit(@Param("userid") long userid,
+                                                              @Param("page") int page,
+                                                              @Param("size") int size);
+
+    int selectSeckillSuccessCountByUserid(@Param("userid") long userid);
+
+
+    int deleteSeckillSuccess(@Param("id") long id);
+
 
 
 }

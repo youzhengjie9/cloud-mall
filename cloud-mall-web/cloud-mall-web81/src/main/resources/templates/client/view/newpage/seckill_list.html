@@ -323,6 +323,9 @@
         <div class="topbar_cart fr">
             <a href="/web/order/toOrderPage">我的订单</a>
         </div>
+        <div class="topbar_cart fr">
+            <a href="/web/seckill/toSeckillSuccessList">秒杀成功订单</a>
+        </div>
         <div class="topbar_info fr" style="width:220px">
             <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
             <a class="nav-link" th:href="@{/web/register/toregister}">注册</a>
@@ -568,7 +571,7 @@
 
 
         $.ajax({
-            url: "/web/search/searchProductsByCondition",
+            url: "/web/seckill/searchSeckillByCondition",
             data: {
                 "from": pgnum-1
             },
@@ -576,19 +579,19 @@
             success: function (json) {
                 document.getElementById('products').innerHTML = ""; //清空所有商品展示
                 var html = ''; //拼接商品展示html
-                for (var i = 0; i < json.products.length; i++) {
+                for (var i = 0; i < json.seckills.length; i++) {
 
                     html += '<div class="product">'
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
-                    html+='<a target="_blank" href=\"'+'/web/index/view/homeProductDetail/'+json.products[i].productId+'\">'
-                    html += '<img src=\"'+ json.products[i].img + '\" alt="product">';
+                    html+='<a target="_blank" href=\"'+'/web/seckill/seckillDetail/'+json.seckills[i].seckillId+'\">'
+                    html += '<img src=\"'+ json.seckills[i].img + '\" alt="product">';
                     html += '</a></div>'
-                    html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
-                    html += '<p class="desc">' + json.products[i].name + '</p>';
+                    html += '<h3><a href="#">' + json.seckills[i].seckillName + '</a></h3>';
+                    html += '<p class="desc">' + json.seckills[i].seckillName + '</p>';
                     html += '<p class="price">'
 
-                    html += '<span>' + json.products[i].price + '元</span>';
+                    html += '<span>' + json.seckills[i].price + '元</span>';
                     html += '<del>' + 19999 + '</del>'
                     html + '</p>';
 
@@ -724,7 +727,7 @@
     function nextPage(pgnum) {
 
         $.ajax({
-            url: "/web/search/searchProductsByCondition",
+            url: "/web/seckill/searchSeckillByCondition",
             data: {
                 "from": pgnum+1
             },
@@ -732,19 +735,19 @@
             success: function (json) {
                 document.getElementById('products').innerHTML = ""; //清空所有商品展示
                 var html = ''; //拼接商品展示html
-                for (var i = 0; i < json.products.length; i++) {
+                for (var i = 0; i < json.seckills.length; i++) {
 
                     html += '<div class="product">'
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
-                    html+='<a target="_blank" href=\"'+'/web/index/view/homeProductDetail/'+json.products[i].productId+'\">'
-                    html += '<img src=\"' + json.products[i].img + '\" alt="product">';
+                    html+='<a target="_blank" href=\"'+'/web/seckill/seckillDetail/'+json.seckills[i].seckillId+'\">'
+                    html += '<img src=\"'+ json.seckills[i].img + '\" alt="product">';
                     html += '</a></div>'
-                    html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
-                    html += '<p class="desc">' + json.products[i].name + '</p>';
+                    html += '<h3><a href="#">' + json.seckills[i].seckillName + '</a></h3>';
+                    html += '<p class="desc">' + json.seckills[i].seckillName + '</p>';
                     html += '<p class="price">'
 
-                    html += '<span>' + json.products[i].price + '元</span>';
+                    html += '<span>' + json.seckills[i].price + '元</span>';
                     html += '<del>' + 19999 + '</del>'
                     html + '</p>';
 
@@ -895,30 +898,27 @@
 
 
         $.ajax({
-            url: "/web/search/searchProductsByCondition",
+            url: "/web/seckill/searchSeckillByCondition",
             data: {
                 "from": pageNum
             },
             type: "GET",
             success: function (json) {
-
                 document.getElementById('products').innerHTML = ""; //清空所有商品展示
-
                 var html = ''; //拼接商品展示html
-                for (var i = 0; i < json.products.length; i++) {
-                    // console.log(products[i].name);
+                for (var i = 0; i < json.seckills.length; i++) {
 
                     html += '<div class="product">'
                     html += '<ul><li>';
                     html += '<div class="pro-img">'
-                    html+='<a target="_blank" href=\"'+'/web/index/view/homeProductDetail/'+json.products[i].productId+'\">'
-                    html += '<img src=\"' + json.products[i].img + '\" alt="product">';
+                    html+='<a target="_blank" href=\"'+'/web/seckill/seckillDetail/'+json.seckills[i].seckillId+'\">'
+                    html += '<img src=\"'+ json.seckills[i].img + '\" alt="product">';
                     html += '</a></div>'
-                    html += '<h3><a href="#">' + json.products[i].name + '</a></h3>';
-                    html += '<p class="desc">' + json.products[i].name + '</p>';
+                    html += '<h3><a href="#">' + json.seckills[i].seckillName + '</a></h3>';
+                    html += '<p class="desc">' + json.seckills[i].seckillName + '</p>';
                     html += '<p class="price">'
 
-                    html += '<span>' + json.products[i].price + '元</span>';
+                    html += '<span>' + json.seckills[i].price + '元</span>';
                     html += '<del>' + 19999 + '</del>'
                     html + '</p>';
 
@@ -933,9 +933,6 @@
                 }
 
                 $('#products').append(html);
-
-
-
                 //刷新分页bar
 
                 document.getElementById('searchPage').innerHTML=''; //搜索页div清空

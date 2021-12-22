@@ -20,4 +20,11 @@ public interface SeckillService {
     void insertSeckillSuccess(SeckillSuccess seckillSuccess);
 
     void seckillbegin(SeckillSuccess seckillSuccess);
+
+    List<SeckillSuccess> selectSeckillSuccessByUseridAndLimit(long userid, int page, int size);
+
+    int selectSeckillSuccessCountByUserid(@Param("userid") long userid);
+
+    int deleteSeckillSuccess(long id);
+
 }

@@ -346,7 +346,9 @@
         <div class="topbar_cart fr">
             <a href="/web/order/toOrderPage">我的订单</a>
         </div>
-
+        <div class="topbar_cart fr">
+            <a href="/web/seckill/toSeckillSuccessList">秒杀成功订单</a>
+        </div>
         <div class="topbar_info fr" style="width:220px">
             <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
             <a class="nav-link" th:href="@{/web/register/toregister}">注册</a>
@@ -608,6 +610,23 @@
     //开始秒杀
     function miaosha(secid) {
 
+        $.ajax({
+            url: "/web/seckill/doSeckill/"+secid,
+            data: {},
+            type: "GET",
+            success: function (data) {
+                if(data.success==true){
+                    alert(data.msg)
+                    window.location.href='/web/seckill/toSeckillSuccessList';
+                }else {
+                    alert(data.msg)
+                }
+            },
+            error: function () {
+                alert('秒杀异常,请重试')
+            }
+
+        })
 
 
     }

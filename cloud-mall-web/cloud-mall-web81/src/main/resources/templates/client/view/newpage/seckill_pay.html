@@ -7,7 +7,7 @@
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <!-- 默认的header name是X-CSRF-TOKEN -->
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <title>云商城-订单结算页</title>
+    <title>云商城-秒杀支付页</title>
     <!-- 引入图标库-->
     <link href="http://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!--bootstrap-->
@@ -210,104 +210,16 @@
             color: orange;
         }
 
-
-    /*    coupons*/
-        .coupon{
-            position:relative;
-            background:#d51d27;
-            color:#fff;
-            width: 240px;
-            height:75px;
-            line-height:25px;
-            overflow:hidden;
-            margin-top:15px;
-            float: left;
-            margin-right: 50px;
-        }
-        .coupon-diabled{
-            background:#c3c3c3;
-            color:#666;
-
-        }
-        .coupon:after{
-            content:".";
-            display:block;
-            height:0;
-            clear:both;
-            visibility:hidden;
-
-        }
         .coupon-money .sum{
             font-size:25px;
         }
-        .coupon-left{
-            float:left;
-            text-align:left;
-            width:60%;
-            font-size:12px;
-            background:url(./circle-border-left.png) left center no-repeat;
-        }
-        .coupon-right{
-            float:right;
-            text-align: center;
-            width:40%;
-            font-size:14px;
-            background:url(./circle-border-right.png) right center no-repeat;
 
-        }
-        .coupon-inner{
-            padding:10px 15px;
-            height:75px;
-            position: relative;
-        }
+
+
         .coupon-right .coupon-inner{
             border-left:2px dashed rgba(255,255,255,.5);
         }
-        .coupon-money,.coupon-time{
-            margin-top:12px;
-        }
-        .coupon-circle{
-            display:inline-block;
-            width:16px;
-            height:16px;
-            background:#fff;
-            position: absolute;
-            left:-9px;
-            border-radius:50%;
-        }
-        .coupon-circle.top{
-            top:-8px;
-        }
-        .coupon-circle.bottom{
-            bottom:-8px;
-        }
-        .coupon-light{
-            position:absolute;
-            top:20px;
-            left:20%;
-            height:150px;
-            width:100%;
-            background:rgba(255,255,255,.2);
-            transform: rotate(-30deg);
-            -webkit-transform: rotate(-30deg);
-            -moz-transform: rotate(-30deg);
-        }
 
-        .liji{
-
-            color: #FFFFFF;
-            text-decoration: none;
-
-        }
-
-        .spanStyle {
-            white-space: nowrap; /*强制span不换行*/
-            display: inline-block; /*将span当做块级元素对待*/
-            width: 190px; /*限制宽度*/
-            overflow: hidden; /*超出宽度部分隐藏*/
-            text-overflow: ellipsis; /*超出部分以点号代替*/
-            font-size: 15px;
-        }
     </style>
 
 <body>
@@ -429,47 +341,6 @@
         </div>
 
 
-
-<!--        优惠券-->
-
-        <span style="width: 100px;height: 20px;float: left;">使用优惠券</span>
-
-        <div id="couponbox" style="width: 100%;height: 105px;float: left;">
-
-            <div th:if="${couponsRecords ne null}" th:each="coupons:${couponsRecords}">
-
-                <input style="width: 15px;height: 15px;float: left;margin-top: 50px;" type="radio" th:value="${coupons.id}" name="coupons" th:onclick="changeAmount([[${coupons.couponsActivity.amount}]])"/>
-                <!--可用-->
-                <div class="coupon">
-                    <div class="coupon-left">
-                        <div class="coupon-inner">
-                            <div class="coupon-money">
-                                <span>¥</span>
-                                <span class="sum" th:text="${coupons.getCouponsActivity().amount}"></span>
-                            </div>
-                            <div class="coupon-condition">
-                                <p>满[[${coupons.getCouponsActivity().minPoint}]]可用</p>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <input style="width: 15px;height: 15px;float: left;margin-top: 50px;" type="radio" value="-1" name="coupons" onclick="changeAmount(0)" checked />
-            <div style="width: 100px;height: 100px;float: left;margin-top: 50px;" >
-                不使用优惠券
-            </div>
-
-        </div>
-
-
-<!--        -->
-
-
         <span style="float: left;">确认订单信息</span>
         <div id="orderbox">
 
@@ -485,7 +356,7 @@
                 </tr>
                 </thead>
                 <tbody id="content">
-                <tr th:each="cart:${carts}">
+                <tr>
                     <td>
                         <img th:src="${cart.getImgUrl()}">
                     </td>
@@ -501,65 +372,9 @@
                 </tbody>
             </table>
 
-
-
-            <!--            搜索分页-->
-
-            <div id="searchPageDiv" style="width: 100%;height: 85px;">
-
-                <div id="searchPage" style="margin:0 auto;width: 277px;height: 33.6px">
-                    <ul class="pagination">
-                        <!--            上一页-->
-                        <li th:if="${curPage==1}" class="disabled">
-                            <a>&laquo;</a>
-                        </li>
-
-                        <li th:if="${curPage>1}">
-                            <a th:onclick="prePage([[${curPage}]])">&laquo;</a>
-                        </li>
-
-                        <li th:id="p1" class="active">
-                            <a th:onclick="pagechange(1)"  th:text="1"></a>
-                        </li>
-
-
-                        <li th:each="index:${#numbers.sequence(2, 5)}" th:if="${pagecount>=5}" th:id="'p'+${index}">
-                            <a th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
-                        </li>
-
-                        <li th:id="'p'+${index}" th:each="index:${#numbers.sequence(2, pagecount)}" th:if="${pagecount<5 and pagecount>=2}">
-                            <a th:onclick="pagechange([[${index}]])"  th:text="${index}"></a>
-                        </li>
-
-
-                        <!--            下一页-->
-
-                        <li th:if="${pagecount<=1}" class="disabled">
-                            <a>&raquo;</a>
-                        </li>
-                        <li th:if="${pagecount>1}">
-                            <a th:onclick="nextPage([[${curPage}]])">&raquo;</a>
-                        </li>
-
-                    </ul>
-
-                </div>
-            </div>
-
-            <!--        -->
-
-
-
-
-            <input onclick="orderBegin()" type="button" class="btn btn-warning btn-lg" value="确认下单" style="float: right;margin-right: 8%;"/>
+            <input onclick="orderBegin()" type="button" class="btn btn-warning btn-lg" value="确认支付" style="float: right;margin-right: 8%;"/>
             <div style="float: right;margin-right: 5%;">
                 合计<b style="color: orangered;" id="all" th:text="${totalmoney}"></b>元
-            </div>
-            <div style="float: right;margin-right: 35px;">
-                已选商品<b style="color: orangered;" th:text="${totalCount}"></b>件
-            </div>
-            <div  style="float: right;margin-right: 35px;">
-                优惠<b style="color: orangered;" id="cp">0</b>元
             </div>
 
         </div>
@@ -576,16 +391,6 @@
 <!--footer-->
 <footer class="footer">
     <div class="container">
-<!--        <div class="footer_service">-->
-<!--            <ul class="clearfix">-->
-<!--                <li><a href="">1小时快修服务</a></li>-->
-<!--                <li><a href="">7天无理由退货</a></li>-->
-<!--                <li><a href="">30天免费换货</a></li>-->
-<!--                <li><a href="">满200元包邮</a></li>-->
-<!--                <li><a href="">520余家售后网点</a></li>-->
-<!--            </ul>-->
-<!--        </div>-->
-
         <div class="footer_link clearfix">
             <dl>
                 <dt>帮助中心</dt>
@@ -654,480 +459,6 @@
     var headers = {"X-CSRF-TOKEN": token}
     var addressArr=new Array();
 
-
-    function changeAmount(amount) {
-        // let am=Number(document.getElementById('cp').innerText);
-
-        document.getElementById('cp').innerText=amount;
-
-
-    }
-
-
-    //上一页
-    function prePage(pgnum) {
-
-
-        $.ajax({
-            url: "/web/order/checkOrderData",
-            data: {
-                "from": pgnum - 1
-            },
-            type: "GET",
-            success: function (json) {
-
-                document.getElementById('content').innerHTML = ""; //清空所有订单展示
-                var html = ''; //拼接订单展示html
-                for (var i = 0; i < json.carts.length; i++) {
-                    html+='<tr>'
-
-                    html+='<td>'
-                    html+='<img src=\"'+json.carts[i].imgUrl +'\">'
-                    html+='</td>'
-
-                    html+='<td>'+json.carts[i].goodsInfo+'</td>'
-
-                    html+='<td>'+json.carts[i].goodsParams+'</td>'
-
-                    html+='<td>'+json.carts[i].goodsCount+'</td>'
-
-                    html+='<td>'+json.carts[i].singleGoodsMoney+'</td>'
-
-                    html+='</tr>'
-
-                }
-
-                $('#content').append(html);
-
-
-//修改分页bar
-
-                document.getElementById('searchPage').innerHTML = ''; //搜索页div清空
-
-                var pageBarHtml = '';
-
-                pageBarHtml += '<ul class="pagination">';
-
-                var curPage = json.curPage;
-                var pagecount = json.pagecount;
-
-
-                var curPageGroup = json.curPageGroup;
-                var pageGroup = json.pageGroup;
-
-                if (curPage > 1) {
-                    pageBarHtml += '<li><a onclick=\"' + 'prePage(' + curPage + ')' + '\">&laquo;</a></li>'
-                } else {
-                    pageBarHtml += '<li class="disabled"><a>&laquo;</a> </li>';
-                }
-
-                if (pagecount <= 5) {
-                    var phtml1 = '';
-                    for (var i = 0; i < pagecount; i++) {
-                        if ((i + 1) == curPage) {
-                            phtml1 += '<li class="active" id=\"' + 'p' + (i + 1) + '\">';
-                        } else {
-                            phtml1 += '<li id=\"' + 'p' + (i + 1) + '\">';
-                        }
-                        phtml1 += '<a onclick=\"' + 'pagechange(' + (i + 1) + ')' + '\">' + (i + 1) + '</a>'
-
-                        phtml1 += '</li>'
-
-                    }
-                    pageBarHtml += phtml1;
-
-                } else {
-                    var size = 5;
-                    var start = size * (curPageGroup - 1)     //从哪里开始遍历
-
-                    // console.log("start="+start);
-
-                    //分两种情况，如果不是最后一组导航
-                    //为了防止最后一组不足5页的情况，我们需要获取最后一组有多少页
-                    if (curPageGroup < pageGroup) {
-                        var phtml1 = '';
-                        //因为curPageGroup<pageGroup，所以每一组必定有5页
-                        //此时end=start+5
-                        var end = start + 5;
-                        // console.log("end="+end)
-
-                        for (var i = start; i < end; i++) {
-                            if ((i + 1) == curPage) {
-                                phtml1 += '<li class="active" id=\"' + 'p' + (i + 1) + '\">';
-                            } else {
-                                phtml1 += '<li id=\"' + 'p' + (i + 1) + '\">';
-                            }
-                            phtml1 += '<a onclick=\"' + 'pagechange(' + (i + 1) + ')' + '\">' + (i + 1) + '</a>'
-
-                            phtml1 += '</li>'
-                        }
-                        pageBarHtml += phtml1;
-
-                    } else {//此时curPage为最后一组导航
-                        var phtml1 = '';
-                        var odd = json.odd;
-
-                        var end = start + odd; //start+odd就ok了
-
-                        for (var i = start; i < end; i++) {
-                            if ((i + 1) == curPage) {
-                                phtml1 += '<li class="active" id=\"' + 'p' + (i + 1) + '\">';
-                            } else {
-                                phtml1 += '<li id=\"' + 'p' + (i + 1) + '\">';
-                            }
-                            phtml1 += '<a onclick=\"' + 'pagechange(' + (i + 1) + ')' + '\">' + (i + 1) + '</a>'
-
-                            phtml1 += '</li>'
-                        }
-                        pageBarHtml += phtml1;
-
-                    }
-
-                }
-
-
-                if (curPage == pagecount) {
-                    pageBarHtml += '<li class="disabled"> <a>&raquo;</a></li>';
-                } else {
-                    pageBarHtml += '<li><a onclick=\"nextPage(' + curPage + ')\">&raquo;</a></li>'
-                }
-
-                pageBarHtml += '</ul>';
-
-                $('#searchPage').append(pageBarHtml);
-
-            }
-
-        })
-
-
-    }
-
-
-
-    //下一页
-    function nextPage(pgnum) {
-
-        $.ajax({
-            url: "/web/order/checkOrderData",
-            data: {
-                "from": pgnum + 1
-            },
-            type: "GET",
-            success: function (json) {
-
-                document.getElementById('content').innerHTML = ""; //清空所有订单展示
-                var html = ''; //拼接订单展示html
-                for (var i = 0; i < json.carts.length; i++) {
-                    html+='<tr>'
-
-                    html+='<td>'
-                    html+='<img src=\"'+json.carts[i].imgUrl +'\">'
-                    html+='</td>'
-
-                    html+='<td>'+json.carts[i].goodsInfo+'</td>'
-
-                    html+='<td>'+json.carts[i].goodsParams+'</td>'
-
-                    html+='<td>'+json.carts[i].goodsCount+'</td>'
-
-                    html+='<td>'+json.carts[i].singleGoodsMoney+'</td>'
-
-                    html+='</tr>'
-
-                }
-
-                $('#content').append(html);
-
-                //修改分页bar
-
-                document.getElementById('searchPage').innerHTML=''; //搜索页div清空
-
-                var pageBarHtml='';
-
-                pageBarHtml+='<ul class="pagination">';
-
-                var curPage=json.curPage;
-                var pagecount=json.pagecount;
-
-
-                var curPageGroup=json.curPageGroup;
-                var pageGroup=json.pageGroup;
-
-                if(curPage>1)
-                {
-                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
-                }else {
-                    pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
-                }
-
-
-                if(pagecount<=5)
-                {
-                    var phtml1='';
-                    for (var i=0;i<pagecount;i++)
-                    {
-                        if((i+1)==curPage)
-                        {
-                            phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
-                        }else {
-                            phtml1+='<li id=\"'+'p'+(i+1)+'\">';
-                        }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
-
-                        phtml1+='</li>'
-
-                    }
-                    pageBarHtml+=phtml1;
-
-                }else {
-                    var size=5;
-                    var start=size*(curPageGroup-1)     //从哪里开始遍历
-
-                    // console.log("start="+start);
-
-                    //分两种情况，如果不是最后一组导航
-                    //为了防止最后一组不足5页的情况，我们需要获取最后一组有多少页
-                    if(curPageGroup<pageGroup)
-                    {
-                        var phtml1='';
-                        //因为curPageGroup<pageGroup，所以每一组必定有5页
-                        //此时end=start+5
-                        var end=start+5;
-                        // console.log("end="+end)
-
-                        for (var i=start;i<end;i++)
-                        {
-                            if((i+1)==curPage)
-                            {
-                                phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
-                            }else {
-                                phtml1+='<li id=\"'+'p'+(i+1)+'\">';
-                            }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
-
-                            phtml1+='</li>'
-                        }
-                        pageBarHtml+=phtml1;
-
-                    }else{//此时curPage为最后一组导航
-                        var phtml1='';
-                        var odd=json.odd;
-
-                        var end=start+odd; //start+odd就ok了
-
-                        for (var i=start;i<end;i++)
-                        {
-                            if((i+1)==curPage)
-                            {
-                                phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
-                            }else {
-                                phtml1+='<li id=\"'+'p'+(i+1)+'\">';
-                            }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
-
-                            phtml1+='</li>'
-                        }
-                        pageBarHtml+=phtml1;
-
-                    }
-
-                }
-
-
-
-                if(curPage==pagecount)
-                {
-                    pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
-                }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
-                }
-
-                pageBarHtml+='</ul>';
-
-
-
-                $('#searchPage').append(pageBarHtml);
-
-
-
-
-
-            }
-
-
-        })
-
-
-    }
-
-
-
-
-
-    //分页选项change
-    function pagechange(pageNum) {
-
-        //刷新分页选中页码
-        var old = document.querySelectorAll('#searchPage > ul > li.active')[0];
-        var newelem = document.getElementById('p' + pageNum);
-        old.classList.remove('active');
-        newelem.classList.add('active')
-
-        $.ajax({
-            url: "/web/order/checkOrderData",
-            data: {
-                "from": pageNum
-            },
-            type: "GET",
-            success: function (json) {
-
-                document.getElementById('content').innerHTML = ""; //清空所有订单展示
-                var html = ''; //拼接订单展示html
-                for (var i = 0; i < json.carts.length; i++) {
-                    html+='<tr>'
-
-                    html+='<td>'
-                    html+='<img src=\"'+json.carts[i].imgUrl +'\">'
-                    html+='</td>'
-
-                    html+='<td>'+json.carts[i].goodsInfo+'</td>'
-
-                    html+='<td>'+json.carts[i].goodsParams+'</td>'
-
-                    html+='<td>'+json.carts[i].goodsCount+'</td>'
-
-                    html+='<td>'+json.carts[i].singleGoodsMoney+'</td>'
-
-                    html+='</tr>'
-
-                }
-
-                $('#content').append(html);
-
-
-                //刷新分页bar
-
-                document.getElementById('searchPage').innerHTML=''; //搜索页div清空
-
-                var pageBarHtml='';
-
-                pageBarHtml+='<ul class="pagination">';
-
-                var curPage=json.curPage;
-                var pagecount=json.pagecount;
-
-
-                var curPageGroup=json.curPageGroup;
-                var pageGroup=json.pageGroup;
-
-                if(curPage>1)
-                {
-                    pageBarHtml+='<li><a onclick=\"'+'prePage('+curPage+')'+'\">&laquo;</a></li>'
-                }else {
-                    pageBarHtml+='<li class="disabled"><a>&laquo;</a> </li>';
-                }
-
-                if(pagecount<=5)
-                {
-                    var phtml1='';
-                    for (var i=0;i<pagecount;i++)
-                    {
-                        if((i+1)==curPage)
-                        {
-                            phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
-                        }else {
-                            phtml1+='<li id=\"'+'p'+(i+1)+'\">';
-                        }
-                        phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
-
-                        phtml1+='</li>'
-
-                    }
-                    pageBarHtml+=phtml1;
-
-                }else {
-                    var size=5;
-                    var start=size*(curPageGroup-1)     //从哪里开始遍历
-
-                    // console.log("start="+start);
-
-                    //分两种情况，如果不是最后一组导航
-                    //为了防止最后一组不足5页的情况，我们需要获取最后一组有多少页
-                    if(curPageGroup<pageGroup)
-                    {
-                        var phtml1='';
-                        //因为curPageGroup<pageGroup，所以每一组必定有5页
-                        //此时end=start+5
-                        var end=start+5;
-                        // console.log("end="+end)
-
-                        for (var i=start;i<end;i++)
-                        {
-                            if((i+1)==curPage)
-                            {
-                                phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
-                            }else {
-                                phtml1+='<li id=\"'+'p'+(i+1)+'\">';
-                            }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
-
-                            phtml1+='</li>'
-                        }
-                        pageBarHtml+=phtml1;
-
-                    }else{//此时curPage为最后一组导航
-                        var phtml1='';
-                        var odd=json.odd;
-
-                        var end=start+odd; //start+odd就ok了
-
-                        for (var i=start;i<end;i++)
-                        {
-                            if((i+1)==curPage)
-                            {
-                                phtml1+='<li class="active" id=\"'+'p'+(i+1)+'\">';
-                            }else {
-                                phtml1+='<li id=\"'+'p'+(i+1)+'\">';
-                            }
-                            phtml1+='<a onclick=\"'+'pagechange('+(i+1)+')'+'\">'+(i+1)+'</a>'
-
-                            phtml1+='</li>'
-                        }
-                        pageBarHtml+=phtml1;
-
-                    }
-
-                }
-
-
-
-                if(curPage==pagecount)
-                {
-                    pageBarHtml+='<li class="disabled"> <a>&raquo;</a></li>';
-                }else {
-                    pageBarHtml+='<li><a onclick=\"nextPage('+curPage+')\">&raquo;</a></li>'
-                }
-
-                pageBarHtml+='</ul>';
-
-                $('#searchPage').append(pageBarHtml);
-
-            }
-
-        })
-
-
-    }
-
-
-
-
-
-
-
-
-
     function selectAddressInfo(elem) {
 
         let clickElem = document.getElementById(elem.id);//获取被点击的对象
@@ -1156,25 +487,30 @@
 
 
     function orderBegin() {
-
+        let seckillid=[[${seckillId}]];
+        let seckillsuccessid=[[${seckillsuccessid}]]
         if (addressArr.length == 0) {
             alert('请选择地址再下单...');
         } else {
             //因为我们要下单的数据已经放到了redis中，所以我们这里只需要获取发货地id即可
             $.ajax({
-                url: "/web/order/orderbegin",
+                url: "/web/seckill/seckillOrder",
                 data: {
                     "addressid": addressArr[0],
-                    "couponsid":$('input[type=radio][name=coupons]:checked').val()
+                    "seckillsuccessid": seckillsuccessid,
+                    "seckillid": seckillid
                 },
                 type: "GET",
                 success: function (data) {
-                    if(data.code==200){
-                        alert('下单成功');
-                        window.location.href='/web/cart/tocart';
+                    if(data.success==true){
+                        alert("支付成功");
+                        window.location.href='/web/seckill/toSeckillSuccessList';
                     }else {
-                        alert('下单失败');
+                        alert("支付失败");
                     }
+                },
+                error:function () {
+                    alert('异常,支付失败');
                 }
 
             })

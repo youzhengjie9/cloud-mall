@@ -80,7 +80,7 @@ public class OrderController {
 
     model.addAttribute("orderList",orderList);
 
-    int pageProductCount = orderFallbackFeign.selectOrderCount();//获取分页前查询的总数
+    int pageProductCount = orderFallbackFeign.selectOrderCountById(userid);//获取分页前查询的总数
 
     int x=size-from; //计算出每一页数量的Max
     int pagecount=(pageProductCount%x==0)?pageProductCount/x:(pageProductCount/x)+1; //页的总数

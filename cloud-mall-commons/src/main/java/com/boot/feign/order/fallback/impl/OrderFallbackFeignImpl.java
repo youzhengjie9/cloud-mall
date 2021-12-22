@@ -92,4 +92,10 @@ public class OrderFallbackFeignImpl implements OrderFallbackFeign {
         return null;
     }
 
+    @Override
+    public int selectOrderCountById(long userid) {
+        log.error("selectOrderCountById error");
+        return 0;
+    }
+
 }

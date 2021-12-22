@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.List;
@@ -274,6 +275,26 @@ public class OrderController {
     return ResultConstant.SUCCESS.getCodeStat();
   }
 
+  //查询订单数
+  @ResponseBody
+  @GetMapping(path = "/selectOrderCountById/{userid}")
+  public int selectOrderCountById(@PathVariable("userid") long userid){
+
+    return orderService.selectOrderCountById(userid);
+  }
+
+  //秒杀订单支付
+  @ResponseBody
+  @GetMapping(path = "/seckillOrder/{addressid}/{seckillsuccessid}/{seckillid}/{userid}")
+  public String seckillOrder(@PathVariable("addressid") long addressid ,
+                             @PathVariable("seckillsuccessid") long seckillsuccessid,
+                             @PathVariable("seckillid") long seckillid,
+                             @PathVariable("userid") long userid) throws IOException{
+
+    orderService.seckillOrder(addressid, seckillsuccessid, seckillid, userid);
+
+    return ResultConstant.SUCCESS.getCodeStat();
+  }
 
 
 }

@@ -45,6 +45,8 @@ public class SeckillServiceImpl implements SeckillSearchService {
 
   private static final String LOCK = "seckill_search_lock";
 
+  private static final String SECKILL_SEARCH_TEXT="seckill_search_text_";//搜索文本
+
   @Autowired private RedissonClient redissonClient;
 
   @Autowired private RestHighLevelClient restHighLevelClient;
@@ -93,6 +95,7 @@ public class SeckillServiceImpl implements SeckillSearchService {
   public List<Seckill> searchAllSeckill(String text, int from, int size, String ip)
       throws IOException {
 
+    redisTemplate.opsForValue().set(SECKILL_SEARCH_TEXT+ip,text,3,TimeUnit.DAYS);
     SearchRequest searchRequest = new SearchRequest(INDEX_NAME);
 
     SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -149,7 +152,6 @@ public class SeckillServiceImpl implements SeckillSearchService {
       seckills.add(seckill);
     }
     // 获取分页前查询的总数
-
     BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
     if (response.getHits().getHits().length <= 0) // 如果不存在,说明输入的text搜索不到数据
     {

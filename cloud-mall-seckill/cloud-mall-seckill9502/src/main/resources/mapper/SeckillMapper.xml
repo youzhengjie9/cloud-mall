@@ -47,6 +47,52 @@
         seckill
 
     </select>
-    
+
+    <resultMap id="res2" type="com.boot.pojo.SeckillSuccess">
+        <id column="id" property="id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="state" column="state"/>
+        <result property="userId" column="user_id"/>
+        <association property="secKill" javaType="com.boot.pojo.Seckill">
+            <id column="seckill_id" property="seckillId"/>
+            <result property="seckillName" column="seckill_name"/>
+            <result property="price" column="price"/>
+            <result property="img" column="img"/>
+        </association>
+    </resultMap>
+
+
+
+    <select id="selectSeckillSuccessByUseridAndLimit" resultMap="res2">
+        select
+        seckill_success.id,
+        seckill_success.create_time,
+        seckill_success.state,
+        seckill.seckill_id,
+        seckill.seckill_name,
+        seckill.price,
+        seckill.img,
+        seckill_success.user_id
+        from seckill_success,seckill
+        where seckill_success.seckill_id=seckill.seckill_id
+        and seckill_success.user_id=#{userid}
+        ORDER BY create_time desc
+        limit #{page},#{size}
+
+    </select>
+
+
+    <select id="selectSeckillSuccessCountByUserid" resultType="int">
+        select
+        count(*)
+        from seckill_success,seckill
+        where seckill_success.seckill_id=seckill.seckill_id
+        and seckill_success.user_id=#{userid}
+    </select>
+
+    <delete id="deleteSeckillSuccess">
+        delete from seckill_success where id=#{id}
+    </delete>
+
 
 </mapper>
