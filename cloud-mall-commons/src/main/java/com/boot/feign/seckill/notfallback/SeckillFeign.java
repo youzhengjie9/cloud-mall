@@ -1,6 +1,7 @@
 package com.boot.feign.seckill.notfallback;
 
 import com.boot.feign.seckill.fallback.impl.SeckillFallbackFeignImpl;
+import com.boot.pojo.Seckill;
 import com.boot.pojo.SeckillSuccess;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
@@ -34,5 +35,21 @@ public interface SeckillFeign {
     @ResponseBody
     @GetMapping(path = "/feign/seckill/deleteSeckillSuccess/{id}")
     public int deleteSeckillSuccess(@PathVariable("id") long id);
+
+    @ResponseBody
+    @PostMapping(path = "/feign/seckill/insertSeckill")
+    public int insertSeckill(@RequestBody Seckill seckill);
+
+    @ResponseBody
+    @PostMapping(path = "/feign/seckill/updateSeckill")
+    public int updateSeckill(@RequestBody Seckill seckill);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/seckill/deleteSeckill/{seckillId}")
+    public int deleteSeckill(@PathVariable("seckillId") long seckillId);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/seckill/batchDeleteSeckill")
+    public String batchDeleteSeckill(@RequestParam("ids")long[] ids);
 
 }

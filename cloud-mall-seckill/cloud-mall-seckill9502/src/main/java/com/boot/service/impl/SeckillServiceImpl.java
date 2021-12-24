@@ -10,6 +10,7 @@ import com.boot.utils.SnowId;
 import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -163,4 +164,54 @@ public class SeckillServiceImpl implements SeckillService {
   public int deleteSeckillSuccess(long id) {
     return seckillMapper.deleteSeckillSuccess(id);
   }
+
+  @Override
+  public List<Seckill> selectAllSeckillByLimit(int page, int size) {
+    return seckillMapper.selectAllSeckillByLimit(page, size);
+  }
+
+  @Override
+  public int insertSeckill(Seckill seckill) {
+    return seckillMapper.insertSeckill(seckill);
+  }
+
+  @Override
+  public int updateSeckill(Seckill seckill) {
+    return seckillMapper.updateSeckill(seckill);
+  }
+
+  @Override
+  public int deleteSeckill(long seckillId) {
+    return seckillMapper.deleteSeckill(seckillId);
+  }
+
+  @Override
+  public void batchDeleteSeckill(long[] seckillIds) {
+
+    try{
+      for (long seckillId : seckillIds) {
+        seckillMapper.deleteSeckill(seckillId);
+      }
+    }catch (Exception e){
+
+      throw new RuntimeException();
+    }
+  }
+
+  @Override
+  public Seckill selectSeckillByName(String seckillName) {
+    return seckillMapper.selectSeckillByName(seckillName);
+  }
+
+  @Override
+  public int selectAllSeckillCount() {
+    return seckillMapper.selectAllSeckillCount();
+  }
+
+  @Override
+  public int selectAllSeckillCountByName(String seckillName) {
+    return seckillMapper.selectAllSeckillCountByName(seckillName);
+  }
+
+
 }

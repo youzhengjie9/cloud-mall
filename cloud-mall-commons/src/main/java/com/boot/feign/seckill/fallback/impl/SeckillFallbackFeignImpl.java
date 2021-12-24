@@ -32,4 +32,28 @@ public class SeckillFallbackFeignImpl implements SeckillFallbackFeign {
         return 0;
     }
 
+    @Override
+    public List<Seckill> selectAllSeckillByLimit(int page, int size) {
+        log.error("selectAllSeckillByLimit error");
+        return null;
+    }
+
+    @Override
+    public Seckill selectSeckillByName(String seckillName) {
+        log.error("selectSeckillByName error");
+        return null;
+    }
+
+    @Override
+    public int selectAllSeckillCount() {
+        log.error("selectAllSeckillCount error");
+        return 0;
+    }
+
+    @Override
+    public int selectAllSeckillCountByName(String seckillName) {
+        log.error("selectAllSeckillCountByName error");
+        return 0;
+    }
+
 }

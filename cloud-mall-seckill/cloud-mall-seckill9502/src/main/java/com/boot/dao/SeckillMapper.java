@@ -30,5 +30,20 @@ public interface SeckillMapper {
     int deleteSeckillSuccess(@Param("id") long id);
 
 
+    List<Seckill> selectAllSeckillByLimit(@Param("page") int page,
+                                          @Param("size") int size);
+
+    Seckill selectSeckillByName(@Param("seckillName") String seckillName);
+
+    int insertSeckill(Seckill seckill);
+
+    int updateSeckill(Seckill seckill);
+
+    int deleteSeckill(@Param("seckillId") long seckillId);
+
+    int selectAllSeckillCount();
+
+    int selectAllSeckillCountByName(@Param("seckillName") String seckillName);
+
 
 }

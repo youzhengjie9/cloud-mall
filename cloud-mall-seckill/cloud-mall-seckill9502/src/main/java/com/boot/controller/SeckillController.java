@@ -150,7 +150,58 @@ public class SeckillController {
         return seckillService.deleteSeckillSuccess(id);
     }
 
+    @ResponseBody
+    @GetMapping(path = "/selectAllSeckillByLimit/{page}/{size}")
+    public List<Seckill> selectAllSeckillByLimit(@PathVariable("page") int page,
+                                                 @PathVariable("size") int size){
+
+        return seckillService.selectAllSeckillByLimit(page, size);
+    }
+
+    @ResponseBody
+    @PostMapping(path = "/insertSeckill")
+    public int insertSeckill(@RequestBody Seckill seckill){
+
+        return seckillService.insertSeckill(seckill);
+    }
+    @ResponseBody
+    @PostMapping(path = "/updateSeckill")
+    public int updateSeckill(@RequestBody Seckill seckill){
+
+        return seckillService.updateSeckill(seckill);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/deleteSeckill/{seckillId}")
+    public int deleteSeckill(@PathVariable("seckillId") long seckillId){
+
+        return seckillService.deleteSeckill(seckillId);
+    }
+    @ResponseBody
+    @GetMapping(path = "/batchDeleteSeckill")
+    public String batchDeleteSeckill(@RequestParam("ids")long[] ids){
+
+        seckillService.batchDeleteSeckill(ids);
+        return  ResultConstant.SUCCESS.getCodeStat();
+    }
+    @ResponseBody
+    @GetMapping(path = "/selectSeckillByName/{seckillName}")
+    public Seckill selectSeckillByName(@PathVariable("seckillName") String seckillName){
 
 
+        return seckillService.selectSeckillByName(seckillName);
+    }
+    @ResponseBody
+    @GetMapping(path = "/selectAllSeckillCount")
+    public int selectAllSeckillCount(){
+
+        return seckillService.selectAllSeckillCount();
+    }
+    @ResponseBody
+    @GetMapping(path = "/selectAllSeckillCountByName/{seckillName}")
+    public int selectAllSeckillCountByName(@PathVariable("seckillName") String seckillName){
+
+        return seckillService.selectAllSeckillCountByName(seckillName);
+    }
 
 }

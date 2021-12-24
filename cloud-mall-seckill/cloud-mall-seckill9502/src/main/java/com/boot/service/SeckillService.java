@@ -27,4 +27,19 @@ public interface SeckillService {
 
     int deleteSeckillSuccess(long id);
 
+    List<Seckill> selectAllSeckillByLimit(int page, int size);
+
+    int insertSeckill(Seckill seckill);
+
+    int updateSeckill(Seckill seckill);
+
+    int deleteSeckill(long seckillId);
+
+    void batchDeleteSeckill(long[] seckillIds);
+
+    Seckill selectSeckillByName(String seckillName);
+
+    int selectAllSeckillCount();
+
+    int selectAllSeckillCountByName(String seckillName);
 }

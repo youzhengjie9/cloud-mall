@@ -95,4 +95,63 @@
     </delete>
 
 
+    <select id="selectAllSeckillByLimit" resultMap="res1">
+        select
+        seckill.seckill_id,
+        seckill.seckill_name,
+        seckill.seckill_number,
+        seckill.price,
+        seckill.img,
+        seckill.limit_count,
+        seckill.start_time,
+        seckill.end_time,
+        seckill.create_time,
+        seckill.userid
+        from
+        seckill
+        limit #{page},#{size}
+    </select>
+
+
+    <insert id="insertSeckill" parameterType="com.boot.pojo.Seckill">
+        insert into seckill values(#{seckillId},#{seckillName}.#{seckillNumber},#{price},#{img}
+        ,#{limitCount},#{startTime},#{endTime},#{createTime},#{user.id})
+    </insert>
+
+    <update id="updateSeckill" parameterType="com.boot.pojo.Seckill">
+        update seckill set seckill_name=#{seckillName},seckill_number=#{seckillNumber},
+        price=#{price},img=#{img},limit_count=#{limitCount},start_time=#{startTime},
+        end_time=#{endTime} where seckill_id=#{seckillId}
+    </update>
+
+    <delete id="deleteSeckill">
+        delete from seckill where seckill_id=#{seckillId}
+    </delete>
+
+    <select id="selectSeckillByName" resultMap="res1">
+        select
+        seckill.seckill_id,
+        seckill.seckill_name,
+        seckill.seckill_number,
+        seckill.price,
+        seckill.img,
+        seckill.limit_count,
+        seckill.start_time,
+        seckill.end_time,
+        seckill.create_time,
+        seckill.userid
+        from
+        seckill
+        where seckill_name=#{seckillName}
+    </select>
+
+
+    <select id="selectAllSeckillCount" resultType="int">
+        select count(*) from seckill
+    </select>
+
+    <select id="selectAllSeckillCountByName" resultType="int">
+        select count(*) from seckill where seckill_name=#{seckillName}
+    </select>
+
 </mapper>
