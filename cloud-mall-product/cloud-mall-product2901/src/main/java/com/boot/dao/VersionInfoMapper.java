@@ -34,4 +34,23 @@ public interface VersionInfoMapper {
 
     String selectNameByversionId(@Param("versionId") long versionId);
 
+    List<VersionInfo> selectVersionInfoByLimit(@Param("page") int page,
+                                               @Param("size") int size);
+
+
+    List<VersionInfo> selectVersionInfoByLimitAndPid(@Param("pid") long pid,@Param("page") int page,
+                                               @Param("size") int size);
+
+    int selectversionInfoCountByPid(@Param("pid") long pid);
+
+    int selectAllversionInfoCount();
+
+    int insertVersionInfo(VersionInfo versionInfo);
+
+    int updateVersionInfo(VersionInfo versionInfo);
+
+    int deleteVersionInfo(@Param("versionId") long versionId);
+
+    VersionInfo selectVersionByVersionId(@Param("versionId") long versionId);
+
 }

@@ -1,5 +1,6 @@
 package com.boot.feign.product.fallback.impl;
 
+import com.boot.data.CommonResult;
 import com.boot.feign.product.fallback.VersionInfoFallbackFeign;
 import com.boot.pojo.VersionInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +59,36 @@ public class VersionInfoFallbackFeignImpl implements VersionInfoFallbackFeign {
     @Override
     public String selectNameByversionId(long versionId) {
         log.error("selectNameByversionId error");
+        return null;
+    }
+
+    @Override
+    public List<VersionInfo> selectVersionInfoByLimit(int page, int size) {
+        log.error("selectVersionInfoByLimit error");
+        return null;
+    }
+
+    @Override
+    public List<VersionInfo> selectVersionInfoByLimitAndPid(long pid, int page, int size) {
+        log.error("selectVersionInfoByLimitAndPid error");
+        return null;
+    }
+
+    @Override
+    public int selectversionInfoCountByPid(long pid) {
+        log.error("selectversionInfoCountByPid error");
+        return 0;
+    }
+
+    @Override
+    public int selectAllversionInfoCount() {
+        log.error("selectAllversionInfoCount error");
+        return 0;
+    }
+
+    @Override
+    public VersionInfo selectVersionByVersionId(long versionId) {
+        log.error("selectVersionByVersionId error");
         return null;
     }
 }

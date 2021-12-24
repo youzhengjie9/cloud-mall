@@ -40,4 +40,41 @@
     </select>
 
 
+    <select id="selectVersionInfoByLimit" resultType="com.boot.pojo.VersionInfo">
+        select * from versioninfo limit #{page} ,#{size}
+
+    </select>
+
+    <select id="selectVersionInfoByLimitAndPid" resultType="com.boot.pojo.VersionInfo">
+        select * from versioninfo where p_id=#{pid} limit #{page},#{size}
+    </select>
+
+    <select id="selectversionInfoCountByPid" resultType="int">
+        select count(*) from versioninfo where p_id=#{pid}
+    </select>
+
+    <select id="selectAllversionInfoCount" resultType="int">
+        select count(*) from versioninfo
+    </select>
+
+
+    <insert id="insertVersionInfo" parameterType="com.boot.pojo.VersionInfo">
+        insert into versioninfo values(#{versionId},#{name},#{p_id},#{price},#{description},#{order},#{title})
+    </insert>
+
+    <update id="updateVersionInfo" parameterType="com.boot.pojo.VersionInfo">
+         update versioninfo set `name` = #{name} ,
+         p_id=#{p_id},`order`=#{order},price=#{price},description=#{description},title=#{title}
+         where versionId=#{versionId}
+    </update>
+
+    <delete id="deleteVersionInfo">
+        delete from versioninfo where versionId=#{versionId}
+    </delete>
+
+
+    <select id="selectVersionByVersionId" resultType="com.boot.pojo.VersionInfo">
+        select * from versioninfo where versionId=#{versionId}
+    </select>
+
 </mapper>

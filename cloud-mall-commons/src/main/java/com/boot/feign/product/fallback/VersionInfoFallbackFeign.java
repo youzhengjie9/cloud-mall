@@ -1,12 +1,11 @@
 package com.boot.feign.product.fallback;
 
+import com.boot.data.CommonResult;
 import com.boot.feign.product.fallback.impl.VersionInfoFallbackFeignImpl;
 import com.boot.pojo.VersionInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -55,4 +54,30 @@ public interface VersionInfoFallbackFeign {
     @ResponseBody
     @GetMapping(path = "/feign/versioninfo/selectNameByversionId/{versionId}")
     public String selectNameByversionId(@PathVariable("versionId") long versionId);
+
+
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectVersionInfoByLimit/{page}/{size}")
+    public List<VersionInfo> selectVersionInfoByLimit(@PathVariable("page") int page,
+                                                      @PathVariable("size") int size);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectVersionInfoByLimitAndPid/{pid}/{page}/{size}")
+    public List<VersionInfo> selectVersionInfoByLimitAndPid(@PathVariable("pid") long pid,
+                                                            @PathVariable("page") int page,
+                                                            @PathVariable("size") int size);
+
+
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectversionInfoCountByPid/{pid}")
+    public int selectversionInfoCountByPid(@PathVariable("pid") long pid);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectAllversionInfoCount")
+    public int selectAllversionInfoCount();
+
+    @ResponseBody
+    @GetMapping(path = "/feign/versioninfo/selectVersionByVersionId/{versionId}")
+    public VersionInfo selectVersionByVersionId(@PathVariable("versionId") long versionId);
+
 }

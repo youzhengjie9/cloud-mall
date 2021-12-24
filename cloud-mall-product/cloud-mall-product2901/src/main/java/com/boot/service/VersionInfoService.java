@@ -33,4 +33,24 @@ public interface VersionInfoService {
     BigDecimal selectPriceByversionId(long versionId);
 
     String selectNameByversionId(long versionId);
+
+    List<VersionInfo> selectVersionInfoByLimit(int page, int size);
+
+
+    List<VersionInfo> selectVersionInfoByLimitAndPid(long pid,int page, int size);
+
+    int selectversionInfoCountByPid(long pid);
+
+    int selectAllversionInfoCount();
+
+    int insertVersionInfo(VersionInfo versionInfo);
+
+    int updateVersionInfo(VersionInfo versionInfo);
+
+    int deleteVersionInfo(long versionId);
+
+    int batchDeleteVersionInfo(long[] versionIds);
+
+    VersionInfo selectVersionByVersionId(long versionId);
+
 }

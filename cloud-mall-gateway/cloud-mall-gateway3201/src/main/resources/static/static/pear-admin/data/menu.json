@@ -62,6 +62,14 @@
 				"type":1,
 				"openType":"_iframe",
 				"href":"/pear/toClassifyManager"
+			},
+			{
+				"id":209,
+				"title":"规格管理",
+				"icon":"layui-icon layui-icon-console",
+				"type":1,
+				"openType":"_iframe",
+				"href":"/pear/toSpec"
 			}
 		]
 	},
@@ -212,6 +220,14 @@
 				"type":1,
 				"openType":"_iframe",
 				"href":"/pear/toCoupons"
+			},
+			{
+				"id":803,
+				"title":"秒杀管理",
+				"icon":"layui-icon layui-icon-face-cry",
+				"type":1,
+				"openType":"_iframe",
+				"href":"/pear/toSeckill"
 			}
 		]
 	}

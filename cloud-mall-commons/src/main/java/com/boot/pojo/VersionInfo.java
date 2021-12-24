@@ -18,6 +18,7 @@ public class VersionInfo implements Serializable {
     private int order;
     private BigDecimal price;
     private String description;
+    private String title;
 
     public VersionInfo() {
     }
@@ -54,6 +55,14 @@ public class VersionInfo implements Serializable {
         this.order = order;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -62,8 +71,12 @@ public class VersionInfo implements Serializable {
         this.description = description;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
@@ -75,6 +88,7 @@ public class VersionInfo implements Serializable {
                 ", order=" + order +
                 ", price=" + price +
                 ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
                 '}';
     }
 }
