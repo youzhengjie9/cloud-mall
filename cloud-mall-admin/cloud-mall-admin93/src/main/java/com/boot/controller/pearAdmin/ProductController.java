@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.boot.annotation.Operation;
 import com.boot.annotation.Visitor;
+import com.boot.controller.config.FastDFSClientWrapper;
 import com.boot.data.CommonResult;
 import com.boot.data.layuiData;
 import com.boot.data.layuiJSON;
@@ -56,6 +57,9 @@ public class ProductController {
   @Autowired private RestHighLevelClient restHighLevelClient;
 
   @Autowired private SpringSecurityUtil springSecurityUtil;
+
+  @Autowired
+  private FastDFSClientWrapper fastDFSClientWrapper;
 
   @Autowired private ProductFeign productFeign;
 
@@ -138,7 +142,7 @@ public class ProductController {
       String currentUser = springSecurityUtil.currentUser(session);
       long userid = userFallbackFeign.selectUserIdByName(currentUser);
       product.setUserid(userid);
-      String img = FileUtil.writeImage(file.getOriginalFilename(), file.getBytes());
+      String img = fastDFSClientWrapper.uploadFile(file);
       product.setImg(img);
       // 发布操作代码
       productFeign.insertProduct(product);
@@ -315,13 +319,8 @@ public class ProductController {
         Product oldProduct = productFallbackFeign.selectProductByPid(epid);
         product.setProductId(epid);
         if (!file.isEmpty()) {
-          //删除原来的图片
-          File file1 = new File(FileUtil.getStaticPathByRedis() + oldProduct.getImg());
-          if(file1.exists()&&file1.isFile()){
-            file1.delete();
-          }
           //写图片
-          newImg=FileUtil.writeImage(file.getOriginalFilename(),file.getBytes());
+          newImg=fastDFSClientWrapper.uploadFile(file);
         }
         if (StringUtils.isBlank(content)) {
           throw new RuntimeException("商品简介内容为空");

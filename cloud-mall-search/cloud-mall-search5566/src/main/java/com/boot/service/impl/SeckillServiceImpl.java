@@ -1,15 +1,19 @@
 package com.boot.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.boot.feign.seckill.fallback.SeckillFallbackFeign;
 import com.boot.pojo.*;
 import com.boot.service.SeckillSearchService;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -22,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -47,6 +52,12 @@ public class SeckillServiceImpl implements SeckillSearchService {
 
   private static final String SECKILL_SEARCH_TEXT="seckill_search_text_";//搜索文本
 
+  private final String SECKILL_NUMBER_KEY="seckill_number_"; //秒杀库存key
+
+  private final String SECKILL_LIMIT_KEY="seckill_limit_";//秒杀限购key
+
+  private final String SECKILL_TIME_KEY="seckill_time_";//秒杀开始时间和结束时间key
+
   @Autowired private RedissonClient redissonClient;
 
   @Autowired private RestHighLevelClient restHighLevelClient;
@@ -63,8 +74,10 @@ public class SeckillServiceImpl implements SeckillSearchService {
         BulkRequest bulkRequest = new BulkRequest();
 
         List<Seckill> seckills = seckillFallbackFeign.selectAllSeckill();
-        // 插入数据
-        for (Seckill seckill : seckills) {
+
+        //插入数据
+        seckills.forEach((seckill)->{
+
           IndexRequest indexRequest = new IndexRequest(INDEX_NAME);
           indexRequest.id(seckill.getSeckillId() + ""); // 秒杀商品id
           ConcurrentHashMap<String, Object> sources = new ConcurrentHashMap<>();
@@ -80,7 +93,21 @@ public class SeckillServiceImpl implements SeckillSearchService {
           indexRequest.source(sources);
 
           bulkRequest.add(indexRequest);
-        }
+
+          //key =SECKILL_NUMBER_KEY加上秒杀商品id，value是库存
+          redisTemplate.opsForValue().set(SECKILL_NUMBER_KEY+seckill.getSeckillId(),seckill.getSeckillNumber(),7, TimeUnit.DAYS);
+
+          //key =SECKILL_LIMIT_KEY加上秒杀商品id，value是限购数量
+          redisTemplate.opsForValue().set(SECKILL_LIMIT_KEY+seckill.getSeckillId(),seckill.getLimitCount(),7,TimeUnit.DAYS);
+
+          //key =SECKILL_TIME_KEY加上秒杀商品id，value是（开始时间?结束时间）
+          String startTime = seckill.getStartTime();
+          String endTime = seckill.getEndTime();
+          String value=startTime+","+endTime;
+          redisTemplate.opsForValue().set(SECKILL_TIME_KEY+seckill.getSeckillId(),value,7,TimeUnit.DAYS);
+
+        });
+
 
         restHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT); // 批量execute
       }
@@ -205,5 +232,80 @@ public class SeckillServiceImpl implements SeckillSearchService {
     seckill.setEndTime((String) sourceAsMap.get("endTime"));
     seckill.setUser(null);
     return seckill;
+  }
+
+  @Override
+  public void addSeckillToElasticSearchAndRedis(Seckill seckill) throws IOException {
+
+
+    IndexRequest indexRequest = new IndexRequest(INDEX_NAME);
+    indexRequest.id(seckill.getSeckillId() + ""); // 秒杀商品id
+    ConcurrentHashMap<String, Object> sources = new ConcurrentHashMap<>();
+    sources.put("seckillName", seckill.getSeckillName());
+    sources.put("seckillNumber", seckill.getSeckillNumber());
+    sources.put("price", seckill.getPrice());
+    sources.put("img", seckill.getImg());
+    sources.put("limitCount", String.valueOf(seckill.getLimitCount()));
+    sources.put("startTime", seckill.getStartTime());
+    sources.put("endTime", seckill.getEndTime());
+    sources.put("createTime", seckill.getCreateTime());
+    sources.put("userid", String.valueOf(seckill.getUser().getId()));
+    indexRequest.source(sources);
+
+    restHighLevelClient.index(indexRequest,RequestOptions.DEFAULT);
+
+    //key =SECKILL_NUMBER_KEY加上秒杀商品id，value是库存
+    redisTemplate.opsForValue().set(SECKILL_NUMBER_KEY+seckill.getSeckillId(),seckill.getSeckillNumber(),7, TimeUnit.DAYS);
+
+    //key =SECKILL_LIMIT_KEY加上秒杀商品id，value是限购数量
+    redisTemplate.opsForValue().set(SECKILL_LIMIT_KEY+seckill.getSeckillId(),seckill.getLimitCount(),7,TimeUnit.DAYS);
+
+    //key =SECKILL_TIME_KEY加上秒杀商品id，value是（开始时间?结束时间）
+    String startTime = seckill.getStartTime();
+    String endTime = seckill.getEndTime();
+    String value=startTime+","+endTime;
+    redisTemplate.opsForValue().set(SECKILL_TIME_KEY+seckill.getSeckillId(),value,7,TimeUnit.DAYS);
+
+
+  }
+
+  @Override
+  public void updateSeckill(Seckill seckill) throws IOException {
+    UpdateRequest updateRequest = new UpdateRequest(INDEX_NAME,seckill.getSeckillId()+"");
+
+    ConcurrentHashMap<String, Object> doc = new ConcurrentHashMap<>();
+    doc.put("seckillName", seckill.getSeckillName());
+    doc.put("seckillNumber", seckill.getSeckillNumber());
+    doc.put("price", seckill.getPrice());
+    if(!seckill.getImg().isEmpty()){
+      doc.put("img", seckill.getImg());
+    }
+    doc.put("limitCount", String.valueOf(seckill.getLimitCount()));
+    doc.put("startTime", seckill.getStartTime());
+    doc.put("endTime", seckill.getEndTime());
+    doc.put("createTime", seckill.getCreateTime());
+    doc.put("userid", String.valueOf(seckill.getUser().getId()));
+
+    updateRequest.doc(JSON.toJSONString(doc), XContentType.JSON);
+
+    restHighLevelClient.update(updateRequest,RequestOptions.DEFAULT);
+  }
+
+  @Override
+  public void deleteSeckill(long seckillId) throws IOException {
+    DeleteRequest deleteRequest = new DeleteRequest(INDEX_NAME,seckillId+"");
+
+    restHighLevelClient.delete(deleteRequest,RequestOptions.DEFAULT);
+  }
+
+  @Override
+  public void batchDeleteSeckill(long[] ids) throws IOException {
+    BulkRequest bulkRequest = new BulkRequest(); //批量执行
+    for (long id : ids) {
+      DeleteRequest deleteRequest = new DeleteRequest(INDEX_NAME);
+      deleteRequest.id(id+"");
+      bulkRequest.add(deleteRequest);
+    }
+    restHighLevelClient.bulk(bulkRequest,RequestOptions.DEFAULT);
   }
 }

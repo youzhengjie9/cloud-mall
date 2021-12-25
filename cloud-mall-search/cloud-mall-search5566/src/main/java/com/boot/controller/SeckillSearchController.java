@@ -1,5 +1,6 @@
 package com.boot.controller;
 
+import com.boot.enums.ResultConstant;
 import com.boot.pojo.Product;
 import com.boot.pojo.Seckill;
 import com.boot.service.SeckillSearchService;
@@ -94,7 +95,39 @@ public class SeckillSearchController {
         return seckillSearchService.searchSeckilltoDetailByseckillId(seckillId);
     }
 
+    @ResponseBody
+    @PostMapping(path = "/addSeckillToElasticSearchAndRedis")
+    public String addSeckillToElasticSearchAndRedis(@RequestBody Seckill seckill) throws IOException{
 
+        seckillSearchService.addSeckillToElasticSearchAndRedis(seckill);
 
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
+    @ResponseBody
+    @PostMapping(path = "/updateSeckill")
+    public String updateSeckill(@RequestBody Seckill seckill) throws IOException{
+
+        seckillSearchService.updateSeckill(seckill);
+
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/deleteSeckill/{seckillId}")
+    public String deleteSeckill(@PathVariable("seckillId") long seckillId) throws IOException{
+
+        seckillSearchService.deleteSeckill(seckillId);
+
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/batchDeleteSeckill")
+    public String batchDeleteSeckill(@RequestParam("ids")long[] ids) throws IOException{
+
+        seckillSearchService.batchDeleteSeckill(ids);
+
+        return ResultConstant.SUCCESS.getCodeStat();
+    }
 
 }

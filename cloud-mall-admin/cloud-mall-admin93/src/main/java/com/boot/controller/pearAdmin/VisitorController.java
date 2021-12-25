@@ -20,7 +20,6 @@ import java.util.List;
  */
 @Controller
 @RequestMapping(path = "/pear")
-@CrossOrigin
 public class VisitorController {
 
     @Autowired

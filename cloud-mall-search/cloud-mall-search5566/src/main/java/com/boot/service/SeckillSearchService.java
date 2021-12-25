@@ -17,6 +17,15 @@ public interface SeckillSearchService {
     //专门把数据查询给秒杀详情，所以只查询必须要的数据
     Seckill searchSeckilltoDetailByseckillId(long seckillId) throws IOException;
 
+    void addSeckillToElasticSearchAndRedis(Seckill seckill) throws IOException;
+
+    void updateSeckill(Seckill seckill) throws IOException;
+
+
+    void deleteSeckill(long seckillId) throws IOException;
+
+
+    void batchDeleteSeckill(long[] ids) throws IOException;
 
 
 }

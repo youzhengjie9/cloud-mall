@@ -114,13 +114,18 @@
 
 
     <insert id="insertSeckill" parameterType="com.boot.pojo.Seckill">
-        insert into seckill values(#{seckillId},#{seckillName}.#{seckillNumber},#{price},#{img}
+        insert into seckill values(#{seckillId},#{seckillName},#{seckillNumber},#{price},#{img}
         ,#{limitCount},#{startTime},#{endTime},#{createTime},#{user.id})
     </insert>
 
     <update id="updateSeckill" parameterType="com.boot.pojo.Seckill">
         update seckill set seckill_name=#{seckillName},seckill_number=#{seckillNumber},
-        price=#{price},img=#{img},limit_count=#{limitCount},start_time=#{startTime},
+        price=#{price},
+        <if test="img != ''">
+            img=#{img},
+        </if>
+
+        limit_count=#{limitCount},start_time=#{startTime},
         end_time=#{endTime} where seckill_id=#{seckillId}
     </update>
 

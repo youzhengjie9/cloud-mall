@@ -18,8 +18,9 @@
     <dependencies>
 
 <!--        redis gateway 限流-->
+
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
         </dependency>
 

@@ -161,7 +161,6 @@ public class SeckillController {
     @ResponseBody
     @PostMapping(path = "/insertSeckill")
     public int insertSeckill(@RequestBody Seckill seckill){
-
         return seckillService.insertSeckill(seckill);
     }
     @ResponseBody

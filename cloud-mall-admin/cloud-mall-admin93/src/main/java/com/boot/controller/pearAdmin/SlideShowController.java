@@ -2,6 +2,7 @@ package com.boot.controller.pearAdmin;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.boot.controller.config.FastDFSClientWrapper;
 import com.boot.data.layuiData;
 import com.boot.data.layuiJSON;
 import com.boot.feign.system.fallback.SlideShowFallbackFeign;
@@ -30,6 +31,9 @@ public class SlideShowController {
 
     @Autowired
     private SlideShowFallbackFeign slideShowFallbackFeign;
+
+    @Autowired
+    private FastDFSClientWrapper fastDFSClientWrapper;
 
     @Autowired
     private SlideShowFeign slideShowFeign;
@@ -162,7 +166,7 @@ public class SlideShowController {
             }else {
 
                 //写入轮播图
-                String newPath = FileUtil.writeSlideShow(file.getOriginalFilename(), file.getBytes());
+                String newPath = fastDFSClientWrapper.uploadFile(file);
 
                 SlideShow slideShow = new SlideShow();
                 slideShow.setId(SnowId.nextId());

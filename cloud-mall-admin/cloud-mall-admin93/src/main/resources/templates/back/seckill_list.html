@@ -11,7 +11,7 @@
 		<form class="layui-form" action="" autocomplete="off">
 			<div class="layui-form-item">
 				<div class="layui-form-item layui-inline">
-					<label class="layui-form-label">品牌名称</label>
+					<label class="layui-form-label">秒杀商品名</label>
 					<div class="layui-input-inline">
 						<input type="text" name="title" placeholder="" class="layui-input">
 					</div>
@@ -54,12 +54,50 @@
 </script>
 
 
+<script type="text/html" id="seckill-startTime">
+	{{#  if(d.startTime !=null){ }}
+	<div>{{layui.util.toDateString(d.startTime, 'yyyy-MM-dd HH:mm:ss')}}</div>
+	{{#  } else {}}
+	<div>{{}}</div>
+	{{#  } }}
+</script>
+
+
+<script type="text/html" id="seckill-endTime">
+	{{#  if(d.endTime !=null){ }}
+	<div>{{layui.util.toDateString(d.endTime, 'yyyy-MM-dd HH:mm:ss')}}</div>
+	{{#  } else {}}
+	<div>{{}}</div>
+	{{#  } }}
+</script>
+
+<script type="text/html" id="seckill-createTime">
+	{{#  if(d.createTime !=null){ }}
+	<div>{{layui.util.toDateString(d.createTime, 'yyyy-MM-dd HH:mm:ss')}}</div>
+	{{#  } else {}}
+	<div>{{}}</div>
+	{{#  } }}
+</script>
 
 <script th:src="@{/static/resource/lib/jquery.min.js}"></script>
 <script th:src="@{/static/component/layui/layui.js}"></script>
 <script th:src="@{/static/component/pear/pear.js}"></script>
 <script>
 
+	function show_img(t) {
+		var t = $(t).find("img");
+		//页面层
+		layer.open({
+			type: 1,
+			skin: 'layui-layer-rim', //加上边框
+			area: ['80%', '80%'], //宽高
+			shadeClose: true, //开启遮罩关闭
+			end: function (index, layero) {
+				return false;
+			},
+			content: '<div style="text-align:center"><img src="' + $(t).attr('src') + '" style="width: 40%;height: 40%" /></div>'
+		});
+	}
 	layui.use(['table', 'form', 'jquery','common'], function() {
 		let table = layui.table;
 		let form = layui.form;
@@ -73,14 +111,61 @@
 			},
 				{
 					title: 'id',
-					field: 'id',
-					align: 'center',
-					width: 100
+					field: 'seckillId',
+					align: 'center'
 				},
 				{
-					title: '品牌名称',
-					field: 'brandName',
+					field: 'img',
+					title: '秒杀商品图',
+					templet: function(d){
+						return '<div onclick="show_img(this)" ><img src="'+d.img+'" alt="" width="45px" height="45px"></a></div>';
+					}
+				},
+				{
+					title: '秒杀商品名',
+					field: 'seckillName',
 					align: 'center'
+				},
+				{
+					title: '还剩库存',
+					field: 'seckillNumber',
+					align: 'center'
+				},
+				{
+					title: '秒杀价格',
+					field: 'price',
+					align: 'center'
+				},
+				{
+					title: '每人限购',
+					field: 'limitCount',
+					align: 'center'
+				},
+				{
+					title: '秒杀价格',
+					field: 'price',
+					align: 'center'
+				},
+				{
+					title: '开始时间',
+					field: 'startTime',
+					align: 'center',
+					sort: true,
+					templet: '#seckill-startTime'
+				},
+				{
+					title: '结束时间',
+					field: 'endTime',
+					align: 'center',
+					sort: true,
+					templet: '#seckill-endTime'
+				},
+				{
+					title: '创建时间',
+					field: 'createTime',
+					align: 'center',
+					sort: true,
+					templet: '#seckill-createTime'
 				},
 				{
 					title: '操作',
@@ -93,12 +178,12 @@
 
 		table.render({
 			elem: '#user-table',
-			url: '/pear/brandData',
+			url: '/pear/seckillData',
 			page: true,
 			cols: cols,
 			skin: 'line',
 			toolbar: '#user-toolbar',
-			text: {none: '暂无品牌信息'},
+			text: {none: '暂无秒杀信息'},
 			defaultToolbar: [{
 				title: '刷新',
 				layEvent: 'refresh',
@@ -131,7 +216,7 @@
 				title: '新增',
 				shade: 0.1,
 				area: ['500px', '400px'],
-				content: '/pear/addBrandPage'
+				content: '/pear/toAddSeckill'
 			});
 		}
 
@@ -141,7 +226,7 @@
 				title: '修改',
 				shade: 0.1,
 				area: ['500px', '400px'],
-				content: '/pear/modifyBrandPage?id='+obj.data.id
+				content: '/pear/toEditSeckill?seckillName='+obj.data.seckillName
 			});
 		}
 
@@ -156,14 +241,14 @@
 
 
 		window.remove = function(obj) {
-			layer.confirm('确定要删除该品牌', {
+			layer.confirm('确定要删除该秒杀商品？', {
 				icon: 3,
 				title: '提示'
 			}, function(index) {
 				layer.close(index);
 				let loading = layer.load();
 				$.ajax({
-					url: "/pear/deleteBrand/"+obj.data['id'],
+					url: "/pear/deleteSeckill/"+obj.data['seckillId'],
 					dataType: 'json',
 					type: 'GET',
 					success: function(result) {
@@ -188,7 +273,7 @@
 
 		window.batchRemove = function(obj) {
 
-			var checkIds = common.checkField(obj,'id');
+			var checkIds = common.checkField(obj,'seckillId');
 
 			if (checkIds === "") {
 				layer.msg("未选中数据", {
@@ -198,14 +283,14 @@
 				return false;
 			}
 
-			layer.confirm('确定要删除这些品牌', {
+			layer.confirm('确定要删除这些秒杀商品？', {
 				icon: 3,
 				title: '提示'
 			}, function(index) {
 				layer.close(index);
 				let loading = layer.load();
 				$.ajax({
-					url: "/pear/batchDeleteBrand/"+checkIds,
+					url: "/pear/batchDeleteSeckill/"+checkIds,
 					dataType: 'json',
 					type: 'get',
 					success: function(result) {

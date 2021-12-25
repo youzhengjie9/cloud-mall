@@ -5,7 +5,7 @@
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
     <!-- 默认的header name是X-CSRF-TOKEN -->
     <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
-    <title>添加秒杀</title>
+    <title>编辑秒杀</title>
     <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/bootstrap-fileinput/5.0.1/css/fileinput.min.css" rel="stylesheet">
 
@@ -45,27 +45,29 @@
 </style>
 
 <body>
-<form class="layui-form" th:action="@{/pear/addSeckill}" method="post" id="fm">
+<form class="layui-form" th:action="@{/pear/updateSeckill}" method="post" id="fm">
     <div class="mainBox">
         <div class="main-container">
             <div class="main-container">
                 <div class="layui-form-item">
 
+                    <input type="hidden" name="seckillId" th:value="${seckill.getSeckillId()}">
+
                     <label class="layui-form-label">秒杀商品名</label>
                     <div class="layui-input-block">
-                        <input type="text" name="seckillName" lay-verify="title" autocomplete="off" placeholder="请输入秒杀商品名" class="layui-input">
+                        <input th:value="${seckill.getSeckillName()}" type="text" name="seckillName" lay-verify="title" autocomplete="off" placeholder="请输入秒杀商品名" class="layui-input">
                     </div>
                     <br/>
 
                     <label class="layui-form-label">库存数</label>
                     <div class="layui-input-block">
-                        <input type="text" name="seckillNumber" lay-verify="title" autocomplete="off" placeholder="请输入库存" class="layui-input">
+                        <input th:value="${seckill.getSeckillNumber()}" type="text" name="seckillNumber" lay-verify="title" autocomplete="off" placeholder="请输入库存" class="layui-input">
                     </div>
                     <br/>
 
                     <label class="layui-form-label">秒杀价格</label>
                     <div class="layui-input-block">
-                        <input type="text" name="price" lay-verify="title" autocomplete="off" placeholder="请输入价格" class="layui-input">
+                        <input th:value="${seckill.getPrice()}" type="text" name="price" lay-verify="title" autocomplete="off" placeholder="请输入价格" class="layui-input">
                     </div>
                     <br/>
 
@@ -80,22 +82,20 @@
 
                     <label class="layui-form-label">每人限购</label>
                     <div class="layui-input-block">
-                        <input type="text" name="limitCount" lay-verify="title" autocomplete="off" placeholder="请输入每人限购数量" class="layui-input">
+                        <input th:value="${seckill.getLimitCount()}" type="text" name="limitCount" lay-verify="title" autocomplete="off" placeholder="请输入每人限购数量" class="layui-input">
                     </div>
                     <br/>
 
                     <label class="layui-form-label">开始时间</label>
                     <div class="layui-input-block">
-                        <input  type="text" name="startTime" lay-verify="title" autocomplete="off" placeholder="开始时间格式:2021-12-23 16:03:14" class="layui-input">
+                        <input th:value="${seckill.getStartTime()}" type="text" name="startTime" lay-verify="title" autocomplete="off" placeholder="开始时间格式:2021-12-23 16:03:14" class="layui-input">
                     </div>
                     <br/>
 
                     <label class="layui-form-label">结束时间</label>
                     <div class="layui-input-block">
-                        <input  type="text" name="endTime" lay-verify="title" autocomplete="off" placeholder="结束时间格式:2021-12-23 16:03:14" class="layui-input">
+                        <input th:value="${seckill.getEndTime()}" type="text" name="endTime" lay-verify="title" autocomplete="off" placeholder="结束时间格式:2021-12-23 16:03:14" class="layui-input">
                     </div>
-
-
 
                 </div>
             </div>
@@ -105,7 +105,7 @@
         <div class="button-container">
             <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit="" lay-filter="user-save">
                 <i class="layui-icon layui-icon-ok"></i>
-                添加
+                修改
             </button>
             <button type="reset" class="pear-btn pear-btn-sm">
                 <i class="layui-icon layui-icon-refresh"></i>
@@ -117,11 +117,10 @@
 
 <script>
 
-
     //图片上传
     $(function () {
         $("#uploadPicture").fileinput({
-            uploadUrl: "/pear/add/seckill",
+            uploadUrl: "/pear/updateSeckill",
             previewFileType: "image",
             uploadAsync: true,
             showCaption: false,
@@ -174,7 +173,7 @@
         form.on('submit(user-save)', function(data){
             var data = new FormData($('#fm')[0]);
             $.ajax({
-                url:'/pear/add/seckill',
+                url:'/pear/updateSeckill',
                 data: data,
                 dataType:'json',
                 type:'post',

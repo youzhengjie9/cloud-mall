@@ -17,6 +17,13 @@
 
     <dependencies>
 
+<!--        分布式文件系统 fastdfs ，不能用1.25，不然会报错-->
+        <dependency>
+            <groupId>com.github.tobato</groupId>
+            <artifactId>fastdfs-client</artifactId>
+            <version>1.26.4</version>
+        </dependency>
+
         <!--        springBoot Admin client-->
         <dependency>
             <groupId>de.codecentric</groupId>

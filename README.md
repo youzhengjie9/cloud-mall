@@ -6,7 +6,9 @@
   </a>
 </p>
 <p align=center>
-   cloud-mall是一个基于分布式、微服务架构开发的商城系统,会继续完善主流商城应有的功能以及没有的功能,
+   cloud-mall是一个基于分布式、微服务架构开发的商城系统,项目主要有几大模块，分别是：后台系统模块、异步模块、
+   人工客服模块、网关模块、日志模块、应用监控模块、订单模块、商品模块、搜索模块、秒杀模块、系统模块、前台模块，
+   几乎实现了中小型公司商城项目的大部分功能,
    作者前期注重功能的实现，后期作者将全心投入到性能优化以及安全方面上的优化,
    希望未来的某一天能够把cloud-mall打造成一个能够抗住高的并发量的商城系统。
 </p>
@@ -170,6 +172,34 @@ http {
  	
 }
 ```
+
+### 安装FastDFS分布式文件系统
+* 由于后期采用FastDFS来进行存储图片文件，所以安装cloud-mall必须安装FastDFS，作者安装教程如下：
+
+```shell script
+   docker search fastdfs
+   docker pull delron/fastdfs
+   docker images
+   docker run -dti --network=host --name tracker -v /var/fdfs/tracker:/var/fdfs -v /etc/localtime:/etc/localtime delron/fastdfs tracker
+   docker run -dti  --network=host --name storage -e TRACKER_SERVER=192.168.184.132:22122 -v /var/fdfs/storage:/var/fdfs  -v /etc/localtime:/etc/localtime  delron/fastdfs storage
+   docker ps #查看容器id
+   sudo docker exec -it 容器id /bin/bash
+  #下面这两行命令可以不写，就默认配置
+   vi /etc/fdfs/storage.conf
+   vi /usr/local/nginx/conf/nginx.conf
+   
+   firewall-cmd --zone=public  --permanent --add-port=8888/tcp
+   firewall-cmd --zone=public  --permanent --add-port=22122/tcp
+   firewall-cmd --zone=public  --permanent --add-port=23000/tcp
+   
+    #重启
+   systemctl restart firewalld
+
+    #自启动
+   docker update --restart=always tracker
+   docker update --restart=always storage
+
+  ```
 
 ##### 第三方登录
 ###### gitee

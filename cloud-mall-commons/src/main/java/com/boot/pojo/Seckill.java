@@ -15,7 +15,7 @@ public class Seckill implements Serializable {
 
     private long seckillId; //秒杀商品id
     private String seckillName; //秒杀商品名称
-    private int seckillNumber;
+    private int seckillNumber;//库存
     private BigDecimal price;
     private String img;
     private int limitCount;
