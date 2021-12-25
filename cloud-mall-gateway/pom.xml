@@ -16,6 +16,13 @@
     </modules>
 
     <dependencies>
+
+<!--        redis gateway 限流-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+        </dependency>
+
         <!--        actuator用来监控-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

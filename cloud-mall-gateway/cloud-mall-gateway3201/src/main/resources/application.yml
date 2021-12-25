@@ -50,24 +50,49 @@ spring:
           uri: lb://cloud-mall-product
           predicates:
             - Path=/feign/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 50
+                key-resolver: "#{@ipKeyResolver}"
+
 
         #配置system模块路由
         - id: cloud-mall-system
           uri: lb://cloud-mall-system
           predicates:
             - Path=/feign/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 50
+                key-resolver: "#{@ipKeyResolver}"
 
         #配置user模块路由
         - id: cloud-mall-user
           uri: lb://cloud-mall-user
           predicates:
             - Path=/feign/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 50
+                key-resolver: "#{@ipKeyResolver}"
 
         #配置search模块路由
         - id: cloud-mall-search
           uri: lb://cloud-mall-search
           predicates:
             - Path=/feign/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 50
+                key-resolver: "#{@ipKeyResolver}"
 
         #配置web模块路由1
         - id: cloud-mall-web1
@@ -86,6 +111,12 @@ spring:
           uri: lb://cloud-mall-web
           predicates:
             - Path=/web/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 50
+                key-resolver: "#{@ipKeyResolver}"
 
 
         #配置admin模块路由1
@@ -93,12 +124,24 @@ spring:
           uri: lb://cloud-mall-admin
           predicates:
             - Path=/admin/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 50
+                key-resolver: "#{@ipKeyResolver}"
 
         #配置admin模块路由2
         - id: cloud-mall-admin
           uri: lb://cloud-mall-admin
           predicates:
             - Path=/pear/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 50
+                key-resolver: "#{@ipKeyResolver}"
 
         #配置admin的登录模块路由
         - id: cloud-mall-admin
@@ -111,3 +154,9 @@ spring:
           uri: lb://cloud-mall-chat
           predicates:
             - Path=/chat/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 20
+                redis-rate-limiter.burstCapacity: 50
+                key-resolver: "#{@ipKeyResolver}"
