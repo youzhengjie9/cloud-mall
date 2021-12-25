@@ -11,7 +11,7 @@
  Target Server Version : 50711
  File Encoding         : 65001
 
- Date: 10/12/2021 18:40:13
+ Date: 25/12/2021 17:15:20
 */
 
 SET NAMES utf8mb4;
@@ -62,8 +62,15 @@ CREATE TABLE `coupons_activity`  (
 -- ----------------------------
 -- Records of coupons_activity
 -- ----------------------------
-INSERT INTO `coupons_activity` VALUES (3734969100338181, '内测卷002', 5, 101, 3, 2001, '2021-12-11', '2021-12-13', '6666', 1);
+INSERT INTO `coupons_activity` VALUES (7788866, '内测卷012', 32, 88, 2, 1777, '2021-12-11', '2021-12-15', '6666', 1);
+INSERT INTO `coupons_activity` VALUES (7788877, '内测卷011', 32, 55, 3, 1777, '2021-12-11', '2021-12-18', '5555', 1);
+INSERT INTO `coupons_activity` VALUES (7788888, '内测卷010', 59, 99, 70, 1777, '2021-12-11', '2021-12-16', '555', 1);
+INSERT INTO `coupons_activity` VALUES (7788899, '内测卷013', 20, 55, 1, 1888, '2021-12-11', '2021-12-16', '1111', 1);
+INSERT INTO `coupons_activity` VALUES (735292248327222, '内测卷009', 25, 88, 3, 2000, '2021-12-11', '2021-12-16', '33', 1);
+INSERT INTO `coupons_activity` VALUES (3734969100338181, '内测卷002', 5, 101, 3, 2001, '2021-12-11', '2021-12-15', '6666', 1);
+INSERT INTO `coupons_activity` VALUES (3734969100338182, '内测卷005', 8, 150, 5, 1888, '2021-12-11', '2021-12-15', '7777', 1);
 INSERT INTO `coupons_activity` VALUES (3735292248327173, '内测卷003', 15, 200, 3, 2000, '2021-12-11', '2021-12-16', '2222', 1);
+INSERT INTO `coupons_activity` VALUES (3735292248327188, '内测卷006', 22, 222, 6, 1777, '2021-12-11', '2021-12-16', '9999', 1);
 INSERT INTO `coupons_activity` VALUES (3735299452371973, '白金卷', 10, 888, 1, 0, '2021-12-11', '2022-02-19', '白金卷', 1);
 INSERT INTO `coupons_activity` VALUES (3735304299807749, '王者卷', 5, 3888, 1, 0, '2021-12-11', '2022-03-11', '王者卷，仅有5张', 1);
 INSERT INTO `coupons_activity` VALUES (3735309677495301, '普通卷', 3666, 58, 3, 1000, '2021-12-11', '2022-09-17', '普通卷，人人有份', 1);
@@ -85,6 +92,9 @@ CREATE TABLE `coupons_record`  (
 -- ----------------------------
 -- Records of coupons_record
 -- ----------------------------
+INSERT INTO `coupons_record` VALUES (3757504566985733, 7788888, 1, '2021-12-14', 1, '2021-12-16');
+INSERT INTO `coupons_record` VALUES (3757504668238853, 7788866, 1, '2021-12-14', 0, NULL);
+INSERT INTO `coupons_record` VALUES (3757504773686277, 7788877, 1, '2021-12-14', 0, NULL);
 
 -- ----------------------------
 -- Table structure for mxdp
@@ -189,7 +199,7 @@ CREATE TABLE `undo_log`  (
   `ext` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ux_undo_log`(`xid`, `branch_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of undo_log

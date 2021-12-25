@@ -11,7 +11,7 @@
  Target Server Version : 50711
  File Encoding         : 65001
 
- Date: 10/12/2021 18:39:51
+ Date: 25/12/2021 17:14:53
 */
 
 SET NAMES utf8mb4;
@@ -68,6 +68,13 @@ INSERT INTO `order` VALUES (3672761237177349, 'http://localhost/static/img/nav/m
 INSERT INTO `order` VALUES (3678103231529989, 'http://localhost/static/img/nav/max.jpg', '小米Max', '全网通 4GB内存+64GB容量 指纹识别 黑色 每月20G流量套餐', 1, 1499.00, '张三', '123123666', '广东省河源市源城区新江二路南', '2021-11-30 16:10:03', 1, 1, 6);
 INSERT INTO `order` VALUES (3678347308893189, 'http://localhost/static/img/nav/mi5.jpg', '小米手机5', '标准版', 1, 1999.00, '张三', '123123666', '广东省河源市源城区新江二路南', '2021-11-30 17:12:07', 1, 2, 4);
 INSERT INTO `order` VALUES (3678347330847749, 'http://localhost/static/img/nav/mi5.jpg', '小米手机5', '顶配版', 1, 1999.00, '张三', '123123666', '广东省河源市源城区新江二路南', '2021-11-30 17:12:08', 1, 2, 1);
+INSERT INTO `order` VALUES (3768751143453701, 'http://localhost/static/img/nav/max.jpg', '小米Max', '全网通 3GB内存+32GB容量 红色 每月40G流量套餐', 1, 14911.00, '张三', '123123666', '广东省河源市源城区新江二路南', '2021-12-16 16:23:00', 1, 1, 1);
+INSERT INTO `order` VALUES (3768783721333765, 'http://localhost/static/img/nav/mi5.jpg', '小米手机5', '标准版', 1, 1999.00, '张三', '123123666', '广东省河源市源城区新江二路南', '2021-12-16 16:31:17', 1, 2, 1);
+INSERT INTO `order` VALUES (3768865787479045, 'http://localhost/static/img/nav/mi5.jpg', '小米手机5', '高配版', 1, 1900.00, '张三', '123123666', '广东省河源市源城区新江二路南', '2021-12-16 16:52:10', 1, 2, 1);
+INSERT INTO `order` VALUES (3804058047808517, '/static/img/nav/max.jpg', '秒杀商品001', '该商品为秒杀商品', 1, 9.90, '张三', '123123666', '广东省河源市源城区新江二路南', '2021-12-22 22:02:01', 1, 10086, 5);
+INSERT INTO `order` VALUES (3804089479726085, '/static/img/nav/max.jpg', '秒杀商品001', '该商品为秒杀商品', 1, 9.90, '张三', '123123666', '广东省河源市源城区新江二路南', '2021-12-22 22:10:00', 1, 10086, 1);
+INSERT INTO `order` VALUES (3804125790995461, '/static/img/nav/max.jpg', '秒杀商品001', '该商品为秒杀商品', 1, 9.90, '张三', '123123666', '广东省河源市源城区新江二路南', '2021-12-22 22:19:15', 1, 10086, 5);
+INSERT INTO `order` VALUES (3804143809987589, '/static/img/nav/max.jpg', '秒杀商品001', '该商品为秒杀商品', 1, 9.90, '张三', '123123666', '广东省河源市源城区新江二路南', '2021-12-22 22:23:49', 1, 10086, 1);
 
 -- ----------------------------
 -- Table structure for orderstatus
@@ -105,7 +112,7 @@ CREATE TABLE `undo_log`  (
   `ext` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ux_undo_log`(`xid`, `branch_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 25 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of undo_log

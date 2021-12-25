@@ -11,7 +11,7 @@
  Target Server Version : 50711
  File Encoding         : 65001
 
- Date: 10/12/2021 18:40:08
+ Date: 25/12/2021 17:15:04
 */
 
 SET NAMES utf8mb4;
@@ -65,11 +65,12 @@ CREATE TABLE `cart`  (
 -- ----------------------------
 -- Records of cart
 -- ----------------------------
-INSERT INTO `cart` VALUES (3683633235952645, '/static/img/nav/max.jpg', '小米Max', '全网通 3GB内存+32GB容量  红色  每月20G流量套餐  ', 14911.00, 1, 14911.00, 1, 1, '3,12,14');
-INSERT INTO `cart` VALUES (3683633398285317, '/static/img/nav/max.jpg', '小米Max', '全网通 3GB内存+32GB容量  红色  每月40G流量套餐  ', 14911.00, 2, 29822.00, 1, 1, '3,12,15');
-INSERT INTO `cart` VALUES (3683633522279429, '/static/img/nav/max.jpg', '小米Max', '全网通 3GB内存+32GB容量  黑色  每月40G流量套餐  ', 14911.00, 2, 29822.00, 1, 1, '3,13,15');
-INSERT INTO `cart` VALUES (3683633693787141, '/static/img/nav/max.jpg', '小米Max', '全网通 4GB内存+64GB容量 指纹识别  黑色  每月40G流量套餐  ', 14911.00, 1, 14911.00, 1, 1, '4,13,15');
-INSERT INTO `cart` VALUES (3683633848452101, '/static/img/nav/max.jpg', '小米Max', '全网通 4GB内存+64GB容量 指纹识别  红色  每月40G流量套餐  ', 14911.00, 1, 14911.00, 1, 1, '4,12,15');
+INSERT INTO `cart` VALUES (3763129876546565, '/static/img/nav/max.jpg', '小米Max', '全网通 4GB内存+64GB容量 指纹识别  黑色  每月20G流量套餐  ', 14911.00, 1, 14911.00, 1, 1, '4,13,14');
+INSERT INTO `cart` VALUES (3763132278440965, '/static/img/nav/max.jpg', '小米Max', '全网通 3GB内存+32GB容量  黑色  每月40G流量套餐  ', 14911.00, 1, 14911.00, 1, 1, '3,13,15');
+INSERT INTO `cart` VALUES (3768787654476805, '/static/img/nav/mi5.jpg', '小米手机5', '标准版  ', 1999.00, 2, 3998.00, 1, 2, '6');
+INSERT INTO `cart` VALUES (3768789095744517, '/static/img/nav/max.jpg', '小米Max', '全网通 3GB内存+32GB容量  红色  每月40G流量套餐  ', 14911.00, 1, 14911.00, 1, 1, '3,12,15');
+INSERT INTO `cart` VALUES (3768789881848837, '/static/img/nav/max.jpg', '小米Max', '全网通 4GB内存+64GB容量 指纹识别  红色  每月20G流量套餐  ', 14911.00, 1, 14911.00, 1, 1, '4,12,14');
+INSERT INTO `cart` VALUES (3768795795293189, '/static/img/nav/mi5.jpg', '小米手机5', '顶配版  ', 1999.00, 1, 1999.00, 1, 2, '8');
 
 -- ----------------------------
 -- Table structure for classify
@@ -129,8 +130,8 @@ CREATE TABLE `product`  (
 -- ----------------------------
 -- Records of product
 -- ----------------------------
-INSERT INTO `product` VALUES (1, '小米Max', 14911.00, '/static/img/nav/max.jpg', 957, 1, 3, '/static/img/introduce/2c934a1d8fc57091.jpg,/static/img/introduce/05b406882a48787a.jpg', '<p>hello1</p>', 1);
-INSERT INTO `product` VALUES (2, '小米手机5', 1999.00, '/static/img/nav/mi5.jpg', 4, 1, 3, '/static/img/introduce/528c61caf149031e.jpg', '', 1);
+INSERT INTO `product` VALUES (1, '小米Max', 1911.00, '/static/img/nav/max.jpg', 956, 1, 3, '/static/img/introduce/2c934a1d8fc57091.jpg,/static/img/introduce/05b406882a48787a.jpg', '<p>hello1</p>', 1);
+INSERT INTO `product` VALUES (2, '小米手机5', 1999.00, '/static/img/nav/mi5.jpg', 2, 1, 3, '/static/img/introduce/528c61caf149031e.jpg', '', 1);
 INSERT INTO `product` VALUES (3, '小米手机4c', 1699.00, '/static/img/nav/mi4c.jpg', 161, 1, 3, '/static/img/introduce/528c61caf149031e.jpg', '', 1);
 INSERT INTO `product` VALUES (4, '红米Note 3', 1099.00, '/static/img/nav/mi4c.jpg', 151, 2, 9, '/static/img/introduce/7860d5b0a1de4362.jpg,/static/img/introduce/d9f495d22ddd0e66.jpg', '', 1);
 INSERT INTO `product` VALUES (5, '红米手机3S', 1099.00, '/static/img/nav/mi4c.jpg', 81, 2, 9, '/static/img/introduce/04e6887165a1d0b7.jpg,/static/img/introduce/05b406882a48787a.jpg,/static/img/introduce/528c61caf149031e.jpg,/static/img/introduce/62313e3bdbbeaf29.jpg', '', 1);
@@ -244,11 +245,15 @@ CREATE TABLE `undo_log`  (
   `ext` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ux_undo_log`(`xid`, `branch_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of undo_log
 -- ----------------------------
+INSERT INTO `undo_log` VALUES (7, 214453807638122497, '192.168.184.1:8091:214453802802089984', 'serializer=jackson', 0x7B7D, 1, '2021-12-15 18:42:52', '2021-12-15 18:42:52', NULL);
+INSERT INTO `undo_log` VALUES (8, 214453807591985153, '192.168.184.1:8091:214453802802089984', 'serializer=jackson', 0x7B7D, 1, '2021-12-15 18:42:52', '2021-12-15 18:42:52', NULL);
+INSERT INTO `undo_log` VALUES (9, 214453806493077505, '192.168.184.1:8091:214453802802089984', 'serializer=jackson', 0x7B7D, 1, '2021-12-15 18:42:52', '2021-12-15 18:42:52', NULL);
+INSERT INTO `undo_log` VALUES (10, 214453806153338880, '192.168.184.1:8091:214453802802089984', 'serializer=jackson', 0x7B7D, 1, '2021-12-15 18:42:52', '2021-12-15 18:42:52', NULL);
 
 -- ----------------------------
 -- Table structure for versioninfo
@@ -273,9 +278,9 @@ INSERT INTO `versioninfo` VALUES (2, '全网通 3GB内存＋32GB容量 指纹识
 INSERT INTO `versioninfo` VALUES (3, '全网通 3GB内存+32GB容量', 1, 300.00, '高通骁龙820处理器 最高主频 1.8GHz，3GB内存，32GB容量，全网通3.0', 1, '选择版本');
 INSERT INTO `versioninfo` VALUES (4, '全网通 4GB内存+64GB容量 指纹识别', 1, 800.00, '高通骁龙820处理器 最高主频 1.8GHz，3GB内存，32GB容量，全网通3.0', 1, '选择版本');
 INSERT INTO `versioninfo` VALUES (5, '全网通 6GB内存+128GB容量 指纹识别', 4, 850.00, '高通骁龙820处理器 最高主频 1.8GHz，3GB内存，32GB容量，全网通3.0', 1, '选择版本');
-INSERT INTO `versioninfo` VALUES (6, '标准版', 2, 2100.00, '高通骁龙835', 1, '选择版本');
-INSERT INTO `versioninfo` VALUES (7, '高配版', 2, 2200.00, '高通骁龙855', 1, '选择版本');
-INSERT INTO `versioninfo` VALUES (8, '顶配版', 2, 3300.00, '高通骁龙888', 1, '选择版本');
+INSERT INTO `versioninfo` VALUES (6, '标准版', 2, 0.00, '高通骁龙835', 1, '选择版本');
+INSERT INTO `versioninfo` VALUES (7, '高配版', 2, 1000.00, '高通骁龙855', 1, '选择版本');
+INSERT INTO `versioninfo` VALUES (8, '顶配版', 2, 2300.00, '高通骁龙888', 1, '选择版本');
 INSERT INTO `versioninfo` VALUES (9, '标准版全网通 2GB内存＋16GB容量', 4, 600.00, '高通骁龙625', 1, '选择版本');
 INSERT INTO `versioninfo` VALUES (10, '标准版 2GB内存+16GB容量', 5, 650.00, '高通骁龙625', 1, '选择版本');
 INSERT INTO `versioninfo` VALUES (11, '高配版 3GB内存+32GB容量', 5, 700.00, '高通骁龙660', 1, '选择版本');
@@ -283,5 +288,7 @@ INSERT INTO `versioninfo` VALUES (12, '红色', 1, 1.00, '各种好看的颜色'
 INSERT INTO `versioninfo` VALUES (13, '黑色', 1, 2.00, '各种好看的颜色', 2, '选择颜色');
 INSERT INTO `versioninfo` VALUES (14, '每月20G流量套餐', 1, 69.00, '实惠流量套餐', 3, '选择套餐');
 INSERT INTO `versioninfo` VALUES (15, '每月40G流量套餐', 1, 102.00, '实惠流量套餐', 3, '选择套餐');
+INSERT INTO `versioninfo` VALUES (3814826232448005, '入门款', 3, 111.00, '描述aaa', 1, '版本选择');
+INSERT INTO `versioninfo` VALUES (3814830774551557, '土豪金', 3, 800.00, '土豪金aaa', 2, '颜色');
 
 SET FOREIGN_KEY_CHECKS = 1;
