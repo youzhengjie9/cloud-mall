@@ -18,7 +18,17 @@
         select count(*) from loginlog
     </select>
 
+    <select id="selectLoginUserBrowser" resultType="java.lang.String">
+        SELECT browser FROM loginlog WHERE browser!='Downloading Tool'  GROUP BY browser LIMIT 0,2
+    </select>
 
+    <select id="selectLoginCountByBrowser" resultType="int">
+        SELECT COUNT(*) FROM loginlog WHERE browser=#{browser}
+    </select>
+
+    <select id="selectLoginCountByTime" resultType="int">
+        SELECT count(*) FROM loginlog WHERE `time` LIKE concat('%',#{time},'%')
+    </select>
 
 
 </mapper>

@@ -68,5 +68,6 @@ public interface OrderService {
     //秒杀订单支付
     public void seckillOrder(long addressid ,long seckillsuccessid,long seckillid,long userid) throws IOException;
 
+    List<BigDecimal> selectSingleGoodsMoneyTop7();
 
 }

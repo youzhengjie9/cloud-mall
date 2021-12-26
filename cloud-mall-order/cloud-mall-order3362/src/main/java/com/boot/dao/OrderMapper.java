@@ -62,5 +62,7 @@ public interface OrderMapper {
 
     Order selectReturnGoodsById(@Param("id") long id);
 
+    List<BigDecimal> selectSingleGoodsMoneyTop7();
+
 
 }

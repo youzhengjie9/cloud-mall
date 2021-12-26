@@ -5,6 +5,7 @@ import com.boot.feign.seckill.fallback.SeckillFallbackFeign;
 import com.boot.pojo.*;
 import com.boot.service.SeckillSearchService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
@@ -277,14 +278,12 @@ public class SeckillServiceImpl implements SeckillSearchService {
     doc.put("seckillName", seckill.getSeckillName());
     doc.put("seckillNumber", seckill.getSeckillNumber());
     doc.put("price", seckill.getPrice());
-    if(!seckill.getImg().isEmpty()){
+    if(!StringUtils.isEmpty(seckill.getImg())){
       doc.put("img", seckill.getImg());
     }
     doc.put("limitCount", String.valueOf(seckill.getLimitCount()));
     doc.put("startTime", seckill.getStartTime());
     doc.put("endTime", seckill.getEndTime());
-    doc.put("createTime", seckill.getCreateTime());
-    doc.put("userid", String.valueOf(seckill.getUser().getId()));
 
     updateRequest.doc(JSON.toJSONString(doc), XContentType.JSON);
 

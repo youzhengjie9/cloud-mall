@@ -121,7 +121,7 @@
     <update id="updateSeckill" parameterType="com.boot.pojo.Seckill">
         update seckill set seckill_name=#{seckillName},seckill_number=#{seckillNumber},
         price=#{price},
-        <if test="img != ''">
+        <if test="img != null">
             img=#{img},
         </if>
 

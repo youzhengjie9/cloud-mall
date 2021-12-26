@@ -98,4 +98,10 @@ public class OrderFallbackFeignImpl implements OrderFallbackFeign {
         return 0;
     }
 
+    @Override
+    public List<BigDecimal> selectSingleGoodsMoneyTop7() {
+        log.error("selectSingleGoodsMoneyTop7 error");
+        return null;
+    }
+
 }

@@ -47,5 +47,26 @@ public class LoginLogController {
         return count;
     }
 
+    //查询登录者使用的浏览器(默认展示2个)
+    @ResponseBody
+    @GetMapping(path = "/selectLoginUserBrowser")
+    public List<String> selectLoginUserBrowser(){
+
+        return loginLogService.selectLoginUserBrowser();
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/selectLoginCountByBrowser/{browser}")
+    public int selectLoginCountByBrowser(@PathVariable("browser") String browser){
+
+        return loginLogService.selectLoginCountByBrowser(browser);
+    }
+
+    @ResponseBody
+    @GetMapping(path = "/selectLoginCountByTime/{time}")
+    public int selectLoginCountByTime(@PathVariable("time") String time){
+
+        return loginLogService.selectLoginCountByTime(time);
+    }
 
 }

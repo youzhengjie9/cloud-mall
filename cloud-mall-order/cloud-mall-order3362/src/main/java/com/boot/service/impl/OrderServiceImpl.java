@@ -362,4 +362,9 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    public List<BigDecimal> selectSingleGoodsMoneyTop7() {
+        return orderMapper.selectSingleGoodsMoneyTop7();
+    }
+
 }

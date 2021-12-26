@@ -13,4 +13,11 @@ public interface LoginLogService {
 
     int selectLoginLogCount();
 
+    //查询登录者使用的浏览器(默认展示2个)
+    List<String> selectLoginUserBrowser();
+
+    int selectLoginCountByBrowser(String browser);
+
+    int selectLoginCountByTime(String time);
+
 }

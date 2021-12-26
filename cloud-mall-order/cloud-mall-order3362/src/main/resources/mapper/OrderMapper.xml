@@ -235,6 +235,9 @@
     </select>
 
 
+    <select id="selectSingleGoodsMoneyTop7" resultType="java.math.BigDecimal">
+        SELECT singleGoodsMoney FROM `order` ORDER BY singleGoodsMoney desc LIMIT 0,7
+    </select>
 
 
 

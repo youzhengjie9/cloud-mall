@@ -22,4 +22,18 @@ public interface LoginLogFallbackFeign {
     @GetMapping(path = "/feign/loginlog/selectLoginLogCount")
     public int selectLoginLogCount();
 
+    //查询登录者使用的浏览器(默认展示2个)
+    @ResponseBody
+    @GetMapping(path = "/feign/loginlog/selectLoginUserBrowser")
+    public List<String> selectLoginUserBrowser();
+
+    @ResponseBody
+    @GetMapping(path = "/feign/loginlog/selectLoginCountByBrowser/{browser}")
+    public int selectLoginCountByBrowser(@PathVariable("browser") String browser);
+
+    @ResponseBody
+    @GetMapping(path = "/feign/loginlog/selectLoginCountByTime/{time}")
+    public int selectLoginCountByTime(@PathVariable("time") String time);
+
+
 }

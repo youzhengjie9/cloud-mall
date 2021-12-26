@@ -3,8 +3,8 @@
 <head>
     <meta charset="utf-8">
     <title>数据图表</title>
-    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
-    <link rel="stylesheet" th:href="@{/pear-admin/css/other/result.css}" />
+    <link rel="stylesheet" th:href="@{/static/component/pear/css/pear.css}" />
+    <link rel="stylesheet" th:href="@{/static/pear-admin/css/other/result.css}" />
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
@@ -15,19 +15,370 @@
             integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
             crossorigin="anonymous"></script>
     <!--    引入echarts-->
-    <script th:src="@{/assets/js/echarts.js}"></script>
+    <script th:src="@{/static/assets/js/echarts.js}"></script>
 </head>
 <body class="pear-container">
 
-    <h3>暂未实现数据图表</h3>
+<div class="layui-row layui-col-space10">
 
-<script th:src="@{/component/layui/layui.js}"></script>
-<script th:src="@{/component/pear/pear.js}"></script>
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div id="line4" style="min-height:400px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div id="line3" style="min-height:400px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div id="line2" style="min-height:400px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div id="line1" style="min-height:400px;"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script th:src="@{/static/component/layui/layui.js}"></script>
+<script th:src="@{/static/component/pear/pear.js}"></script>
 
 
 
 <script th:inline="javascript">
 
+
+    //1.
+    // 基于准备好的dom，初始化echarts实例
+    var myChart1 = echarts.init(document.getElementById('line1'));
+
+
+    // 指定图表的配置项和数据
+    var option1 = {
+        title: {
+            text: '订单单价Top7'
+        },
+
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                },
+                magicType: {//动态类型切换
+                    type: ['bar', 'line']
+                }
+            }
+        },
+        tooltip: {},
+        legend: {
+            data: ['订单单价']
+        },
+        xAxis: {
+            data: ["top1", "top2", "top3", "top4", "top5", "top6", "top7"]
+        },
+        yAxis: {},
+        series: [{
+
+            name: '订单单价',
+            type: 'bar',
+            data: [
+                [[${singles.get(0)}]],
+                [[${singles.get(1)}]],
+                [[${singles.get(2)}]],
+                [[${singles.get(3)}]],
+                [[${singles.get(4)}]],
+                [[${singles.get(5)}]],
+                [[${singles.get(6)}]]
+            ]
+
+
+        }]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart1.setOption(option1);
+
+
+    var myChart3 = echarts.init(document.getElementById('line2'));
+    myChart3.setOption({
+        title: {
+            text: '登录者使用的浏览器'
+        },
+        toolbox: { //可视化的工具箱
+            show: true,
+            feature: {
+                dataView: { //数据视图
+                    show: true
+                },
+                restore: { //重置
+                    show: true
+                },
+                dataZoom: { //数据缩放视图
+                    show: true
+                },
+                saveAsImage: {//保存图片
+                    show: true
+                }
+            }
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b}: {c} ({d}%)'
+        },
+        series: [
+            {
+                name: '次数统计',
+                type: 'pie',
+                radius: '55%',
+                label: {
+                    position: 'outside',
+                    formatter: '{b}\n共{c}个 (占比:{d}%)'
+                },
+                data: [
+                    {
+                        value: [[${browserCounts.get(0)}]],
+                        name: [[${browsers.get(0)}]]
+                    },
+                    {
+                        value: [[${browserCounts.get(1)}]],
+                        name: [[${browsers.get(1)}]]
+                    }
+                ]
+            }
+        ]
+    });
+
+
+    layui.use(['layer', 'echarts', 'element', 'count'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            element = layui.element,
+            count = layui.count,
+            echarts = layui.echarts;
+
+        var echartsRecords = echarts.init(document.getElementById('line3'), 'walden');
+
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            title: {
+                text: '近7天的登录次数'
+            },
+            xAxis: [{
+                type: 'category',
+                data:
+                    [
+                        [[${LoginLogdays.get(0)}]], [[${LoginLogdays.get(1)}]],
+                        [[${LoginLogdays.get(2)}]], [[${LoginLogdays.get(3)}]],
+                        [[${LoginLogdays.get(4)}]], [[${LoginLogdays.get(5)}]],
+                        [[${LoginLogdays.get(6)}]]
+                    ]
+
+                ,
+                axisLine: {
+                    lineStyle: {
+                        color: "#999"
+                    }
+                }
+            }],
+            yAxis: [{
+                type: 'value',
+                splitNumber: 4,
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#DDD'
+                    }
+                },
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: "#333"
+                    },
+                },
+                nameTextStyle: {
+                    color: "#999"
+                },
+                splitArea: {
+                    show: false
+                }
+            }],
+            series: [{
+                name: '登录次数',
+                type: 'line',
+                data: [
+                    [[${LoginLogcounts.get(0)}]], [[${LoginLogcounts.get(1)}]],
+                    [[${LoginLogcounts.get(2)}]], [[${LoginLogcounts.get(3)}]],
+                    [[${LoginLogcounts.get(4)}]], [[${LoginLogcounts.get(5)}]],
+                    [[${LoginLogcounts.get(6)}]]
+                ],
+                lineStyle: {
+                    normal: {
+                        width: 8,
+                        color: {
+                            type: 'linear',
+
+                            colorStops: [{
+                                offset: 0,
+                                color: '#A9F387' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: '#48D8BF' // 100% 处的颜色
+                            }],
+                            globalCoord: false // 缺省为 false
+                        },
+                        shadowColor: 'rgba(72,216,191, 0.3)',
+                        shadowBlur: 10,
+                        shadowOffsetY: 20
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#fff',
+                        borderWidth: 10,
+                        /*shadowColor: 'rgba(72,216,191, 0.3)',
+                        shadowBlur: 100,*/
+                        borderColor: "#A9F387"
+                    }
+                },
+                smooth: true
+            }]
+        };
+        echartsRecords.setOption(option);
+
+        window.onresize = function () {
+            echartsRecords.resize();
+        }
+    })
+
+
+
+    layui.use(['layer', 'echarts', 'element', 'count'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            element = layui.element,
+            count = layui.count,
+            echarts = layui.echarts;
+
+        var echartsRecords = echarts.init(document.getElementById('line4'), 'walden');
+
+        var option = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            title: {
+                text: '近7天的订单'
+            },
+            xAxis: [{
+                type: 'category',
+                data:
+                    [
+                        [[${days.get(0)}]], [[${days.get(1)}]],
+                        [[${days.get(2)}]], [[${days.get(3)}]],
+                        [[${days.get(4)}]], [[${days.get(5)}]],
+                        [[${days.get(6)}]]
+                    ]
+
+                ,
+                axisLine: {
+                    lineStyle: {
+                        color: "#999"
+                    }
+                }
+            }],
+            yAxis: [{
+                type: 'value',
+                splitNumber: 4,
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#DDD'
+                    }
+                },
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: "#333"
+                    },
+                },
+                nameTextStyle: {
+                    color: "#999"
+                },
+                splitArea: {
+                    show: false
+                }
+            }],
+            series: [{
+                name: '交易额',
+                type: 'line',
+                data: [
+                    [[${counts.get(0)}]], [[${counts.get(1)}]],
+                    [[${counts.get(2)}]], [[${counts.get(3)}]],
+                    [[${counts.get(4)}]], [[${counts.get(5)}]],
+                    [[${counts.get(6)}]]
+                ],
+                lineStyle: {
+                    normal: {
+                        width: 8,
+                        color: {
+                            type: 'linear',
+
+                            colorStops: [{
+                                offset: 0,
+                                color: '#A9F387' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: '#48D8BF' // 100% 处的颜色
+                            }],
+                            globalCoord: false // 缺省为 false
+                        },
+                        shadowColor: 'rgba(72,216,191, 0.3)',
+                        shadowBlur: 10,
+                        shadowOffsetY: 20
+                    }
+                },
+                itemStyle: {
+                    normal: {
+                        color: '#fff',
+                        borderWidth: 10,
+                        /*shadowColor: 'rgba(72,216,191, 0.3)',
+                        shadowBlur: 100,*/
+                        borderColor: "#A9F387"
+                    }
+                },
+                smooth: true
+            }]
+        };
+        echartsRecords.setOption(option);
+
+        window.onresize = function () {
+            echartsRecords.resize();
+        }
+    })
 
 </script>
 

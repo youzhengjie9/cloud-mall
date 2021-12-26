@@ -30,4 +30,19 @@ public class LoginLogServiceImpl implements LoginLogService {
     public int selectLoginLogCount() {
         return loginLogMapper.selectLoginLogCount();
     }
+
+    @Override
+    public List<String> selectLoginUserBrowser() {
+        return loginLogMapper.selectLoginUserBrowser();
+    }
+
+    @Override
+    public int selectLoginCountByBrowser(String browser) {
+        return loginLogMapper.selectLoginCountByBrowser(browser);
+    }
+
+    @Override
+    public int selectLoginCountByTime(String time) {
+        return loginLogMapper.selectLoginCountByTime(time);
+    }
 }

@@ -92,4 +92,8 @@ public interface OrderFallbackFeign {
     @GetMapping(path = "/feign/order/selectOrderCountById/{userid}")
     public int selectOrderCountById(@PathVariable("userid") long userid);
 
+    @ResponseBody
+    @GetMapping(path = "/feign/order/selectSingleGoodsMoneyTop7")
+    public List<BigDecimal> selectSingleGoodsMoneyTop7();
+
 }

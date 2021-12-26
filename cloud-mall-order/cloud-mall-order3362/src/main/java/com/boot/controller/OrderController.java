@@ -296,5 +296,11 @@ public class OrderController {
     return ResultConstant.SUCCESS.getCodeStat();
   }
 
+  @ResponseBody
+  @GetMapping(path = "/selectSingleGoodsMoneyTop7")
+  public List<BigDecimal> selectSingleGoodsMoneyTop7(){
+
+    return orderService.selectSingleGoodsMoneyTop7();
+  }
 
 }
