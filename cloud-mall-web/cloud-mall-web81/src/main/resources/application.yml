@@ -83,6 +83,6 @@ management:
 #gitee 第三方配置
 gitee:
   oauth:
-    CLIENTID: e3c40923721dcdcb71580dcc4f037cf7cc9d91dc4be91c6b10afb85b1f3bb755
-    CLIENTSECRET: 1f264ab539a3607c325c93e61c685cc492b9d29ccd31cab6c624225d05a91219
+    CLIENTID: eaa907dda6e1cceef6bcf70e2680bbf059e4464fb52e03223eaffab30d82a0f9
+    CLIENTSECRET: 64fcf8c59388704b8a8b139f20808b0819b099d479e735a073c936695eaf47bc
     callback: http://localhost/gitee/callback

@@ -160,3 +160,4 @@ spring:
                 redis-rate-limiter.replenishRate: 20
                 redis-rate-limiter.burstCapacity: 50
                 key-resolver: "#{@ipKeyResolver}"
+
