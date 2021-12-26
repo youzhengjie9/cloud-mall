@@ -138,7 +138,7 @@ public class SearchServiceImpl implements SearchService {
         Product product = new Product();
         Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
 
-        BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
+        BigDecimal price = new BigDecimal(String.valueOf(sourceAsMap.get("price")));
         product.setProductId(Long.valueOf(searchHit.getId()));
         product.setName((String) sourceAsMap.get("name"));
         product.setPrice(price);
@@ -194,7 +194,7 @@ public class SearchServiceImpl implements SearchService {
       for (SearchHit searchHit : hits) {
         Product product = new Product();
         Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
-        BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
+        BigDecimal price = new BigDecimal(String.valueOf(sourceAsMap.get("price")));
         product.setProductId(Long.valueOf(searchHit.getId()));
         product.setName((String) sourceAsMap.get("name"));
         product.setPrice(price);
@@ -256,7 +256,7 @@ public class SearchServiceImpl implements SearchService {
     for (SearchHit searchHit : hits) {
       Product product = new Product();
       Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
-      BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
+      BigDecimal price = new BigDecimal(String.valueOf(sourceAsMap.get("price")));
       product.setProductId(Long.valueOf(searchHit.getId()));
       product.setName((String) sourceAsMap.get("name"));
       product.setPrice(price);
@@ -328,7 +328,7 @@ public class SearchServiceImpl implements SearchService {
     for (SearchHit searchHit : hits) {
       Product product = new Product();
       Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
-      BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
+      BigDecimal price = new BigDecimal(String.valueOf(sourceAsMap.get("price")));
       product.setProductId(Long.valueOf(searchHit.getId()));
       product.setName((String) sourceAsMap.get("name"));
       product.setPrice(price);
@@ -419,7 +419,7 @@ public class SearchServiceImpl implements SearchService {
       Product product = new Product();
       Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
 
-      BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
+      BigDecimal price = new BigDecimal(String.valueOf(sourceAsMap.get("price")));
       product.setProductId(Long.valueOf(searchHit.getId()));
       product.setName((String) sourceAsMap.get("name"));
       product.setPrice(price);

@@ -66,7 +66,7 @@ public interface SearchFallbackFeign {
 
 
     @ResponseBody
-    @GetMapping(path = "/feign/search/updateProduct")
+    @PostMapping(path = "/feign/search/updateProduct")
     public CommonResult<String> updateProduct(@RequestBody Product product) throws IOException;
 
 

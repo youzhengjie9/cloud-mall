@@ -162,9 +162,10 @@ public class SearchController {
     }
 
     @ResponseBody
-    @GetMapping(path = "/updateProduct")
+    @PostMapping(path = "/updateProduct")
     public CommonResult<String> updateProduct(@RequestBody Product product) throws IOException {
         CommonResult<String> commonResult = new CommonResult<>();
+
         searchService.updateProduct(product);
 
         return commonResult;

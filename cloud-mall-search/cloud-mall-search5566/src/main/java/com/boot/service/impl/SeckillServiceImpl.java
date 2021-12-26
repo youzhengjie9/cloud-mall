@@ -163,7 +163,7 @@ public class SeckillServiceImpl implements SeckillSearchService {
     for (SearchHit searchHit : hits) {
       Seckill seckill = new Seckill();
       Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
-      BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
+      BigDecimal price = new BigDecimal(String.valueOf(sourceAsMap.get("price")));
       seckill.setSeckillId(Long.valueOf(searchHit.getId()));
       seckill.setSeckillName((String) sourceAsMap.get("seckillName"));
       seckill.setSeckillNumber((Integer) sourceAsMap.get("seckillNumber"));
@@ -223,7 +223,7 @@ public class SeckillServiceImpl implements SeckillSearchService {
     Seckill seckill = new Seckill(); // 构造对象
     SearchHit searchHit=  hits[0];
     Map<String, Object> sourceAsMap = searchHit.getSourceAsMap();
-    BigDecimal price = new BigDecimal(Double.toString((Double) sourceAsMap.get("price")));
+    BigDecimal price = new BigDecimal(String.valueOf(sourceAsMap.get("price")));
     seckill.setSeckillName((String) sourceAsMap.get("seckillName"));
     seckill.setSeckillNumber((Integer) sourceAsMap.get("seckillNumber"));
     seckill.setPrice(price);

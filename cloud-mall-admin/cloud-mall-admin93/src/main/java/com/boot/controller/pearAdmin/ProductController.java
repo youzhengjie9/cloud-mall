@@ -158,6 +158,10 @@ public class ProductController {
       sources.put("number", product.getNumber());
       sources.put("fl_id", String.valueOf(product.getClassify().getId()));
       sources.put("b_id", String.valueOf(product.getBrand().getId()));
+      Brand brand1 = brandFallbackFeign.selectBrandByid(bid);
+      Classify classify1 = classifyFallbackFeign.selectClassifyByid(cid);
+      sources.put("fl_name",classify1.getText());
+      sources.put("b_name", brand1.getBrandName());
       sources.put("introduce_img", product.getIntroduce_img());
       indexRequest.source(sources);
 
@@ -332,6 +336,7 @@ public class ProductController {
         }
         // 修改商品sql
         Brand brand = brandFallbackFeign.selectBrandByid(bid);
+
         product.setBrand(brand);
         Classify classify = classifyFallbackFeign.selectClassifyByid(cid);
         product.setClassify(classify);
