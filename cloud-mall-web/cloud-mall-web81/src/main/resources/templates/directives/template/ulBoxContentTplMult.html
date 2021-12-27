@@ -22,7 +22,7 @@
             <li ng-class="{'first':$first}" ng-repeat="childrenItem in childrenContent | myFilter:parentItem.id | limitTo:6">
                 <a target="_blank" ui-sref="home.products({productId:childrenItem.productId})" ng-click="closeContent()">
 <!--                <a target="_blank" ui-sref="buyNow({productId:childrenItem.productId})" ng-click="closeContent()">-->
-                <img ng-src="{{childrenItem.img}}" alt="" />
+                <img style="width: 150px;height: 100px" ng-src="{{childrenItem.img}}" alt="" />
                     <p>{{childrenItem.name}}</p>
                     <p ng-if="childrenDivClass=='children_horizontal'" class="price">{{childrenItem.price}}元起</p>
                 </a>

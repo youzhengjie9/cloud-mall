@@ -89,6 +89,8 @@ public class OrderController {
 
     model.addAttribute("curPage",1); //默认第一页
 
+    model.addAttribute("username",currentUser);
+
     return "client/view/newpage/order";
   }
 
@@ -121,6 +123,8 @@ public class OrderController {
     JSONArray jsonArray = JSONArray.parseArray(json);
 
     int size = jsonArray.size(); // 获取这个json数组有多少个对象
+
+    model.addAttribute("username",currentUser);
 
     List<Cart> carts = new ArrayList<>();
     // 解析json数组

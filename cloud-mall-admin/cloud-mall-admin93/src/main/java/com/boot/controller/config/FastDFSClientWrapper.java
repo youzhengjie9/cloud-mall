@@ -23,7 +23,7 @@ public class FastDFSClientWrapper {
 
     // 封装文件完整URL地址 ，fastdfs 存储结点默认8888端口
     private String getResAccessUrl(StorePath storePath) {
-        String fileUrl = "http://192.168.184.132:8888" + "/" + storePath.getFullPath();
+        String fileUrl = "http://120.25.158.235:8888" + "/" + storePath.getFullPath();
         return fileUrl;
     }
 }

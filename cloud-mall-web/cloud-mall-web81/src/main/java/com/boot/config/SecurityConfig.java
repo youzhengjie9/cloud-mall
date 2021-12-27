@@ -196,8 +196,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             })
         .and()
         .authorizeRequests()
-        .antMatchers("/web/index/**")
-        .permitAll()
         .antMatchers("/druid/**")
         .permitAll()
         // 这句代码一定要加，为了防止spring过滤静态资源
@@ -217,10 +215,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/static/config/**",
             "/static/favicon.ico")
         .permitAll()
-        // 只有admin权限才能访问(后台管理)
-        //        .antMatchers(
-        //            "/admin/**","/pear/**")
-        //        .hasRole("admin")
 
         // 只有登录以后才能访问
         .antMatchers(
@@ -233,8 +227,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/web/center/**",
             "/web/couponsActivity/**",
             "/web/couponsRecord/**",
-                "/web/seckill/**")
-        .hasAnyRole("admin", "common")
+                "/web/seckill/**","/web/index/buyNowPage/**")
+        .hasAnyRole("admin", "common","seller")
         .antMatchers("/web/sliderCaptcha/**")
         .permitAll()
 

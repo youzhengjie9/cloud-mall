@@ -224,12 +224,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/static/config/**",
             "/static/favicon.ico")
         .permitAll()
-        // 只有admin权限才能访问(后台管理)
+        // 只有admin和seller权限才能访问(后台管理)
         .antMatchers("/admin/**", "/pear/**")
-        .hasRole("admin")
+        .hasAnyRole("admin","seller")
         // 只有登录以后才能访问
         .antMatchers("/myuser/**", "/img/**", "/web/cart/**", "/web/order/**", "/web/address/**")
-        .hasAnyRole("admin", "common")
+        .hasAnyRole("admin", "common","seller")
         .antMatchers("/web/sliderCaptcha/**", "/web/logout/logout")
         .permitAll()
         // 其他的任何请求登录不登录都可以访问

@@ -280,7 +280,7 @@
             <form name="logoutform" th:action="@{/web/logout/logout}" method="post"></form>
             <a class="nav-link" th:href="@{/web/register/toregister}">注册</a>
             <a class="nav-link" sec:authorize="isAnonymous()" th:href="@{/web/login/toLoginPage}">登录</a>
-            <a sec:authorize="isAuthenticated()" class="nav-link dropbtn" onclick="myFunction()">admin</a>
+            <a sec:authorize="isAuthenticated()" class="nav-link dropbtn" onclick="myFunction()">[[${username}]]</a>
             <a href="http://localhost:5677/chat/toChat">人工客服</a>
             <div class="dropdown">
                 <div id="myDropdown" class="dropdown-content" style="width: 120px;height: 70px">

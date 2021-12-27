@@ -90,4 +90,4 @@ gitee:
 fdfs:
   soTimeout: 1500
   connectTimeout: 600
-  trackerList: 192.168.184.132:22122  #tracker路径，TrackerList参数,支持多个
+  trackerList: 120.25.158.235:22122  #tracker路径，TrackerList参数,支持多个

@@ -11,7 +11,7 @@
  Target Server Version : 50711
  File Encoding         : 65001
 
- Date: 25/12/2021 17:15:20
+ Date: 27/12/2021 20:33:36
 */
 
 SET NAMES utf8mb4;
@@ -62,7 +62,7 @@ CREATE TABLE `coupons_activity`  (
 -- ----------------------------
 -- Records of coupons_activity
 -- ----------------------------
-INSERT INTO `coupons_activity` VALUES (7788866, '内测卷012', 32, 88, 2, 1777, '2021-12-11', '2021-12-15', '6666', 1);
+INSERT INTO `coupons_activity` VALUES (7788866, '内测卷012', 31, 88, 2, 1777, '2021-12-11', '2021-12-15', '6666', 1);
 INSERT INTO `coupons_activity` VALUES (7788877, '内测卷011', 32, 55, 3, 1777, '2021-12-11', '2021-12-18', '5555', 1);
 INSERT INTO `coupons_activity` VALUES (7788888, '内测卷010', 59, 99, 70, 1777, '2021-12-11', '2021-12-16', '555', 1);
 INSERT INTO `coupons_activity` VALUES (7788899, '内测卷013', 20, 55, 1, 1888, '2021-12-11', '2021-12-16', '1111', 1);
@@ -95,6 +95,7 @@ CREATE TABLE `coupons_record`  (
 INSERT INTO `coupons_record` VALUES (3757504566985733, 7788888, 1, '2021-12-14', 1, '2021-12-16');
 INSERT INTO `coupons_record` VALUES (3757504668238853, 7788866, 1, '2021-12-14', 0, NULL);
 INSERT INTO `coupons_record` VALUES (3757504773686277, 7788877, 1, '2021-12-14', 0, NULL);
+INSERT INTO `coupons_record` VALUES (3826204060550149, 7788866, 1, '2021-12-26', 0, NULL);
 
 -- ----------------------------
 -- Table structure for mxdp
@@ -177,11 +178,16 @@ CREATE TABLE `slideshow`  (
 -- ----------------------------
 -- Records of slideshow
 -- ----------------------------
-INSERT INTO `slideshow` VALUES (1, '/static/img/1.jpg', 12, 5);
-INSERT INTO `slideshow` VALUES (2, '/static/img/2.jpg', 1, 6);
-INSERT INTO `slideshow` VALUES (3, '/static/img/3.jpg', 5, 8);
-INSERT INTO `slideshow` VALUES (4, '/static/img/4.jpg', 2, 7);
-INSERT INTO `slideshow` VALUES (5, '/static/img/5.jpg', 10, 10);
+INSERT INTO `slideshow` VALUES (3825411056337925, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnb2ABHL5AAI50f9iWvo355.jpg', 11, 20);
+INSERT INTO `slideshow` VALUES (3825415087195141, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnbSAO5DnAAIV0k9vjKE018.jpg', 1, 19);
+INSERT INTO `slideshow` VALUES (3825415895647237, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnayAJhtQAAG32p4bWBo835.jpg', 2, 18);
+INSERT INTO `slideshow` VALUES (3825418549265413, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnaWAevAsAAJJjdoNPz4419.jpg', 3, 17);
+INSERT INTO `slideshow` VALUES (3825419511006213, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnWeAIm34AAEC5a8g87k105.jpg', 5, 30);
+INSERT INTO `slideshow` VALUES (3831666004853765, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnWeAIm34AAEC5a8g87k105.jpg', 2, 1);
+INSERT INTO `slideshow` VALUES (3831670039118853, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnaWAevAsAAJJjdoNPz4419.jpg', 2, 1);
+INSERT INTO `slideshow` VALUES (3831670528148485, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnayAJhtQAAG32p4bWBo835.jpg', 2, 1);
+INSERT INTO `slideshow` VALUES (3831671079896069, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnbSAO5DnAAIV0k9vjKE018.jpg', 2, 1);
+INSERT INTO `slideshow` VALUES (3831671609951237, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnb2ABHL5AAI50f9iWvo355.jpg', 2, 1);
 
 -- ----------------------------
 -- Table structure for undo_log

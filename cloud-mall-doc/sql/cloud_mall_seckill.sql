@@ -11,7 +11,7 @@
  Target Server Version : 50711
  File Encoding         : 65001
 
- Date: 25/12/2021 17:15:14
+ Date: 27/12/2021 20:33:28
 */
 
 SET NAMES utf8mb4;
@@ -32,34 +32,38 @@ CREATE TABLE `seckill`  (
   `end_time` datetime(0) NOT NULL COMMENT '秒杀结束时间',
   `create_time` datetime(0) NOT NULL COMMENT '创建秒杀时间',
   `userid` bigint(20) NOT NULL COMMENT '创建秒杀的userid',
-  PRIMARY KEY (`seckill_id`) USING BTREE
+  PRIMARY KEY (`seckill_id`) USING BTREE,
+  UNIQUE INDEX `seckill_name`(`seckill_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of seckill
 -- ----------------------------
-INSERT INTO `seckill` VALUES (10086, '秒杀商品001', 40, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10087, '秒杀商品002', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10088, '秒杀商品003', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10089, '秒杀商品004', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10090, '秒杀商品005', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10091, '秒杀商品006', 50, 19.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10092, '秒杀商品007', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10093, '秒杀商品008', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10094, '秒杀商品009', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10095, '秒杀商品010', 50, 19.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10096, '秒杀商品011', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10097, '秒杀商品012', 50, 19.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10098, '秒杀商品013', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10099, '秒杀商品014', 50, 19.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10100, '秒杀商品015', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10101, '秒杀商品016', 50, 19.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10102, '秒杀商品017', 50, 19.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10103, '秒杀商品018', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10104, '秒杀商品019', 50, 19.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10105, '秒杀商品020', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10106, '秒杀商品021', 50, 9.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
-INSERT INTO `seckill` VALUES (10107, '秒杀商品022', 50, 19.90, '/static/img/nav/max.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10086, '秒杀商品001', 40, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10087, '秒杀商品002', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10088, '秒杀商品003', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10089, '秒杀商品004', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10090, '秒杀商品005', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10091, '秒杀商品006', 50, 19.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10092, '秒杀商品007', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10093, '秒杀商品008', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10094, '秒杀商品009', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10095, '秒杀商品010', 50, 19.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10096, '秒杀商品011', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10097, '秒杀商品012', 50, 19.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10098, '秒杀商品013', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10099, '秒杀商品014', 50, 19.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10100, '秒杀商品015', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10101, '秒杀商品016', 50, 19.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10102, '秒杀商品017', 50, 19.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10103, '秒杀商品018', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10104, '秒杀商品019', 50, 19.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10105, '秒杀商品020', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10106, '秒杀商品021', 50, 9.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (10107, '秒杀商品022', 50, 19.90, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 100, '2021-12-20 18:45:11', '2021-12-23 16:03:14', '2021-12-18 16:03:18', 1);
+INSERT INTO `seckill` VALUES (3820932718920709, 'fastdfs', 12, 12.00, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 10, '2021-12-20 18:45:11', '2021-12-23 18:45:11', '2021-12-25 21:33:28', 1);
+INSERT INTO `seckill` VALUES (3825353320236037, 'redis', 150, 1.33, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 20, '2021-12-29 17:28:04', '2022-02-23 17:28:04', '2021-12-26 16:17:41', 1);
+INSERT INTO `seckill` VALUES (3831699468780549, '1', 2, 3.00, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJn2aASQahAAEBZG2fFQU504.jpg', 1, '2021-12-20 18:45:11', '2021-12-20 18:45:11', '2021-12-27 19:11:35', 1);
 
 -- ----------------------------
 -- Table structure for seckill_success
@@ -79,7 +83,6 @@ CREATE TABLE `seckill_success`  (
 -- ----------------------------
 INSERT INTO `seckill_success` VALUES (3797472459162629, 10086, '2021-12-21 18:07:12', 0, 1);
 INSERT INTO `seckill_success` VALUES (3797472573064197, 10086, '2021-12-21 18:07:14', 0, 1);
-INSERT INTO `seckill_success` VALUES (3804151483204613, 10086, '2021-12-22 22:25:47', 0, 1);
 
 -- ----------------------------
 -- Table structure for undo_log
@@ -97,7 +100,7 @@ CREATE TABLE `undo_log`  (
   `ext` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `ux_undo_log`(`xid`, `branch_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 97 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 79 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of undo_log

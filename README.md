@@ -78,7 +78,8 @@
 | Druid                       |    https://github.com/alibaba/druid                    |
 | fastjson                          |   https://github.com/alibaba/fastjson/                |
 | sjf4j                     |   http://www.slf4j.org/  |
-| Nginx                       |     http://nginx.org/en/download.html
+| Nginx                       |     http://nginx.org/en/download.html               |
+| FastDFS                       |     https://github.com/happyfish100/fastdfs          |
 #### 前端
 
 | 名称            | 描述       | 官网                                                     |
@@ -174,7 +175,7 @@ http {
 ```
 
 ### 安装FastDFS分布式文件系统
-* 由于后期采用FastDFS来进行存储图片文件，所以安装cloud-mall必须安装FastDFS，作者安装教程如下：
+* 由于后期采用阿里云+FastDFS来进行存储图片文件，所以安装cloud-mall必须安装FastDFS，作者安装教程如下：
 
 ```shell script
    docker search fastdfs

@@ -74,7 +74,7 @@ public class CenterController {
 
         model.addAttribute("user",user); //传递当前用户信息
 
-
+        model.addAttribute("username",currentUser);
 
         return "client/view/newpage/base_info";
     }
@@ -197,6 +197,8 @@ public class CenterController {
 
         model.addAttribute("userid",userid);
 
+        model.addAttribute("username",currentUser);
+
 
         return "client/view/newpage/change_password";
     }
@@ -281,6 +283,8 @@ public class CenterController {
         model.addAttribute("userid",userid);
         model.addAttribute("userMoney",userMoney);
 
+        model.addAttribute("username",currentUser);
+
         List<RechargeRecord> rechargeRecords = rechargeRecordFallbackFeign.selectUserRechargeRecord(page, size, userid);
 
         model.addAttribute("rechargeRecords",rechargeRecords);
@@ -339,7 +343,7 @@ public class CenterController {
 
         List<CouponsRecord> couponsRecords = couponsRecordFallbackFeign.selectCouponsRecordByUserIdAndLimit(page, size, userid, usetype,DEFAULT_TIME);
 
-
+        model.addAttribute("username",currentUser);
         model.addAttribute("couponsRecords",couponsRecords);
 
         return "client/view/newpage/coupons_record";

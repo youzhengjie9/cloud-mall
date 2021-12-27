@@ -76,7 +76,7 @@ public class SeckillController {
   }
 
   @GetMapping(path = "/toSearchSeckillPage")
-  public String toSearchSeckillPage(Model model, String text, HttpServletRequest request)
+  public String toSearchSeckillPage(Model model, String text, HttpServletRequest request,HttpSession session)
       throws IOException {
 
     if (text == null || text == "") {
@@ -96,6 +96,13 @@ public class SeckillController {
     model.addAttribute("pagecount", pagecount);
 
     model.addAttribute("curPage", 1); // 默认第一页
+
+    try{
+      String currentUser = springSecurityUtil.currentUser(session);
+      model.addAttribute("username",currentUser);
+    }catch (Exception e){
+      model.addAttribute("username",null);
+    }
 
     return "client/view/newpage/seckill_list";
   }
@@ -139,7 +146,7 @@ public class SeckillController {
 
   //    @RateLimiter(permitsPerSecond = 1.0) //限流
   @GetMapping(path = "/seckillDetail/{seckillid}")
-  public String seckillDetail(@PathVariable("seckillid") long seckillid, Model model)
+  public String seckillDetail(@PathVariable("seckillid") long seckillid, Model model,HttpSession session)
       throws ParseException {
     Seckill seckill = null;
     try {
@@ -159,6 +166,13 @@ public class SeckillController {
     }
 
     model.addAttribute("seckill", seckill);
+
+    try{
+      String currentUser = springSecurityUtil.currentUser(session);
+      model.addAttribute("username",currentUser);
+    }catch (Exception e){
+      model.addAttribute("username",null);
+    }
     return "client/view/newpage/seckill_detail";
   }
 
@@ -184,6 +198,8 @@ public class SeckillController {
     model.addAttribute("pagecount", pagecount);
 
     model.addAttribute("curPage", 1); // 默认第一页
+
+    model.addAttribute("username",currentUser);
 
     return "client/view/newpage/seckill_success_list";
   }
@@ -271,6 +287,8 @@ public class SeckillController {
 
     model.addAttribute("seckillId",seckillId);
     model.addAttribute("seckillsuccessid",seckillsuccessid);
+
+    model.addAttribute("username",currentUser);
 
     return "client/view/newpage/seckill_pay";
   }

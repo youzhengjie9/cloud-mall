@@ -9,6 +9,7 @@ import com.boot.pojo.Brand;
 import com.boot.pojo.Classify;
 import com.boot.pojo.Product;
 import com.boot.utils.IpUtils;
+import com.boot.utils.SpringSecurityUtil;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +44,8 @@ public class SearchController {
 
     private final int size=15;//分页大小
 
+    @Autowired
+    private SpringSecurityUtil springSecurityUtil;
 
     @Autowired
     private SearchFallbackFeign searchFallbackFeign;
@@ -85,7 +89,7 @@ public class SearchController {
 
 
     @GetMapping(path = "/toSearchPage")
-    public String toSearchPage(String text, Model model,HttpServletRequest request) throws IOException {
+    public String toSearchPage(String text, Model model, HttpServletRequest request, HttpSession session) throws IOException {
         String ipAddr = IpUtils.getIpAddr(request); //获取ip
 
         if(text==null||text=="")
@@ -140,6 +144,13 @@ public class SearchController {
         model.addAttribute("pagecount",pagecount);
 
         model.addAttribute("curPage",1); //默认第一页
+
+        try{
+            String currentUser = springSecurityUtil.currentUser(session);
+            model.addAttribute("username",currentUser);
+        }catch (Exception e){
+            model.addAttribute("username",null);
+        }
 
         return "client/view/newpage/search";
     }

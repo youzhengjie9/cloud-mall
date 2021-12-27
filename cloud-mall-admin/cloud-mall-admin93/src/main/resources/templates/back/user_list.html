@@ -57,6 +57,8 @@
 	<div>超级管理员</div>
 	{{#  } else if(d.userAuthority.authority_id==2){ }}
 	<div>普通用户</div>
+	{{#  } else if(d.userAuthority.authority_id==3){ }}
+	<div>商家</div>
 	{{# } else{ }}
 	<div>无该权限</div>
 	{{#  } }}
