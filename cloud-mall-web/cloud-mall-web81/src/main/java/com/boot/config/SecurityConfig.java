@@ -136,7 +136,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 使用cookie+Redis实现记住我功能
                 String rememberme = request.getParameter("remember");
-                if (rememberme != null && rememberme.equals("on")) { // 此时激活记住我
+                if (rememberme != null && rememberme.equals("true")) { // 此时激活记住我
                   try {
                     setRememberme(name, psd, request, httpServletResponse); // 记住我实现
                   } catch (Exception e) {
@@ -227,8 +227,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/web/center/**",
             "/web/couponsActivity/**",
             "/web/couponsRecord/**",
-                "/web/seckill/**","/web/index/buyNowPage/**")
-        .hasAnyRole("admin", "common","seller")
+            "/web/seckill/**",
+            "/web/index/buyNowPage/**")
+        .hasAnyRole("admin", "common", "seller")
         .antMatchers("/web/sliderCaptcha/**")
         .permitAll()
 

@@ -143,7 +143,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 使用cookie+Redis实现记住我功能
                 String rememberme = request.getParameter("remember");
-                if (rememberme != null && rememberme.equals("on")) { // 此时激活记住我
+                if (rememberme != null && rememberme.equals("true")) { // 此时激活记住我
                   try {
                     setRememberme(name, psd, request, httpServletResponse); // 记住我实现
                   } catch (Exception e) {
