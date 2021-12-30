@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * @author 游政杰
  * 配置websocket
  */
 @ServerEndpoint(value = "/websocket/{userId}",configurator= MyEndpointConfigure.class)
