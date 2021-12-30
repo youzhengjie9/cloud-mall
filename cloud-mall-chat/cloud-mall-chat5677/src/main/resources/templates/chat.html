@@ -120,6 +120,14 @@
             color: #000000;
 
         }
+        .na{
+            white-space: nowrap; /*强制span不换行*/
+            display: inline-block; /*将span当做块级元素对待*/
+            width: 110px; /*限制宽度*/
+            overflow: hidden; /*超出宽度部分隐藏*/
+            text-overflow: ellipsis; /*超出部分以点号代替*/
+            font-size: 15px;
+        }
 
     </style>
 </head>
@@ -143,7 +151,7 @@
 <!--                    <a href="#" style="color: red;pointer-events: none;">客服-admin1</a>-->
 <!--                </li>-->
                 <li th:each="name:${names}" th:if="${names ne null and names.size()>0}">
-                    <a style="cursor: pointer">[[${name}]]</a>
+                    <a class="na" style="cursor: pointer">[[${name}]]</a>
                 </li>
 
             </ul>
@@ -238,7 +246,7 @@
 
                     html+='<li>';
 
-                    html+='<a style="cursor: pointer">'
+                    html+='<a class="na" style="cursor: pointer">'
                     html+=result.list[i];
                     html+='</a>';
                     html+='</li>';
@@ -319,7 +327,7 @@
 
                             html+='<li>';
 
-                            html+='<a style="cursor: pointer">'
+                            html+='<a class="na" style="cursor: pointer">'
                             html+=result.list[i];
                             html+='</a>';
                             html+='</li>';
