@@ -217,7 +217,7 @@ public class ProductController {
 
     page = limit * (page - 1);
     /** 两种情况：1：当我们不是点击查询按钮时，则展示全部 2.点击查询按钮则展示查到的数据 */
-    if (StringUtils.isNotBlank(title)) { // 查询
+    if (!StringUtils.isEmpty(title)) { // 查询
       CommonResult<Long> longCommonResult = searchFallbackFeign.searchProductCountByName(title);
       Long total = longCommonResult.getObj();
 

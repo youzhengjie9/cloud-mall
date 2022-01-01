@@ -228,7 +228,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/web/couponsActivity/**",
             "/web/couponsRecord/**",
             "/web/seckill/**",
-            "/web/index/buyNowPage/**")
+            "/web/index/buyNowPage/**","/web/chat/**")
         .hasAnyRole("admin", "common", "seller")
         .antMatchers("/web/sliderCaptcha/**")
         .permitAll()

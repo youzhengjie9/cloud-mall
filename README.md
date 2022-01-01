@@ -229,4 +229,6 @@ http {
 ![14.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/14.png)
 ![15.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/15.png)
 ![16.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/16.png)
+![17.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/17.png)
+![18.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/18.png)
 

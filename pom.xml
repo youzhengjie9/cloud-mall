@@ -93,14 +93,15 @@
     </dependencyManagement>
 
 <!--    插件依赖-->
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--                <version>${spring.boot-version}</version>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
 
 </project>

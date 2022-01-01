@@ -11,7 +11,7 @@
  Target Server Version : 50711
  File Encoding         : 65001
 
- Date: 27/12/2021 20:33:36
+ Date: 01/01/2022 17:51:46
 */
 
 SET NAMES utf8mb4;
@@ -64,8 +64,8 @@ CREATE TABLE `coupons_activity`  (
 -- ----------------------------
 INSERT INTO `coupons_activity` VALUES (7788866, '内测卷012', 31, 88, 2, 1777, '2021-12-11', '2021-12-15', '6666', 1);
 INSERT INTO `coupons_activity` VALUES (7788877, '内测卷011', 32, 55, 3, 1777, '2021-12-11', '2021-12-18', '5555', 1);
-INSERT INTO `coupons_activity` VALUES (7788888, '内测卷010', 59, 99, 70, 1777, '2021-12-11', '2021-12-16', '555', 1);
-INSERT INTO `coupons_activity` VALUES (7788899, '内测卷013', 20, 55, 1, 1888, '2021-12-11', '2021-12-16', '1111', 1);
+INSERT INTO `coupons_activity` VALUES (7788888, '内测卷010', 58, 99, 70, 1777, '2021-12-11', '2021-12-16', '555', 1);
+INSERT INTO `coupons_activity` VALUES (7788899, '内测卷013', 19, 55, 1, 1888, '2021-12-11', '2021-12-16', '1111', 1);
 INSERT INTO `coupons_activity` VALUES (735292248327222, '内测卷009', 25, 88, 3, 2000, '2021-12-11', '2021-12-16', '33', 1);
 INSERT INTO `coupons_activity` VALUES (3734969100338181, '内测卷002', 5, 101, 3, 2001, '2021-12-11', '2021-12-15', '6666', 1);
 INSERT INTO `coupons_activity` VALUES (3734969100338182, '内测卷005', 8, 150, 5, 1888, '2021-12-11', '2021-12-15', '7777', 1);
@@ -74,6 +74,7 @@ INSERT INTO `coupons_activity` VALUES (3735292248327188, '内测卷006', 22, 222
 INSERT INTO `coupons_activity` VALUES (3735299452371973, '白金卷', 10, 888, 1, 0, '2021-12-11', '2022-02-19', '白金卷', 1);
 INSERT INTO `coupons_activity` VALUES (3735304299807749, '王者卷', 5, 3888, 1, 0, '2021-12-11', '2022-03-11', '王者卷，仅有5张', 1);
 INSERT INTO `coupons_activity` VALUES (3735309677495301, '普通卷', 3666, 58, 3, 1000, '2021-12-11', '2022-09-17', '普通卷，人人有份', 1);
+INSERT INTO `coupons_activity` VALUES (3847682202731525, '测试01', 20, 150, 3, 100, '2021-12-31', '2022-01-15', '测试', 1);
 
 -- ----------------------------
 -- Table structure for coupons_record
@@ -96,6 +97,8 @@ INSERT INTO `coupons_record` VALUES (3757504566985733, 7788888, 1, '2021-12-14',
 INSERT INTO `coupons_record` VALUES (3757504668238853, 7788866, 1, '2021-12-14', 0, NULL);
 INSERT INTO `coupons_record` VALUES (3757504773686277, 7788877, 1, '2021-12-14', 0, NULL);
 INSERT INTO `coupons_record` VALUES (3826204060550149, 7788866, 1, '2021-12-26', 0, NULL);
+INSERT INTO `coupons_record` VALUES (3847647818482693, 7788899, 1, '2021-12-30', 0, NULL);
+INSERT INTO `coupons_record` VALUES (3847657427043333, 7788888, 3825912092820485, '2021-12-30', 0, NULL);
 
 -- ----------------------------
 -- Table structure for mxdp
@@ -159,9 +162,9 @@ CREATE TABLE `rechargecard`  (
 -- ----------------------------
 -- Records of rechargecard
 -- ----------------------------
-INSERT INTO `rechargecard` VALUES (11, '123666777', 66666666, 200, '2021-12-08 22:17:18', 1);
-INSERT INTO `rechargecard` VALUES (15, '12366111', 622222, 500, '2021-12-08 22:17:18', 1);
-INSERT INTO `rechargecard` VALUES (17, '1133312', 878888, 150, '2021-12-08 22:17:18', 1);
+INSERT INTO `rechargecard` VALUES (11, '123666777', 66666666, 200, '2021-12-08 22:17:18', 0);
+INSERT INTO `rechargecard` VALUES (15, '12366111', 622222, 500, '2021-12-08 22:17:18', 0);
+INSERT INTO `rechargecard` VALUES (17, '1133312', 878888, 150, '2021-12-08 22:17:18', 0);
 
 -- ----------------------------
 -- Table structure for slideshow
@@ -178,16 +181,12 @@ CREATE TABLE `slideshow`  (
 -- ----------------------------
 -- Records of slideshow
 -- ----------------------------
-INSERT INTO `slideshow` VALUES (3825411056337925, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnb2ABHL5AAI50f9iWvo355.jpg', 11, 20);
-INSERT INTO `slideshow` VALUES (3825415087195141, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnbSAO5DnAAIV0k9vjKE018.jpg', 1, 19);
-INSERT INTO `slideshow` VALUES (3825415895647237, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnayAJhtQAAG32p4bWBo835.jpg', 2, 18);
-INSERT INTO `slideshow` VALUES (3825418549265413, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnaWAevAsAAJJjdoNPz4419.jpg', 3, 17);
-INSERT INTO `slideshow` VALUES (3825419511006213, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnWeAIm34AAEC5a8g87k105.jpg', 5, 30);
-INSERT INTO `slideshow` VALUES (3831666004853765, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnWeAIm34AAEC5a8g87k105.jpg', 2, 1);
-INSERT INTO `slideshow` VALUES (3831670039118853, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnaWAevAsAAJJjdoNPz4419.jpg', 2, 1);
-INSERT INTO `slideshow` VALUES (3831670528148485, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnayAJhtQAAG32p4bWBo835.jpg', 2, 1);
-INSERT INTO `slideshow` VALUES (3831671079896069, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnbSAO5DnAAIV0k9vjKE018.jpg', 2, 1);
-INSERT INTO `slideshow` VALUES (3831671609951237, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHJnb2ABHL5AAI50f9iWvo355.jpg', 2, 1);
+INSERT INTO `slideshow` VALUES (3859443445138437, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHQFROABjSXAACPM0T-aZA693.jpg', 1, 30);
+INSERT INTO `slideshow` VALUES (3859444584678405, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHQFSSAX4A8AADskBm1ZiI608.jpg', 2, 28);
+INSERT INTO `slideshow` VALUES (3859445279622149, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHQFS-AT0agAADFkI8owfY016.jpg', 3, 27);
+INSERT INTO `slideshow` VALUES (3859446380037125, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHQFUCAAG83AACk6xsM0Ao618.jpg', 5, 26);
+INSERT INTO `slideshow` VALUES (3859447232857093, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHQFU2AQZCJAABiS9nI91s486.jpg', 6, 25);
+INSERT INTO `slideshow` VALUES (3859448192435205, 'http://120.25.158.235:8888/group1/M00/00/00/rBILeWHQFVuAEFlpAAHGeTgKSxY147.jpg', 8, 22);
 
 -- ----------------------------
 -- Table structure for undo_log

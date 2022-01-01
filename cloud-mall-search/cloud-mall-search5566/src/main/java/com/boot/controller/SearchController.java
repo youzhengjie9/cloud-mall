@@ -133,7 +133,7 @@ public class SearchController {
 
     //根据商品名搜索商品集合并且分页
     @ResponseBody
-    @GetMapping(path = "/searchProductsByNameAndLimit/{from}/{size}/{text}/{ip}")
+    @GetMapping(path = "/searchProductsByNameAndLimit/{from}/{size}/{text}")
     public CommonResult<List<Product>> searchProductsByNameAndLimit(@PathVariable("from") int from ,
                                                       @PathVariable("size") int size ,
                                                       @PathVariable("text") String text) throws IOException{
@@ -149,12 +149,13 @@ public class SearchController {
 
     //根据商品名搜索商品的目标数
     @ResponseBody
-    @GetMapping(path = "/searchProductCountByName/{text}/{ip}")
+    @GetMapping(path = "/searchProductCountByName/{text}")
     public CommonResult<Long> searchProductCountByName(@PathVariable("text") String text) throws IOException{
 
         CommonResult<Long> commonResult = new CommonResult<>();
 
         long count = searchService.searchProductCountByName(text);
+
 
         commonResult.setObj(count);
 
