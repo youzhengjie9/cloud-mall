@@ -1,6 +1,7 @@
 package com.boot.service;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.config.EmojiProperties;
 import com.boot.config.MyEndpointConfigure;
 import com.boot.data.CommonResult;
 import com.boot.feign.user.fallback.UserAuthorityFallbackFeign;
@@ -15,7 +16,12 @@ import javax.annotation.PostConstruct;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -53,10 +59,12 @@ public class WebSocketService {
 
   private static volatile AtomicInteger usercount=new AtomicInteger(0); //用户数
 
+  @Autowired
+  private EmojiProperties emojiProperties;
+
 
   @PostConstruct
-  public void init()
-  {
+  public void init() throws IOException {
 
     redisTemplate.opsForValue().set(ONLINE_COUNT,0);
     redisTemplate.opsForValue().set(WEBSOCKET_IDS,"");
@@ -149,6 +157,15 @@ public class WebSocketService {
 
   @OnMessage
   public void OnMessage(@PathParam("userId") String userId, Session session, String message) {
+
+    // 对msg进行表情转换
+
+    Map<String, String> emojiMap = emojiProperties.getEmojiMap();
+
+      for (String k : emojiMap.keySet()) {
+        message=message.replaceAll(k,emojiMap.get(k));
+      }
+
     log.info("WebSocketService OnMessage: " + message);
 
     //查询用户权限

@@ -6,9 +6,17 @@
     <link rel="stylesheet" type="text/css" th:href="@{/static/chat/css/easyui.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/static/chat/css/layui.css}">
 
+    <!--    引入alibaba iconfont，表情-->
+    <script src="//at.alicdn.com/t/font_2994454_jfo9lx58sx.js"></script>
+
+
     <script type="text/javascript" th:src="@{/static/chat/js/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/chat/js/jquery.easyui.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/chat/js/json2.js}"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
     <style type="text/css">
         * {
             font-size: 14px;
@@ -129,18 +137,34 @@
             font-size: 15px;
         }
 
+        /* iconfont*/
+        .icon {
+            width: 1em; height: 1em;
+            vertical-align: -0.15em;
+            fill: currentColor;
+            overflow: hidden;
+            font-size: 30px;
+        }
+
+        #panel
+        {
+            padding:10px;
+            display:none;
+            border: 2px orange solid;
+            width: 350px;
+        }
+
     </style>
 </head>
 <body>
 
 
 <div id="box">
-
 <!--    展示在线客服-->
     <div id="leftbox">
 
         <div id="leftMenu">
-            <span style="font-size: 13px"><b>实时在线客服:
+            <b>实时客服数:
             </b>
                 <b id="count" style="font-size: 13px">
                     0
@@ -174,6 +198,19 @@
             </ul>
         </div>
 
+        <div style="margin-left: 24%">
+            <input id="flip" type="button" class="btn btn-primary" value="表情">
+
+            <div id="panel" class="dropdown">
+                <div id="myDropdown" class="dropdown-content" style="width: 350px;height: 55px">
+
+                    <span th:each="set:${sets}" th:utext="${emojimap.get(set)}" th:onclick="appendEmoji([[${set}]])"></span>
+
+                </div>
+            </div>
+        </div>
+
+
             <div style="width: 50%; padding: 5px;margin-left: 360px">
                 <table height="100%" cellpadding="0px" cellspacing="0px">
                     <tr>
@@ -201,7 +238,7 @@
 </div>
 
 </body>
-<script type="text/javascript">
+<script th:inline="javascript">
     function getNowFormatDate() {
         var date = new Date();
         var seperator1 = "-";
@@ -274,8 +311,15 @@
             var msg = $("#txtMessage").val();
             var obj = new Object();
             obj.from = from;
-            obj.message = msg;
 
+            var map=[[${emojimap}]];
+            var sets=[[${sets}]];
+
+            for (let i=0;i<[[${sets.size()}]];i++){
+                msg=msg.replaceAll(sets[i],map[sets[i]]);
+            }
+
+            obj.message = msg;
             obj.nickname = nickname;
             var json = JSON.stringify(obj);
             var result = websocket.send(json);
@@ -344,10 +388,12 @@
             //接收到消息的回调方法
             websocket.onmessage = function (event) {
                 msg = eval('(' + event.data + ')');
+                var mg=msg.message; //消息
+
                 if (msg.from != agent) {
                     var message = "<li class='msgContent left'>" +
                         "<p class='msgContent left title'>" + msg.nickname + " (" + getNowFormatDate() + "):</p>" +
-                        "<p class='msgContent left p'>" + msg.message + "</p></li>" +
+                        "<p class='msgContent left p'>" + mg + "</p></li>" +
                         "<div style='clear:both'></div>";
                     $("#chatZone").append(message);
                 }
@@ -370,5 +416,21 @@
 
         // });
     // });
+
+    //jquery滑动
+    $(document).ready(function(){
+        $("#flip").click(function(){
+            $("#panel").slideToggle("slow");
+        });
+    });
+
+    function appendEmoji(appendKey) {
+
+        var ele = document.getElementById("txtMessage");
+
+        ele.value = ele.value + appendKey;
+    }
+
+
 </script>
 </html>

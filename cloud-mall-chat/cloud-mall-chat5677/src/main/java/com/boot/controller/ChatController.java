@@ -2,6 +2,7 @@ package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.boot.config.EmojiProperties;
 import com.boot.feign.user.fallback.UserAuthorityFallbackFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
 import com.boot.utils.SpringSecurityUtil;
@@ -15,12 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 
 @Controller
 @RequestMapping(path = "/chat")
@@ -43,6 +41,10 @@ public class ChatController {
     @Autowired
     private UserAuthorityFallbackFeign userAuthorityFallbackFeign;
 
+    @Autowired
+    private EmojiProperties emojiProperties;
+
+
     @RequestMapping(path = "/toChat")
     public String toChat(Model model, HttpSession session)
     {
@@ -58,6 +60,10 @@ public class ChatController {
         List<String> names = JSON.parseArray(o, String.class);
 
         model.addAttribute("names",names);
+
+
+        model.addAttribute("emojimap",emojiProperties.getEmojiMap());
+        model.addAttribute("sets",emojiProperties.getEmojiMap().keySet());
 
         return "chat";
     }

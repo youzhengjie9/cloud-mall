@@ -1,5 +1,6 @@
 package com.boot;
 
+import com.boot.config.EmojiProperties;
 import com.boot.config.ScanClassProperties;
 import com.boot.config.SwaggerConfig;
 import org.springframework.boot.SpringApplication;
@@ -14,7 +15,7 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ScanClassProperties.class})
+@EnableConfigurationProperties({ScanClassProperties.class, EmojiProperties.class})
 @Import({SwaggerConfig.class}) //导入swaggerConfig的配置类
 @EnableSwagger2  //开启Swagger2
 @EnableFeignClients //开启openFeign客户端
