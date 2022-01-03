@@ -88,7 +88,7 @@ gitee:
     callback: http://localhost/gitee/callback
 
 
-#配置表情
+#配置表情插件
 cloud:
   emoji:
     emojiMap:
@@ -105,5 +105,37 @@ cloud:
         /emoji-E10: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-a-nulifendoujiayoubiaoqingxiaolian'></use></svg>,
         /emoji-E11: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-a-kuxiaobudegangaxingqiubiaoqing'></use></svg>,
         /emoji-E12: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-a-xiaolianbiaoqing'></use></svg>,
-
+        /emoji-E13: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-a-gaoxinghaoxinqingbiaoqingxihuanbiaoqingxiaolian'></use></svg>,
+        /emoji-E14: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-a-kuzhuangkushuaiqishuashuaibiaoqingxiaolian'></use></svg>,
+        /emoji-E16: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-zhuangkeai'></use></svg>,
+        /emoji-E17: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-a-shengqifennumaohuofenkaiqifenbiaoqingxiaolian'></use></svg>,
+        /emoji-E18: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-a-jingyajingqiwasetianlabiaoqingxiaolian'></use></svg>,
+        /emoji-E19: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-a-taibanglejingyabangbangdebiaoqingxiaolian'></use></svg>,
+        /emoji-E20: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-a-aiqingxihuansebiaoqingxiaolian'></use></svg>,
+        /emoji-E21: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-lenghan'></use></svg>,
+        /emoji-E22: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-baiyan'></use></svg>,
+        /emoji-E23: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-tiaopi'></use></svg>,
+        /emoji-E24: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-fanu'></use></svg>,
+        /emoji-E25: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-kun'></use></svg>,
+        /emoji-E26: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-leiku'></use></svg>,
+        /emoji-E27: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-kaixin'></use></svg>,
+        /emoji-E28: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-weixiao'></use></svg>,
+        /emoji-E29: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-yiwen'></use></svg>,
+        /emoji-E30: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-shetou'></use></svg>,
+        /emoji-E31: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-daxiao'></use></svg>,
+        /emoji-E32: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-jingya'></use></svg>,
+        /emoji-E33: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-jingxia'></use></svg>,
+        /emoji-E34: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-shiwang'></use></svg>,
+        /emoji-E35: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-wuliao'></use></svg>,
+        /emoji-E36: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-juezui'></use></svg>,
+        /emoji-E37: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-jiyan'></use></svg>,
+        /emoji-E38: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-dai'></use></svg>,
+        /emoji-E39: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-liulei'></use></svg>,
+        /emoji-E40: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-yun'></use></svg>,
+        /emoji-E41: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-se'></use></svg>,
+        /emoji-E42: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-tu'></use></svg>,
+        /emoji-E43: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-kouzhao'></use></svg>,
+        /emoji-E44: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-mowang'></use></svg>,
+        /emoji-E45: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-shuijue'></use></svg>,
+        /emoji-E46: <svg class='icon' aria-hidden='true'><use xlink:href='#icon-ku'></use></svg>
       }

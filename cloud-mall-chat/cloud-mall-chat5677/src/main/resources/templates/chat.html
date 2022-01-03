@@ -7,16 +7,16 @@
     <link rel="stylesheet" type="text/css" th:href="@{/static/chat/css/layui.css}">
 
     <!--    引入alibaba iconfont，表情-->
-    <script src="//at.alicdn.com/t/font_2994454_jfo9lx58sx.js"></script>
+    <script src="//at.alicdn.com/t/font_2994454_x1hkqrl5b48.js"></script>
 
 
     <script type="text/javascript" th:src="@{/static/chat/js/jquery.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/chat/js/jquery.easyui.min.js}"></script>
     <script type="text/javascript" th:src="@{/static/chat/js/json2.js}"></script>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/static/chat/css/bootstrap.min.css}">
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <script type="text/javascript" th:src="@{/static/chat/js/bootstrap.js}"></script>
     <style type="text/css">
         * {
             font-size: 14px;
@@ -109,10 +109,10 @@
         #leftMenu{
 
             width: 150px;
-            height: 200px;
+            height: 370px;
             /*border: 1px solid;*/
             margin: 0 auto;
-            margin-top: 23%
+            margin-top: 5%
         }
 
 
@@ -152,6 +152,12 @@
             display:none;
             border: 2px orange solid;
             width: 350px;
+            overflow: auto;
+            /*position: absolute;*/
+            background-color: antiquewhite;
+        }
+        panel panel-htop easyui-fluid{
+            width: auto;
         }
 
     </style>
@@ -161,53 +167,94 @@
 
 <div id="box">
 <!--    展示在线客服-->
-    <div id="leftbox">
+<!--    <div id="leftbox">-->
 
-        <div id="leftMenu">
-            <b>实时客服数:
-            </b>
+<!--        <div id="leftMenu">-->
+<!--            <b>实时客服数:-->
+<!--            </b>-->
+<!--                <b id="count" style="font-size: 13px">-->
+<!--                    0-->
+<!--                </b>-->
+<!--                <a onclick="refresh()" style="cursor: pointer;color:blue;text-decoration: none;font-size: 13px">刷新</a></span>-->
+<!--            <ul id="leftul">-->
+<!--&lt;!&ndash;                <li>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a href="#" style="color: red;pointer-events: none;">客服-admin1</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                </li>&ndash;&gt;-->
+<!--                <li th:each="name:${names}" th:if="${names ne null and names.size()>0}">-->
+<!--                    <a class="na" style="cursor: pointer">[[${name}]]</a>-->
+<!--                </li>-->
+
+<!--            </ul>-->
+
+<!--        </div>-->
+
+<!--    </div>-->
+
+    <div class="panel panel-primary" id="leftbox">
+        <div class="panel-heading">
+            <h3 class="panel-title">实时客服数:
+
                 <b id="count" style="font-size: 13px">
                     0
                 </b>
                 <a onclick="refresh()" style="cursor: pointer;color:blue;text-decoration: none;font-size: 13px">刷新</a></span>
-            <ul id="leftul">
-<!--                <li>-->
-<!--                    <a href="#" style="color: red;pointer-events: none;">客服-admin1</a>-->
-<!--                </li>-->
-                <li th:each="name:${names}" th:if="${names ne null and names.size()>0}">
-                    <a class="na" style="cursor: pointer">[[${name}]]</a>
-                </li>
-
-            </ul>
-
+            </h3>
         </div>
+        <div class="panel-body">
+            <div id="leftMenu">
+                <ul id="leftul">
+                    <li th:each="name:${names}" th:if="${names ne null and names.size()>0}">
+                        <a class="na" style="cursor: pointer">[[${name}]]</a>
+                    </li>
 
+                </ul>
+
+            </div>
+        </div>
     </div>
+
 
 
     <div id="chatBox">
 
-        <p>
-            <input type="hidden" id="linkAgent" th:value="${userid}" class="easyui-textbox" style="width: 150px"/>
-            <input type="hidden" id="nickname" th:value="${currentUser}" class="easyui-textbox" style="width: 150px"/>
-<!--            <a id="btnLink" href="javascript:void(0)" class="easyui-linkbutton c1">开始聊天</a></p>-->
-        <div data-options="region:'center'" class="easyui-panel" style="width: 50%;height:500px;  padding: 5px;"
-             id="chatRecord">
-            <ul class="chatDialog-main clearfix" id="chatZone">
+<!--        <span>-->
+            <input type="hidden" id="linkAgent" th:value="${userid}"  style="width: 150px"/>
+            <input type="hidden" id="nickname" th:value="${currentUser}" style="width: 150px"/>
+<!--        </span>-->
 
-            </ul>
+        <div class="panel panel-primary" style="width: 720px">
+            <div class="panel-heading">
+                <h3 class="panel-title">聊天窗口</h3>
+            </div>
+            <div class="panel-body">
+                <div data-options="region:'center'" class="easyui-panel" style="width: 640px;height:400px;  padding: 5px;"
+                     id="chatRecord">
+                    <ul class="chatDialog-main clearfix" id="chatZone">
+
+                    </ul>
+                </div>
+            </div>
         </div>
 
+<!--        <div data-options="region:'center'" class="easyui-panel" style="width: 50%;height:500px;  padding: 5px;"-->
+<!--             id="chatRecord">-->
+<!--            <ul class="chatDialog-main clearfix" id="chatZone">-->
+
+<!--            </ul>-->
+<!--        </div>-->
+
         <div style="margin-left: 24%">
-            <input id="flip" type="button" class="btn btn-primary" value="表情">
 
             <div id="panel" class="dropdown">
-                <div id="myDropdown" class="dropdown-content" style="width: 350px;height: 55px">
+                <div id="myDropdown" class="dropdown-content" style="width: 320px;height: 55px">
 
                     <span th:each="set:${sets}" th:utext="${emojimap.get(set)}" th:onclick="appendEmoji([[${set}]])"></span>
 
                 </div>
             </div>
+
+            <input id="flip" type="button" class="btn btn-primary" value="表情">
+
         </div>
 
 
@@ -420,7 +467,7 @@
     //jquery滑动
     $(document).ready(function(){
         $("#flip").click(function(){
-            $("#panel").slideToggle("slow");
+            $("#panel").slideToggle("fast");
         });
     });
 

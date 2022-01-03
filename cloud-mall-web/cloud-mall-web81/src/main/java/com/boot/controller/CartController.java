@@ -15,6 +15,7 @@ import com.boot.utils.SpringSecurityUtil;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -49,9 +50,14 @@ public class CartController {
 
   //进入购物车
   @RequestMapping(path = "/tocart")
-  public String tocart()
+  public String tocart(HttpSession session, Model model)
   {
-
+    try{
+      String currentUser = springSecurityUtil.currentUser(session);
+      model.addAttribute("username",currentUser);
+    }catch (Exception e){
+      model.addAttribute("username",null);
+    }
     return "client/view/newpage/cart";
   }
 

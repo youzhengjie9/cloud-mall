@@ -212,6 +212,11 @@ http {
 * 然后在login.html的GitHub第三方登录超链接中client_id=xxx换成自己的id，即可
 
 
+### 人工客服表情插件配置
+* 往EmojiProperties配置类里面的emojiMap以key为emoji字符/代号，value为对应svg的格式添加配置,
+* 再修改chat.html引入icon.js地址即可横向扩展表情包的配置.
+
+
 ### 图片演示
 ![01.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/01.png)
 ![02.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/02.png)
@@ -229,7 +234,9 @@ http {
 ![14.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/14.png)
 ![15.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/15.png)
 ![16.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/16.png)
-![kefu.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/kefu.png)
-
-
-
+人工客服-客服视角👇
+![kefu_view.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/kefu_view.png)
+人工客服-用户视角👇
+![user_view.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/user_view.png)
+表情包插件配置👇
+![emoji_config.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/emoji_config.png)
