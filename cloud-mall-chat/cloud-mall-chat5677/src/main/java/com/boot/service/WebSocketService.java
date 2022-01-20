@@ -1,6 +1,7 @@
 package com.boot.service;
 
 import com.alibaba.fastjson.JSON;
+import com.boot.config.BadWordProperties;
 import com.boot.config.EmojiProperties;
 import com.boot.config.MyEndpointConfigure;
 import com.boot.data.CommonResult;
@@ -19,6 +20,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
@@ -62,6 +64,10 @@ public class WebSocketService {
   @Autowired
   private EmojiProperties emojiProperties;
 
+  @Autowired
+  private BadWordProperties badWordProperties;
+
+  private final String BAD_REPLACE="***"; //违规词替换
 
   @PostConstruct
   public void init() throws IOException {
@@ -156,10 +162,15 @@ public class WebSocketService {
   }
 
   @OnMessage
-  public void OnMessage(@PathParam("userId") String userId, Session session, String message) {
+  public void OnMessage(@PathParam("userId") String userId, Session session,String message) {
+
+    //进行违规词校验
+    List<String> badwords = badWordProperties.getBadwords();
+    for (String badword : badwords) {
+      message=message.replaceAll(badword,BAD_REPLACE); //替换违规词
+    }
 
     // 对msg进行表情转换
-
     Map<String, String> emojiMap = emojiProperties.getEmojiMap();
 
       for (String k : emojiMap.keySet()) {

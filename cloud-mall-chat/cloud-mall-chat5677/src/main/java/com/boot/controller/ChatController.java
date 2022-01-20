@@ -2,6 +2,7 @@ package com.boot.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.boot.config.BadWordProperties;
 import com.boot.config.EmojiProperties;
 import com.boot.feign.user.fallback.UserAuthorityFallbackFeign;
 import com.boot.feign.user.fallback.UserFallbackFeign;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import reactor.core.publisher.Mono;
+
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -43,7 +46,6 @@ public class ChatController {
 
     @Autowired
     private EmojiProperties emojiProperties;
-
 
     @RequestMapping(path = "/toChat")
     public String toChat(Model model, HttpSession session)
@@ -81,5 +83,6 @@ public class ChatController {
         jsonObject.put("list",names);
         return jsonObject.toJSONString();
     }
+
 
 }

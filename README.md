@@ -216,6 +216,9 @@ http {
 * 往EmojiProperties配置类里面的emojiMap以key为emoji字符/代号，value为对应svg的格式添加配置,
 * 再修改chat.html引入icon.js地址即可横向扩展表情包的配置.
 
+### 违规词配置
+* 只需要在cloud-mall-chat模块下的badWord.properties里面配置违规词即可
+
 
 ### 图片演示
 ![01.png](https://gitee.com/youzhengjie/cloud-mall/raw/master/cloud-mall-doc/images/01.png)

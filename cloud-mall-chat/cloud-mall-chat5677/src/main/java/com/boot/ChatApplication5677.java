@@ -1,8 +1,10 @@
 package com.boot;
 
+import com.boot.config.BadWordProperties;
 import com.boot.config.EmojiProperties;
 import com.boot.config.ScanClassProperties;
 import com.boot.config.SwaggerConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -23,9 +25,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60*60*3) //开启springSession+redis解决分布式session问题
 public class ChatApplication5677 {
 
-  public static void main(String[] args) {
+    public static void main(String[] args) {
       SpringApplication.run(ChatApplication5677.class,args);
-  }
+    }
 
   //注入websocket bean
     @Bean
